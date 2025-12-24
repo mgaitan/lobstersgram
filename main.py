@@ -15,6 +15,7 @@ import argparse
 import html
 import json
 import os
+import re
 import time
 import urllib.parse
 from dataclasses import dataclass
@@ -53,6 +54,7 @@ class Item:
     title: str
     link: str
     source: str
+    tags: list[str]
 
 
 def level_enabled(level: str) -> bool:
@@ -110,7 +112,37 @@ def fetch_html(url: str) -> Optional[str]:
     return r.text
 
 
-def extract_main_content(url: str) -> tuple[str, str, str]:
+def extract_intro(markdown_text: str, fallback_text: str) -> str:
+    text = markdown_to_text(markdown_text)
+    for chunk in text.split("\n\n"):
+        line = chunk.strip()
+        if not line:
+            continue
+        intro = line.replace("\n", " ").strip()
+        if len(intro) >= 40:
+            return intro
+    # Fallback: first non-empty line from text
+    for line in fallback_text.splitlines():
+        line = line.strip()
+        if line:
+            return line
+    return ""
+
+
+def markdown_to_text(markdown_text: str) -> str:
+    text = markdown_text
+    text = re.sub(r"!\[([^\]]*)\]\([^)]+\)", "", text)
+    text = re.sub(r"```.*?```", "", text, flags=re.S)
+    text = re.sub(r"`([^`]+)`", r"\1", text)
+    text = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", text)
+    text = re.sub(r"^#{1,6}\s+", "", text, flags=re.M)
+    text = re.sub(r"^>\s?", "", text, flags=re.M)
+    text = re.sub(r"^\s*[-*+]\s+", "", text, flags=re.M)
+    text = re.sub(r"[_*]{1,3}([^_*]+)[_*]{1,3}", r"\1", text)
+    return text
+
+
+def extract_main_content(url: str) -> tuple[str, str, str, str]:
     """
     Returns (title, markdown_content, fallback_text).
     """
@@ -144,7 +176,8 @@ def extract_main_content(url: str) -> tuple[str, str, str]:
 
     soup = BeautifulSoup(content_html, "html.parser")
     fallback_text = soup.get_text(separator="\n").strip()
-    return title, extracted_markdown, fallback_text
+    intro = extract_intro(extracted_markdown, fallback_text)
+    return title, extracted_markdown, fallback_text, intro
 
 
 def telegraph_create_page(
@@ -211,15 +244,25 @@ def telegram_send_message(text_html: str, disable_preview: bool = False) -> None
     r.raise_for_status()
 
 
-def format_message(item: Item, telegraph_url: str, original_url: str) -> str:
+def format_message(
+    item: Item,
+    telegraph_url: str,
+    original_url: str,
+    intro: str,
+) -> str:
     title = html.escape(item.title)
     src = html.escape(item.source)
     turl = html.escape(telegraph_url)
     ourl = html.escape(original_url)
+    tags = ", ".join(item.tags) if item.tags else ""
+    tags_html = f"\n<i>Tags:</i> {html.escape(tags)}" if tags else ""
+    intro_html = f"\n\n{html.escape(intro)}" if intro else ""
 
     return (
         f"<b>{title}</b>\n"
-        f"<i>{src}</i>\n\n"
+        f"<i>{src}</i>\n"
+        f"{tags_html}"
+        f"{intro_html}\n\n"
         f'📖 <a href="{turl}">Read on telegra.ph</a>\n'
         f'🌐 <a href="{ourl}">Original</a>\n'
         f'🦞 <a href="{html.escape(item.link)}">Lobsters thread</a>'
@@ -259,12 +302,16 @@ def main() -> int:
             title=args.url,
             link=args.url,
             source=urllib.parse.urlparse(args.url).netloc or "direct",
+            tags=[],
         )
         try:
             final_url = fetch_url(item.link)
-            extracted_title, content_markdown, fallback_text = extract_main_content(
-                final_url
-            )
+            (
+                extracted_title,
+                content_markdown,
+                fallback_text,
+                intro,
+            ) = extract_main_content(final_url)
             telegraph_title = (
                 extracted_title
                 if extracted_title and extracted_title != final_url
@@ -277,7 +324,10 @@ def main() -> int:
                 source_url=final_url,
             )
             msg = format_message(
-                item, telegraph_url=telegraph_url, original_url=final_url
+                item,
+                telegraph_url=telegraph_url,
+                original_url=final_url,
+                intro=intro,
             )
             telegram_send_message(msg, disable_preview=True)
             print("Processed single URL.")
@@ -301,7 +351,9 @@ def main() -> int:
         link = getattr(e, "link", "") or ""
         title = getattr(e, "title", link) or link
         source = urllib.parse.urlparse(link).netloc or "lobste.rs"
-        new_items.append(Item(id=iid, title=title, link=link, source=source))
+        tags = [t.get("term", "") for t in getattr(e, "tags", []) or []]
+        tags = [t for t in tags if t]
+        new_items.append(Item(id=iid, title=title, link=link, source=source, tags=tags))
 
     # Process oldest->newest for nicer ordering
     new_items.reverse()
@@ -315,9 +367,12 @@ def main() -> int:
         try:
             log("info", f"process item title={item.title!r} link={item.link}")
             final_url = fetch_url(item.link)
-            extracted_title, content_markdown, fallback_text = extract_main_content(
-                final_url
-            )
+            (
+                extracted_title,
+                content_markdown,
+                fallback_text,
+                intro,
+            ) = extract_main_content(final_url)
 
             telegraph_title = (
                 extracted_title
@@ -332,7 +387,10 @@ def main() -> int:
             )
 
             msg = format_message(
-                item, telegraph_url=telegraph_url, original_url=final_url
+                item,
+                telegraph_url=telegraph_url,
+                original_url=final_url,
+                intro=intro,
             )
             telegram_send_message(msg, disable_preview=True)
 
