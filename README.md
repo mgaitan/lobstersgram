@@ -1,6 +1,10 @@
-# Lobsters → Telegraph → Telegram (Serverless)
+# Lobstergram: Lobsters → Telegraph → Telegram (Serverless)
 
-This repository implements a **serverless content delivery pipeline** that:
+
+
+Lobstergram is a telegram bot that send (me) the articles from [lobste.rs](https://lobste.rs). 
+
+It implements a **serverless content delivery pipeline** that:
 
 - Reads new items from the **Lobste.rs RSS feed**
 - Extracts the **full article content** using generic scraping

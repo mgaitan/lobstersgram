@@ -1,5 +1,5 @@
 [project]
-name = "lobsters-to-telegram"
+name = "lobstergram"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
