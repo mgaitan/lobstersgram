@@ -53,6 +53,7 @@ class Item:
     id: str
     title: str
     link: str
+    discussion_link: str
     source: str
     tags: list[str]
 
@@ -110,6 +111,13 @@ def fetch_html(url: str) -> Optional[str]:
     )
     r.raise_for_status()
     return r.text
+
+
+def is_lobsters_discussion(url: str) -> bool:
+    if not url:
+        return False
+    parsed = urllib.parse.urlparse(url)
+    return parsed.netloc.endswith("lobste.rs") and parsed.path.startswith("/s/")
 
 
 def extract_intro(markdown_text: str, fallback_text: str) -> str:
@@ -257,6 +265,12 @@ def format_message(
     tags = ", ".join(item.tags) if item.tags else ""
     tags_html = f"\n<i>Tags:</i> {html.escape(tags)}" if tags else ""
     intro_html = f"\n\n{html.escape(intro)}" if intro else ""
+    discussion_link = item.discussion_link.strip()
+    discussion_html = (
+        f'🦞 <a href="{html.escape(discussion_link)}">Lobsters thread</a>'
+        if discussion_link
+        else ""
+    )
 
     return (
         f"<b>{title}</b>\n"
@@ -265,7 +279,7 @@ def format_message(
         f"{intro_html}\n\n"
         f'📖 <a href="{turl}">Read on telegra.ph</a>\n'
         f'🌐 <a href="{ourl}">Original</a>\n'
-        f'🦞 <a href="{html.escape(item.link)}">Lobsters thread</a>'
+        f"{discussion_html}"
     )
 
 
@@ -301,6 +315,7 @@ def main() -> int:
             id=args.url,
             title=args.url,
             link=args.url,
+            discussion_link="",
             source=urllib.parse.urlparse(args.url).netloc or "direct",
             tags=[],
         )
@@ -349,11 +364,30 @@ def main() -> int:
             continue
 
         link = getattr(e, "link", "") or ""
+        discussion_link = getattr(e, "comments", "") or ""
+        if not discussion_link and is_lobsters_discussion(link):
+            discussion_link = link
+        if is_lobsters_discussion(link):
+            links = getattr(e, "links", []) or []
+            for l in links:
+                href = l.get("href") or ""
+                if href and not is_lobsters_discussion(href):
+                    link = href
+                    break
         title = getattr(e, "title", link) or link
         source = urllib.parse.urlparse(link).netloc or "lobste.rs"
         tags = [t.get("term", "") for t in getattr(e, "tags", []) or []]
         tags = [t for t in tags if t]
-        new_items.append(Item(id=iid, title=title, link=link, source=source, tags=tags))
+        new_items.append(
+            Item(
+                id=iid,
+                title=title,
+                link=link,
+                discussion_link=discussion_link,
+                source=source,
+                tags=tags,
+            )
+        )
 
     # Process oldest->newest for nicer ordering
     new_items.reverse()
