@@ -9,6 +9,5 @@ wheels/
 # Virtual environments
 .venv
 
-# Local secrets/state
+# Local secrets
 .env
-state.json
