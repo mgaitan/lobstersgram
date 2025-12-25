@@ -20,7 +20,6 @@ import time
 import urllib.parse
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Optional
 
 import feedparser
 import requests
@@ -44,6 +43,8 @@ MAX_ITEMS_PER_RUN = int(os.getenv("MAX_ITEMS_PER_RUN", "5"))
 REQUEST_TIMEOUT = int(os.getenv("REQUEST_TIMEOUT", "20"))
 LOG_LEVEL = os.getenv("LOG_LEVEL", "info").lower()
 SUBSCRIBERS_PATH = Path(os.getenv("SUBSCRIBERS_PATH", "subscribers.json"))
+INTRO_MIN_LENGTH = 40
+MIN_CONTENT_LENGTH = 200
 
 console = Console()
 
@@ -58,6 +59,23 @@ class Item:
     tags: list[str]
 
 
+class TelegramAPIError(RuntimeError):
+    def __init__(self, data: dict[str, object]) -> None:
+        super().__init__("Telegram API error")
+        self.data = data
+
+
+class TelegraphAPIError(RuntimeError):
+    def __init__(self, data: dict[str, object]) -> None:
+        super().__init__("Telegraph API error")
+        self.data = data
+
+
+class ContentDownloadError(RuntimeError):
+    def __init__(self) -> None:
+        super().__init__("Failed to download content")
+
+
 def level_enabled(level: str) -> bool:
     order = {"debug": 10, "info": 20, "warn": 30, "error": 40}
     return order.get(level, 20) >= order.get(LOG_LEVEL, 20)
@@ -68,31 +86,27 @@ def log(level: str, message: str) -> None:
         console.log(f"[{level}] {message}")
 
 
-def load_state() -> dict[str, Any]:
+def load_state() -> dict[str, object]:
     if not STATE_PATH.exists():
         return {"seen": []}
     return json.loads(STATE_PATH.read_text(encoding="utf-8"))
 
 
-def save_state(state: dict[str, Any]) -> None:
-    STATE_PATH.write_text(
-        json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
-    )
+def save_state(state: dict[str, object]) -> None:
+    STATE_PATH.write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
-def load_subscribers() -> dict[str, Any]:
+def load_subscribers() -> dict[str, object]:
     if not SUBSCRIBERS_PATH.exists():
         return {"subscribers": [], "last_update_id": 0}
     return json.loads(SUBSCRIBERS_PATH.read_text(encoding="utf-8"))
 
 
-def save_subscribers(state: dict[str, Any]) -> None:
-    SUBSCRIBERS_PATH.write_text(
-        json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
-    )
+def save_subscribers(state: dict[str, object]) -> None:
+    SUBSCRIBERS_PATH.write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
-def normalize_id(entry: Any) -> str:
+def normalize_id(entry: object) -> str:
     # Prefer feed-provided id/guid; fallback to link.
     for key in ("id", "guid", "link"):
         v = getattr(entry, key, None)
@@ -115,7 +129,7 @@ def fetch_url(url: str) -> str:
     return r.url
 
 
-def fetch_html(url: str) -> Optional[str]:
+def fetch_html(url: str) -> str | None:
     r = requests.get(
         url,
         timeout=REQUEST_TIMEOUT,
@@ -125,14 +139,14 @@ def fetch_html(url: str) -> Optional[str]:
     return r.text
 
 
-def telegram_get_updates(offset: int) -> list[dict[str, Any]]:
+def telegram_get_updates(offset: int) -> list[dict[str, object]]:
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getUpdates"
     params = {"timeout": 0, "offset": offset, "allowed_updates": ["message"]}
     r = requests.get(url, params=params, timeout=REQUEST_TIMEOUT)
     r.raise_for_status()
     data = r.json()
     if not data.get("ok"):
-        raise RuntimeError(f"telegram getUpdates failed: {data!r}")
+        raise TelegramAPIError(data)
     return data.get("result", [])
 
 
@@ -151,8 +165,7 @@ def read_new_subscribers() -> int:
     removed_count = 0
     for update in updates:
         update_id = int(update.get("update_id") or 0)
-        if update_id > max_update_id:
-            max_update_id = update_id
+        max_update_id = max(max_update_id, update_id)
         message = update.get("message") or {}
         text = (message.get("text") or "").strip()
         if text.startswith("/unsubscribe"):
@@ -213,27 +226,26 @@ def extract_intro(markdown_text: str, fallback_text: str) -> str:
         if not line:
             continue
         intro = line.replace("\n", " ").strip()
-        if len(intro) >= 40:
+        if len(intro) >= INTRO_MIN_LENGTH:
             return intro
     # Fallback: first non-empty line from text
     for line in fallback_text.splitlines():
-        line = line.strip()
-        if line:
-            return line
+        stripped = line.strip()
+        if stripped:
+            return stripped
     return ""
 
 
 def markdown_to_text(markdown_text: str) -> str:
     text = markdown_text
     text = re.sub(r"!\[([^\]]*)\]\([^)]+\)", "", text)
-    text = re.sub(r"```.*?```", "", text, flags=re.S)
+    text = re.sub(r"```.*?```", "", text, flags=re.DOTALL)
     text = re.sub(r"`([^`]+)`", r"\1", text)
     text = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", text)
-    text = re.sub(r"^#{1,6}\s+", "", text, flags=re.M)
-    text = re.sub(r"^>\s?", "", text, flags=re.M)
-    text = re.sub(r"^\s*[-*+]\s+", "", text, flags=re.M)
-    text = re.sub(r"[_*]{1,3}([^_*]+)[_*]{1,3}", r"\1", text)
-    return text
+    text = re.sub(r"^#{1,6}\s+", "", text, flags=re.MULTILINE)
+    text = re.sub(r"^>\s?", "", text, flags=re.MULTILINE)
+    text = re.sub(r"^\s*[-*+]\s+", "", text, flags=re.MULTILINE)
+    return re.sub(r"[_*]{1,3}([^_*]+)[_*]{1,3}", r"\1", text)
 
 
 def extract_main_content(url: str) -> tuple[str, str, str, str]:
@@ -242,7 +254,7 @@ def extract_main_content(url: str) -> tuple[str, str, str, str]:
     """
     downloaded = fetch_html(url)
     if not downloaded:
-        raise RuntimeError("Failed to download content")
+        raise ContentDownloadError
 
     log("debug", f"extract_main_content downloaded_len={len(downloaded)} url={url}")
     content_html = ""
@@ -255,10 +267,10 @@ def extract_main_content(url: str) -> tuple[str, str, str, str]:
             "debug",
             f"extract_main_content readability_len={len(content_html)} url={url}",
         )
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         log("warn", f"readability failed err={type(exc).__name__}: {exc}")
 
-    if not content_html or len(content_html.strip()) < 200:
+    if not content_html or len(content_html.strip()) < MIN_CONTENT_LENGTH:
         log("warn", f"extract_main_content content_len={len(content_html)} url={url}")
         content_html = downloaded
 
@@ -288,7 +300,7 @@ def telegraph_create_page(
     'content' as JSON string of nodes. We'll create a small set of nodes by splitting paragraphs.
     """
     # Build nodes from Markdown first; fallback to plain paragraphs.
-    nodes: list[dict[str, Any]] = []
+    nodes: list[dict[str, object]] = []
     markdown = content_markdown.strip()
     if markdown:
         nodes = md_to_dom(markdown)
@@ -315,19 +327,15 @@ def telegraph_create_page(
         payload["author_url"] = source_url
 
     log("debug", f"telegraph_create_page title={title[:80]!r} url={source_url}")
-    r = requests.post(
-        "https://api.telegra.ph/createPage", data=payload, timeout=REQUEST_TIMEOUT
-    )
+    r = requests.post("https://api.telegra.ph/createPage", data=payload, timeout=REQUEST_TIMEOUT)
     r.raise_for_status()
     data = r.json()
     if not data.get("ok"):
-        raise RuntimeError(f"Telegraph error: {data}")
+        raise TelegraphAPIError(data)
     return data["result"]["url"]
 
 
-def telegram_send_message(
-    chat_id: str | int, text_html: str, disable_preview: bool = False
-) -> None:
+def telegram_send_message(chat_id: str | int, text_html: str, disable_preview: bool = False) -> None:
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     payload = {
         "chat_id": chat_id,
@@ -340,10 +348,142 @@ def telegram_send_message(
     r.raise_for_status()
 
 
-def resolve_recipient_chat_ids(subscribers: list[dict[str, Any]]) -> list[str | int]:
+def resolve_recipient_chat_ids(subscribers: list[dict[str, object]]) -> list[str | int]:
     if TELEGRAM_DEV_CHAT_ID:
         return [TELEGRAM_DEV_CHAT_ID]
     return [sub["chat_id"] for sub in subscribers]
+
+
+def send_to_recipients(recipients: list[str | int], message: str, disable_preview: bool = True) -> None:
+    for chat_id in recipients:
+        telegram_send_message(chat_id, message, disable_preview=disable_preview)
+
+
+def build_recipients() -> list[str | int]:
+    subscribers_state = load_subscribers()
+    subscribers = subscribers_state.get("subscribers") or []
+    recipients = resolve_recipient_chat_ids(subscribers)
+    if not recipients:
+        log("warn", "no subscribers configured")
+    return recipients
+
+
+def build_item_message(item: Item) -> str:
+    final_url = fetch_url(item.link)
+    extracted_title, content_markdown, fallback_text, intro = extract_main_content(final_url)
+    telegraph_title = extracted_title if extracted_title and extracted_title != final_url else item.title
+    telegraph_url = telegraph_create_page(
+        title=telegraph_title,
+        content_markdown=content_markdown,
+        fallback_text=fallback_text,
+        source_url=final_url,
+    )
+    return format_message(
+        item,
+        telegraph_url=telegraph_url,
+        original_url=final_url,
+        intro=intro,
+    )
+
+
+def collect_new_items(entries: list[object], seen: set[str]) -> list[Item]:
+    new_items: list[Item] = []
+    for entry in entries:
+        iid = normalize_id(entry)
+        if iid in seen:
+            continue
+
+        link = getattr(entry, "link", "") or ""
+        discussion_link = getattr(entry, "comments", "") or ""
+        if not discussion_link and is_lobsters_discussion(link):
+            discussion_link = link
+        if is_lobsters_discussion(link):
+            links = getattr(entry, "links", []) or []
+            for link_info in links:
+                href = link_info.get("href") or ""
+                if href and not is_lobsters_discussion(href):
+                    link = href
+                    break
+        title = getattr(entry, "title", link) or link
+        source = urllib.parse.urlparse(link).netloc or "lobste.rs"
+        tags = [t.get("term", "") for t in getattr(entry, "tags", []) or []]
+        tags = [t for t in tags if t]
+        new_items.append(
+            Item(
+                id=iid,
+                title=title,
+                link=link,
+                discussion_link=discussion_link,
+                source=source,
+                tags=tags,
+            )
+        )
+    return new_items
+
+
+def handle_single_url(url: str) -> int:
+    item = Item(
+        id=url,
+        title=url,
+        link=url,
+        discussion_link="",
+        source=urllib.parse.urlparse(url).netloc or "direct",
+        tags=[],
+    )
+    msg = build_item_message(item)
+    recipients = build_recipients()
+    send_to_recipients(recipients, msg, disable_preview=True)
+    print("Processed single URL.")
+    return 0
+
+
+def process_feed() -> int:
+    state = load_state()
+    seen: set[str] = set(state.get("seen", []))
+
+    feed = feedparser.parse(RSS_URL)
+    entries = getattr(feed, "entries", []) or []
+    log("info", f"feed entries={len(entries)}")
+
+    new_items = collect_new_items(entries, seen)
+
+    # Process oldest->newest for nicer ordering
+    new_items.reverse()
+    new_items = new_items[:MAX_ITEMS_PER_RUN]
+
+    if not new_items:
+        print("No new items.")
+        return 0
+
+    recipients = build_recipients()
+
+    for item in new_items:
+        try:
+            log("info", f"process item title={item.title!r} link={item.link}")
+            msg = build_item_message(item)
+            send_to_recipients(recipients, msg, disable_preview=True)
+
+            seen.add(item.id)
+            # Be gentle with API limits
+            time.sleep(1.2)
+
+        except Exception as exc:  # noqa: BLE001
+            # Don't fail the whole run on one bad link.
+            log(
+                "error",
+                f"process failed title={item.title!r} err={type(exc).__name__}: {exc}",
+            )
+            err = html.escape(f"{type(exc).__name__}: {exc}")
+            error_msg = (
+                f"<b>⚠️ Failed to process:</b> {html.escape(item.title)}\n<code>{err}</code>\n{html.escape(item.link)}"
+            )
+            send_to_recipients(recipients, error_msg, disable_preview=True)
+            seen.add(item.id)  # avoid retry loops; remove if you prefer retries
+
+    state["seen"] = list(seen)[-5000:]  # cap size
+    save_state(state)
+    print(f"Processed {len(new_items)} items.")
+    return 0
 
 
 def format_message(
@@ -360,11 +500,7 @@ def format_message(
     tags_html = f"\n<i>Tags:</i> {html.escape(tags)}" if tags else ""
     intro_html = f"\n\n{html.escape(intro)}" if intro else ""
     discussion_link = item.discussion_link.strip()
-    discussion_html = (
-        f'🦞 <a href="{html.escape(discussion_link)}">Lobsters thread</a>'
-        if discussion_link
-        else ""
-    )
+    discussion_html = f'🦞 <a href="{html.escape(discussion_link)}">Lobsters thread</a>' if discussion_link else ""
 
     return (
         f"<b>{title}</b>\n"
@@ -396,17 +532,26 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def apply_runtime_config(args: argparse.Namespace) -> None:
+    globals().update(
+        RSS_URL=args.rss_url,
+        STATE_PATH=Path(args.state_path),
+        SUBSCRIBERS_PATH=Path(args.subscribers_path),
+        MAX_ITEMS_PER_RUN=args.max_items,
+        REQUEST_TIMEOUT=args.timeout,
+        LOG_LEVEL=args.log_level.lower(),
+    )
+
+
 def main() -> int:
     args = parse_args()
-    RSS_URL = args.rss_url
-    STATE_PATH = Path(args.state_path)
-    MAX_ITEMS_PER_RUN = args.max_items
-    REQUEST_TIMEOUT = args.timeout
-    LOG_LEVEL = args.log_level.lower()
+    apply_runtime_config(args)
 
     log(
         "info",
-        f"start rss={RSS_URL} state={STATE_PATH} max_items={MAX_ITEMS_PER_RUN} timeout={REQUEST_TIMEOUT} log_level={LOG_LEVEL}",
+        "start "
+        f"rss={RSS_URL} state={STATE_PATH} max_items={MAX_ITEMS_PER_RUN} "
+        f"timeout={REQUEST_TIMEOUT} log_level={LOG_LEVEL}",
     )
 
     if args.read_messages:
@@ -415,157 +560,13 @@ def main() -> int:
         return 0
 
     if args.url:
-        item = Item(
-            id=args.url,
-            title=args.url,
-            link=args.url,
-            discussion_link="",
-            source=urllib.parse.urlparse(args.url).netloc or "direct",
-            tags=[],
-        )
         try:
-            final_url = fetch_url(item.link)
-            (
-                extracted_title,
-                content_markdown,
-                fallback_text,
-                intro,
-            ) = extract_main_content(final_url)
-            telegraph_title = (
-                extracted_title
-                if extracted_title and extracted_title != final_url
-                else item.title
-            )
-            telegraph_url = telegraph_create_page(
-                title=telegraph_title,
-                content_markdown=content_markdown,
-                fallback_text=fallback_text,
-                source_url=final_url,
-            )
-            msg = format_message(
-                item,
-                telegraph_url=telegraph_url,
-                original_url=final_url,
-                intro=intro,
-            )
-            subscribers_state = load_subscribers()
-            subscribers = subscribers_state.get("subscribers", [])
-            recipients = resolve_recipient_chat_ids(subscribers)
-            for chat_id in recipients:
-                telegram_send_message(chat_id, msg, disable_preview=True)
-            print("Processed single URL.")
-            return 0
+            return handle_single_url(args.url)
         except Exception as exc:
             log("error", f"single url failed err={type(exc).__name__}: {exc}")
             raise
-    state = load_state()
-    seen: set[str] = set(state.get("seen", []))
 
-    feed = feedparser.parse(RSS_URL)
-    entries = getattr(feed, "entries", []) or []
-    log("info", f"feed entries={len(entries)}")
-
-    new_items: list[Item] = []
-    for e in entries:
-        iid = normalize_id(e)
-        if iid in seen:
-            continue
-
-        link = getattr(e, "link", "") or ""
-        discussion_link = getattr(e, "comments", "") or ""
-        if not discussion_link and is_lobsters_discussion(link):
-            discussion_link = link
-        if is_lobsters_discussion(link):
-            links = getattr(e, "links", []) or []
-            for l in links:
-                href = l.get("href") or ""
-                if href and not is_lobsters_discussion(href):
-                    link = href
-                    break
-        title = getattr(e, "title", link) or link
-        source = urllib.parse.urlparse(link).netloc or "lobste.rs"
-        tags = [t.get("term", "") for t in getattr(e, "tags", []) or []]
-        tags = [t for t in tags if t]
-        new_items.append(
-            Item(
-                id=iid,
-                title=title,
-                link=link,
-                discussion_link=discussion_link,
-                source=source,
-                tags=tags,
-            )
-        )
-
-    # Process oldest->newest for nicer ordering
-    new_items.reverse()
-    new_items = new_items[:MAX_ITEMS_PER_RUN]
-
-    if not new_items:
-        print("No new items.")
-        return 0
-
-    subscribers_state = load_subscribers()
-    subscribers = subscribers_state.get("subscribers", [])
-    if not subscribers and not TELEGRAM_DEV_CHAT_ID:
-        log("warn", "no subscribers configured")
-    recipients = resolve_recipient_chat_ids(subscribers)
-
-    for item in new_items:
-        try:
-            log("info", f"process item title={item.title!r} link={item.link}")
-            final_url = fetch_url(item.link)
-            (
-                extracted_title,
-                content_markdown,
-                fallback_text,
-                intro,
-            ) = extract_main_content(final_url)
-
-            telegraph_title = (
-                extracted_title
-                if extracted_title and extracted_title != final_url
-                else item.title
-            )
-            telegraph_url = telegraph_create_page(
-                title=telegraph_title,
-                content_markdown=content_markdown,
-                fallback_text=fallback_text,
-                source_url=final_url,
-            )
-
-            msg = format_message(
-                item,
-                telegraph_url=telegraph_url,
-                original_url=final_url,
-                intro=intro,
-            )
-            for chat_id in recipients:
-                telegram_send_message(chat_id, msg, disable_preview=True)
-
-            seen.add(item.id)
-            # Be gentle with API limits
-            time.sleep(1.2)
-
-        except Exception as exc:
-            # Don't fail the whole run on one bad link.
-            log(
-                "error",
-                f"process failed title={item.title!r} err={type(exc).__name__}: {exc}",
-            )
-            err = html.escape(f"{type(exc).__name__}: {exc}")
-            error_msg = (
-                f"<b>⚠️ Failed to process:</b> {html.escape(item.title)}\n"
-                f"<code>{err}</code>\n{html.escape(item.link)}"
-            )
-            for chat_id in recipients:
-                telegram_send_message(chat_id, error_msg, disable_preview=True)
-            seen.add(item.id)  # avoid retry loops; remove if you prefer retries
-
-    state["seen"] = list(seen)[-5000:]  # cap size
-    save_state(state)
-    print(f"Processed {len(new_items)} items.")
-    return 0
+    return process_feed()
 
 
 if __name__ == "__main__":
