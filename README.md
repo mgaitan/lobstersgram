@@ -76,13 +76,10 @@ All secrets are stored securely in GitHub Actions.
 2. Create a new bot
 3. Save the bot token (`TELEGRAM_BOT_TOKEN`)
 
-To get your chat ID:
-- Send any message to the bot
-- Open:
-  ```
-  https://api.telegram.org/bot<TELEGRAM_BOT_TOKEN>/getUpdates
-  ```
-- Extract `chat.id`
+To register subscribers:
+- Send `/start` to the bot from the Telegram account or group you want to receive posts.
+- Run the workflow once (or run `uv run python main.py --read-messages`) to record the
+  `chat_id` values into `subscribers.json`.
 
 ---
 
@@ -117,7 +114,6 @@ In your repository:
 Add the following secrets:
 
 - `TELEGRAM_BOT_TOKEN`
-- `TELEGRAM_CHAT_ID`
 - `TELEGRAPH_ACCESS_TOKEN`
 
 ---
@@ -126,6 +122,11 @@ Add the following secrets:
 
 Local state file used to track already-processed items.
 Automatically committed by GitHub Actions.
+
+### `subscribers.json`
+
+Local subscribers file used to store `chat_id` values from `/start`.
+Automatically committed by GitHub Actions when it changes.
 
 ### `.github/workflows/lobsters.yml`
 
