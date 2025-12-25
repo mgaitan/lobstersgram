@@ -1,12 +1,4 @@
 {
-  "subscribers": [
-    {
-      "chat_id": 390225349,
-      "type": "private",
-      "username": "tin_nqn",
-      "first_name": "Martín",
-      "last_name": null
-    }
-  ],
-  "last_update_id": 283606370
+  "subscribers": [],
+  "last_update_id": 283606371
 }
