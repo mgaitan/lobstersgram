@@ -127,7 +127,7 @@ def fetch_html(url: str) -> Optional[str]:
 
 def telegram_get_updates(offset: int) -> list[dict[str, Any]]:
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getUpdates"
-    params = {"timeout": 0, "offset": offset}
+    params = {"timeout": 0, "offset": offset, "allowed_updates": ["message"]}
     r = requests.get(url, params=params, timeout=REQUEST_TIMEOUT)
     r.raise_for_status()
     data = r.json()
@@ -169,6 +169,11 @@ def read_new_subscribers() -> int:
             "first_name": chat.get("first_name"),
             "last_name": chat.get("last_name"),
         }
+        telegram_send_message(
+            chat_id,
+            "✅ Subscribed. You'll receive new posts when they're published.",
+            disable_preview=True,
+        )
         new_count += 1
 
     state["subscribers"] = list(subscribers.values())
