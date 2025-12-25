@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Lobsters -> Telegraph -> Telegram (serverless via GitHub Actions).
+Lobstersgram. A Telegram/Telegraph bot for lobste.rs.
 
 - Polls Lobsters RSS
-- Extracts full article content (trafilatura)
+- Extracts full article content
 - Publishes to telegra.ph
 - Sends a Telegram message with the Telegraph link
 - Deduplicates via state.json committed back to the repo
@@ -381,12 +381,9 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> int:
-    global RSS_URL, STATE_PATH, MAX_ITEMS_PER_RUN, REQUEST_TIMEOUT, LOG_LEVEL
-    global SUBSCRIBERS_PATH
     args = parse_args()
     RSS_URL = args.rss_url
     STATE_PATH = Path(args.state_path)
-    SUBSCRIBERS_PATH = Path(args.subscribers_path)
     MAX_ITEMS_PER_RUN = args.max_items
     REQUEST_TIMEOUT = args.timeout
     LOG_LEVEL = args.log_level.lower()
