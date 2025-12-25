@@ -36,7 +36,9 @@ load_dotenv()
 
 TELEGRAM_BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
 TELEGRAPH_ACCESS_TOKEN = os.environ["TELEGRAPH_ACCESS_TOKEN"]
-TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+TELEGRAM_DEV_CHAT_ID = os.getenv("TELEGRAM_DEV_CHAT_ID") or os.getenv(
+    "TELEGRAM_CHAT_ID"
+)
 
 STATE_PATH = Path("state.json")
 RSS_URL = "https://lobste.rs/rss"
@@ -319,6 +321,12 @@ def telegram_send_message(
     r.raise_for_status()
 
 
+def resolve_recipient_chat_ids(subscribers: list[dict[str, Any]]) -> list[str | int]:
+    if TELEGRAM_DEV_CHAT_ID:
+        return [TELEGRAM_DEV_CHAT_ID]
+    return [sub["chat_id"] for sub in subscribers]
+
+
 def format_message(
     item: Item,
     telegraph_url: str,
@@ -426,11 +434,9 @@ def main() -> int:
             )
             subscribers_state = load_subscribers()
             subscribers = subscribers_state.get("subscribers", [])
-            if subscribers:
-                for sub in subscribers:
-                    telegram_send_message(sub["chat_id"], msg, disable_preview=True)
-            elif TELEGRAM_CHAT_ID:
-                telegram_send_message(TELEGRAM_CHAT_ID, msg, disable_preview=True)
+            recipients = resolve_recipient_chat_ids(subscribers)
+            for chat_id in recipients:
+                telegram_send_message(chat_id, msg, disable_preview=True)
             print("Processed single URL.")
             return 0
         except Exception as exc:
@@ -485,8 +491,9 @@ def main() -> int:
 
     subscribers_state = load_subscribers()
     subscribers = subscribers_state.get("subscribers", [])
-    if not subscribers and not TELEGRAM_CHAT_ID:
+    if not subscribers and not TELEGRAM_DEV_CHAT_ID:
         log("warn", "no subscribers configured")
+    recipients = resolve_recipient_chat_ids(subscribers)
 
     for item in new_items:
         try:
@@ -517,11 +524,8 @@ def main() -> int:
                 original_url=final_url,
                 intro=intro,
             )
-            if subscribers:
-                for sub in subscribers:
-                    telegram_send_message(sub["chat_id"], msg, disable_preview=True)
-            elif TELEGRAM_CHAT_ID:
-                telegram_send_message(TELEGRAM_CHAT_ID, msg, disable_preview=True)
+            for chat_id in recipients:
+                telegram_send_message(chat_id, msg, disable_preview=True)
 
             seen.add(item.id)
             # Be gentle with API limits
@@ -538,13 +542,8 @@ def main() -> int:
                 f"<b>⚠️ Failed to process:</b> {html.escape(item.title)}\n"
                 f"<code>{err}</code>\n{html.escape(item.link)}"
             )
-            if subscribers:
-                for sub in subscribers:
-                    telegram_send_message(
-                        sub["chat_id"], error_msg, disable_preview=True
-                    )
-            elif TELEGRAM_CHAT_ID:
-                telegram_send_message(TELEGRAM_CHAT_ID, error_msg, disable_preview=True)
+            for chat_id in recipients:
+                telegram_send_message(chat_id, error_msg, disable_preview=True)
             seen.add(item.id)  # avoid retry loops; remove if you prefer retries
 
     state["seen"] = list(seen)[-5000:]  # cap size
