@@ -1,18 +1,16 @@
 # Lobstergram: Lobsters → Telegraph → Telegram (Serverless)
 
+Lobstergram is a fast Telegram client for [lobste.rs](https://lobste.rs). It delivers new Lobsters stories right into Telegram with a clean telegra.ph reading view.
 
+Bot: [@lobstersgram_bot](https://t.me/lobstersgram_bot)
 
-Lobstergram is a telegram bot that send (me) the articles from [lobste.rs](https://lobste.rs). 
+Commands:
+- `/start` to subscribe
+- `/unsubscribe` to stop receiving posts
 
-It implements a **serverless content delivery pipeline** that:
+Demo:
 
-- Reads new items from the **Lobste.rs RSS feed**
-- Extracts the **full article content** using generic scraping
-- Publishes a clean reading view on **telegra.ph**
-- Sends a formatted message to **Telegram** with the Telegraph link
-- Runs entirely on **GitHub Actions** (no server, no webhook, no long-running bot)
-
-The goal is to comfortably read Lobsters articles from Telegram, without relying on truncated RSS content or maintaining any infrastructure.
+[![Lobstergram demo](https://img.youtube.com/vi/wdzIBFYjJ3Y/hqdefault.jpg)](https://youtube.com/shorts/wdzIBFYjJ3Y?si=yMhLPjz7kDGX_1Wl)
 
 ---
 
