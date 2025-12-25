@@ -20,7 +20,7 @@ import time
 import urllib.parse
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
 import feedparser
 import requests
@@ -34,16 +34,16 @@ from md_to_dom import md_to_dom
 
 load_dotenv()
 
+TELEGRAM_BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
+TELEGRAPH_ACCESS_TOKEN = os.environ["TELEGRAPH_ACCESS_TOKEN"]
+TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+
 STATE_PATH = Path("state.json")
 RSS_URL = "https://lobste.rs/rss"
-
-TELEGRAM_BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
-TELEGRAM_CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
-TELEGRAPH_ACCESS_TOKEN = os.environ["TELEGRAPH_ACCESS_TOKEN"]
-
 MAX_ITEMS_PER_RUN = int(os.getenv("MAX_ITEMS_PER_RUN", "5"))
 REQUEST_TIMEOUT = int(os.getenv("REQUEST_TIMEOUT", "20"))
 LOG_LEVEL = os.getenv("LOG_LEVEL", "info").lower()
+SUBSCRIBERS_PATH = Path(os.getenv("SUBSCRIBERS_PATH", "subscribers.json"))
 
 console = Console()
 
@@ -80,6 +80,18 @@ def save_state(state: dict[str, Any]) -> None:
     )
 
 
+def load_subscribers() -> dict[str, Any]:
+    if not SUBSCRIBERS_PATH.exists():
+        return {"subscribers": [], "last_update_id": 0}
+    return json.loads(SUBSCRIBERS_PATH.read_text(encoding="utf-8"))
+
+
+def save_subscribers(state: dict[str, Any]) -> None:
+    SUBSCRIBERS_PATH.write_text(
+        json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+
+
 def normalize_id(entry: Any) -> str:
     # Prefer feed-provided id/guid; fallback to link.
     for key in ("id", "guid", "link"):
@@ -111,6 +123,59 @@ def fetch_html(url: str) -> Optional[str]:
     )
     r.raise_for_status()
     return r.text
+
+
+def telegram_get_updates(offset: int) -> list[dict[str, Any]]:
+    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getUpdates"
+    params = {"timeout": 0, "offset": offset}
+    r = requests.get(url, params=params, timeout=REQUEST_TIMEOUT)
+    r.raise_for_status()
+    data = r.json()
+    if not data.get("ok"):
+        raise RuntimeError(f"telegram getUpdates failed: {data!r}")
+    return data.get("result", [])
+
+
+def read_new_subscribers() -> int:
+    state = load_subscribers()
+    last_update_id = int(state.get("last_update_id") or 0)
+    offset = last_update_id + 1 if last_update_id else 0
+    updates = telegram_get_updates(offset)
+    if not updates:
+        log("info", "read_messages no updates")
+        return 0
+
+    subscribers = {s.get("chat_id"): s for s in state.get("subscribers", [])}
+    max_update_id = last_update_id
+    new_count = 0
+    for update in updates:
+        update_id = int(update.get("update_id") or 0)
+        if update_id > max_update_id:
+            max_update_id = update_id
+        message = update.get("message") or {}
+        text = (message.get("text") or "").strip()
+        if not text.startswith("/start"):
+            continue
+        chat = message.get("chat") or {}
+        chat_id = chat.get("id")
+        if not chat_id:
+            continue
+        if chat_id in subscribers:
+            continue
+        subscribers[chat_id] = {
+            "chat_id": chat_id,
+            "type": chat.get("type"),
+            "username": chat.get("username"),
+            "first_name": chat.get("first_name"),
+            "last_name": chat.get("last_name"),
+        }
+        new_count += 1
+
+    state["subscribers"] = list(subscribers.values())
+    state["last_update_id"] = max_update_id
+    save_subscribers(state)
+    log("info", f"read_messages new_subscribers={new_count}")
+    return new_count
 
 
 def is_lobsters_discussion(url: str) -> bool:
@@ -239,10 +304,12 @@ def telegraph_create_page(
     return data["result"]["url"]
 
 
-def telegram_send_message(text_html: str, disable_preview: bool = False) -> None:
+def telegram_send_message(
+    chat_id: str | int, text_html: str, disable_preview: bool = False
+) -> None:
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     payload = {
-        "chat_id": TELEGRAM_CHAT_ID,
+        "chat_id": chat_id,
         "text": text_html,
         "parse_mode": "HTML",
         "disable_web_page_preview": disable_preview,
@@ -288,8 +355,14 @@ def parse_args() -> argparse.Namespace:
         description="Lobsters -> Telegraph -> Telegram",
     )
     parser.add_argument("--url", help="Process a single URL and exit")
+    parser.add_argument(
+        "--read-messages",
+        action="store_true",
+        help="Read Telegram updates and register /start subscribers",
+    )
     parser.add_argument("--rss-url", default=RSS_URL)
     parser.add_argument("--state-path", default=str(STATE_PATH))
+    parser.add_argument("--subscribers-path", default=str(SUBSCRIBERS_PATH))
     parser.add_argument("--max-items", type=int, default=MAX_ITEMS_PER_RUN)
     parser.add_argument("--timeout", type=int, default=REQUEST_TIMEOUT)
     parser.add_argument("--log-level", default=LOG_LEVEL)
@@ -298,9 +371,11 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     global RSS_URL, STATE_PATH, MAX_ITEMS_PER_RUN, REQUEST_TIMEOUT, LOG_LEVEL
+    global SUBSCRIBERS_PATH
     args = parse_args()
     RSS_URL = args.rss_url
     STATE_PATH = Path(args.state_path)
+    SUBSCRIBERS_PATH = Path(args.subscribers_path)
     MAX_ITEMS_PER_RUN = args.max_items
     REQUEST_TIMEOUT = args.timeout
     LOG_LEVEL = args.log_level.lower()
@@ -309,6 +384,11 @@ def main() -> int:
         "info",
         f"start rss={RSS_URL} state={STATE_PATH} max_items={MAX_ITEMS_PER_RUN} timeout={REQUEST_TIMEOUT} log_level={LOG_LEVEL}",
     )
+
+    if args.read_messages:
+        read_new_subscribers()
+        print("Read messages.")
+        return 0
 
     if args.url:
         item = Item(
@@ -344,7 +424,13 @@ def main() -> int:
                 original_url=final_url,
                 intro=intro,
             )
-            telegram_send_message(msg, disable_preview=True)
+            subscribers_state = load_subscribers()
+            subscribers = subscribers_state.get("subscribers", [])
+            if subscribers:
+                for sub in subscribers:
+                    telegram_send_message(sub["chat_id"], msg, disable_preview=True)
+            elif TELEGRAM_CHAT_ID:
+                telegram_send_message(TELEGRAM_CHAT_ID, msg, disable_preview=True)
             print("Processed single URL.")
             return 0
         except Exception as exc:
@@ -397,6 +483,11 @@ def main() -> int:
         print("No new items.")
         return 0
 
+    subscribers_state = load_subscribers()
+    subscribers = subscribers_state.get("subscribers", [])
+    if not subscribers and not TELEGRAM_CHAT_ID:
+        log("warn", "no subscribers configured")
+
     for item in new_items:
         try:
             log("info", f"process item title={item.title!r} link={item.link}")
@@ -426,7 +517,11 @@ def main() -> int:
                 original_url=final_url,
                 intro=intro,
             )
-            telegram_send_message(msg, disable_preview=True)
+            if subscribers:
+                for sub in subscribers:
+                    telegram_send_message(sub["chat_id"], msg, disable_preview=True)
+            elif TELEGRAM_CHAT_ID:
+                telegram_send_message(TELEGRAM_CHAT_ID, msg, disable_preview=True)
 
             seen.add(item.id)
             # Be gentle with API limits
@@ -439,10 +534,17 @@ def main() -> int:
                 f"process failed title={item.title!r} err={type(exc).__name__}: {exc}",
             )
             err = html.escape(f"{type(exc).__name__}: {exc}")
-            telegram_send_message(
-                f"<b>⚠️ Failed to process:</b> {html.escape(item.title)}\n<code>{err}</code>\n{html.escape(item.link)}",
-                disable_preview=True,
+            error_msg = (
+                f"<b>⚠️ Failed to process:</b> {html.escape(item.title)}\n"
+                f"<code>{err}</code>\n{html.escape(item.link)}"
             )
+            if subscribers:
+                for sub in subscribers:
+                    telegram_send_message(
+                        sub["chat_id"], error_msg, disable_preview=True
+                    )
+            elif TELEGRAM_CHAT_ID:
+                telegram_send_message(TELEGRAM_CHAT_ID, error_msg, disable_preview=True)
             seen.add(item.id)  # avoid retry loops; remove if you prefer retries
 
     state["seen"] = list(seen)[-5000:]  # cap size

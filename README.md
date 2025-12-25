@@ -55,8 +55,14 @@ Using **telegra.ph** gives us:
 
 - Python 3.11+ (used by GitHub Actions)
 - A Telegram bot token
-- A Telegram chat ID
+- One or more Telegram subscribers (see below)
 - A Telegraph access token
+
+## Subscribers
+
+Users subscribe by sending `/start` to the bot. Run the workflow in `--read-messages`
+mode to fetch pending updates and store subscribers in `subscribers.json`. The normal
+mode sends each post to every subscriber in that file.
 
 All secrets are stored securely in GitHub Actions.
 

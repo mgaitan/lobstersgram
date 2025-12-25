@@ -21,10 +21,10 @@ jobs:
       - name: Run pipeline
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TELEGRAPH_ACCESS_TOKEN: ${{ secrets.TELEGRAPH_ACCESS_TOKEN }}
           MAX_ITEMS_PER_RUN: "5"
         run: |
+          uv run main.py --read-messages
           uv run main.py
 
       - name: Commit state.json if changed
@@ -35,6 +35,6 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add state.json
-          git commit -m "Update state.json"
+          git add state.json subscribers.json
+          git commit -m "Update state.json and subscribers.json"
           git push
