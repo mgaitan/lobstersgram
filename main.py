@@ -148,12 +148,25 @@ def read_new_subscribers() -> int:
     subscribers = {s.get("chat_id"): s for s in state.get("subscribers", [])}
     max_update_id = last_update_id
     new_count = 0
+    removed_count = 0
     for update in updates:
         update_id = int(update.get("update_id") or 0)
         if update_id > max_update_id:
             max_update_id = update_id
         message = update.get("message") or {}
         text = (message.get("text") or "").strip()
+        if text.startswith("/unsubscribe"):
+            chat = message.get("chat") or {}
+            chat_id = chat.get("id")
+            if chat_id in subscribers:
+                subscribers.pop(chat_id, None)
+                removed_count += 1
+                telegram_send_message(
+                    chat_id,
+                    "✅ Unsubscribed. You will no longer receive posts.",
+                    disable_preview=True,
+                )
+            continue
         if not text.startswith("/start"):
             continue
         chat = message.get("chat") or {}
@@ -179,7 +192,10 @@ def read_new_subscribers() -> int:
     state["subscribers"] = list(subscribers.values())
     state["last_update_id"] = max_update_id
     save_subscribers(state)
-    log("info", f"read_messages new_subscribers={new_count}")
+    log(
+        "info",
+        f"read_messages new_subscribers={new_count} removed_subscribers={removed_count}",
+    )
     return new_count
 
 

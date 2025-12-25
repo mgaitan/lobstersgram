@@ -85,6 +85,9 @@ To register subscribers:
 For local development, you can set `TELEGRAM_DEV_CHAT_ID` to force all sends
 to your own chat without touching `subscribers.json`.
 
+To stop receiving posts, send `/unsubscribe` to the bot and run `--read-messages`
+again to remove the chat from `subscribers.json`.
+
 ---
 
 ### 2. Create a Telegraph access token
