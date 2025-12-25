@@ -170,7 +170,7 @@ wheels = [
 ]
 
 [[package]]
-name = "lobsters-to-telegram"
+name = "lobstergram"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
