@@ -82,9 +82,8 @@ To register subscribers:
 - Run the workflow once (or run `uv run python main.py --read-messages`) to record the
   `chat_id` values into `subscribers.json`.
 
-For local development, you can set `TELEGRAM_DEV_CHAT_ID` (or the legacy
-`TELEGRAM_CHAT_ID`) to force all sends to your own chat without touching
-`subscribers.json`.
+For local development, you can set `TELEGRAM_DEV_CHAT_ID` to force all sends
+to your own chat without touching `subscribers.json`.
 
 ---
 
