@@ -6,7 +6,14 @@
       "username": "tin_nqn",
       "first_name": "Martín",
       "last_name": null
+    },
+    {
+      "chat_id": 7611891,
+      "type": "private",
+      "username": "alvarmaciel",
+      "first_name": "Alvar",
+      "last_name": "Maciel"
     }
   ],
-  "last_update_id": 283606372
+  "last_update_id": 283606373
 }
