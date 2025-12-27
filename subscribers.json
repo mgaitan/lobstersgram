@@ -13,7 +13,14 @@
       "username": "alvarmaciel",
       "first_name": "Alvar",
       "last_name": "Maciel"
+    },
+    {
+      "chat_id": 1303559498,
+      "type": "private",
+      "username": null,
+      "first_name": "Juan Pablo",
+      "last_name": null
     }
   ],
-  "last_update_id": 283606373
+  "last_update_id": 283606374
 }
