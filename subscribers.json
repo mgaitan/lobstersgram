@@ -20,7 +20,14 @@
       "username": null,
       "first_name": "Juan Pablo",
       "last_name": null
+    },
+    {
+      "chat_id": 5633054472,
+      "type": "private",
+      "username": null,
+      "first_name": "1000TON",
+      "last_name": null
     }
   ],
-  "last_update_id": 283606374
+  "last_update_id": 283606375
 }
