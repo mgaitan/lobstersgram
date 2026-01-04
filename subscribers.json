@@ -34,7 +34,14 @@
       "username": "edavola",
       "first_name": "Emilio",
       "last_name": "Davola"
+    },
+    {
+      "chat_id": 453889220,
+      "type": "private",
+      "username": "marcorich",
+      "first_name": "Rich",
+      "last_name": null
     }
   ],
-  "last_update_id": 283606376
+  "last_update_id": 283606378
 }
