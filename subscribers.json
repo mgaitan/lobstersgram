@@ -29,13 +29,6 @@
       "last_name": null
     },
     {
-      "chat_id": 179691450,
-      "type": "private",
-      "username": "edavola",
-      "first_name": "Emilio",
-      "last_name": "Davola"
-    },
-    {
       "chat_id": 641286243,
       "type": "private",
       "username": "plgomez",
@@ -43,5 +36,5 @@
       "last_name": "Gómez"
     }
   ],
-  "last_update_id": 283606380
+  "last_update_id": 283606381
 }
