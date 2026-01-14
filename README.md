@@ -3,6 +3,7 @@
 Lobstergram is a fast Telegram client for [lobste.rs](https://lobste.rs). It delivers new Lobsters stories right into Telegram with a clean telegra.ph reading view.
 
 Bot: [@lobstersgram_bot](https://t.me/lobstersgram_bot)
+Post: https://mgaitan.github.io/en/posts/lobstersgram-cliente-rapido-lobsters/
 
 Commands:
 - `/start` to subscribe
