@@ -27,7 +27,14 @@
       "username": null,
       "first_name": "1000TON",
       "last_name": null
+    },
+    {
+      "chat_id": 1682952,
+      "type": "private",
+      "username": "jordiroca",
+      "first_name": "Jordi",
+      "last_name": "Roca"
     }
   ],
-  "last_update_id": 283606384
+  "last_update_id": 283606387
 }
