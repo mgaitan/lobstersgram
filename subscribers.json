@@ -34,7 +34,14 @@
       "username": "jordiroca",
       "first_name": "Jordi",
       "last_name": "Roca"
+    },
+    {
+      "chat_id": 754227471,
+      "type": "private",
+      "username": "alirzajafarov",
+      "first_name": "Alirza",
+      "last_name": "Jafarov"
     }
   ],
-  "last_update_id": 283606388
+  "last_update_id": 283606389
 }
