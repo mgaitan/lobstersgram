@@ -43,6 +43,12 @@ MAX_ITEMS_PER_RUN = int(os.getenv("MAX_ITEMS_PER_RUN", "5"))
 REQUEST_TIMEOUT = int(os.getenv("REQUEST_TIMEOUT", "20"))
 LOG_LEVEL = os.getenv("LOG_LEVEL", "info").lower()
 SUBSCRIBERS_PATH = Path(os.getenv("SUBSCRIBERS_PATH", "subscribers.json"))
+TELEGRAM_RETRY_ATTEMPTS = max(1, int(os.getenv("TELEGRAM_RETRY_ATTEMPTS", "3")))
+INTER_MESSAGE_DELAY = max(0.0, float(os.getenv("INTER_MESSAGE_DELAY", "0.5")))
+
+_HTTP_TOO_MANY_REQUESTS = 429
+_HTTP_FORBIDDEN = 403
+_HTTP_SERVER_ERROR_MIN = 500
 INTRO_MIN_LENGTH = 40
 MIN_CONTENT_LENGTH = 200
 
@@ -343,9 +349,25 @@ def telegram_send_message(chat_id: str | int, text_html: str, disable_preview: b
         "parse_mode": "HTML",
         "disable_web_page_preview": disable_preview,
     }
-    log("debug", f"telegram_send_message preview_disabled={disable_preview}")
-    r = requests.post(url, data=payload, timeout=REQUEST_TIMEOUT)
-    r.raise_for_status()
+    log("debug", f"telegram_send_message chat_id={chat_id} preview_disabled={disable_preview}")
+    for attempt in range(1, TELEGRAM_RETRY_ATTEMPTS + 1):
+        r = requests.post(url, data=payload, timeout=REQUEST_TIMEOUT)
+        if r.status_code == _HTTP_TOO_MANY_REQUESTS:
+            try:
+                retry_after = (r.json().get("parameters") or {}).get("retry_after", 5)
+            except Exception:  # noqa: BLE001
+                retry_after = 5
+            log("warn", f"telegram rate limited retry_after={retry_after}s attempt={attempt}/{TELEGRAM_RETRY_ATTEMPTS}")
+            if attempt < TELEGRAM_RETRY_ATTEMPTS:
+                time.sleep(float(retry_after))
+                continue
+        elif r.status_code >= _HTTP_SERVER_ERROR_MIN:
+            log("warn", f"telegram server error status={r.status_code} attempt={attempt}/{TELEGRAM_RETRY_ATTEMPTS}")
+            if attempt < TELEGRAM_RETRY_ATTEMPTS:
+                time.sleep(min(2.0**attempt, 30.0))
+                continue
+        r.raise_for_status()
+        return
 
 
 def resolve_recipient_chat_ids(subscribers: list[dict[str, object]]) -> list[str | int]:
@@ -355,8 +377,17 @@ def resolve_recipient_chat_ids(subscribers: list[dict[str, object]]) -> list[str
 
 
 def send_to_recipients(recipients: list[str | int], message: str, disable_preview: bool = True) -> None:
-    for chat_id in recipients:
-        telegram_send_message(chat_id, message, disable_preview=disable_preview)
+    for i, chat_id in enumerate(recipients):
+        try:
+            telegram_send_message(chat_id, message, disable_preview=disable_preview)
+        except requests.HTTPError as exc:
+            status = exc.response.status_code if exc.response is not None else None
+            if status == _HTTP_FORBIDDEN:
+                log("warn", f"send_to_recipients chat_id={chat_id} blocked or forbidden, skipping")
+            else:
+                log("error", f"send_to_recipients chat_id={chat_id} err={type(exc).__name__}: {exc}")
+        if i < len(recipients) - 1:
+            time.sleep(INTER_MESSAGE_DELAY)
 
 
 def build_recipients() -> list[str | int]:
@@ -529,6 +560,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--max-items", type=int, default=MAX_ITEMS_PER_RUN)
     parser.add_argument("--timeout", type=int, default=REQUEST_TIMEOUT)
     parser.add_argument("--log-level", default=LOG_LEVEL)
+    parser.add_argument("--telegram-retry-attempts", type=int, default=TELEGRAM_RETRY_ATTEMPTS)
+    parser.add_argument("--inter-message-delay", type=float, default=INTER_MESSAGE_DELAY)
     return parser.parse_args()
 
 
@@ -540,6 +573,8 @@ def apply_runtime_config(args: argparse.Namespace) -> None:
         MAX_ITEMS_PER_RUN=args.max_items,
         REQUEST_TIMEOUT=args.timeout,
         LOG_LEVEL=args.log_level.lower(),
+        TELEGRAM_RETRY_ATTEMPTS=args.telegram_retry_attempts,
+        INTER_MESSAGE_DELAY=args.inter_message_delay,
     )
 
 
