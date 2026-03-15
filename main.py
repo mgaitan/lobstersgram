@@ -338,7 +338,26 @@ def telegraph_create_page(
     data = r.json()
     if not data.get("ok"):
         raise TelegraphAPIError(data)
-    return data["result"]["url"]
+    telegraph_url = data["result"]["url"]
+    warm_telegraph_cache(telegraph_url)
+    return telegraph_url
+
+
+def warm_telegraph_cache(url: str) -> None:
+    """Fetch the Telegraph page once to prime the Instant View cache.
+
+    Telegraph's Instant View requires the page to have been loaded at least
+    once before Telegram will serve the cached version.  We send a plain GET
+    request right after creation so the very first click from a subscriber
+    already gets Instant View.
+    """
+    try:
+        log("debug", f"warm_telegraph_cache url={url}")
+        r = requests.get(url, timeout=REQUEST_TIMEOUT, headers={"User-Agent": "lobsters-telegraph-bot"})
+        r.raise_for_status()
+        log("info", f"warm_telegraph_cache ok status={r.status_code} url={url}")
+    except requests.RequestException as exc:
+        log("warn", f"warm_telegraph_cache failed err={type(exc).__name__}: {exc}")
 
 
 def telegram_send_message(chat_id: str | int, text_html: str, disable_preview: bool = False) -> None:
