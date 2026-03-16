@@ -1,8 +1,8 @@
-"""Tests for md_to_dom.py — Markdown → Telegraph DOM conversion."""
+"""Tests for md_to_telegraph — Markdown → Telegraph DOM conversion."""
 
 from __future__ import annotations
 
-from md_to_dom import md_to_dom
+from md_to_telegraph import md_to_dom
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -339,11 +339,41 @@ def test_whitespace_only_document() -> None:
     assert md_to_dom("   \n  \n  ") == []
 
 
-def test_empty_paragraph_is_skipped() -> None:
-    """A paragraph that renders to nothing should be omitted from the output."""
-    md = "Real content.\n\n\n\nMore content."
+def test_nbsp_only_paragraph_is_skipped() -> None:
+    """A paragraph containing only &nbsp; (non-breaking space) is treated as empty."""
+    assert md_to_dom("&nbsp;") == []
+
+
+def test_nbsp_only_paragraph_in_blockquote_is_skipped() -> None:
+    """A blockquote whose only content is an &nbsp; paragraph gets empty children."""
+    result = md_to_dom("> &nbsp;")
+    assert result == [{"tag": "blockquote", "children": []}]
+
+
+# ---------------------------------------------------------------------------
+# Raw HTML passthrough
+# ---------------------------------------------------------------------------
+
+
+def test_html_block_passthrough() -> None:
+    """An HTML block (e.g. <pre>…</pre>) is passed through as a raw string."""
+    md = "<pre>\ncode here\n</pre>"
     result = md_to_dom(md)
-    assert all(r.get("children") for r in result)
+    assert len(result) == 1
+    assert isinstance(result[0], str)
+    assert "code here" in result[0]
+
+
+def test_html_span_passthrough() -> None:
+    """Inline HTML tags within a paragraph are passed through as raw strings."""
+    md = "text <em>emphasis</em> end"
+    result = md_to_dom(md)
+    full = text_content(result)
+    assert "text" in full
+    assert "emphasis" in full
+    assert "end" in full
+    children = result[0]["children"]
+    assert any(isinstance(c, str) and "<em>" in c for c in children)
 
 
 # ---------------------------------------------------------------------------

@@ -13,6 +13,9 @@ class TelegraphDomRenderer(BaseRenderer):
     Convert a mistletoe AST into Telegraph DOM nodes.
     """
 
+    def __init__(self) -> None:
+        super().__init__(span_token.HTMLSpan, block_token.HTMLBlock)
+
     def render_document(self, token: block_token.Document) -> NodeList:
         nodes: NodeList = []
         for child in token.children:
@@ -27,15 +30,6 @@ class TelegraphDomRenderer(BaseRenderer):
         children = [c for c in children if c != ""]
         if not children or all(isinstance(c, str) and not c.strip() for c in children):
             return None
-        if (
-            len(children) == 1
-            and isinstance(children[0], dict)
-            and children[0].get("tag") == "code"
-            and "\n" in "".join(children[0].get("children", []))
-        ):
-            code_text = "".join(children[0].get("children", []))
-            children[0]["children"] = self.code_children_from_text(code_text)
-            return {"tag": "pre", "children": children}
         return {"tag": "p", "children": children}
 
     def render_heading(self, token: block_token.Heading) -> dict[str, object]:
@@ -65,9 +59,7 @@ class TelegraphDomRenderer(BaseRenderer):
         return {"tag": "em", "children": self.render_inner(token)}
 
     def render_inline_code(self, token: span_token.InlineCode) -> dict[str, object]:
-        if token.children:
-            return {"tag": "code", "children": [token.children[0].content]}
-        return {"tag": "code", "children": [token.content]}
+        return {"tag": "code", "children": [token.children[0].content]}
 
     def render_strikethrough(self, token: span_token.Strikethrough) -> dict[str, object]:
         return {"tag": "del", "children": self.render_inner(token)}
@@ -125,9 +117,7 @@ class TelegraphDomRenderer(BaseRenderer):
             rendered = self.render(child)
             if rendered is None:
                 continue
-            if isinstance(rendered, list):
-                result.extend([r for r in rendered if r != ""])
-            elif rendered != "":
+            if rendered != "":
                 result.append(rendered)
         return result
 
