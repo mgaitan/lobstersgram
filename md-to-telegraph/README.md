@@ -21,7 +21,7 @@ Telegraph nodes follow this structure:
 ## Installation
 
 ```bash
-pip install md-to-telegraph
+uv add md-to-telegraph
 ```
 
 ## Usage
