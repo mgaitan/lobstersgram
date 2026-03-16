@@ -11,3 +11,7 @@ wheels/
 
 # Local secrets
 .env
+
+# Coverage
+.coverage
+htmlcov/
