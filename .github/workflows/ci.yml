@@ -4,9 +4,17 @@ on:
   pull_request:
     branches:
       - main
+    paths:
+      - "**.py"
+      - "pyproject.toml"
+      - ".github/workflows/ci.yml"
   push:
     branches:
       - main
+    paths:
+      - "**.py"
+      - "pyproject.toml"
+      - ".github/workflows/ci.yml"
 
 permissions:
   contents: read
