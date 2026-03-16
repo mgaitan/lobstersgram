@@ -2,7 +2,7 @@
 """
 Lobstersgram. A Telegram/Telegraph bot for lobste.rs.
 
-- Polls Lobsters RSS
+- Polls Lobsters "hottest" RSS feed (home-page articles only)
 - Extracts full article content
 - Publishes to telegra.ph
 - Sends a Telegram message with the Telegraph link
@@ -38,7 +38,7 @@ TELEGRAPH_ACCESS_TOKEN = os.environ["TELEGRAPH_ACCESS_TOKEN"]
 TELEGRAM_DEV_CHAT_ID = os.getenv("TELEGRAM_DEV_CHAT_ID")
 
 STATE_PATH = Path("state.json")
-RSS_URL = "https://lobste.rs/rss"
+RSS_URL = "https://lobste.rs/hottest.rss"
 MAX_ITEMS_PER_RUN = int(os.getenv("MAX_ITEMS_PER_RUN", "5"))
 REQUEST_TIMEOUT = int(os.getenv("REQUEST_TIMEOUT", "20"))
 LOG_LEVEL = os.getenv("LOG_LEVEL", "info").lower()
