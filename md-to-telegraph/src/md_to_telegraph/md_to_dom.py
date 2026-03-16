@@ -131,6 +131,6 @@ class TelegraphDomRenderer(BaseRenderer):
         return children
 
 
-def md_to_dom(markdown_text: str) -> NodeList:
+def md_to_telegraph(markdown_text: str) -> NodeList:
     with TelegraphDomRenderer() as renderer:
         return renderer.render(Document(markdown_text))

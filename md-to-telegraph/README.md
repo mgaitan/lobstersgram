@@ -27,9 +27,9 @@ uv add md-to-telegraph
 ## Usage
 
 ```python
-from md_to_telegraph import md_to_dom
+from md_to_telegraph import md_to_telegraph
 
-nodes = md_to_dom("# Hello\n\nThis is **bold** text.")
+nodes = md_to_telegraph("# Hello\n\nThis is **bold** text.")
 # [
 #   {"tag": "h3", "children": ["Hello"]},
 #   {"tag": "p", "children": ["This is ", {"tag": "strong", "children": ["bold"]}, " text."]}
