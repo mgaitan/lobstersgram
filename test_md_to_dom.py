@@ -88,6 +88,38 @@ class TestSoftLineBreakSpacing:
         assert "  " not in full
         assert full == "Hello world foo bar."
 
+    def test_hiding_ssh_case(self) -> None:
+        """Regression: 'hidingSSH' concatenation from bofh.it-style articles.
+
+        When readability+markdownify extracts HTML like::
+
+            <p>hiding <code>SSH</code> in HTTPS</p>
+
+        it can emit newlines around the inline code instead of spaces::
+
+            hiding
+            `SSH`
+            in HTTPS
+
+        Before the fix, render_inner filtered out the ' ' that render_line_break
+        produces for soft breaks, joining 'hiding' and 'SSH' with no separator.
+        """
+        md = "hiding\n`SSH`\nin HTTPS"
+        result = md_to_dom(md)
+        children = result[0]["children"]
+        # There must be a space node before the code element
+        assert " " in children
+        assert text_content(result) == "hiding SSH in HTTPS"
+
+    def test_inline_code_at_start_of_line(self) -> None:
+        """Soft line break before inline code at the start of a line."""
+        md = "`SSH`\ntraffic hiding"
+        result = md_to_dom(md)
+        assert text_content(result) == "SSH traffic hiding"
+        children = result[0]["children"]
+        # Space must follow the code node
+        assert " " in children
+
 
 # ---------------------------------------------------------------------------
 # Standard inline rendering (spaces already in the text)
@@ -133,6 +165,43 @@ class TestInlineRendering:
         assert text_content(result) == "This is wrong right."
         assert result[0]["children"][1] == {"tag": "del", "children": ["wrong"]}
 
+    def test_autolink(self) -> None:
+        md = "<https://example.com>"
+        result = md_to_dom(md)
+        link = result[0]["children"][0]
+        assert link == {"tag": "a", "attrs": {"href": "https://example.com"}, "children": ["https://example.com"]}
+
+    def test_link_with_title(self) -> None:
+        md = '[text](http://example.com "My title")'
+        result = md_to_dom(md)
+        link = result[0]["children"][0]
+        assert link["tag"] == "a"
+        assert link["attrs"]["title"] == "My title"
+        assert link["attrs"]["href"] == "http://example.com"
+
+    def test_bold_inside_link(self) -> None:
+        """Nested inline: bold text inside a link."""
+        md = "[**bold**](http://example.com)"
+        result = md_to_dom(md)
+        link = result[0]["children"][0]
+        assert link["tag"] == "a"
+        assert link["children"] == [{"tag": "strong", "children": ["bold"]}]
+
+    def test_code_inside_link(self) -> None:
+        """Nested inline: inline code inside a link."""
+        md = "[`code`](http://example.com)"
+        result = md_to_dom(md)
+        link = result[0]["children"][0]
+        assert link["tag"] == "a"
+        assert link["children"] == [{"tag": "code", "children": ["code"]}]
+
+    def test_html_span_passthrough(self) -> None:
+        """Raw HTML spans are passed through as plain strings."""
+        md = "<b>raw html</b>"
+        result = md_to_dom(md)
+        full = text_content(result)
+        assert "<b>" in full or "raw html" in full
+
 
 # ---------------------------------------------------------------------------
 # Block-level rendering
@@ -155,6 +224,12 @@ class TestBlockRendering:
         result = md_to_dom(md)
         assert result == [{"tag": "p", "children": [{"tag": "strong", "children": ["Section"]}]}]
 
+    def test_heading_h4_and_deeper_map_to_strong_paragraph(self) -> None:
+        """h4 and deeper headings are also rendered as strong paragraphs."""
+        for prefix in ("#### ", "##### ", "###### "):
+            result = md_to_dom(f"{prefix}Deep heading")
+            assert result[0] == {"tag": "p", "children": [{"tag": "strong", "children": ["Deep heading"]}]}
+
     def test_unordered_list(self) -> None:
         md = "- item one\n- item two"
         result = md_to_dom(md)
@@ -167,10 +242,33 @@ class TestBlockRendering:
         result = md_to_dom(md)
         assert result[0]["tag"] == "ol"
 
+    def test_nested_list(self) -> None:
+        """A list item may contain a nested sub-list."""
+        md = "- outer\n    - inner"
+        result = md_to_dom(md)
+        outer_item = result[0]["children"][0]
+        # The outer li must contain a nested ul
+        nested_tags = [c["tag"] for c in outer_item["children"] if isinstance(c, dict)]
+        assert "ul" in nested_tags
+
+    def test_list_item_with_inline_elements(self) -> None:
+        """List items may contain inline markup."""
+        md = "- item with **bold** text"
+        result = md_to_dom(md)
+        full = text_content(result)
+        assert full == "item with bold text"
+
     def test_blockquote(self) -> None:
         md = "> A quote"
         result = md_to_dom(md)
         assert result[0]["tag"] == "blockquote"
+
+    def test_blockquote_with_link(self) -> None:
+        """Blockquotes may contain inline elements like links."""
+        md = "> A [linked](http://example.com) quote"
+        result = md_to_dom(md)
+        assert result[0]["tag"] == "blockquote"
+        assert text_content(result) == "A linked quote"
 
     def test_thematic_break(self) -> None:
         md = "---"
@@ -181,6 +279,31 @@ class TestBlockRendering:
         md = "```python\nprint('hi')\n```"
         result = md_to_dom(md)
         assert result[0]["tag"] == "pre"
+
+    def test_block_code_language_class(self) -> None:
+        """Code block with a language hint gets the appropriate CSS class."""
+        md = "```python\nprint()\n```"
+        result = md_to_dom(md)
+        code_node = result[0]["children"][0]
+        assert code_node["tag"] == "code"
+        assert code_node["attrs"]["class"] == "language-python"
+
+    def test_block_code_no_language(self) -> None:
+        """Code block without language hint has no attrs."""
+        md = "```\nplain code\n```"
+        result = md_to_dom(md)
+        code_node = result[0]["children"][0]
+        assert code_node["tag"] == "code"
+        assert "attrs" not in code_node
+
+    def test_block_code_multiline_has_br_nodes(self) -> None:
+        """Multi-line code blocks use <br> to separate lines."""
+        md = "```\nline1\nline2\nline3\n```"
+        result = md_to_dom(md)
+        code_children = result[0]["children"][0]["children"]
+        assert code_children[0] == "line1"
+        assert code_children[1] == {"tag": "br"}
+        assert code_children[2] == "line2"
 
     def test_multiple_paragraphs(self) -> None:
         md = "First paragraph.\n\nSecond paragraph."
@@ -227,3 +350,20 @@ class TestImageRendering:
             "tag": "img",
             "attrs": {"src": "http://example.com/img.png", "alt": ["alt text"]},
         }
+
+    def test_image_with_title(self) -> None:
+        md = '![alt](http://example.com/img.png "Caption")'
+        result = md_to_dom(md)
+        img = result[0]["children"][0]
+        assert img["tag"] == "img"
+        assert img["attrs"]["src"] == "http://example.com/img.png"
+        assert img["attrs"]["title"] == "Caption"
+
+    def test_image_no_alt_text(self) -> None:
+        md = "![](http://example.com/img.png)"
+        result = md_to_dom(md)
+        img = result[0]["children"][0]
+        assert img["tag"] == "img"
+        assert img["attrs"]["src"] == "http://example.com/img.png"
+        # alt should be absent or empty when there's no alt text
+        assert not img["attrs"].get("alt")
