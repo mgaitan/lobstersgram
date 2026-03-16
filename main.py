@@ -26,10 +26,9 @@ import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 from markdownify import markdownify as html_to_md
+from md_to_telegraph import md_to_telegraph
 from readability import Document
 from rich.console import Console
-
-from md_to_dom import md_to_dom
 
 load_dotenv()
 
@@ -309,7 +308,7 @@ def telegraph_create_page(
     nodes: list[dict[str, object]] = []
     markdown = content_markdown.strip()
     if markdown:
-        nodes = md_to_dom(markdown)
+        nodes = md_to_telegraph(markdown)
 
     if not nodes:
         text = fallback_text.strip()

@@ -1,0 +1,63 @@
+[project]
+name = "md-to-telegraph"
+version = "0.1.0"
+description = "Convert Markdown to Telegraph DOM nodes"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "mistletoe>=1.5.1",
+]
+
+[build-system]
+requires = ["uv_build>=0.7"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5",
+    "pytest-cov>=6.0.0",
+    "ruff>=0.9.0",
+]
+
+[tool.pytest.ini_options]
+addopts = "--cov=md_to_telegraph --cov-report=term-missing --cov-fail-under=100"
+
+[tool.coverage.run]
+source = ["md_to_telegraph"]
+
+[tool.coverage.report]
+fail_under = 100
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "W",
+    "F",
+    "I",
+    "C90",
+    "A",
+    "ANN",
+    "UP",
+    "RUF",
+    "T10",
+    "ISC",
+    "SIM",
+    "ASYNC",
+    "ERA",
+    "TRY",
+    "BLE",
+    "B",
+    "EXE",
+    "FA",
+    "C4",
+    "N",
+    "PIE",
+    "PERF",
+    "PL",
+    "FURB",
+    "RET",
+    "TID252",
+]

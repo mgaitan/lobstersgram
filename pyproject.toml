@@ -7,13 +7,19 @@ requires-python = ">=3.14"
 dependencies = [
     "feedparser>=6.0.12",
     "markdownify>=1.2.2",
-    "mistletoe>=1.5.1",
+    "md-to-telegraph",
     "python-dotenv>=1.2.1",
     "readability-lxml>=0.8.4.1",
     "requests>=2.32.5",
     "rich>=14.2.0",
     "beautifulsoup4>=4.14.3",
 ]
+
+[tool.uv.workspace]
+members = ["md-to-telegraph"]
+
+[tool.uv.sources]
+md-to-telegraph = { workspace = true }
 
 [dependency-groups]
 dev = [
