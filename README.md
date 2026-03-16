@@ -1,5 +1,7 @@
 # Lobstergram: Lobsters → Telegraph → Telegram (Serverless)
 
+[![CI](https://github.com/mgaitan/lobstersgram/actions/workflows/ci.yml/badge.svg)](https://github.com/mgaitan/lobstersgram/actions/workflows/ci.yml)
+
 Lobstergram is a fast Telegram client for [lobste.rs](https://lobste.rs). It delivers new Lobsters stories right into Telegram with a clean telegra.ph reading view.
 
 Bot: [@lobstersgram_bot](https://t.me/lobstersgram_bot)
