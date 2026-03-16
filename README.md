@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/mgaitan/lobstersgram/actions/workflows/ci.yml/badge.svg)](https://github.com/mgaitan/lobstersgram/actions/workflows/ci.yml)
 
-Lobstergram is a fast Telegram client for [lobste.rs](https://lobste.rs). It delivers new Lobsters stories right into Telegram with a clean telegra.ph reading view.
+Lobstergram is a fast Telegram client for [lobste.rs](https://lobste.rs). It delivers the hottest Lobsters stories (articles that reached the home page) right into Telegram with a clean telegra.ph reading view.
 
 Bot: [@lobstersgram_bot](https://t.me/lobstersgram_bot)
 Post: https://mgaitan.github.io/en/posts/lobstersgram-cliente-rapido-lobsters/
@@ -20,7 +20,7 @@ Demo:
 ## How it works
 
 1. A GitHub Actions workflow runs on a schedule (cron).
-2. It fetches the Lobste.rs RSS feed.
+2. It fetches the Lobste.rs "hottest" RSS feed (home-page articles only).
 3. New items are detected via a local `state.json` file.
 4. For each new item:
    - The final article URL is resolved.
