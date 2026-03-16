@@ -24,8 +24,8 @@ class TelegraphDomRenderer(BaseRenderer):
 
     def render_paragraph(self, token: block_token.Paragraph) -> dict[str, object] | None:
         children = self.render_inner(token)
-        children = [c for c in children if c not in ("", " ")]
-        if not children:
+        children = [c for c in children if c != ""]
+        if not children or all(isinstance(c, str) and not c.strip() for c in children):
             return None
         if (
             len(children) == 1
@@ -126,8 +126,8 @@ class TelegraphDomRenderer(BaseRenderer):
             if rendered is None:
                 continue
             if isinstance(rendered, list):
-                result.extend([r for r in rendered if r not in ("", " ")])
-            elif rendered not in ("", " "):
+                result.extend([r for r in rendered if r != ""])
+            elif rendered != "":
                 result.append(rendered)
         return result
 
