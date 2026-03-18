@@ -394,7 +394,9 @@ def resolve_recipient_chat_ids(subscribers: list[dict[str, object]]) -> list[str
     return [sub["chat_id"] for sub in subscribers]
 
 
-def send_to_recipients(recipients: list[str | int], message: str, disable_preview: bool = True) -> None:
+def send_to_recipients(recipients: list[str | int], message: str, disable_preview: bool = True) -> list[str | int]:
+    """Send *message* to every recipient.  Returns chat_ids that returned 403 (bot blocked)."""
+    blocked: list[str | int] = []
     for i, chat_id in enumerate(recipients):
         try:
             telegram_send_message(chat_id, message, disable_preview=disable_preview)
@@ -402,10 +404,26 @@ def send_to_recipients(recipients: list[str | int], message: str, disable_previe
             status = exc.response.status_code if exc.response is not None else None
             if status == _HTTP_FORBIDDEN:
                 log("warn", f"send_to_recipients chat_id={chat_id} blocked or forbidden, skipping")
+                blocked.append(chat_id)
             else:
                 log("error", f"send_to_recipients chat_id={chat_id} err={type(exc).__name__}: {exc}")
         if i < len(recipients) - 1:
             time.sleep(INTER_MESSAGE_DELAY)
+    return blocked
+
+
+def remove_blocked_subscribers(blocked_ids: set[str | int]) -> None:
+    """Remove subscribers who have blocked the bot from the persistent subscriber list."""
+    if not blocked_ids:
+        return
+    subscribers_state = load_subscribers()
+    subscribers = subscribers_state.get("subscribers") or []
+    original_count = len(subscribers)
+    subscribers_state["subscribers"] = [s for s in subscribers if s.get("chat_id") not in blocked_ids]
+    removed_count = original_count - len(subscribers_state["subscribers"])
+    if removed_count:
+        save_subscribers(subscribers_state)
+        log("info", f"remove_blocked_subscribers removed={removed_count} blocked_ids={blocked_ids}")
 
 
 def build_recipients() -> list[str | int]:
@@ -481,7 +499,9 @@ def handle_single_url(url: str) -> int:
     )
     msg = build_item_message(item)
     recipients = build_recipients()
-    send_to_recipients(recipients, msg, disable_preview=True)
+    blocked = send_to_recipients(recipients, msg, disable_preview=True)
+    if blocked:
+        remove_blocked_subscribers(set(blocked))
     print("Processed single URL.")
     return 0
 
@@ -506,12 +526,21 @@ def process_feed() -> int:
 
     recipients = build_recipients()
 
+    blocked_ids: set[str | int] = set()
+
+    def _send_and_update_recipients(msg: str) -> None:
+        """Send *msg*, record newly-blocked ids, and prune recipients in-place."""
+        nonlocal recipients
+        blocked = send_to_recipients(recipients, msg, disable_preview=True)
+        if blocked:
+            blocked_ids.update(blocked)
+            recipients = [r for r in recipients if r not in blocked_ids]
+
     for item in new_items:
         try:
             log("info", f"process item title={item.title!r} link={item.link}")
             msg = build_item_message(item)
-            send_to_recipients(recipients, msg, disable_preview=True)
-
+            _send_and_update_recipients(msg)
             seen.add(item.id)
             # Be gentle with API limits
             time.sleep(1.2)
@@ -526,11 +555,13 @@ def process_feed() -> int:
             error_msg = (
                 f"<b>⚠️ Failed to process:</b> {html.escape(item.title)}\n<code>{err}</code>\n{html.escape(item.link)}"
             )
-            send_to_recipients(recipients, error_msg, disable_preview=True)
+            _send_and_update_recipients(error_msg)
             seen.add(item.id)  # avoid retry loops; remove if you prefer retries
 
     state["seen"] = list(seen)[-5000:]  # cap size
     save_state(state)
+    if blocked_ids:
+        remove_blocked_subscribers(blocked_ids)
     print(f"Processed {len(new_items)} items.")
     return 0
 
