@@ -50,6 +50,8 @@ _HTTP_FORBIDDEN = 403
 _HTTP_SERVER_ERROR_MIN = 500
 INTRO_MIN_LENGTH = 40
 MIN_CONTENT_LENGTH = 200
+_WARM_CACHE_ATTEMPTS = 2
+_WARM_CACHE_DELAY = 1.0
 
 console = Console()
 
@@ -343,20 +345,23 @@ def telegraph_create_page(
 
 
 def warm_telegraph_cache(url: str) -> None:
-    """Fetch the Telegraph page once to prime the Instant View cache.
+    """Fetch the Telegraph page twice to prime the Instant View cache.
 
     Telegraph's Instant View requires the page to have been loaded at least
-    once before Telegram will serve the cached version.  We send a plain GET
-    request right after creation so the very first click from a subscriber
+    twice before Telegram will serve the cached version.  We send two GET
+    requests right after creation so the very first click from a subscriber
     already gets Instant View.
     """
-    try:
-        log("debug", f"warm_telegraph_cache url={url}")
-        r = requests.get(url, timeout=REQUEST_TIMEOUT, headers={"User-Agent": "lobsters-telegraph-bot"})
-        r.raise_for_status()
-        log("info", f"warm_telegraph_cache ok status={r.status_code} url={url}")
-    except requests.RequestException as exc:
-        log("warn", f"warm_telegraph_cache failed err={type(exc).__name__}: {exc}")
+    for attempt in range(1, _WARM_CACHE_ATTEMPTS + 1):
+        try:
+            log("debug", f"warm_telegraph_cache attempt={attempt} url={url}")
+            r = requests.get(url, timeout=REQUEST_TIMEOUT, headers={"User-Agent": "lobsters-telegraph-bot"})
+            r.raise_for_status()
+            log("info", f"warm_telegraph_cache ok attempt={attempt} status={r.status_code} url={url}")
+            if attempt < _WARM_CACHE_ATTEMPTS:
+                time.sleep(_WARM_CACHE_DELAY)
+        except requests.RequestException as exc:
+            log("warn", f"warm_telegraph_cache failed attempt={attempt} err={type(exc).__name__}: {exc}")
 
 
 def telegram_send_message(chat_id: str | int, text_html: str, disable_preview: bool = False) -> None:
