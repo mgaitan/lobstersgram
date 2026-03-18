@@ -43,6 +43,7 @@ REQUEST_TIMEOUT = int(os.getenv("REQUEST_TIMEOUT", "20"))
 LOG_LEVEL = os.getenv("LOG_LEVEL", "info").lower()
 SUBSCRIBERS_PATH = Path(os.getenv("SUBSCRIBERS_PATH", "subscribers.json"))
 TELEGRAM_RETRY_ATTEMPTS = max(1, int(os.getenv("TELEGRAM_RETRY_ATTEMPTS", "3")))
+TELEGRAPH_RETRY_ATTEMPTS = max(1, int(os.getenv("TELEGRAPH_RETRY_ATTEMPTS", "3")))
 INTER_MESSAGE_DELAY = max(0.0, float(os.getenv("INTER_MESSAGE_DELAY", "0.5")))
 
 _HTTP_TOO_MANY_REQUESTS = 429
@@ -291,6 +292,32 @@ def extract_main_content(url: str) -> tuple[str, str, str, str]:
     return title, extracted_markdown, fallback_text, intro
 
 
+def _telegraph_post_with_retry(payload: dict[str, object]) -> str:
+    """POST to Telegraph createPage API with retry on transient errors.
+
+    Returns the created page URL on success, raises on permanent failure.
+    """
+    for attempt in range(1, TELEGRAPH_RETRY_ATTEMPTS + 1):
+        backoff = min(2.0**attempt, 30.0)
+        r = requests.post("https://api.telegra.ph/createPage", data=payload, timeout=REQUEST_TIMEOUT)
+        if r.status_code >= _HTTP_SERVER_ERROR_MIN:
+            log("warn", f"telegraph server error status={r.status_code} attempt={attempt}/{TELEGRAPH_RETRY_ATTEMPTS}")
+            if attempt < TELEGRAPH_RETRY_ATTEMPTS:
+                time.sleep(backoff)
+                continue
+        r.raise_for_status()
+        data = r.json()
+        if not data.get("ok"):
+            log("warn", f"telegraph api error attempt={attempt}/{TELEGRAPH_RETRY_ATTEMPTS} data={data}")
+            if attempt < TELEGRAPH_RETRY_ATTEMPTS:
+                time.sleep(backoff)
+                continue
+            raise TelegraphAPIError(data)
+        return str(data["result"]["url"])
+    msg = "telegraph_post_with_retry exhausted all attempts without raising"  # pragma: no cover
+    raise AssertionError(msg)  # pragma: no cover
+
+
 def telegraph_create_page(
     title: str,
     content_markdown: str,
@@ -319,7 +346,7 @@ def telegraph_create_page(
     if not nodes:
         nodes = [{"tag": "p", "children": ["(No content extracted)"]}]
 
-    payload = {
+    payload: dict[str, object] = {
         "access_token": TELEGRAPH_ACCESS_TOKEN,
         "title": title[:256],
         "content": json.dumps(nodes, ensure_ascii=False),
@@ -332,12 +359,7 @@ def telegraph_create_page(
         payload["author_url"] = source_url
 
     log("debug", f"telegraph_create_page title={title[:80]!r} url={source_url}")
-    r = requests.post("https://api.telegra.ph/createPage", data=payload, timeout=REQUEST_TIMEOUT)
-    r.raise_for_status()
-    data = r.json()
-    if not data.get("ok"):
-        raise TelegraphAPIError(data)
-    telegraph_url = data["result"]["url"]
+    telegraph_url = _telegraph_post_with_retry(payload)
     warm_telegraph_cache(telegraph_url)
     return telegraph_url
 
@@ -517,17 +539,13 @@ def process_feed() -> int:
             time.sleep(1.2)
 
         except Exception as exc:  # noqa: BLE001
-            # Don't fail the whole run on one bad link.
+            # Don't fail the whole run on one bad link; log silently instead of
+            # notifying subscribers with a noisy "Failed to process" message.
             log(
                 "error",
                 f"process failed title={item.title!r} err={type(exc).__name__}: {exc}",
             )
-            err = html.escape(f"{type(exc).__name__}: {exc}")
-            error_msg = (
-                f"<b>⚠️ Failed to process:</b> {html.escape(item.title)}\n<code>{err}</code>\n{html.escape(item.link)}"
-            )
-            send_to_recipients(recipients, error_msg, disable_preview=True)
-            seen.add(item.id)  # avoid retry loops; remove if you prefer retries
+            seen.add(item.id)  # avoid retry loops
 
     state["seen"] = list(seen)[-5000:]  # cap size
     save_state(state)
@@ -579,6 +597,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--timeout", type=int, default=REQUEST_TIMEOUT)
     parser.add_argument("--log-level", default=LOG_LEVEL)
     parser.add_argument("--telegram-retry-attempts", type=int, default=TELEGRAM_RETRY_ATTEMPTS)
+    parser.add_argument("--telegraph-retry-attempts", type=int, default=TELEGRAPH_RETRY_ATTEMPTS)
     parser.add_argument("--inter-message-delay", type=float, default=INTER_MESSAGE_DELAY)
     return parser.parse_args()
 
@@ -592,6 +611,7 @@ def apply_runtime_config(args: argparse.Namespace) -> None:
         REQUEST_TIMEOUT=args.timeout,
         LOG_LEVEL=args.log_level.lower(),
         TELEGRAM_RETRY_ATTEMPTS=args.telegram_retry_attempts,
+        TELEGRAPH_RETRY_ATTEMPTS=args.telegraph_retry_attempts,
         INTER_MESSAGE_DELAY=args.inter_message_delay,
     )
 
