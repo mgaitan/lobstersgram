@@ -254,6 +254,26 @@ def markdown_to_text(markdown_text: str) -> str:
     return re.sub(r"[_*]{1,3}([^_*]+)[_*]{1,3}", r"\1", text)
 
 
+def make_images_absolute(content_html: str, base_url: str) -> str:
+    """Resolve relative image src attributes to absolute URLs.
+
+    Images whose src cannot be made into an absolute ``http``/``https`` URL
+    are removed entirely so that Telegraph never shows a broken image.
+    """
+    soup = BeautifulSoup(content_html, "html.parser")
+    for img in soup.find_all("img"):
+        src = (img.get("src") or "").strip()
+        if not src:
+            img.decompose()
+            continue
+        absolute = urllib.parse.urljoin(base_url, src)
+        if absolute.startswith(("http://", "https://")):
+            img["src"] = absolute
+        else:
+            img.decompose()
+    return str(soup)
+
+
 def extract_main_content(url: str) -> tuple[str, str, str, str]:
     """
     Returns (title, markdown_content, fallback_text).
@@ -279,6 +299,8 @@ def extract_main_content(url: str) -> tuple[str, str, str, str]:
     if not content_html or len(content_html.strip()) < MIN_CONTENT_LENGTH:
         log("warn", f"extract_main_content content_len={len(content_html)} url={url}")
         content_html = downloaded
+
+    content_html = make_images_absolute(content_html, url)
 
     extracted_markdown = html_to_md(content_html)
     log(
