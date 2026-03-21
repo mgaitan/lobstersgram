@@ -39,8 +39,8 @@ TELEGRAPH_ACCESS_TOKEN = os.environ["TELEGRAPH_ACCESS_TOKEN"]
 TELEGRAM_DEV_CHAT_ID = os.getenv("TELEGRAM_DEV_CHAT_ID")
 
 STATE_PATH = Path("state.json")
-MESSAGE_MAP_PATH = Path("message_map.json")
-BOOKMARKS_PATH = Path("bookmark.csv")
+MESSAGE_MAP_PATH = Path(os.getenv("MESSAGE_MAP_PATH", "message_map.json"))
+BOOKMARKS_PATH = Path(os.getenv("BOOKMARKS_PATH", "bookmark.csv"))
 RSS_URL = "https://lobste.rs/rss"
 MAX_ITEMS_PER_RUN = int(os.getenv("MAX_ITEMS_PER_RUN", "5"))
 REQUEST_TIMEOUT = int(os.getenv("REQUEST_TIMEOUT", "20"))
@@ -56,6 +56,15 @@ _HTTP_SERVER_ERROR_MIN = 500
 INTRO_MIN_LENGTH = 40
 MIN_CONTENT_LENGTH = 200
 _MESSAGE_MAP_MAX_SIZE = 10000
+BOOKMARK_FIELDNAMES = [
+    "telegraph_link",
+    "article_link",
+    "discussion_link",
+    "username",
+    "user_id",
+    "emojis",
+    "reacted_at",
+]
 
 console = Console()
 
@@ -141,18 +150,53 @@ def update_message_map(sent: dict[str | int, int], article_links: dict[str, str]
     save_message_map(msg_map)
 
 
-def append_bookmarks(rows: list[dict[str, str]]) -> None:
-    """Append reaction rows to bookmark.csv, writing the header on first use."""
-    if not rows:
-        return
-    fieldnames = ["telegraph_link", "article_link", "discussion_link", "username", "user_id", "emojis", "reacted_at"]
-    write_header = not BOOKMARKS_PATH.exists() or BOOKMARKS_PATH.stat().st_size == 0
-    with BOOKMARKS_PATH.open("a", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        if write_header:
-            writer.writeheader()
+def load_bookmarks() -> list[dict[str, str]]:
+    if not BOOKMARKS_PATH.exists() or BOOKMARKS_PATH.stat().st_size == 0:
+        return []
+    with BOOKMARKS_PATH.open(newline="", encoding="utf-8") as f:
+        return [dict(row) for row in csv.DictReader(f)]
+
+
+def save_bookmarks(rows: list[dict[str, str]]) -> None:
+    with BOOKMARKS_PATH.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=BOOKMARK_FIELDNAMES)
+        writer.writeheader()
         writer.writerows(rows)
-    log("info", f"bookmarks appended rows={len(rows)}")
+
+
+def _get_bookmark_key(row: dict[str, str]) -> tuple[str, str]:
+    return row.get("user_id", ""), row.get("article_link", "")
+
+
+def sync_bookmark_rows(
+    existing_rows: list[dict[str, str]],
+    updates: list[dict[str, str]],
+) -> tuple[list[dict[str, str]], bool]:
+    rows = list(existing_rows)
+    changed = False
+    for update in updates:
+        identity = _get_bookmark_key(update)
+        filtered_rows = [row for row in rows if _get_bookmark_key(row) != identity]
+        if len(filtered_rows) != len(rows):
+            changed = True
+        rows = filtered_rows
+        if update.get("emojis"):
+            changed = True
+            rows.append(update)
+    return rows, changed
+
+
+def sync_bookmarks(updates: list[dict[str, str]]) -> int:
+    """Apply reaction updates so bookmark.csv reflects the current state."""
+    if not updates:
+        return 0
+    existing_rows = load_bookmarks()
+    synced_rows, changed = sync_bookmark_rows(existing_rows, updates)
+    if not changed:
+        return 0
+    save_bookmarks(synced_rows)
+    log("info", f"bookmarks synced updates={len(updates)} rows={len(synced_rows)}")
+    return len(updates)
 
 
 def _extract_reaction_row(
@@ -161,20 +205,16 @@ def _extract_reaction_row(
 ) -> dict[str, str] | None:
     """Build a bookmark row from a ``message_reaction`` update payload.
 
-    Returns ``None`` when the reaction was removed (empty ``new_reaction``),
-    when no emoji reactions are present, or when the message isn't tracked.
+    Returns ``None`` only when the message isn't tracked or lacks actor data.
+    An empty ``emojis`` value signals a removal/non-emoji update so callers can
+    remove any existing bookmark row for that subscriber/article pair.
     """
     new_reaction = reaction.get("new_reaction") or []
-    if not new_reaction:
-        return None  # Reaction was removed.
-
     emojis = " ".join(
         str(r.get("emoji", ""))
         for r in new_reaction  # type: ignore[union-attr]
         if isinstance(r, dict) and r.get("type") == "emoji" and r.get("emoji")
     )
-    if not emojis:
-        return None  # Only custom/non-emoji reactions.
 
     chat_id = (reaction.get("chat") or {}).get("id")  # type: ignore[union-attr]
     message_id = reaction.get("message_id")
@@ -195,6 +235,8 @@ def _extract_reaction_row(
     else:
         user_id = str(actor_chat.get("id") or "")
         username = str(actor_chat.get("title") or actor_chat.get("username") or user_id)
+    if not user_id:
+        return None
 
     return {
         "telegraph_link": article_links.get("telegraph_link", ""),
@@ -324,15 +366,14 @@ def read_new_subscribers() -> int:
         new_count += added
         removed_count += removed
 
-    if reaction_rows:
-        append_bookmarks(reaction_rows)
+    synced_reactions = sync_bookmarks(reaction_rows)
 
     state["subscribers"] = list(subscribers.values())
     state["last_update_id"] = max_update_id
     save_subscribers(state)
     log(
         "info",
-        f"read_messages new_subscribers={new_count} removed_subscribers={removed_count} reactions={len(reaction_rows)}",
+        f"read_messages new_subscribers={new_count} removed_subscribers={removed_count} reactions={synced_reactions}",
     )
     return new_count
 
@@ -750,6 +791,8 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--rss-url", default=RSS_URL)
     parser.add_argument("--state-path", default=str(STATE_PATH))
+    parser.add_argument("--message-map-path", default=str(MESSAGE_MAP_PATH))
+    parser.add_argument("--bookmarks-path", default=str(BOOKMARKS_PATH))
     parser.add_argument("--subscribers-path", default=str(SUBSCRIBERS_PATH))
     parser.add_argument("--max-items", type=int, default=MAX_ITEMS_PER_RUN)
     parser.add_argument("--timeout", type=int, default=REQUEST_TIMEOUT)
@@ -764,6 +807,8 @@ def apply_runtime_config(args: argparse.Namespace) -> None:
     globals().update(
         RSS_URL=args.rss_url,
         STATE_PATH=Path(args.state_path),
+        MESSAGE_MAP_PATH=Path(args.message_map_path),
+        BOOKMARKS_PATH=Path(args.bookmarks_path),
         SUBSCRIBERS_PATH=Path(args.subscribers_path),
         MAX_ITEMS_PER_RUN=args.max_items,
         REQUEST_TIMEOUT=args.timeout,
