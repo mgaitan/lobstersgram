@@ -1,3 +1,10 @@
+[build-system]
+requires = ["uv_build"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-root = ""
+
 [project]
 name = "lobstergram"
 version = "0.1.0"
