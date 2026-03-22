@@ -12,6 +12,7 @@ Lobstersgram. A Telegram/Telegraph bot for lobste.rs.
 from __future__ import annotations
 
 import argparse
+import csv
 import html
 import json
 import os
@@ -19,6 +20,7 @@ import re
 import time
 import urllib.parse
 from dataclasses import dataclass
+from datetime import UTC, datetime
 from pathlib import Path
 
 import feedparser
@@ -37,6 +39,8 @@ TELEGRAPH_ACCESS_TOKEN = os.environ["TELEGRAPH_ACCESS_TOKEN"]
 TELEGRAM_DEV_CHAT_ID = os.getenv("TELEGRAM_DEV_CHAT_ID")
 
 STATE_PATH = Path("state.json")
+MESSAGE_MAP_PATH = Path(os.getenv("MESSAGE_MAP_PATH", "message_map.json"))
+BOOKMARKS_PATH = Path(os.getenv("BOOKMARKS_PATH", "bookmark.csv"))
 RSS_URL = "https://lobste.rs/rss"
 MAX_ITEMS_PER_RUN = int(os.getenv("MAX_ITEMS_PER_RUN", "5"))
 REQUEST_TIMEOUT = int(os.getenv("REQUEST_TIMEOUT", "20"))
@@ -51,6 +55,16 @@ _HTTP_FORBIDDEN = 403
 _HTTP_SERVER_ERROR_MIN = 500
 INTRO_MIN_LENGTH = 40
 MIN_CONTENT_LENGTH = 200
+_MESSAGE_MAP_MAX_SIZE = 10000
+BOOKMARK_FIELDNAMES = [
+    "telegraph_link",
+    "article_link",
+    "discussion_link",
+    "username",
+    "user_id",
+    "emojis",
+    "reacted_at",
+]
 
 console = Console()
 
@@ -112,6 +126,129 @@ def save_subscribers(state: dict[str, object]) -> None:
     SUBSCRIBERS_PATH.write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+def load_message_map() -> dict[str, dict[str, str]]:
+    if not MESSAGE_MAP_PATH.exists():
+        return {}
+    return json.loads(MESSAGE_MAP_PATH.read_text(encoding="utf-8"))
+
+
+def save_message_map(msg_map: dict[str, dict[str, str]]) -> None:
+    # Cap to most recent entries (dict preserves insertion order in Python 3.7+).
+    if len(msg_map) > _MESSAGE_MAP_MAX_SIZE:
+        msg_map = dict(list(msg_map.items())[-_MESSAGE_MAP_MAX_SIZE:])
+    MESSAGE_MAP_PATH.write_text(json.dumps(msg_map, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def update_message_map(sent: dict[str | int, int], article_links: dict[str, str]) -> None:
+    """Persist chat_id:message_id → article_links so reactions can be resolved later."""
+    if not sent:
+        return
+    msg_map = load_message_map()
+    for chat_id, message_id in sent.items():
+        key = f"{chat_id}:{message_id}"
+        msg_map[key] = article_links
+    save_message_map(msg_map)
+
+
+def load_bookmarks() -> list[dict[str, str]]:
+    if not BOOKMARKS_PATH.exists() or BOOKMARKS_PATH.stat().st_size == 0:
+        return []
+    with BOOKMARKS_PATH.open(newline="", encoding="utf-8") as f:
+        return [dict(row) for row in csv.DictReader(f)]
+
+
+def save_bookmarks(rows: list[dict[str, str]]) -> None:
+    with BOOKMARKS_PATH.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=BOOKMARK_FIELDNAMES)
+        writer.writeheader()
+        writer.writerows(rows)
+
+
+def _get_bookmark_key(row: dict[str, str]) -> tuple[str, str]:
+    return row.get("user_id", ""), row.get("article_link", "")
+
+
+def sync_bookmark_rows(
+    existing_rows: list[dict[str, str]],
+    updates: list[dict[str, str]],
+) -> tuple[list[dict[str, str]], bool]:
+    rows = list(existing_rows)
+    changed = False
+    for update in updates:
+        identity = _get_bookmark_key(update)
+        filtered_rows = [row for row in rows if _get_bookmark_key(row) != identity]
+        if len(filtered_rows) != len(rows):
+            changed = True
+        rows = filtered_rows
+        if update.get("emojis"):
+            changed = True
+            rows.append(update)
+    return rows, changed
+
+
+def sync_bookmarks(updates: list[dict[str, str]]) -> int:
+    """Apply reaction updates so bookmark.csv reflects the current state."""
+    if not updates:
+        return 0
+    existing_rows = load_bookmarks()
+    synced_rows, changed = sync_bookmark_rows(existing_rows, updates)
+    if not changed:
+        return 0
+    save_bookmarks(synced_rows)
+    log("info", f"bookmarks synced updates={len(updates)} rows={len(synced_rows)}")
+    return len(updates)
+
+
+def _extract_reaction_row(
+    reaction: dict[str, object],
+    msg_map: dict[str, dict[str, str]],
+) -> dict[str, str] | None:
+    """Build a bookmark row from a ``message_reaction`` update payload.
+
+    Returns ``None`` only when the message isn't tracked or lacks actor data.
+    An empty ``emojis`` value signals a removal/non-emoji update so callers can
+    remove any existing bookmark row for that subscriber/article pair.
+    """
+    new_reaction = reaction.get("new_reaction") or []
+    emojis = " ".join(
+        str(r.get("emoji", ""))
+        for r in new_reaction  # type: ignore[union-attr]
+        if isinstance(r, dict) and r.get("type") == "emoji" and r.get("emoji")
+    )
+
+    chat_id = (reaction.get("chat") or {}).get("id")  # type: ignore[union-attr]
+    message_id = reaction.get("message_id")
+    if not chat_id or not message_id:
+        return None
+
+    key = f"{chat_id}:{message_id}"
+    article_links = msg_map.get(key)
+    if not article_links:
+        log("debug", f"reaction for untracked message key={key}")
+        return None
+
+    user: dict[str, object] = reaction.get("user") or {}  # type: ignore[assignment]
+    actor_chat: dict[str, object] = reaction.get("actor_chat") or {}  # type: ignore[assignment]
+    if user:
+        user_id = str(user.get("id") or "")
+        username = str(user.get("username") or user.get("first_name") or user_id)
+    else:
+        user_id = str(actor_chat.get("id") or "")
+        username = str(actor_chat.get("title") or actor_chat.get("username") or user_id)
+    if not user_id:
+        return None
+
+    return {
+        "telegraph_link": article_links.get("telegraph_link", ""),
+        "article_link": article_links.get("article_link", ""),
+        "discussion_link": article_links.get("discussion_link", ""),
+        "username": username,
+        "user_id": user_id,
+        "emojis": emojis,
+        "reacted_at": datetime.now(tz=UTC).isoformat(),
+    }
+
+
 def normalize_id(entry: object) -> str:
     # Prefer feed-provided id/guid; fallback to link.
     for key in ("id", "guid", "link"):
@@ -147,13 +284,55 @@ def fetch_html(url: str) -> str | None:
 
 def telegram_get_updates(offset: int) -> list[dict[str, object]]:
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getUpdates"
-    params = {"timeout": 0, "offset": offset, "allowed_updates": ["message"]}
+    params = {"timeout": 0, "offset": offset, "allowed_updates": json.dumps(["message", "message_reaction"])}
     r = requests.get(url, params=params, timeout=REQUEST_TIMEOUT)
     r.raise_for_status()
     data = r.json()
     if not data.get("ok"):
         raise TelegramAPIError(data)
     return data.get("result", [])
+
+
+def _handle_command_update(
+    update: dict[str, object],
+    subscribers: dict[object, dict[str, object]],
+) -> tuple[int, int]:
+    """Process a single command message update (/start or /unsubscribe).
+
+    Returns ``(new_count, removed_count)`` for the caller to accumulate.
+    """
+    message = update.get("message") or {}
+    text = (message.get("text") or "").strip()
+    chat = message.get("chat") or {}
+    chat_id = chat.get("id")
+
+    if text.startswith("/unsubscribe"):
+        if chat_id in subscribers:
+            subscribers.pop(chat_id, None)
+            telegram_send_message(
+                chat_id,
+                "✅ Unsubscribed. You will no longer receive posts.",
+                disable_preview=True,
+            )
+            return 0, 1
+        return 0, 0
+
+    if not text.startswith("/start") or not chat_id or chat_id in subscribers:
+        return 0, 0
+
+    subscribers[chat_id] = {
+        "chat_id": chat_id,
+        "type": chat.get("type"),
+        "username": chat.get("username"),
+        "first_name": chat.get("first_name"),
+        "last_name": chat.get("last_name"),
+    }
+    telegram_send_message(
+        chat_id,
+        "✅ Subscribed. You'll receive new posts when they're published.",
+        disable_preview=True,
+    )
+    return 1, 0
 
 
 def read_new_subscribers() -> int:
@@ -169,51 +348,32 @@ def read_new_subscribers() -> int:
     max_update_id = last_update_id
     new_count = 0
     removed_count = 0
+    reaction_rows: list[dict[str, str]] = []
+    msg_map = load_message_map()
     for update in updates:
         update_id = int(update.get("update_id") or 0)
         max_update_id = max(max_update_id, update_id)
-        message = update.get("message") or {}
-        text = (message.get("text") or "").strip()
-        if text.startswith("/unsubscribe"):
-            chat = message.get("chat") or {}
-            chat_id = chat.get("id")
-            if chat_id in subscribers:
-                subscribers.pop(chat_id, None)
-                removed_count += 1
-                telegram_send_message(
-                    chat_id,
-                    "✅ Unsubscribed. You will no longer receive posts.",
-                    disable_preview=True,
-                )
+
+        # Handle emoji reactions — map them to bookmarks.
+        reaction = update.get("message_reaction")
+        if reaction:
+            row = _extract_reaction_row(reaction, msg_map)  # type: ignore[arg-type]
+            if row:
+                reaction_rows.append(row)
             continue
-        if not text.startswith("/start"):
-            continue
-        chat = message.get("chat") or {}
-        chat_id = chat.get("id")
-        if not chat_id:
-            continue
-        if chat_id in subscribers:
-            continue
-        subscribers[chat_id] = {
-            "chat_id": chat_id,
-            "type": chat.get("type"),
-            "username": chat.get("username"),
-            "first_name": chat.get("first_name"),
-            "last_name": chat.get("last_name"),
-        }
-        telegram_send_message(
-            chat_id,
-            "✅ Subscribed. You'll receive new posts when they're published.",
-            disable_preview=True,
-        )
-        new_count += 1
+
+        added, removed = _handle_command_update(update, subscribers)
+        new_count += added
+        removed_count += removed
+
+    synced_reactions = sync_bookmarks(reaction_rows)
 
     state["subscribers"] = list(subscribers.values())
     state["last_update_id"] = max_update_id
     save_subscribers(state)
     log(
         "info",
-        f"read_messages new_subscribers={new_count} removed_subscribers={removed_count}",
+        f"read_messages new_subscribers={new_count} removed_subscribers={removed_count} reactions={synced_reactions}",
     )
     return new_count
 
@@ -403,7 +563,7 @@ def warm_telegraph_cache(url: str) -> None:
         log("warn", f"warm_telegraph_cache failed err={type(exc).__name__}: {exc}")
 
 
-def telegram_send_message(chat_id: str | int, text_html: str, disable_preview: bool = False) -> None:
+def telegram_send_message(chat_id: str | int, text_html: str, disable_preview: bool = False) -> int | None:
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     payload = {
         "chat_id": chat_id,
@@ -429,7 +589,11 @@ def telegram_send_message(chat_id: str | int, text_html: str, disable_preview: b
                 time.sleep(min(2.0**attempt, 30.0))
                 continue
         r.raise_for_status()
-        return
+        result = r.json().get("result") or {}
+        message_id = result.get("message_id")
+        return int(message_id) if message_id is not None else None
+    msg = "telegram_send_message exhausted all attempts without raising"  # pragma: no cover
+    raise AssertionError(msg)  # pragma: no cover
 
 
 def resolve_recipient_chat_ids(subscribers: list[dict[str, object]]) -> list[str | int]:
@@ -438,10 +602,13 @@ def resolve_recipient_chat_ids(subscribers: list[dict[str, object]]) -> list[str
     return [sub["chat_id"] for sub in subscribers]
 
 
-def send_to_recipients(recipients: list[str | int], message: str, disable_preview: bool = True) -> None:
+def send_to_recipients(recipients: list[str | int], message: str, disable_preview: bool = True) -> dict[str | int, int]:
+    sent: dict[str | int, int] = {}
     for i, chat_id in enumerate(recipients):
         try:
-            telegram_send_message(chat_id, message, disable_preview=disable_preview)
+            message_id = telegram_send_message(chat_id, message, disable_preview=disable_preview)
+            if message_id is not None:
+                sent[chat_id] = message_id
         except requests.HTTPError as exc:
             status = exc.response.status_code if exc.response is not None else None
             if status == _HTTP_FORBIDDEN:
@@ -450,6 +617,7 @@ def send_to_recipients(recipients: list[str | int], message: str, disable_previe
                 log("error", f"send_to_recipients chat_id={chat_id} err={type(exc).__name__}: {exc}")
         if i < len(recipients) - 1:
             time.sleep(INTER_MESSAGE_DELAY)
+    return sent
 
 
 def build_recipients() -> list[str | int]:
@@ -461,7 +629,7 @@ def build_recipients() -> list[str | int]:
     return recipients
 
 
-def build_item_message(item: Item) -> str:
+def build_item_message(item: Item) -> tuple[str, dict[str, str]]:
     final_url = fetch_url(item.link)
     extracted_title, content_markdown, fallback_text, intro = extract_main_content(final_url)
     telegraph_title = extracted_title if extracted_title and extracted_title != final_url else item.title
@@ -471,12 +639,19 @@ def build_item_message(item: Item) -> str:
         fallback_text=fallback_text,
         source_url=final_url,
     )
-    return format_message(
+    msg = format_message(
         item,
         telegraph_url=telegraph_url,
         original_url=final_url,
         intro=intro,
     )
+    article_links = {
+        "telegraph_link": telegraph_url,
+        "article_link": final_url,
+        "discussion_link": item.discussion_link,
+        "title": item.title,
+    }
+    return msg, article_links
 
 
 def collect_new_items(entries: list[object], seen: set[str]) -> list[Item]:
@@ -523,9 +698,10 @@ def handle_single_url(url: str) -> int:
         source=urllib.parse.urlparse(url).netloc or "direct",
         tags=[],
     )
-    msg = build_item_message(item)
+    msg, article_links = build_item_message(item)
     recipients = build_recipients()
-    send_to_recipients(recipients, msg, disable_preview=True)
+    sent = send_to_recipients(recipients, msg, disable_preview=True)
+    update_message_map(sent, article_links)
     print("Processed single URL.")
     return 0
 
@@ -553,8 +729,9 @@ def process_feed() -> int:
     for item in new_items:
         try:
             log("info", f"process item title={item.title!r} link={item.link}")
-            msg = build_item_message(item)
-            send_to_recipients(recipients, msg, disable_preview=True)
+            msg, article_links = build_item_message(item)
+            sent = send_to_recipients(recipients, msg, disable_preview=True)
+            update_message_map(sent, article_links)
 
             seen.add(item.id)
             # Be gentle with API limits
@@ -614,6 +791,8 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--rss-url", default=RSS_URL)
     parser.add_argument("--state-path", default=str(STATE_PATH))
+    parser.add_argument("--message-map-path", default=str(MESSAGE_MAP_PATH))
+    parser.add_argument("--bookmarks-path", default=str(BOOKMARKS_PATH))
     parser.add_argument("--subscribers-path", default=str(SUBSCRIBERS_PATH))
     parser.add_argument("--max-items", type=int, default=MAX_ITEMS_PER_RUN)
     parser.add_argument("--timeout", type=int, default=REQUEST_TIMEOUT)
@@ -628,6 +807,8 @@ def apply_runtime_config(args: argparse.Namespace) -> None:
     globals().update(
         RSS_URL=args.rss_url,
         STATE_PATH=Path(args.state_path),
+        MESSAGE_MAP_PATH=Path(args.message_map_path),
+        BOOKMARKS_PATH=Path(args.bookmarks_path),
         SUBSCRIBERS_PATH=Path(args.subscribers_path),
         MAX_ITEMS_PER_RUN=args.max_items,
         REQUEST_TIMEOUT=args.timeout,
