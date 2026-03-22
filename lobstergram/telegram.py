@@ -9,8 +9,13 @@ from datetime import UTC, datetime
 import requests
 
 from lobstergram import config
-from lobstergram.models import TelegramAPIError
 from lobstergram.state import load_message_map, load_subscribers, save_subscribers, sync_bookmarks
+
+
+class TelegramAPIError(RuntimeError):
+    def __init__(self, data: dict[str, object]) -> None:
+        super().__init__("Telegram API error")
+        self.data = data
 
 
 def telegram_get_updates(offset: int) -> list[dict[str, object]]:

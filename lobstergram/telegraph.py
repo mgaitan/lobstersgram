@@ -9,7 +9,12 @@ import requests
 from md_to_telegraph import md_to_telegraph
 
 from lobstergram import config
-from lobstergram.models import TelegraphAPIError
+
+
+class TelegraphAPIError(RuntimeError):
+    def __init__(self, data: dict[str, object]) -> None:
+        super().__init__("Telegraph API error")
+        self.data = data
 
 
 def _telegraph_post_with_retry(payload: dict[str, object]) -> str:

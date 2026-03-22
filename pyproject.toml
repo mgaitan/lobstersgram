@@ -16,7 +16,7 @@ dependencies = [
 ]
 
 [project.scripts]
-lobstergram = "lobstergram.cli:main"
+lobstergram = "lobstergram.main:main"
 
 [tool.uv.workspace]
 members = ["md-to-telegraph"]

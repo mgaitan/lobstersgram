@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Backward-compatible entry point.  Use ``python -m lobstergram`` instead."""
+"""Backward-compatible entry point.  Use ``uv run lobstergram`` instead."""
 
-from lobstergram.cli import main
+from lobstergram.main import main
 
 if __name__ == "__main__":
     raise SystemExit(main())

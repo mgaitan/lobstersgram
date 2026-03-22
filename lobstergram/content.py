@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import re
 import urllib.parse
+from dataclasses import dataclass
 
 import requests
 from bs4 import BeautifulSoup
@@ -11,7 +12,21 @@ from markdownify import markdownify as html_to_md
 from readability import Document
 
 from lobstergram import config
-from lobstergram.models import ContentDownloadError, Item
+
+
+@dataclass(frozen=True)
+class Item:
+    id: str
+    title: str
+    link: str
+    discussion_link: str
+    source: str
+    tags: list[str]
+
+
+class ContentDownloadError(RuntimeError):
+    def __init__(self) -> None:
+        super().__init__("Failed to download content")
 
 
 def fetch_url(url: str) -> str:
