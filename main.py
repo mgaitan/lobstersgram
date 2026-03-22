@@ -434,6 +434,50 @@ def make_images_absolute(content_html: str, base_url: str) -> str:
     return str(soup)
 
 
+def preprocess_figures(content_html: str) -> str:
+    """Convert <figure> elements containing quoted text to <blockquote> nodes.
+
+    HTML ``<figure>`` elements have no Markdown equivalent, so they are
+    normally flattened into plain paragraphs by markdownify, losing any
+    visual quote structure.  This function detects figures whose *body*
+    (i.e. the parts outside any ``<figcaption>``) contains text paragraphs
+    or divs—typical of pull-quote or GitHub-embed figures—and replaces them
+    with a ``<blockquote>`` so that the Markdown conversion preserves the
+    quotation structure.  The optional ``<figcaption>`` is moved to
+    immediately after the new blockquote so that attribution text is kept.
+
+    Figures whose body contains only an image (no ``<p>`` or ``<div>``) are
+    left unchanged so that ordinary image captions are not affected.
+    """
+    soup = BeautifulSoup(content_html, "html.parser")
+    for figure in soup.find_all("figure"):
+        figcaption = figure.find("figcaption")
+
+        # Only convert figures whose body (outside figcaption) has text content
+        has_body_text = any(
+            el.find_parent("figcaption") is None
+            for el in figure.find_all(["p", "div"])
+        )
+        if not has_body_text:
+            continue
+
+        # Detach figcaption before rebuilding the tree
+        if figcaption:
+            figcaption.extract()
+
+        # Replace <figure> with <blockquote>, moving all remaining children
+        blockquote = soup.new_tag("blockquote")
+        for child in list(figure.children):
+            blockquote.append(child.extract())
+        figure.replace_with(blockquote)
+
+        # Re-insert figcaption immediately after the new blockquote
+        if figcaption:
+            blockquote.insert_after(figcaption)
+
+    return str(soup)
+
+
 def extract_main_content(url: str) -> tuple[str, str, str, str]:
     """
     Returns (title, markdown_content, fallback_text).
@@ -461,6 +505,7 @@ def extract_main_content(url: str) -> tuple[str, str, str, str]:
         content_html = downloaded
 
     content_html = make_images_absolute(content_html, url)
+    content_html = preprocess_figures(content_html)
 
     extracted_markdown = html_to_md(content_html)
     log(

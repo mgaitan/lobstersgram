@@ -9,6 +9,7 @@ import os
 from pathlib import Path
 
 import pytest
+from bs4 import BeautifulSoup
 
 # Provide required env vars before importing main (they are read at module level).
 os.environ.setdefault("TELEGRAM_BOT_TOKEN", "test-token")
@@ -20,6 +21,7 @@ apply_runtime_config = main.apply_runtime_config
 load_message_map = main.load_message_map
 load_bookmarks = main.load_bookmarks
 make_images_absolute = main.make_images_absolute
+preprocess_figures = main.preprocess_figures
 save_bookmarks = main.save_bookmarks
 save_message_map = main.save_message_map
 sync_bookmark_rows = main.sync_bookmark_rows
@@ -91,6 +93,98 @@ def test_no_images_is_noop() -> None:
     result = make_images_absolute(html, BASE)
     assert "just text" in result
     assert "<img" not in result
+
+
+# ---------------------------------------------------------------------------
+# preprocess_figures tests
+# ---------------------------------------------------------------------------
+
+
+def test_preprocess_figures_converts_text_figure_to_blockquote() -> None:
+    """A figure containing text paragraphs is converted to a blockquote."""
+    html = "<figure><div><p>This is a quote</p></div></figure>"
+    result = preprocess_figures(html)
+    soup = BeautifulSoup(result, "html.parser")
+    assert soup.find("blockquote") is not None
+    assert soup.find("figure") is None
+    assert "This is a quote" in result
+
+
+def test_preprocess_figures_image_only_figure_unchanged() -> None:
+    """A figure containing only an image is NOT converted to a blockquote."""
+    html = '<figure><img src="https://example.com/img.png" alt="test"/></figure>'
+    result = preprocess_figures(html)
+    soup = BeautifulSoup(result, "html.parser")
+    assert soup.find("figure") is not None
+    assert soup.find("blockquote") is None
+
+
+def test_preprocess_figures_image_with_figcaption_only_unchanged() -> None:
+    """A figure with only an image and figcaption is not converted."""
+    html = '<figure><img src="https://example.com/img.png"/><figcaption>Caption</figcaption></figure>'
+    result = preprocess_figures(html)
+    soup = BeautifulSoup(result, "html.parser")
+    assert soup.find("figure") is not None
+    assert soup.find("blockquote") is None
+
+
+def test_preprocess_figures_figcaption_moved_after_blockquote() -> None:
+    """The figcaption is placed after the blockquote, not inside it."""
+    html = "<figure><div><p>Quote text</p></div><figcaption><a href='https://example.com'>Author</a></figcaption></figure>"
+    result = preprocess_figures(html)
+    soup = BeautifulSoup(result, "html.parser")
+    blockquote = soup.find("blockquote")
+    figcaption = soup.find("figcaption")
+    assert blockquote is not None
+    assert figcaption is not None
+    # figcaption should not be inside blockquote
+    assert figcaption.find_parent("blockquote") is None
+    assert blockquote.find("figcaption") is None
+    # figcaption text is still present
+    assert "Author" in result
+
+
+def test_preprocess_figures_no_figures_is_noop() -> None:
+    """HTML without any <figure> elements is returned unchanged."""
+    html = "<p>Just a paragraph</p>"
+    result = preprocess_figures(html)
+    assert "Just a paragraph" in result
+    assert "<figure" not in result
+    assert "<blockquote" not in result
+
+
+def test_preprocess_figures_github_quote_example() -> None:
+    """Real-world GitHub quote figure is correctly converted to a blockquote."""
+    html = (
+        '<figure class="not-prose">'
+        '<a href="https://github.com/example" rel="noopener noreferrer">'
+        "<svg></svg>"
+        "</a>"
+        '<div class="gh-quote-body">'
+        "<p>I have done everything you asked.</p>"
+        "</div>"
+        "<figcaption>"
+        '<img src="https://avatars.githubusercontent.com/user?size=32" alt="user" width="24"/>'
+        '<a href="https://github.com/example">@user · Feb 13, 2021</a>'
+        "</figcaption>"
+        "</figure>"
+    )
+    result = preprocess_figures(html)
+    soup = BeautifulSoup(result, "html.parser")
+    assert soup.find("blockquote") is not None
+    assert soup.find("figure") is None
+    assert "I have done everything you asked." in result
+    assert "@user" in result
+
+
+def test_preprocess_figures_preserves_quote_text_content() -> None:
+    """All text content within the figure body is preserved in the blockquote."""
+    html = "<figure><p>First sentence.</p><p>Second sentence.</p></figure>"
+    result = preprocess_figures(html)
+    assert "First sentence." in result
+    assert "Second sentence." in result
+    soup = BeautifulSoup(result, "html.parser")
+    assert soup.find("blockquote") is not None
 
 
 # ---------------------------------------------------------------------------
