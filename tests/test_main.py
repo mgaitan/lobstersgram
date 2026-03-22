@@ -1,31 +1,31 @@
-"""Tests for main.py helpers."""
+"""Tests for lobstergram package helpers."""
 
 from __future__ import annotations
 
 import argparse
 import csv
-import importlib
 import os
 from pathlib import Path
 
 import pytest
 from bs4 import BeautifulSoup
 
-# Provide required env vars before importing main (they are read at module level).
+# Provide required env vars before importing the package (they are read at module level).
 os.environ.setdefault("TELEGRAM_BOT_TOKEN", "test-token")
 os.environ.setdefault("TELEGRAPH_ACCESS_TOKEN", "test-token")
 
-main = importlib.import_module("main")
-_extract_reaction_row = main._extract_reaction_row
-apply_runtime_config = main.apply_runtime_config
-load_message_map = main.load_message_map
-load_bookmarks = main.load_bookmarks
-make_images_absolute = main.make_images_absolute
-preprocess_figures = main.preprocess_figures
-save_bookmarks = main.save_bookmarks
-save_message_map = main.save_message_map
-sync_bookmark_rows = main.sync_bookmark_rows
-update_message_map = main.update_message_map
+from lobstergram import config
+from lobstergram.cli import apply_runtime_config
+from lobstergram.content import make_images_absolute, preprocess_figures
+from lobstergram.state import (
+    load_bookmarks,
+    load_message_map,
+    save_bookmarks,
+    save_message_map,
+    sync_bookmark_rows,
+    update_message_map,
+)
+from lobstergram.telegram import _extract_reaction_row
 
 BASE = "https://example.com/articles/my-post/"
 
@@ -130,7 +130,9 @@ def test_preprocess_figures_image_with_figcaption_only_unchanged() -> None:
 
 def test_preprocess_figures_figcaption_moved_after_blockquote() -> None:
     """The figcaption is placed after the blockquote, not inside it."""
-    html = "<figure><div><p>Quote text</p></div><figcaption><a href='https://example.com'>Author</a></figcaption></figure>"
+    html = (
+        "<figure><div><p>Quote text</p></div><figcaption><a href='https://example.com'>Author</a></figcaption></figure>"
+    )
     result = preprocess_figures(html)
     soup = BeautifulSoup(result, "html.parser")
     blockquote = soup.find("blockquote")
@@ -429,5 +431,5 @@ def test_apply_runtime_config_updates_new_state_paths() -> None:
             inter_message_delay=0.1,
         )
     )
-    assert str(main.MESSAGE_MAP_PATH) == "custom-message-map.json"
-    assert str(main.BOOKMARKS_PATH) == "custom-bookmarks.csv"
+    assert str(config.MESSAGE_MAP_PATH) == "custom-message-map.json"
+    assert str(config.BOOKMARKS_PATH) == "custom-bookmarks.csv"

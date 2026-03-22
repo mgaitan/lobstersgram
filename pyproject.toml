@@ -15,6 +15,9 @@ dependencies = [
     "beautifulsoup4>=4.14.3",
 ]
 
+[project.scripts]
+lobstergram = "lobstergram.cli:main"
+
 [tool.uv.workspace]
 members = ["md-to-telegraph"]
 
