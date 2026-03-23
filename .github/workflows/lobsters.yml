@@ -24,8 +24,8 @@ jobs:
           TELEGRAPH_ACCESS_TOKEN: ${{ secrets.TELEGRAPH_ACCESS_TOKEN }}
           MAX_ITEMS_PER_RUN: "5"
         run: |
-          uv run main.py --read-messages
-          uv run main.py
+          uv run lobstergram --read-messages
+          uv run lobstergram
 
       - name: Commit state.json if changed
         run: |

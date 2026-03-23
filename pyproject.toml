@@ -1,3 +1,10 @@
+[build-system]
+requires = ["uv_build"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-root = ""
+
 [project]
 name = "lobstergram"
 version = "0.1.0"
@@ -14,6 +21,9 @@ dependencies = [
     "rich>=14.2.0",
     "beautifulsoup4>=4.14.3",
 ]
+
+[project.scripts]
+lobstergram = "lobstergram.main:main"
 
 [tool.uv.workspace]
 members = ["md-to-telegraph"]
