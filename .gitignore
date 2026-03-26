@@ -15,3 +15,8 @@ wheels/
 # Coverage
 .coverage
 htmlcov/
+
+# SQLite database
+*.db
+*.db-shm
+*.db-wal

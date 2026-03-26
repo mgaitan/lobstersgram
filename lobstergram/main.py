@@ -152,10 +152,7 @@ def parse_args() -> argparse.Namespace:
         help="Read Telegram updates and register /start subscribers",
     )
     parser.add_argument("--rss-url", default=config.RSS_URL)
-    parser.add_argument("--state-path", default=str(config.STATE_PATH))
-    parser.add_argument("--message-map-path", default=str(config.MESSAGE_MAP_PATH))
-    parser.add_argument("--bookmarks-path", default=str(config.BOOKMARKS_PATH))
-    parser.add_argument("--subscribers-path", default=str(config.SUBSCRIBERS_PATH))
+    parser.add_argument("--db-path", default=str(config.DB_PATH))
     parser.add_argument("--max-items", type=int, default=config.MAX_ITEMS_PER_RUN)
     parser.add_argument("--timeout", type=int, default=config.REQUEST_TIMEOUT)
     parser.add_argument("--log-level", default=config.LOG_LEVEL)
@@ -167,10 +164,7 @@ def parse_args() -> argparse.Namespace:
 
 def apply_runtime_config(args: argparse.Namespace) -> None:
     config.RSS_URL = args.rss_url
-    config.STATE_PATH = Path(args.state_path)
-    config.MESSAGE_MAP_PATH = Path(args.message_map_path)
-    config.BOOKMARKS_PATH = Path(args.bookmarks_path)
-    config.SUBSCRIBERS_PATH = Path(args.subscribers_path)
+    config.DB_PATH = Path(args.db_path)
     config.MAX_ITEMS_PER_RUN = args.max_items
     config.REQUEST_TIMEOUT = args.timeout
     config.LOG_LEVEL = args.log_level.lower()
@@ -186,7 +180,7 @@ def main() -> int:
     config.log(
         "info",
         "start "
-        f"rss={config.RSS_URL} state={config.STATE_PATH} max_items={config.MAX_ITEMS_PER_RUN} "
+        f"rss={config.RSS_URL} db={config.DB_PATH} max_items={config.MAX_ITEMS_PER_RUN} "
         f"timeout={config.REQUEST_TIMEOUT} log_level={config.LOG_LEVEL}",
     )
 

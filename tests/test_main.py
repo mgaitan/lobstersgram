@@ -16,14 +16,11 @@ from lobstergram.main import apply_runtime_config
 
 
 def test_apply_runtime_config_updates_new_state_paths(monkeypatch: pytest.MonkeyPatch) -> None:
-    """apply_runtime_config updates message-map and bookmark paths along with others."""
+    """apply_runtime_config updates db-path and other settings."""
     # Register all mutated config attrs with monkeypatch so they are restored after the test.
     for attr in (
         "RSS_URL",
-        "STATE_PATH",
-        "MESSAGE_MAP_PATH",
-        "BOOKMARKS_PATH",
-        "SUBSCRIBERS_PATH",
+        "DB_PATH",
         "MAX_ITEMS_PER_RUN",
         "REQUEST_TIMEOUT",
         "LOG_LEVEL",
@@ -36,10 +33,7 @@ def test_apply_runtime_config_updates_new_state_paths(monkeypatch: pytest.Monkey
     apply_runtime_config(
         argparse.Namespace(
             rss_url="https://example.com/rss",
-            state_path="custom-state.json",
-            message_map_path="custom-message-map.json",
-            bookmarks_path="custom-bookmarks.csv",
-            subscribers_path="custom-subscribers.json",
+            db_path="custom.db",
             max_items=7,
             timeout=30,
             log_level="debug",
@@ -48,5 +42,4 @@ def test_apply_runtime_config_updates_new_state_paths(monkeypatch: pytest.Monkey
             inter_message_delay=0.1,
         )
     )
-    assert str(config.MESSAGE_MAP_PATH) == "custom-message-map.json"
-    assert str(config.BOOKMARKS_PATH) == "custom-bookmarks.csv"
+    assert str(config.DB_PATH) == "custom.db"

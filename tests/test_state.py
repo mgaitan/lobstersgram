@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import csv
 import os
 from pathlib import Path
 
@@ -12,6 +11,7 @@ import pytest
 os.environ.setdefault("TELEGRAM_BOT_TOKEN", "test-token")
 os.environ.setdefault("TELEGRAPH_ACCESS_TOKEN", "test-token")
 
+from lobstergram import config
 from lobstergram.state import (
     load_bookmarks,
     load_message_map,
@@ -34,14 +34,16 @@ _ARTICLE_LINKS = {
 
 
 def test_load_message_map_returns_empty_when_missing(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    """load_message_map returns an empty dict when the file does not exist."""
+    """load_message_map returns an empty dict when the database has no entries."""
     monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(config, "DB_PATH", tmp_path / "test.db")
     assert load_message_map() == {}
 
 
 def test_save_and_load_message_map_roundtrip(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """save_message_map followed by load_message_map returns the same data."""
     monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(config, "DB_PATH", tmp_path / "test.db")
     msg_map = {"123:456": _ARTICLE_LINKS}
     save_message_map(msg_map)
     assert load_message_map() == msg_map
@@ -50,6 +52,7 @@ def test_save_and_load_message_map_roundtrip(tmp_path: Path, monkeypatch: pytest
 def test_update_message_map_adds_entries(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """update_message_map writes new chat_id:message_id keys."""
     monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(config, "DB_PATH", tmp_path / "test.db")
     update_message_map({111: 42, 222: 99}, _ARTICLE_LINKS)
     stored = load_message_map()
     assert stored["111:42"] == _ARTICLE_LINKS
@@ -59,8 +62,9 @@ def test_update_message_map_adds_entries(tmp_path: Path, monkeypatch: pytest.Mon
 def test_update_message_map_noop_on_empty_sent(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """update_message_map does nothing when sent dict is empty."""
     monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(config, "DB_PATH", tmp_path / "test.db")
     update_message_map({}, _ARTICLE_LINKS)
-    assert not (tmp_path / "message_map.json").exists()
+    assert load_message_map() == {}
 
 
 # ---------------------------------------------------------------------------
@@ -78,36 +82,39 @@ _BOOKMARK_ROW: dict[str, str] = {
 }
 
 
-def test_save_bookmarks_creates_csv_with_header(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    """save_bookmarks creates the CSV file with a header row."""
+def test_save_bookmarks_persists_rows(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """save_bookmarks stores rows that can be retrieved by load_bookmarks."""
     monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(config, "DB_PATH", tmp_path / "test.db")
     save_bookmarks([_BOOKMARK_ROW])
-    csv_text = (tmp_path / "bookmark.csv").read_text(encoding="utf-8")
-    assert "telegraph_link" in csv_text
-    assert "alice" in csv_text
+    rows = load_bookmarks()
+    assert len(rows) == 1
+    assert rows[0]["username"] == "alice"
+    assert rows[0]["telegraph_link"] == "https://telegra.ph/test-article"
 
 
 def test_load_bookmarks_roundtrip(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """load_bookmarks returns the rows previously written by save_bookmarks."""
     monkeypatch.chdir(tmp_path)
-    row2 = {**_BOOKMARK_ROW, "username": "bob"}
+    monkeypatch.setattr(config, "DB_PATH", tmp_path / "test.db")
+    row2 = {**_BOOKMARK_ROW, "user_id": "999", "username": "bob"}
     save_bookmarks([_BOOKMARK_ROW, row2])
     assert load_bookmarks() == [_BOOKMARK_ROW, row2]
 
 
 def test_load_bookmarks_missing_file_is_empty(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    """load_bookmarks returns an empty list when the CSV file is absent."""
+    """load_bookmarks returns an empty list when the database has no bookmark rows."""
     monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(config, "DB_PATH", tmp_path / "test.db")
     assert load_bookmarks() == []
 
 
-def test_save_bookmarks_csv_columns(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    """The CSV produced by save_bookmarks contains all expected columns."""
+def test_save_bookmarks_stores_all_columns(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """save_bookmarks stores all expected fields and they round-trip correctly."""
     monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(config, "DB_PATH", tmp_path / "test.db")
     save_bookmarks([_BOOKMARK_ROW])
-    with (tmp_path / "bookmark.csv").open(newline="", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
-        rows = list(reader)
+    rows = load_bookmarks()
     assert len(rows) == 1
     assert rows[0]["username"] == "alice"
     assert rows[0]["emojis"] == "👍"
@@ -128,3 +135,4 @@ def test_sync_bookmark_rows_removes_existing_reaction() -> None:
     synced, changed = sync_bookmark_rows([_BOOKMARK_ROW], [removal_row])
     assert synced == []
     assert changed is True
+
