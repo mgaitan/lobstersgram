@@ -151,6 +151,8 @@ def update_message_map(sent: dict[str | int, int], article_links: dict[str, str]
         for chat_id, message_id in sent.items()
     ]
     with get_connection() as conn:
+        # INSERT OR REPLACE here because we append entries incrementally (unlike
+        # save_message_map which replaces the whole table at once).
         conn.executemany(
             "INSERT OR REPLACE INTO message_map"
             " (key, telegraph_link, article_link, discussion_link, title)"
@@ -199,7 +201,7 @@ def save_bookmarks(rows: list[dict[str, str]]) -> None:
     with get_connection() as conn:
         conn.execute("DELETE FROM bookmarks")
         conn.executemany(
-            "INSERT OR REPLACE INTO bookmarks"
+            "INSERT INTO bookmarks"
             " (telegraph_link, article_link, discussion_link, username, user_id, emojis, reacted_at)"
             " VALUES (?, ?, ?, ?, ?, ?, ?)",
             [
