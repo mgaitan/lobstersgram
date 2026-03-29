@@ -80,6 +80,44 @@ def test_no_images_is_noop() -> None:
     assert "<img" not in result
 
 
+def test_data_src_used_when_src_missing() -> None:
+    """data-src is used as the image URL when src is absent (lazy-loading)."""
+    html = '<p><img data-src="https://cdn.example.com/lazy.png"/></p>'
+    result = make_images_absolute(html, BASE)
+    assert 'src="https://cdn.example.com/lazy.png"' in result
+
+
+def test_data_src_used_when_src_is_data_uri() -> None:
+    """data-src is preferred over a data-URI placeholder in src."""
+    html = '<p><img src="data:image/gif;base64,R0lGOD" data-src="https://cdn.example.com/real.png"/></p>'
+    result = make_images_absolute(html, BASE)
+    assert 'src="https://cdn.example.com/real.png"' in result
+    assert "data:" not in result
+
+
+def test_srcset_highest_width_used_when_no_src() -> None:
+    """When src is absent the highest-width srcset candidate is used."""
+    html = (
+        '<p><img srcset="https://cdn.example.com/img-320.png 320w,'
+        " https://cdn.example.com/img-640.png 640w,"
+        ' https://cdn.example.com/img-1280.png 1280w"/></p>'
+    )
+    result = make_images_absolute(html, BASE)
+    assert 'src="https://cdn.example.com/img-1280.png"' in result
+
+
+def test_srcset_fallback_when_src_is_data_uri() -> None:
+    """A data-URI src is replaced by the best srcset candidate."""
+    html = (
+        '<p><img src="data:image/gif;base64,R0lGOD"'
+        ' srcset="https://cdn.example.com/img-320.png 320w,'
+        ' https://cdn.example.com/img-1024.png 1024w"/></p>'
+    )
+    result = make_images_absolute(html, BASE)
+    assert 'src="https://cdn.example.com/img-1024.png"' in result
+    assert "data:" not in result
+
+
 # ---------------------------------------------------------------------------
 # preprocess_figures tests
 # ---------------------------------------------------------------------------
@@ -93,6 +131,49 @@ def test_preprocess_figures_converts_text_figure_to_blockquote() -> None:
     assert soup.find("blockquote") is not None
     assert soup.find("figure") is None
     assert "This is a quote" in result
+
+
+def test_preprocess_figures_image_in_div_wrapper_unchanged() -> None:
+    """A figure whose only <div> wraps an image (no text) is NOT converted.
+
+    Substack and similar sites wrap images in <div> containers inside <figure>.
+    These should remain as figures so that the image is preserved.
+    """
+    html = (
+        "<figure>"
+        '<div class="image-container">'
+        '<img src="https://example.com/photo.png" alt="photo"/>'
+        "</div>"
+        "<figcaption>A photo</figcaption>"
+        "</figure>"
+    )
+    result = preprocess_figures(html)
+    soup = BeautifulSoup(result, "html.parser")
+    assert soup.find("figure") is not None, "image figure should not be converted to blockquote"
+    assert soup.find("blockquote") is None
+    assert soup.find("img") is not None, "image must be preserved"
+
+
+def test_preprocess_figures_substack_style_image_figure_unchanged() -> None:
+    """Substack-style nested image figure is NOT converted to a blockquote."""
+    html = (
+        '<figure>'
+        '<a class="image-link" href="https://example.com/">'
+        '<div class="image2-inset">'
+        '<img src="https://cdn.example.com/img.png"'
+        ' srcset="https://cdn.example.com/img-640.png 640w,'
+        ' https://cdn.example.com/img-1280.png 1280w"'
+        ' alt="diagram"/>'
+        "</div>"
+        "</a>"
+        "<figcaption></figcaption>"
+        "</figure>"
+    )
+    result = preprocess_figures(html)
+    soup = BeautifulSoup(result, "html.parser")
+    assert soup.find("figure") is not None, "image figure should not be converted"
+    assert soup.find("blockquote") is None
+    assert soup.find("img") is not None, "image must be preserved"
 
 
 def test_preprocess_figures_image_only_figure_unchanged() -> None:
