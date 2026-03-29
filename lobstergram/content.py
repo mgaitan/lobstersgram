@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
+import contextlib
 import re
 import urllib.parse
 from dataclasses import dataclass
 
 import requests
 from bs4 import BeautifulSoup
+from bs4.element import Tag
 from markdownify import markdownify as html_to_md
 from readability import Document
 
@@ -69,15 +71,56 @@ def normalize_id(entry: object) -> str:
     return str(hash(getattr(entry, "title", "")))
 
 
+def _best_src_for_img(img: Tag) -> str:
+    """Return the best candidate URL for an ``<img>`` element.
+
+    Checks attributes in priority order:
+    1. ``src`` — used as-is when it is a non-empty, non-data-URI value.
+    2. ``data-src`` — common lazy-loading pattern.
+    3. ``srcset`` — picks the candidate with the highest ``w`` descriptor
+       (or the last candidate when no width descriptors are present).
+    """
+    src = (img.get("src") or "").strip()
+    if src and not src.startswith("data:"):
+        return src
+
+    data_src = (img.get("data-src") or "").strip()
+    if data_src and not data_src.startswith("data:"):
+        return data_src
+
+    srcset = (img.get("srcset") or "").strip()
+    if srcset:
+        best_url, best_w = "", -1
+        for entry in srcset.split(","):
+            parts = entry.strip().split()
+            if not parts:
+                continue
+            url = parts[0]
+            w = 0
+            if len(parts) > 1 and parts[1].endswith("w"):
+                with contextlib.suppress(ValueError):
+                    w = int(parts[1].removesuffix("w"))
+            if w > best_w:
+                best_w, best_url = w, url
+        if best_url:
+            return best_url
+
+    return ""
+
+
 def make_images_absolute(content_html: str, base_url: str) -> str:
     """Resolve relative image src attributes to absolute URLs.
 
     Images whose src cannot be made into an absolute ``http``/``https`` URL
     are removed entirely so that Telegraph never shows a broken image.
+
+    Falls back to ``data-src`` (lazy-loading) and ``srcset`` when ``src`` is
+    absent or a data-URI placeholder so that images from sites like Substack
+    are preserved.
     """
     soup = BeautifulSoup(content_html, "html.parser")
     for img in soup.find_all("img"):
-        src = (img.get("src") or "").strip()
+        src = _best_src_for_img(img)
         if not src:
             img.decompose()
             continue
@@ -108,8 +151,14 @@ def preprocess_figures(content_html: str) -> str:
     for figure in soup.find_all("figure"):
         figcaption = figure.find("figcaption")
 
-        # Only convert figures whose body (outside figcaption) has text content
-        has_body_text = any(el.find_parent("figcaption") is None for el in figure.find_all(["p", "div"]))
+        # Only convert figures whose body (outside figcaption) has *text* content.
+        # A <div> or <p> that only wraps an image is not considered a text body so
+        # that ordinary image figures (e.g. Substack's <figure><div><img/></div></figure>)
+        # are left unchanged and their images are preserved.
+        has_body_text = any(
+            el.find_parent("figcaption") is None and bool(el.get_text(strip=True))
+            for el in figure.find_all(["p", "div"])
+        )
         if not has_body_text:
             continue
 
