@@ -8,7 +8,7 @@ import urllib.parse
 from dataclasses import dataclass
 
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, UnicodeDammit
 from bs4.element import Tag
 from markdownify import markdownify as html_to_md
 from readability import Document
@@ -52,13 +52,19 @@ def fetch_html(url: str) -> str | None:
         headers={"User-Agent": "lobsters-telegraph-bot"},
     )
     r.raise_for_status()
-    # requests defaults to ISO-8859-1 for text/html when the server doesn't
-    # declare a charset in the Content-Type header (HTTP/1.1 spec §3.7.1).
-    # Most modern sites serve UTF-8 without advertising it, causing multi-byte
-    # characters (e.g. em-dash U+2014) to appear as mojibake (â€").
-    # Use charset_normalizer/chardet detection instead of that ISO-8859-1 fallback.
-    r.encoding = r.apparent_encoding or "utf-8"
-    return r.text
+    # Try UTF-8 first: the vast majority of modern pages are UTF-8 even when
+    # they don't advertise it in the Content-Type header.  If the raw bytes are
+    # not valid UTF-8, fall back to UnicodeDammit (BeautifulSoup's encoding
+    # detective), which checks <meta charset> / <meta http-equiv="Content-Type">
+    # before statistical detection — far more reliable than requests' ISO-8859-1
+    # default or pure statistical analysis alone.
+    try:
+        return r.content.decode("utf-8")
+    except UnicodeDecodeError:
+        dammit = UnicodeDammit(r.content, is_html=True)
+        # latin-1 is a lossless last resort: every byte maps to a Unicode code point,
+        # so it never raises UnicodeDecodeError.
+        return dammit.unicode_markup or r.content.decode("latin-1")
 
 
 def is_lobsters_discussion(url: str) -> bool:
