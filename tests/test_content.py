@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import unittest.mock
 
 from bs4 import BeautifulSoup
 
@@ -10,7 +11,7 @@ from bs4 import BeautifulSoup
 os.environ.setdefault("TELEGRAM_BOT_TOKEN", "test-token")
 os.environ.setdefault("TELEGRAPH_ACCESS_TOKEN", "test-token")
 
-from lobstergram.content import make_images_absolute, preprocess_figures
+from lobstergram.content import fetch_html, make_images_absolute, preprocess_figures
 
 BASE = "https://example.com/articles/my-post/"
 
@@ -253,3 +254,54 @@ def test_preprocess_figures_preserves_quote_text_content() -> None:
     assert "Second sentence." in result
     soup = BeautifulSoup(result, "html.parser")
     assert soup.find("blockquote") is not None
+
+
+# ---------------------------------------------------------------------------
+# fetch_html encoding tests
+# ---------------------------------------------------------------------------
+
+
+class _FakeResponse:
+    """Minimal stand-in for ``requests.Response`` that decodes content dynamically.
+
+    Unlike ``MagicMock``, the ``text`` property reacts to changes in ``encoding``,
+    matching the real ``requests.Response`` behaviour that ``fetch_html`` relies on.
+    """
+
+    def __init__(self, content: bytes, initial_encoding: str, apparent_encoding: str) -> None:
+        self.content = content
+        self.encoding: str = initial_encoding
+        self.apparent_encoding = apparent_encoding
+
+    def raise_for_status(self) -> None:
+        pass
+
+    @property
+    def text(self) -> str:
+        return self.content.decode(self.encoding or "utf-8", errors="replace")
+
+
+def test_fetch_html_uses_apparent_encoding_for_utf8_content() -> None:
+    """fetch_html must decode UTF-8 content correctly even when the server does not
+    declare a charset in the Content-Type header.
+
+    Without an explicit charset, requests defaults to ISO-8859-1, which mangles
+    multi-byte UTF-8 characters such as the em-dash (U+2014) into â€".
+    """
+    em_dash_html = "<p>Hello \u2014 world</p>"
+    utf8_bytes = em_dash_html.encode("utf-8")
+
+    # Simulate a response where the server did not advertise a charset: requests
+    # defaults ``encoding`` to ISO-8859-1 but ``apparent_encoding`` detects UTF-8.
+    fake_response = _FakeResponse(
+        content=utf8_bytes,
+        initial_encoding="iso-8859-1",
+        apparent_encoding="utf-8",
+    )
+
+    with unittest.mock.patch("lobstergram.content.requests.get", return_value=fake_response):
+        result = fetch_html("https://example.com/article")
+
+    assert result is not None
+    assert "\u2014" in result, "em-dash should be preserved, not mangled"
+    assert "â€" not in (result or ""), "mojibake should not appear in the output"

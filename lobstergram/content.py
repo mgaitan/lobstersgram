@@ -52,6 +52,12 @@ def fetch_html(url: str) -> str | None:
         headers={"User-Agent": "lobsters-telegraph-bot"},
     )
     r.raise_for_status()
+    # requests defaults to ISO-8859-1 for text/html when the server doesn't
+    # declare a charset in the Content-Type header (HTTP/1.1 spec §3.7.1).
+    # Most modern sites serve UTF-8 without advertising it, causing multi-byte
+    # characters (e.g. em-dash U+2014) to appear as mojibake (â€").
+    # Use charset_normalizer/chardet detection instead of that ISO-8859-1 fallback.
+    r.encoding = r.apparent_encoding or "utf-8"
     return r.text
 
 
