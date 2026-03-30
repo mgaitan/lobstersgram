@@ -262,13 +262,15 @@ def test_preprocess_figures_preserves_quote_text_content() -> None:
 
 
 class _FakeResponse:
-    """Minimal stand-in for ``requests.Response`` that decodes content dynamically.
+    """Minimal stand-in for ``requests.Response`` used by ``fetch_html`` tests.
 
-    Unlike ``MagicMock``, the ``text`` property reacts to changes in ``encoding``,
-    matching the real ``requests.Response`` behaviour that ``fetch_html`` relies on.
+    Only ``content`` (raw bytes) and ``raise_for_status`` are required by the
+    current implementation, which passes ``r.content`` directly to
+    ``UnicodeDammit``.  The ``encoding`` and ``apparent_encoding`` attributes
+    are kept for reference but are no longer read by ``fetch_html``.
     """
 
-    def __init__(self, content: bytes, initial_encoding: str, apparent_encoding: str) -> None:
+    def __init__(self, content: bytes, initial_encoding: str = "iso-8859-1", apparent_encoding: str = "utf-8") -> None:
         self.content = content
         self.encoding: str = initial_encoding
         self.apparent_encoding = apparent_encoding
@@ -287,17 +289,13 @@ def test_fetch_html_uses_apparent_encoding_for_utf8_content() -> None:
 
     Without an explicit charset, requests defaults to ISO-8859-1, which mangles
     multi-byte UTF-8 characters such as the em-dash (U+2014) into â€".
+    UnicodeDammit falls back to charset_normalizer detection for content with
+    no <meta charset> declaration and should still detect UTF-8 correctly.
     """
     em_dash_html = "<p>Hello \u2014 world</p>"
     utf8_bytes = em_dash_html.encode("utf-8")
 
-    # Simulate a response where the server did not advertise a charset: requests
-    # defaults ``encoding`` to ISO-8859-1 but ``apparent_encoding`` detects UTF-8.
-    fake_response = _FakeResponse(
-        content=utf8_bytes,
-        initial_encoding="iso-8859-1",
-        apparent_encoding="utf-8",
-    )
+    fake_response = _FakeResponse(content=utf8_bytes)
 
     with unittest.mock.patch("lobstergram.content.requests.get", return_value=fake_response):
         result = fetch_html("https://example.com/article")
@@ -305,3 +303,34 @@ def test_fetch_html_uses_apparent_encoding_for_utf8_content() -> None:
     assert result is not None
     assert "\u2014" in result, "em-dash should be preserved, not mangled"
     assert "â€" not in (result or ""), "mojibake should not appear in the output"
+
+
+def test_fetch_html_decodes_curly_apostrophe_via_meta_charset() -> None:
+    """fetch_html must correctly decode curly apostrophes (U+2019) in pages that
+    declare <meta charset="utf-8"> even when charset_normalizer would incorrectly
+    identify the encoding as ISO-8859-1.
+
+    Mostly-ASCII pages with only a handful of multi-byte characters (e.g. a curly
+    apostrophe in "We've been doing") can fool pure statistical detection into
+    returning ISO-8859-1, causing mojibake: the three UTF-8 bytes \\xE2\\x80\\x99 for
+    U+2019 are decoded as "â" + two non-printable control chars, yielding "Weâve".
+    Using UnicodeDammit with is_html=True ensures the <meta charset> declaration is
+    consulted first, producing the correct result.
+    """
+    apostrophe_html = (
+        '<html><head><meta charset="utf-8"/></head>'
+        "<body><p>We\u2019ve been doing</p></body></html>"
+    )
+    utf8_bytes = apostrophe_html.encode("utf-8")
+
+    # Simulate charset_normalizer failing to detect UTF-8 for mostly-ASCII content.
+    # Note: apparent_encoding is no longer consulted by fetch_html; it is kept
+    # here only as documentation of the failure mode this test addresses.
+    fake_response = _FakeResponse(content=utf8_bytes)
+
+    with unittest.mock.patch("lobstergram.content.requests.get", return_value=fake_response):
+        result = fetch_html("https://example.com/article")
+
+    assert result is not None
+    assert "\u2019" in result, "curly apostrophe should be preserved, not mangled"
+    assert "Weâ" not in (result or ""), "mojibake must not appear in the output"
