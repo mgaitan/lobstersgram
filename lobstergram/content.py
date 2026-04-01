@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import base64
 import contextlib
 import re
 import urllib.parse
@@ -14,6 +15,14 @@ from markdownify import markdownify as html_to_md
 from readability import Document
 
 from lobstergram import config
+
+# Matches a GitHub repository root URL such as https://github.com/owner/repo
+# (with optional trailing slash or query/fragment).  URLs with additional path
+# segments (issues, pull-requests, blob/tree paths, etc.) will be excluded by
+# the path-length check in _github_repo_match().
+_GITHUB_REPO_RE = re.compile(
+    r"^https?://github\.com/(?P<owner>[^/]+)/(?P<repo>[^/?#]+)(?:[/?#].*)?$"
+)
 
 
 @dataclass(frozen=True)
@@ -65,6 +74,113 @@ def fetch_html(url: str) -> str | None:
         # latin-1 is a lossless last resort: every byte maps to a Unicode code point,
         # so it never raises UnicodeDecodeError.
         return dammit.unicode_markup or r.content.decode("latin-1")
+
+
+def _github_repo_match(url: str) -> re.Match[str] | None:
+    """Return a regex match for *url* if it is a GitHub repository root URL.
+
+    Only the two-segment path ``/owner/repo`` (with optional trailing slash or
+    query/fragment) is accepted.  URLs with deeper paths (issues, pull-requests,
+    file trees, etc.) return *None*.
+    """
+    m = _GITHUB_REPO_RE.match(url)
+    if m is None:
+        return None
+    # Reject URLs whose path has more than two non-empty segments (owner + repo).
+    path_parts = urllib.parse.urlparse(url).path.strip("/").split("/")
+    if len(path_parts) != 2:  # noqa: PLR2004
+        return None
+    return m
+
+
+def _make_markdown_images_absolute(markdown: str, base_url: str) -> str:
+    """Resolve relative image URLs in *markdown* against *base_url*.
+
+    Absolute URLs (``http://``, ``https://``, ``data:``) are left unchanged.
+    Relative paths such as ``./screenshot.png`` or ``docs/img.png`` are joined
+    with *base_url* so that images render correctly when the Markdown is
+    displayed outside the repository (e.g. on Telegraph).
+    """
+
+    def _replace(m: re.Match[str]) -> str:
+        alt, img_url = m.group(1), m.group(2)
+        if img_url.startswith(("http://", "https://", "data:")):
+            return m.group(0)
+        return f"![{alt}]({urllib.parse.urljoin(base_url, img_url)})"
+
+    return re.sub(r"!\[([^\]]*)\]\(([^)]+)\)", _replace, markdown)
+
+
+def fetch_github_readme(url: str) -> tuple[str, str] | None:
+    """Return ``(title, markdown)`` for a GitHub repository root URL.
+
+    Uses the GitHub REST API to fetch the repository description (for the
+    title) and the README source (for the Markdown content), bypassing
+    HTML rendering artefacts such as stripped code blocks and missing
+    headings that affect Readability-based extraction of GitHub pages.
+
+    Relative image URLs in the README are resolved to absolute
+    ``raw.githubusercontent.com`` URLs so that images render on Telegraph.
+
+    Returns *None* when *url* is not a GitHub repository root URL or when
+    any API request fails (the caller falls back to HTML extraction).
+    """
+    m = _github_repo_match(url)
+    if m is None:
+        return None
+
+    owner, repo = m.group("owner"), m.group("repo")
+    headers = {
+        "User-Agent": "lobsters-telegraph-bot",
+        "Accept": "application/vnd.github+json",
+    }
+
+    # Fetch repo metadata for the page title.
+    title = f"{owner}/{repo}"
+    try:
+        r = requests.get(
+            f"https://api.github.com/repos/{owner}/{repo}",
+            timeout=config.REQUEST_TIMEOUT,
+            headers=headers,
+        )
+        r.raise_for_status()
+        data = r.json()
+        full_name = data.get("full_name") or title
+        description = (data.get("description") or "").strip()
+        title = f"{full_name} – {description}" if description else full_name
+    except requests.RequestException as exc:
+        config.log("warn", f"fetch_github_readme repo info failed err={type(exc).__name__}: {exc}")
+
+    # Fetch the README via the API (handles any default branch automatically).
+    try:
+        r = requests.get(
+            f"https://api.github.com/repos/{owner}/{repo}/readme",
+            timeout=config.REQUEST_TIMEOUT,
+            headers=headers,
+        )
+        r.raise_for_status()
+        data = r.json()
+        # Only use Markdown READMEs; fall back to HTML extraction for RST, etc.
+        readme_name: str = data.get("name", "")
+        if not readme_name.lower().endswith((".md", ".markdown")):
+            config.log(
+                "debug",
+                f"fetch_github_readme non-markdown readme name={readme_name} url={url}",
+            )
+            return None
+        content_b64: str = data.get("content", "")
+        markdown = base64.b64decode(content_b64).decode("utf-8")
+        # Resolve relative image paths using the raw content base URL.
+        download_url: str = data.get("download_url") or ""
+        if download_url:
+            # Base URL is the directory containing the README file.
+            raw_base = download_url.rsplit("/", 1)[0] + "/"
+            markdown = _make_markdown_images_absolute(markdown, raw_base)
+        config.log("debug", f"fetch_github_readme ok owner={owner} repo={repo} markdown_len={len(markdown)}")
+        return title, markdown
+    except (requests.RequestException, ValueError, KeyError) as exc:
+        config.log("warn", f"fetch_github_readme readme failed err={type(exc).__name__}: {exc}")
+        return None
 
 
 def is_lobsters_discussion(url: str) -> bool:
@@ -224,6 +340,19 @@ def extract_main_content(url: str) -> tuple[str, str, str, str]:
     """
     Returns (title, markdown_content, fallback_text, intro).
     """
+    # For GitHub repository root URLs, prefer the raw README markdown so that
+    # code blocks, headings, and other structures are preserved faithfully.
+    github_result = fetch_github_readme(url)
+    if github_result is not None:
+        title, markdown = github_result
+        fallback_text = markdown_to_text(markdown)
+        intro = extract_intro(markdown, fallback_text)
+        config.log(
+            "debug",
+            f"extract_main_content used github readme url={url} markdown_len={len(markdown)}",
+        )
+        return title, markdown, fallback_text, intro
+
     downloaded = fetch_html(url)
     if not downloaded:
         raise ContentDownloadError
