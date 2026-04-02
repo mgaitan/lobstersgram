@@ -342,8 +342,7 @@ def extract_main_content(url: str) -> tuple[str, str, str, str]:
     """
     # For GitHub repository root URLs, prefer the raw README markdown so that
     # code blocks, headings, and other structures are preserved faithfully.
-    github_result = fetch_github_readme(url)
-    if github_result is not None:
+    if github_result := fetch_github_readme(url):
         title, markdown = github_result
         fallback_text = markdown_to_text(markdown)
         intro = extract_intro(markdown, fallback_text)
