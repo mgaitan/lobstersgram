@@ -15,9 +15,12 @@ os.environ.setdefault("TELEGRAPH_ACCESS_TOKEN", "test-token")
 from lobstergram.content import (
     _github_repo_match,
     _make_markdown_images_absolute,
+    _strip_badge_paragraphs,
+    extract_intro,
     fetch_github_readme,
     fetch_html,
     make_images_absolute,
+    markdown_to_text,
     preprocess_figures,
 )
 
@@ -548,3 +551,119 @@ def test_fetch_github_readme_api_failure_returns_none() -> None:
         result = fetch_github_readme("https://github.com/owner/repo")
 
     assert result is None
+
+
+# ---------------------------------------------------------------------------
+# _strip_badge_paragraphs tests
+# ---------------------------------------------------------------------------
+
+
+def test_strip_badge_paragraphs_removes_badge_only_paragraph() -> None:
+    """A paragraph consisting entirely of badge images is removed."""
+    md = (
+        "# Title\n\n"
+        "[![npm](https://img.shields.io/npm/v/pkg)](https://npmjs.com/pkg) "
+        "[![discord](https://img.shields.io/discord/123)](https://discord.gg/xyz)\n\n"
+        "This is the real description."
+    )
+    result = _strip_badge_paragraphs(md)
+    assert "shields.io" not in result
+    assert "# Title" in result
+    assert "This is the real description." in result
+
+
+def test_strip_badge_paragraphs_keeps_mixed_paragraph() -> None:
+    """A paragraph containing badges AND text is kept in full."""
+    md = "[![badge](https://img.shields.io/x)](https://example.com) Install with pip."
+    result = _strip_badge_paragraphs(md)
+    assert result == md
+
+
+def test_strip_badge_paragraphs_noop_when_no_badges() -> None:
+    """Markdown without any badge paragraphs is returned unchanged."""
+    md = "# Hello\n\nSome text without badges."
+    assert _strip_badge_paragraphs(md) == md
+
+
+def test_strip_badge_paragraphs_multiple_badge_paragraphs_all_removed() -> None:
+    """Multiple consecutive badge-only paragraphs are all removed."""
+    md = (
+        "[![b1](https://img.shields.io/b1)](https://example.com/b1)\n\n"
+        "[![b2](https://img.shields.io/b2)](https://example.com/b2)\n\n"
+        "Real content here."
+    )
+    result = _strip_badge_paragraphs(md)
+    assert "shields.io" not in result
+    assert "Real content here." in result
+
+
+# ---------------------------------------------------------------------------
+# markdown_to_text empty-link stripping tests
+# ---------------------------------------------------------------------------
+
+
+def test_markdown_to_text_strips_empty_link_residue() -> None:
+    """Empty links [](url) left after badge image stripping are removed."""
+    # [![alt](img)](link) after stripping the image part becomes [](link)
+    md = "[](https://www.npmjs.com/package/pkg) [](https://discord.gg/xyz)"
+    result = markdown_to_text(md)
+    assert "npmjs.com" not in result
+    assert "discord.gg" not in result
+    assert result.strip() == ""
+
+
+def test_markdown_to_text_badge_paragraph_becomes_empty() -> None:
+    """A paragraph of badge images is reduced to empty text by markdown_to_text."""
+    badges = (
+        "[![npm](https://img.shields.io/npm/v/pkg)](https://npmjs.com/pkg) "
+        "[![discord](https://img.shields.io/discord/123)](https://discord.gg/xyz)"
+    )
+    result = markdown_to_text(badges)
+    assert result.strip() == ""
+
+
+# ---------------------------------------------------------------------------
+# extract_intro badge-skipping tests
+# ---------------------------------------------------------------------------
+
+
+def test_extract_intro_skips_badge_only_paragraph() -> None:
+    """extract_intro skips paragraphs that consist entirely of badge links."""
+    md = (
+        "[![npm](https://img.shields.io/npm/v/pkg)](https://npmjs.com/pkg) "
+        "[![discord](https://img.shields.io/discord/123)](https://discord.gg/xyz)\n\n"
+        "This is a tiny, simple library that does useful things."
+    )
+    intro = extract_intro(md, "")
+    assert "npmjs.com" not in intro
+    assert "discord.gg" not in intro
+    assert "tiny, simple library" in intro
+
+
+# ---------------------------------------------------------------------------
+# fetch_github_readme badge-stripping tests
+# ---------------------------------------------------------------------------
+
+
+def test_fetch_github_readme_strips_badge_paragraphs() -> None:
+    """fetch_github_readme strips badge-only paragraphs from the README."""
+    readme_md = (
+        "# mylib\n\n"
+        "[![npm](https://img.shields.io/npm/v/mylib)](https://npmjs.com/mylib) "
+        "[![ci](https://img.shields.io/github/actions/workflow/status/owner/mylib/ci.yml)](https://github.com/owner/mylib/actions)\n\n"
+        "mylib is a great library.\n"
+    )
+    repo_data = {"full_name": "owner/mylib", "description": "A great library"}
+    readme_data = {
+        "name": "README.md",
+        "content": base64.b64encode(readme_md.encode()).decode(),
+        "download_url": "https://raw.githubusercontent.com/owner/mylib/main/README.md",
+    }
+    with _make_fake_requests_get(repo_data, readme_data):
+        result = fetch_github_readme("https://github.com/owner/mylib")
+
+    assert result is not None
+    _, markdown = result
+    assert "shields.io" not in markdown
+    assert "# mylib" in markdown
+    assert "mylib is a great library." in markdown
