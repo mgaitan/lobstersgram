@@ -22,6 +22,7 @@ from lobstergram.content import (
     make_images_absolute,
     markdown_to_text,
     preprocess_figures,
+    strip_leading_title_heading,
 )
 
 BASE = "https://example.com/articles/my-post/"
@@ -667,3 +668,62 @@ def test_fetch_github_readme_strips_badge_paragraphs() -> None:
     assert "shields.io" not in markdown
     assert "# mylib" in markdown
     assert "mylib is a great library." in markdown
+
+
+# ---------------------------------------------------------------------------
+# strip_leading_title_heading tests
+# ---------------------------------------------------------------------------
+
+
+def test_strip_leading_title_heading_exact_match() -> None:
+    """The leading h1 heading is removed when it exactly matches the title."""
+    md = "# My Article Title\n\nSome content here."
+    result = strip_leading_title_heading(md, "My Article Title")
+    assert result == "Some content here."
+    assert "My Article Title" not in result
+
+
+def test_strip_leading_title_heading_case_insensitive() -> None:
+    """The comparison is case-insensitive."""
+    md = "# the machines are fine. I'm worried about us.\n\nContent."
+    result = strip_leading_title_heading(md, "The machines are fine. I'm worried about us.")
+    assert "the machines are fine" not in result
+    assert "Content." in result
+
+
+def test_strip_leading_title_heading_no_match_kept() -> None:
+    """The heading is kept when its text does not match the title."""
+    md = "# Different Title\n\nContent."
+    result = strip_leading_title_heading(md, "My Article")
+    assert result == md
+
+
+def test_strip_leading_title_heading_h2_removed() -> None:
+    """Works for h2 headings as well."""
+    md = "## Section Heading\n\nContent."
+    result = strip_leading_title_heading(md, "Section Heading")
+    assert "Section Heading" not in result
+    assert "Content." in result
+
+
+def test_strip_leading_title_heading_no_heading_unchanged() -> None:
+    """Markdown without a leading heading is returned unchanged."""
+    md = "Just a paragraph with no heading."
+    result = strip_leading_title_heading(md, "Just a paragraph with no heading.")
+    assert result == md
+
+
+def test_strip_leading_title_heading_leading_blank_lines_ignored() -> None:
+    """Leading blank lines before the heading are ignored."""
+    md = "\n\n# My Title\n\nContent."
+    result = strip_leading_title_heading(md, "My Title")
+    assert "My Title" not in result
+    assert "Content." in result
+
+
+def test_strip_leading_title_heading_trailing_blank_lines_stripped() -> None:
+    """Blank lines between the removed heading and content are stripped."""
+    md = "# My Title\n\n\nContent paragraph."
+    result = strip_leading_title_heading(md, "My Title")
+    assert result == "Content paragraph."
+

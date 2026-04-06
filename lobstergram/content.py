@@ -335,6 +335,25 @@ def preprocess_figures(content_html: str) -> str:
     return str(soup)
 
 
+def strip_leading_title_heading(markdown: str, title: str) -> str:
+    """Remove the leading heading from *markdown* if it duplicates *title*.
+
+    Telegraph already shows the page title above the content.  If the
+    extracted article content begins with a heading whose text matches the
+    title, it would be rendered twice.  This function drops that first
+    heading (and any blank lines immediately following it) so the title
+    appears only once.
+
+    The comparison is case-insensitive and ignores surrounding whitespace.
+    """
+    stripped = markdown.lstrip("\n")
+    m = re.match(r"^#{1,6}\s+(.*)\s*$", stripped, re.MULTILINE)
+    if m and m.group(1).strip().lower() == title.strip().lower():
+        rest = stripped[m.end() :]
+        return rest.lstrip("\n")
+    return markdown
+
+
 def markdown_to_text(markdown_text: str) -> str:
     text = markdown_text
     text = re.sub(r"!\[([^\]]*)\]\([^)]+\)", "", text)
