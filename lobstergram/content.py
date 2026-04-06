@@ -24,6 +24,11 @@ _GITHUB_REPO_RE = re.compile(
     r"^https?://github\.com/(?P<owner>[^/]+)/(?P<repo>[^/?#]+)(?:[/?#].*)?$"
 )
 
+# Matches a single badge expressed as a Markdown image-inside-link:
+#   [![alt text](image_url)](link_url)
+# Used to detect and remove badge-only paragraphs from README content.
+_BADGE_RE = re.compile(r"\[!\[[^\]]*\]\([^)]+\)\]\([^)]+\)")
+
 
 @dataclass(frozen=True)
 class Item:
@@ -91,6 +96,25 @@ def _github_repo_match(url: str) -> re.Match[str] | None:
     if len(path_parts) != 2:  # noqa: PLR2004
         return None
     return m
+
+
+def _strip_badge_paragraphs(markdown: str) -> str:
+    """Remove badge-only paragraphs from *markdown*.
+
+    A paragraph is considered badge-only when it consists entirely of
+    ``[![alt](img_url)](link_url)`` patterns and whitespace.  Such paragraphs
+    (common at the top of GitHub READMEs) render as broken or empty blocks on
+    Telegraph because many badge image hosts (e.g. shields.io) are not served
+    as Telegraph-compatible images.  Removing them prevents empty vertical
+    space in the rendered page and ensures ``extract_intro`` skips them in
+    favour of the actual description text.
+    """
+    result: list[str] = []
+    for para in markdown.split("\n\n"):
+        remaining = _BADGE_RE.sub("", para).strip()
+        if remaining:
+            result.append(para)
+    return "\n\n".join(result)
 
 
 def _make_markdown_images_absolute(markdown: str, base_url: str) -> str:
@@ -170,6 +194,10 @@ def fetch_github_readme(url: str) -> tuple[str, str] | None:
             return None
         content_b64: str = data.get("content", "")
         markdown = base64.b64decode(content_b64).decode("utf-8")
+        # Remove badge-only paragraphs before storing the content so that
+        # Telegraph does not render empty/broken badge image blocks and
+        # extract_intro can find the actual description text.
+        markdown = _strip_badge_paragraphs(markdown)
         # Resolve relative image paths using the raw content base URL.
         download_url: str = data.get("download_url") or ""
         if download_url:
@@ -313,6 +341,7 @@ def markdown_to_text(markdown_text: str) -> str:
     text = re.sub(r"```.*?```", "", text, flags=re.DOTALL)
     text = re.sub(r"`([^`]+)`", r"\1", text)
     text = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", text)
+    text = re.sub(r"\[\]\([^)]+\)", "", text)
     text = re.sub(r"^#{1,6}\s+", "", text, flags=re.MULTILINE)
     text = re.sub(r"^>\s?", "", text, flags=re.MULTILINE)
     text = re.sub(r"^\s*[-*+]\s+", "", text, flags=re.MULTILINE)
