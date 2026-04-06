@@ -9,6 +9,7 @@ import requests
 from md_to_telegraph import md_to_telegraph
 
 from lobstergram import config
+from lobstergram.content import strip_leading_title_heading
 
 
 class TelegraphAPIError(RuntimeError):
@@ -64,7 +65,7 @@ def telegraph_create_page(
     """
     # Build nodes from Markdown first; fallback to plain paragraphs.
     nodes: list[dict[str, object]] = []
-    markdown = content_markdown.strip()
+    markdown = strip_leading_title_heading(content_markdown.strip(), title)
     if markdown:
         nodes = md_to_telegraph(markdown)
 
