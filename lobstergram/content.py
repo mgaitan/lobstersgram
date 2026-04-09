@@ -446,8 +446,7 @@ def extract_main_content(url: str) -> tuple[str, str, str, str]:
     # page header (outside the article body).  Recover it from the og:image
     # meta tag, which virtually every modern blog engine populates, and prepend
     # it to the content when it is not already present.
-    og_image = _extract_og_image(downloaded)
-    if og_image:
+    if og_image := _extract_og_image(downloaded):
         og_image_abs = urllib.parse.urljoin(url, og_image)
         if og_image_abs.startswith(("http://", "https://")) and og_image_abs not in content_html:
             config.log("debug", f"extract_main_content prepending og:image url={og_image_abs}")
