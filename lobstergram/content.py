@@ -270,11 +270,11 @@ def fetch_github_blob_markdown(url: str) -> tuple[str, str] | None:
     raw_base = raw_url.rsplit("/", 1)[0] + "/"
     markdown = _make_markdown_images_absolute(markdown, raw_base)
 
-    heading, markdown_body = _extract_leading_heading(markdown)
+    heading, markdown = _extract_leading_heading(markdown)
     title = heading or f"{owner}/{repo}/{path}"
 
-    config.log("debug", f"fetch_github_blob_markdown ok url={url} title={title!r} markdown_len={len(markdown_body)}")
-    return title, markdown_body
+    config.log("debug", f"fetch_github_blob_markdown ok url={url} title={title!r} markdown_len={len(markdown)}")
+    return title, markdown
 
 
 def is_lobsters_discussion(url: str) -> bool:
