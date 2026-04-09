@@ -13,6 +13,7 @@ os.environ.setdefault("TELEGRAM_BOT_TOKEN", "test-token")
 os.environ.setdefault("TELEGRAPH_ACCESS_TOKEN", "test-token")
 
 from lobstergram.content import (
+    _extract_og_image,
     _github_repo_match,
     _make_markdown_images_absolute,
     _strip_badge_paragraphs,
@@ -726,4 +727,44 @@ def test_strip_leading_title_heading_trailing_blank_lines_stripped() -> None:
     md = "# My Title\n\n\nContent paragraph."
     result = strip_leading_title_heading(md, "My Title")
     assert result == "Content paragraph."
+
+
+# ---------------------------------------------------------------------------
+# _extract_og_image tests
+# ---------------------------------------------------------------------------
+
+
+def test_extract_og_image_returns_og_image_url() -> None:
+    """og:image content is extracted correctly."""
+    html = '<html><head><meta property="og:image" content="https://example.com/hero.jpg"/></head></html>'
+    assert _extract_og_image(html) == "https://example.com/hero.jpg"
+
+
+def test_extract_og_image_falls_back_to_twitter_image() -> None:
+    """twitter:image is used when og:image is absent."""
+    html = '<html><head><meta name="twitter:image" content="https://example.com/tw.jpg"/></head></html>'
+    assert _extract_og_image(html) == "https://example.com/tw.jpg"
+
+
+def test_extract_og_image_prefers_og_over_twitter() -> None:
+    """og:image takes priority over twitter:image."""
+    html = (
+        '<html><head>'
+        '<meta property="og:image" content="https://example.com/og.jpg"/>'
+        '<meta name="twitter:image" content="https://example.com/tw.jpg"/>'
+        "</head></html>"
+    )
+    assert _extract_og_image(html) == "https://example.com/og.jpg"
+
+
+def test_extract_og_image_returns_empty_when_absent() -> None:
+    """Empty string is returned when neither tag is present."""
+    html = "<html><head><title>No image here</title></head></html>"
+    assert _extract_og_image(html) == ""
+
+
+def test_extract_og_image_ignores_empty_content() -> None:
+    """An og:image tag with empty content is treated as absent."""
+    html = '<html><head><meta property="og:image" content=""/></head></html>'
+    assert _extract_og_image(html) == ""
 

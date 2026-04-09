@@ -264,6 +264,23 @@ def _best_src_for_img(img: Tag) -> str:
     return ""
 
 
+def _extract_og_image(html: str) -> str:
+    """Return the og:image URL from HTML meta tags, or an empty string.
+
+    Checks ``og:image`` first, then ``twitter:image`` as a fallback.
+    Both are widely supported by blog engines (Ghost, WordPress, etc.) and
+    reliably contain the article's featured/hero image URL.
+    """
+    soup = BeautifulSoup(html, "html.parser")
+    for attrs in ({"property": "og:image"}, {"name": "twitter:image"}):
+        tag = soup.find("meta", attrs=attrs)
+        if tag:
+            content = (tag.get("content") or "").strip()  # type: ignore[union-attr]
+            if content:
+                return content
+    return ""
+
+
 def make_images_absolute(content_html: str, base_url: str) -> str:
     """Resolve relative image src attributes to absolute URLs.
 
@@ -423,6 +440,18 @@ def extract_main_content(url: str) -> tuple[str, str, str, str]:
         content_html = downloaded
 
     content_html = make_images_absolute(content_html, url)
+
+    # Readability often strips the featured/hero image that blogs place in the
+    # page header (outside the article body).  Recover it from the og:image
+    # meta tag, which virtually every modern blog engine populates, and prepend
+    # it to the content when it is not already present.
+    og_image = _extract_og_image(downloaded)
+    if og_image:
+        og_image_abs = urllib.parse.urljoin(url, og_image)
+        if og_image_abs.startswith(("http://", "https://")) and og_image_abs not in content_html:
+            config.log("debug", f"extract_main_content prepending og:image url={og_image_abs}")
+            content_html = f'<figure><img src="{og_image_abs}"/></figure>{content_html}'
+
     content_html = preprocess_figures(content_html)
 
     extracted_markdown = html_to_md(content_html)
