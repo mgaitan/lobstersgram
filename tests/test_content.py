@@ -782,16 +782,23 @@ def test_extract_leading_heading_strips_only_first_heading() -> None:
 # ---------------------------------------------------------------------------
 
 
-def _make_fake_blob_get(content: str) -> object:
-    """Return a mock for ``requests.get`` that returns raw file content."""
+def _make_fake_blob_api_get(
+    content_md: str,
+    name: str = "file.md",
+    download_url: str = "",
+) -> object:
+    """Return a mock for ``requests.get`` that returns a GitHub Contents API response."""
 
     class _FakeResp:
         def raise_for_status(self) -> None:
             pass
 
-        @property
-        def content(self) -> bytes:
-            return content.encode("utf-8")
+        def json(self) -> dict:
+            return {
+                "name": name,
+                "content": base64.b64encode(content_md.encode()).decode() + "\n",
+                "download_url": download_url,
+            }
 
     return unittest.mock.patch("lobstergram.content.requests.get", return_value=_FakeResp())
 
@@ -800,7 +807,7 @@ def test_fetch_github_blob_markdown_extracts_title_from_h2() -> None:
     """Title is taken from the first h2 heading; heading is stripped from content."""
     blob_md = "## Embedding EYG in Gleam programs\n\nEYG is type safe scripting."
     url = "https://github.com/CrowdHailer/eyg-lang/blob/main/guides/embedding_in_gleam.md"
-    with _make_fake_blob_get(blob_md):
+    with _make_fake_blob_api_get(blob_md, name="embedding_in_gleam.md"):
         result = fetch_github_blob_markdown(url)
     assert result is not None
     title, markdown = result
@@ -813,7 +820,7 @@ def test_fetch_github_blob_markdown_extracts_title_from_h1() -> None:
     """Title is taken from an h1 heading when present."""
     blob_md = "# Getting Started\n\nWelcome to the guide."
     url = "https://github.com/owner/repo/blob/main/docs/guide.md"
-    with _make_fake_blob_get(blob_md):
+    with _make_fake_blob_api_get(blob_md, name="guide.md"):
         result = fetch_github_blob_markdown(url)
     assert result is not None
     title, markdown = result
@@ -826,7 +833,7 @@ def test_fetch_github_blob_markdown_fallback_title_when_no_heading() -> None:
     """Falls back to owner/repo/path title when the file has no heading."""
     blob_md = "Just some plain content without a heading."
     url = "https://github.com/owner/repo/blob/main/notes.md"
-    with _make_fake_blob_get(blob_md):
+    with _make_fake_blob_api_get(blob_md, name="notes.md"):
         result = fetch_github_blob_markdown(url)
     assert result is not None
     title, markdown = result
@@ -868,7 +875,8 @@ def test_fetch_github_blob_markdown_resolves_relative_images() -> None:
     """Relative image URLs in the raw Markdown are resolved to absolute URLs."""
     blob_md = "# Guide\n\n![diagram](./images/diagram.png)\n\nSome text."
     url = "https://github.com/owner/repo/blob/main/docs/guide.md"
-    with _make_fake_blob_get(blob_md):
+    download_url = "https://raw.githubusercontent.com/owner/repo/main/docs/guide.md"
+    with _make_fake_blob_api_get(blob_md, name="guide.md", download_url=download_url):
         result = fetch_github_blob_markdown(url)
     assert result is not None
     _, markdown = result

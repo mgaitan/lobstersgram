@@ -142,6 +142,47 @@ def _make_markdown_images_absolute(markdown: str, base_url: str) -> str:
     return re.sub(r"!\[([^\]]*)\]\(([^)]+)\)", _replace, markdown)
 
 
+def _fetch_github_api_file(api_url: str) -> str | None:
+    """Fetch a Markdown file from the GitHub REST API.
+
+    *api_url* must point to a GitHub API endpoint that returns a single-file
+    object — either ``/repos/{owner}/{repo}/readme`` or
+    ``/repos/{owner}/{repo}/contents/{path}``.  Both endpoints share the same
+    ``{name, content (base64), download_url}`` response shape.
+
+    Returns the processed Markdown string (badge paragraphs stripped, relative
+    image URLs resolved to absolute ``raw.githubusercontent.com`` paths), or
+    *None* when the file is not a Markdown file or when the request fails.
+    """
+    try:
+        r = requests.get(
+            api_url,
+            timeout=config.REQUEST_TIMEOUT,
+            headers={
+                "User-Agent": "lobsters-telegraph-bot",
+                "Accept": "application/vnd.github+json",
+            },
+        )
+        r.raise_for_status()
+        data = r.json()
+        name: str = data.get("name", "")
+        if not name.lower().endswith((".md", ".markdown")):
+            config.log("debug", f"_fetch_github_api_file non-markdown name={name!r} url={api_url}")
+            return None
+        content_b64: str = data.get("content", "")
+        markdown = base64.b64decode(content_b64).decode("utf-8")
+        markdown = _strip_badge_paragraphs(markdown)
+        download_url: str = data.get("download_url") or ""
+        if download_url:
+            raw_base = download_url.rsplit("/", 1)[0] + "/"
+            markdown = _make_markdown_images_absolute(markdown, raw_base)
+    except (requests.RequestException, ValueError, KeyError) as exc:
+        config.log("warn", f"_fetch_github_api_file failed url={api_url} err={type(exc).__name__}: {exc}")
+        return None
+    else:
+        return markdown
+
+
 def fetch_github_readme(url: str) -> tuple[str, str] | None:
     """Return ``(title, markdown)`` for a GitHub repository root URL.
 
@@ -161,10 +202,6 @@ def fetch_github_readme(url: str) -> tuple[str, str] | None:
         return None
 
     owner, repo = m.group("owner"), m.group("repo")
-    headers = {
-        "User-Agent": "lobsters-telegraph-bot",
-        "Accept": "application/vnd.github+json",
-    }
 
     # Fetch repo metadata for the page title.
     title = f"{owner}/{repo}"
@@ -172,7 +209,7 @@ def fetch_github_readme(url: str) -> tuple[str, str] | None:
         r = requests.get(
             f"https://api.github.com/repos/{owner}/{repo}",
             timeout=config.REQUEST_TIMEOUT,
-            headers=headers,
+            headers={"User-Agent": "lobsters-telegraph-bot", "Accept": "application/vnd.github+json"},
         )
         r.raise_for_status()
         data = r.json()
@@ -182,40 +219,12 @@ def fetch_github_readme(url: str) -> tuple[str, str] | None:
     except requests.RequestException as exc:
         config.log("warn", f"fetch_github_readme repo info failed err={type(exc).__name__}: {exc}")
 
-    # Fetch the README via the API (handles any default branch automatically).
-    try:
-        r = requests.get(
-            f"https://api.github.com/repos/{owner}/{repo}/readme",
-            timeout=config.REQUEST_TIMEOUT,
-            headers=headers,
-        )
-        r.raise_for_status()
-        data = r.json()
-        # Only use Markdown READMEs; fall back to HTML extraction for RST, etc.
-        readme_name: str = data.get("name", "")
-        if not readme_name.lower().endswith((".md", ".markdown")):
-            config.log(
-                "debug",
-                f"fetch_github_readme non-markdown readme name={readme_name} url={url}",
-            )
-            return None
-        content_b64: str = data.get("content", "")
-        markdown = base64.b64decode(content_b64).decode("utf-8")
-        # Remove badge-only paragraphs before storing the content so that
-        # Telegraph does not render empty/broken badge image blocks and
-        # extract_intro can find the actual description text.
-        markdown = _strip_badge_paragraphs(markdown)
-        # Resolve relative image paths using the raw content base URL.
-        download_url: str = data.get("download_url") or ""
-        if download_url:
-            # Base URL is the directory containing the README file.
-            raw_base = download_url.rsplit("/", 1)[0] + "/"
-            markdown = _make_markdown_images_absolute(markdown, raw_base)
-        config.log("debug", f"fetch_github_readme ok owner={owner} repo={repo} markdown_len={len(markdown)}")
-        return title, markdown
-    except (requests.RequestException, ValueError, KeyError) as exc:
-        config.log("warn", f"fetch_github_readme readme failed err={type(exc).__name__}: {exc}")
+    # Fetch the README via the shared helper (handles any default branch automatically).
+    markdown = _fetch_github_api_file(f"https://api.github.com/repos/{owner}/{repo}/readme")
+    if markdown is None:
         return None
+    config.log("debug", f"fetch_github_readme ok owner={owner} repo={repo} markdown_len={len(markdown)}")
+    return title, markdown
 
 
 def _extract_leading_heading(markdown: str) -> tuple[str | None, str]:
@@ -235,10 +244,11 @@ def _extract_leading_heading(markdown: str) -> tuple[str | None, str]:
 def fetch_github_blob_markdown(url: str) -> tuple[str, str] | None:
     """Return ``(title, markdown)`` for a GitHub blob URL pointing to a Markdown file.
 
-    Fetches the raw file content directly from ``raw.githubusercontent.com``,
-    extracts the first heading as the page title, and returns the remaining
-    content as the Markdown body.  Relative image URLs are resolved to
-    absolute ``raw.githubusercontent.com`` paths.
+    Uses the GitHub Contents API (``/repos/{owner}/{repo}/contents/{path}?ref={branch}``)
+    to fetch the file — the same mechanism used by ``fetch_github_readme`` for READMEs —
+    so that badge stripping, image resolution, and error handling are shared via
+    ``_fetch_github_api_file``.  The first heading in the file is extracted as the
+    page title and stripped from the content body.
 
     Returns *None* when *url* does not match a GitHub Markdown blob URL or
     when the fetch fails (the caller falls back to HTML extraction).
@@ -249,26 +259,14 @@ def fetch_github_blob_markdown(url: str) -> tuple[str, str] | None:
 
     owner, repo, branch, path = m.group("owner"), m.group("repo"), m.group("branch"), m.group("path")
 
-    # Build the raw content URL from the captured regex groups to avoid fragile
-    # string-replacement that could fail if 'github.com' appears elsewhere in
-    # the URL (e.g. in a query parameter or path segment).
-    raw_url = f"https://raw.githubusercontent.com/{owner}/{repo}/{branch}/{path}"
-
-    try:
-        r = requests.get(
-            raw_url,
-            timeout=config.REQUEST_TIMEOUT,
-            headers={"User-Agent": "lobsters-telegraph-bot"},
-        )
-        r.raise_for_status()
-        markdown = r.content.decode("utf-8")
-    except requests.RequestException as exc:
-        config.log("warn", f"fetch_github_blob_markdown failed err={type(exc).__name__}: {exc}")
+    # Use the GitHub Contents API with an explicit ref so the correct branch or
+    # commit is fetched.  The response format matches the readme endpoint, so
+    # the shared _fetch_github_api_file helper handles fetching, decoding, and
+    # post-processing identically to how fetch_github_readme works.
+    api_url = f"https://api.github.com/repos/{owner}/{repo}/contents/{path}?ref={branch}"
+    markdown = _fetch_github_api_file(api_url)
+    if markdown is None:
         return None
-
-    markdown = _strip_badge_paragraphs(markdown)
-    raw_base = raw_url.rsplit("/", 1)[0] + "/"
-    markdown = _make_markdown_images_absolute(markdown, raw_base)
 
     heading, markdown = _extract_leading_heading(markdown)
     title = heading or f"{owner}/{repo}/{path}"
