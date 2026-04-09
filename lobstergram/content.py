@@ -335,6 +335,33 @@ def preprocess_figures(content_html: str) -> str:
     return str(soup)
 
 
+_BROKEN_LINK_RE = re.compile(r"\[(\s*\n[ \t]*\n[ \t]*)([^\]]*)\]\(")
+
+
+def _normalize_markdown_links(markdown: str) -> str:
+    """Fix Markdown links broken by blank lines inside the opening bracket.
+
+    When HTML is converted to Markdown, a ``<br>`` or block element between a
+    literal ``[`` and the link text can introduce a blank line inside the link
+    brackets, e.g.::
+
+        [\n  \nWe need to evolve...](url)
+
+    Mistletoe treats the blank line as a paragraph boundary and renders ``[``
+    as a plain-text paragraph followed by ``We need to evolve...](url)`` as
+    another paragraph, showing the raw URL instead of a hyperlink.
+
+    This function collapses the leading whitespace/newlines so the link is
+    recognised as valid Markdown.
+    """
+
+    def _fix(m: re.Match[str]) -> str:
+        text = m.group(2).replace("\n", " ").strip()
+        return f"[{text}]("
+
+    return _BROKEN_LINK_RE.sub(_fix, markdown)
+
+
 def strip_leading_title_heading(markdown: str, title: str) -> str:
     """Remove the leading heading from *markdown* if it duplicates *title*.
 
@@ -426,6 +453,7 @@ def extract_main_content(url: str) -> tuple[str, str, str, str]:
     content_html = preprocess_figures(content_html)
 
     extracted_markdown = html_to_md(content_html)
+    extracted_markdown = _normalize_markdown_links(extracted_markdown)
     config.log(
         "debug",
         f"extract_main_content markdown_len={len(extracted_markdown)} url={url}",
