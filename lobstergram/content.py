@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import base64
 import contextlib
+import html
 import re
 import urllib.parse
 from dataclasses import dataclass
@@ -450,7 +451,7 @@ def extract_main_content(url: str) -> tuple[str, str, str, str]:
         og_image_abs = urllib.parse.urljoin(url, og_image)
         if og_image_abs.startswith(("http://", "https://")) and og_image_abs not in content_html:
             config.log("debug", f"extract_main_content prepending og:image url={og_image_abs}")
-            content_html = f'<figure><img src="{og_image_abs}"/></figure>{content_html}'
+            content_html = f'<figure><img src="{html.escape(og_image_abs)}"/></figure>{content_html}'
 
     content_html = preprocess_figures(content_html)
 
