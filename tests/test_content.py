@@ -6,6 +6,7 @@ import base64
 import os
 import unittest.mock
 
+import requests
 from bs4 import BeautifulSoup
 
 # Provide required env vars before importing the package (they are read at module level).
@@ -854,12 +855,10 @@ def test_fetch_github_blob_markdown_repo_root_url_returns_none() -> None:
 
 def test_fetch_github_blob_markdown_request_failure_returns_none() -> None:
     """Returns None when the raw content fetch fails."""
-    import requests as _requests
-
     url = "https://github.com/owner/repo/blob/main/file.md"
     with unittest.mock.patch(
         "lobstergram.content.requests.get",
-        side_effect=_requests.RequestException("network error"),
+        side_effect=requests.RequestException("network error"),
     ):
         result = fetch_github_blob_markdown(url)
     assert result is None
@@ -873,5 +872,5 @@ def test_fetch_github_blob_markdown_resolves_relative_images() -> None:
         result = fetch_github_blob_markdown(url)
     assert result is not None
     _, markdown = result
-    assert "raw.githubusercontent.com" in markdown
+    assert "https://raw.githubusercontent.com/owner/repo/main/docs/images/diagram.png" in markdown
     assert "./images/diagram.png" not in markdown

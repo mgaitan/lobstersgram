@@ -27,7 +27,7 @@ _GITHUB_REPO_RE = re.compile(
 # Matches a GitHub blob URL for a Markdown file, e.g.:
 #   https://github.com/owner/repo/blob/main/path/to/file.md
 _GITHUB_BLOB_RE = re.compile(
-    r"^https?://github\.com/(?P<owner>[^/]+)/(?P<repo>[^/]+)/blob/[^/]+/(?P<path>.+\.(?:md|markdown))$",
+    r"^https?://github\.com/(?P<owner>[^/]+)/(?P<repo>[^/]+)/blob/(?P<branch>[^/]+)/(?P<path>.+\.(?:md|markdown))$",
     re.IGNORECASE,
 )
 
@@ -247,13 +247,12 @@ def fetch_github_blob_markdown(url: str) -> tuple[str, str] | None:
     if m is None:
         return None
 
-    owner, repo, path = m.group("owner"), m.group("repo"), m.group("path")
+    owner, repo, branch, path = m.group("owner"), m.group("repo"), m.group("branch"), m.group("path")
 
-    # Convert the blob URL to a raw content URL by swapping the host and
-    # removing the "/blob/" segment:
-    # https://github.com/owner/repo/blob/branch/path  →
-    # https://raw.githubusercontent.com/owner/repo/branch/path
-    raw_url = url.replace("github.com", "raw.githubusercontent.com", 1).replace("/blob/", "/", 1)
+    # Build the raw content URL from the captured regex groups to avoid fragile
+    # string-replacement that could fail if 'github.com' appears elsewhere in
+    # the URL (e.g. in a query parameter or path segment).
+    raw_url = f"https://raw.githubusercontent.com/{owner}/{repo}/{branch}/{path}"
 
     try:
         r = requests.get(
