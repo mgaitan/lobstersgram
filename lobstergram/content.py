@@ -24,6 +24,13 @@ _GITHUB_REPO_RE = re.compile(
     r"^https?://github\.com/(?P<owner>[^/]+)/(?P<repo>[^/?#]+)(?:[/?#].*)?$"
 )
 
+# Matches a GitHub blob URL for a Markdown file, e.g.:
+#   https://github.com/owner/repo/blob/main/path/to/file.md
+_GITHUB_BLOB_RE = re.compile(
+    r"^https?://github\.com/(?P<owner>[^/]+)/(?P<repo>[^/]+)/blob/[^/]+/(?P<path>.+\.(?:md|markdown))$",
+    re.IGNORECASE,
+)
+
 # Matches a single badge expressed as a Markdown image-inside-link:
 #   [![alt text](image_url)](link_url)
 # Used to detect and remove badge-only paragraphs from README content.
@@ -211,6 +218,66 @@ def fetch_github_readme(url: str) -> tuple[str, str] | None:
         return None
 
 
+def _extract_leading_heading(markdown: str) -> tuple[str | None, str]:
+    """Extract and remove the first heading from *markdown*.
+
+    Returns ``(heading_text, rest_of_markdown)`` when a heading is found at
+    the very start of the content (after stripping blank lines).  Returns
+    ``(None, original_markdown)`` when no leading heading is present.
+    """
+    stripped = markdown.lstrip("\n")
+    m = re.match(r"^#{1,6}\s+(.*?)\s*$", stripped, re.MULTILINE)
+    if m:
+        return m.group(1).strip(), stripped[m.end() :].lstrip("\n")
+    return None, markdown
+
+
+def fetch_github_blob_markdown(url: str) -> tuple[str, str] | None:
+    """Return ``(title, markdown)`` for a GitHub blob URL pointing to a Markdown file.
+
+    Fetches the raw file content directly from ``raw.githubusercontent.com``,
+    extracts the first heading as the page title, and returns the remaining
+    content as the Markdown body.  Relative image URLs are resolved to
+    absolute ``raw.githubusercontent.com`` paths.
+
+    Returns *None* when *url* does not match a GitHub Markdown blob URL or
+    when the fetch fails (the caller falls back to HTML extraction).
+    """
+    m = _GITHUB_BLOB_RE.match(url)
+    if m is None:
+        return None
+
+    owner, repo, path = m.group("owner"), m.group("repo"), m.group("path")
+
+    # Convert the blob URL to a raw content URL by swapping the host and
+    # removing the "/blob/" segment:
+    # https://github.com/owner/repo/blob/branch/path  →
+    # https://raw.githubusercontent.com/owner/repo/branch/path
+    raw_url = url.replace("github.com", "raw.githubusercontent.com", 1).replace("/blob/", "/", 1)
+
+    try:
+        r = requests.get(
+            raw_url,
+            timeout=config.REQUEST_TIMEOUT,
+            headers={"User-Agent": "lobsters-telegraph-bot"},
+        )
+        r.raise_for_status()
+        markdown = r.content.decode("utf-8")
+    except requests.RequestException as exc:
+        config.log("warn", f"fetch_github_blob_markdown failed err={type(exc).__name__}: {exc}")
+        return None
+
+    markdown = _strip_badge_paragraphs(markdown)
+    raw_base = raw_url.rsplit("/", 1)[0] + "/"
+    markdown = _make_markdown_images_absolute(markdown, raw_base)
+
+    heading, markdown_body = _extract_leading_heading(markdown)
+    title = heading or f"{owner}/{repo}/{path}"
+
+    config.log("debug", f"fetch_github_blob_markdown ok url={url} title={title!r} markdown_len={len(markdown_body)}")
+    return title, markdown_body
+
+
 def is_lobsters_discussion(url: str) -> bool:
     if not url:
         return False
@@ -388,6 +455,20 @@ def extract_main_content(url: str) -> tuple[str, str, str, str]:
     """
     Returns (title, markdown_content, fallback_text, intro).
     """
+    # For GitHub blob URLs pointing to Markdown files, fetch the raw content
+    # directly and use the first heading as the title.  This avoids the noisy
+    # "file.md at main · owner/repo · GitHub" browser-tab title that Readability
+    # would otherwise extract from the HTML page.
+    if github_blob_result := fetch_github_blob_markdown(url):
+        title, markdown = github_blob_result
+        fallback_text = markdown_to_text(markdown)
+        intro = extract_intro(markdown, fallback_text)
+        config.log(
+            "debug",
+            f"extract_main_content used github blob url={url} markdown_len={len(markdown)}",
+        )
+        return title, markdown, fallback_text, intro
+
     # For GitHub repository root URLs, prefer the raw README markdown so that
     # code blocks, headings, and other structures are preserved faithfully.
     if github_result := fetch_github_readme(url):
