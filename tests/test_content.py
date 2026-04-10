@@ -6,6 +6,7 @@ import base64
 import os
 import unittest.mock
 
+import requests
 from bs4 import BeautifulSoup
 
 # Provide required env vars before importing the package (they are read at module level).
@@ -13,10 +14,12 @@ os.environ.setdefault("TELEGRAM_BOT_TOKEN", "test-token")
 os.environ.setdefault("TELEGRAPH_ACCESS_TOKEN", "test-token")
 
 from lobstergram.content import (
+    _extract_leading_heading,
     _github_repo_match,
     _make_markdown_images_absolute,
     _strip_badge_paragraphs,
     extract_intro,
+    fetch_github_blob_markdown,
     fetch_github_readme,
     fetch_html,
     make_images_absolute,
@@ -727,3 +730,155 @@ def test_strip_leading_title_heading_trailing_blank_lines_stripped() -> None:
     result = strip_leading_title_heading(md, "My Title")
     assert result == "Content paragraph."
 
+
+# ---------------------------------------------------------------------------
+# _extract_leading_heading tests
+# ---------------------------------------------------------------------------
+
+
+def test_extract_leading_heading_h1() -> None:
+    """Extracts an h1 heading and returns the rest of the markdown."""
+    md = "# Real Title\n\nSome body content."
+    heading, rest = _extract_leading_heading(md)
+    assert heading == "Real Title"
+    assert rest == "Some body content."
+
+
+def test_extract_leading_heading_h2() -> None:
+    """Extracts an h2 heading (common in GitHub markdown files)."""
+    md = "## Embedding EYG in Gleam programs\n\nEYG is type safe."
+    heading, rest = _extract_leading_heading(md)
+    assert heading == "Embedding EYG in Gleam programs"
+    assert rest == "EYG is type safe."
+
+
+def test_extract_leading_heading_no_heading_returns_none() -> None:
+    """Returns (None, original_markdown) when no leading heading is present."""
+    md = "Just a plain paragraph."
+    heading, rest = _extract_leading_heading(md)
+    assert heading is None
+    assert rest == md
+
+
+def test_extract_leading_heading_blank_lines_before_heading() -> None:
+    """Leading blank lines before the heading are ignored."""
+    md = "\n\n# Title Here\n\nBody."
+    heading, rest = _extract_leading_heading(md)
+    assert heading == "Title Here"
+    assert rest == "Body."
+
+
+def test_extract_leading_heading_strips_only_first_heading() -> None:
+    """Only the very first heading is extracted; subsequent headings stay in rest."""
+    md = "# First\n\n## Second\n\nContent."
+    heading, rest = _extract_leading_heading(md)
+    assert heading == "First"
+    assert "## Second" in rest
+    assert "Content." in rest
+
+
+# ---------------------------------------------------------------------------
+# fetch_github_blob_markdown tests
+# ---------------------------------------------------------------------------
+
+
+def _make_fake_blob_api_get(
+    content_md: str,
+    name: str = "file.md",
+    download_url: str = "",
+) -> object:
+    """Return a mock for ``requests.get`` that returns a GitHub Contents API response."""
+
+    class _FakeResp:
+        def raise_for_status(self) -> None:
+            pass
+
+        def json(self) -> dict:
+            return {
+                "name": name,
+                "content": base64.b64encode(content_md.encode()).decode() + "\n",
+                "download_url": download_url,
+            }
+
+    return unittest.mock.patch("lobstergram.content.requests.get", return_value=_FakeResp())
+
+
+def test_fetch_github_blob_markdown_extracts_title_from_h2() -> None:
+    """Title is taken from the first h2 heading; heading is stripped from content."""
+    blob_md = "## Embedding EYG in Gleam programs\n\nEYG is type safe scripting."
+    url = "https://github.com/CrowdHailer/eyg-lang/blob/main/guides/embedding_in_gleam.md"
+    with _make_fake_blob_api_get(blob_md, name="embedding_in_gleam.md"):
+        result = fetch_github_blob_markdown(url)
+    assert result is not None
+    title, markdown = result
+    assert title == "Embedding EYG in Gleam programs"
+    assert "## Embedding EYG" not in markdown
+    assert "EYG is type safe scripting." in markdown
+
+
+def test_fetch_github_blob_markdown_extracts_title_from_h1() -> None:
+    """Title is taken from an h1 heading when present."""
+    blob_md = "# Getting Started\n\nWelcome to the guide."
+    url = "https://github.com/owner/repo/blob/main/docs/guide.md"
+    with _make_fake_blob_api_get(blob_md, name="guide.md"):
+        result = fetch_github_blob_markdown(url)
+    assert result is not None
+    title, markdown = result
+    assert title == "Getting Started"
+    assert "# Getting Started" not in markdown
+    assert "Welcome to the guide." in markdown
+
+
+def test_fetch_github_blob_markdown_fallback_title_when_no_heading() -> None:
+    """Falls back to owner/repo/path title when the file has no heading."""
+    blob_md = "Just some plain content without a heading."
+    url = "https://github.com/owner/repo/blob/main/notes.md"
+    with _make_fake_blob_api_get(blob_md, name="notes.md"):
+        result = fetch_github_blob_markdown(url)
+    assert result is not None
+    title, markdown = result
+    assert title == "owner/repo/notes.md"
+    assert "Just some plain content" in markdown
+
+
+def test_fetch_github_blob_markdown_non_markdown_url_returns_none() -> None:
+    """Returns None for GitHub blob URLs that are not Markdown files."""
+    url = "https://github.com/owner/repo/blob/main/script.py"
+    result = fetch_github_blob_markdown(url)
+    assert result is None
+
+
+def test_fetch_github_blob_markdown_non_github_url_returns_none() -> None:
+    """Returns None for non-GitHub URLs."""
+    result = fetch_github_blob_markdown("https://example.com/article.md")
+    assert result is None
+
+
+def test_fetch_github_blob_markdown_repo_root_url_returns_none() -> None:
+    """Returns None for GitHub repository root URLs (handled by fetch_github_readme)."""
+    result = fetch_github_blob_markdown("https://github.com/owner/repo")
+    assert result is None
+
+
+def test_fetch_github_blob_markdown_request_failure_returns_none() -> None:
+    """Returns None when the raw content fetch fails."""
+    url = "https://github.com/owner/repo/blob/main/file.md"
+    with unittest.mock.patch(
+        "lobstergram.content.requests.get",
+        side_effect=requests.RequestException("network error"),
+    ):
+        result = fetch_github_blob_markdown(url)
+    assert result is None
+
+
+def test_fetch_github_blob_markdown_resolves_relative_images() -> None:
+    """Relative image URLs in the raw Markdown are resolved to absolute URLs."""
+    blob_md = "# Guide\n\n![diagram](./images/diagram.png)\n\nSome text."
+    url = "https://github.com/owner/repo/blob/main/docs/guide.md"
+    download_url = "https://raw.githubusercontent.com/owner/repo/main/docs/guide.md"
+    with _make_fake_blob_api_get(blob_md, name="guide.md", download_url=download_url):
+        result = fetch_github_blob_markdown(url)
+    assert result is not None
+    _, markdown = result
+    assert "https://raw.githubusercontent.com/owner/repo/main/docs/images/diagram.png" in markdown
+    assert "./images/diagram.png" not in markdown
