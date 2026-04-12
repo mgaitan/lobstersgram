@@ -309,7 +309,13 @@ def _parse_arxiv_html(html: str, arxiv_id: str) -> tuple[str, list[str]]:
         descriptor = authors_tag.find("span", class_="descriptor")
         if descriptor:
             descriptor.extract()
-        authors_text = authors_tag.get_text(separator=", ", strip=True).strip(", ")
+        # Collect individual author names from <a> links; fall back to the
+        # whole tag text if no links are present.
+        author_links = authors_tag.find_all("a")
+        if author_links:
+            authors_text = ", ".join(a.get_text(strip=True) for a in author_links)
+        else:
+            authors_text = authors_tag.get_text(separator=" ", strip=True)
         if authors_text:
             parts.append(f"**Authors:** {authors_text}")
 
