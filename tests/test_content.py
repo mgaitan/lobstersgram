@@ -19,6 +19,7 @@ from lobstergram.content import (
     _make_markdown_images_absolute,
     _strip_badge_paragraphs,
     extract_intro,
+    fetch_arxiv_abstract,
     fetch_github_blob_markdown,
     fetch_github_readme,
     fetch_html,
@@ -882,3 +883,107 @@ def test_fetch_github_blob_markdown_resolves_relative_images() -> None:
     _, markdown = result
     assert "https://raw.githubusercontent.com/owner/repo/main/docs/images/diagram.png" in markdown
     assert "./images/diagram.png" not in markdown
+
+
+# ---------------------------------------------------------------------------
+# fetch_arxiv_abstract tests
+# ---------------------------------------------------------------------------
+
+_ARXIV_ABS_HTML = """
+<html>
+<head><title>[2604.07902] Optimization of 32-bit Unsigned Division by Constants on 64-bit Targets</title></head>
+<body>
+<h1 class="title mathjax"><span class="descriptor">Title:</span>
+Optimization of 32-bit Unsigned Division by Constants on 64-bit Targets</h1>
+<div class="authors"><span class="descriptor">Authors:</span>
+<a href="/search/?searchtype=author&amp;query=Smith">John Smith</a>,
+<a href="/search/?searchtype=author&amp;query=Doe">Jane Doe</a></div>
+<blockquote class="abstract mathjax">
+<span class="descriptor">Abstract:</span>
+We present an optimization technique for 32-bit unsigned integer division by constants on 64-bit targets.
+</blockquote>
+</body>
+</html>
+"""
+
+
+def _make_fake_arxiv_get(html: str) -> unittest.mock.MagicMock:
+    class _FakeResp:
+        content = html.encode()
+
+        def raise_for_status(self) -> None:
+            pass
+
+    return unittest.mock.patch("lobstergram.content.requests.get", return_value=_FakeResp())
+
+
+def test_fetch_arxiv_abstract_returns_title_authors_and_abstract() -> None:
+    """fetch_arxiv_abstract extracts title, authors, and abstract from an arXiv page."""
+    url = "https://arxiv.org/abs/2604.07902"
+    with _make_fake_arxiv_get(_ARXIV_ABS_HTML):
+        result = fetch_arxiv_abstract(url)
+    assert result is not None
+    title, markdown = result
+    assert "Optimization of 32-bit Unsigned Division" in title
+    assert "John Smith" in markdown
+    assert "Jane Doe" in markdown
+    assert "optimization technique" in markdown
+    assert "**Authors:**" in markdown
+
+
+def test_fetch_arxiv_abstract_non_arxiv_url_returns_none() -> None:
+    """Returns None immediately for non-arXiv URLs."""
+    result = fetch_arxiv_abstract("https://example.com/abs/1234")
+    assert result is None
+
+
+def test_fetch_arxiv_abstract_abs_prefix_required() -> None:
+    """Returns None for arxiv.org URLs that are not /abs/ paths."""
+    result = fetch_arxiv_abstract("https://arxiv.org/pdf/2604.07902")
+    assert result is None
+
+
+def test_fetch_arxiv_abstract_request_failure_returns_none() -> None:
+    """Returns None when the HTTP request fails."""
+    url = "https://arxiv.org/abs/2604.07902"
+    with unittest.mock.patch(
+        "lobstergram.content.requests.get",
+        side_effect=requests.RequestException("network error"),
+    ):
+        result = fetch_arxiv_abstract(url)
+    assert result is None
+
+
+def test_fetch_arxiv_abstract_strips_descriptor_spans() -> None:
+    """The 'Title:', 'Authors:', and 'Abstract:' descriptor spans are stripped."""
+    url = "https://arxiv.org/abs/2604.07902"
+    with _make_fake_arxiv_get(_ARXIV_ABS_HTML):
+        result = fetch_arxiv_abstract(url)
+    assert result is not None
+    title, markdown = result
+    # The <span class="descriptor">Title:</span> text should not appear in the title.
+    assert not title.startswith("Title:")
+    # The abstract descriptor "Abstract:" should not appear in the blockquote text.
+    assert "> Abstract:" not in markdown
+    assert "Optimization of 32-bit" in title
+
+
+def test_fetch_arxiv_abstract_older_style_id() -> None:
+    """Older-style arXiv IDs with a category prefix are matched."""
+    html = """
+<html><body>
+<h1 class="title mathjax"><span class="descriptor">Title:</span> A Classic Paper</h1>
+<div class="authors"><span class="descriptor">Authors:</span> <a>Old Author</a></div>
+<blockquote class="abstract mathjax"><span class="descriptor">Abstract:</span>
+This is a classic result.</blockquote>
+</body></html>
+"""
+    url = "https://arxiv.org/abs/hep-th/9711200"
+    with _make_fake_arxiv_get(html):
+        result = fetch_arxiv_abstract(url)
+    assert result is not None
+    title, markdown = result
+    assert title == "A Classic Paper"
+    assert "Old Author" in markdown
+    assert "classic result" in markdown
+

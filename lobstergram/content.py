@@ -31,6 +31,13 @@ _GITHUB_BLOB_RE = re.compile(
     re.IGNORECASE,
 )
 
+# Matches an arXiv abstract URL such as https://arxiv.org/abs/2604.07902
+# or https://arxiv.org/abs/hep-th/9711200 (older-style IDs with a category prefix).
+_ARXIV_ABS_RE = re.compile(
+    r"^https?://arxiv\.org/abs/(?P<arxiv_id>[^?#]+)(?:[?#].*)?$",
+    re.IGNORECASE,
+)
+
 # Matches a single badge expressed as a Markdown image-inside-link:
 #   [![alt text](image_url)](link_url)
 # Used to detect and remove badge-only paragraphs from README content.
@@ -275,6 +282,94 @@ def fetch_github_blob_markdown(url: str) -> tuple[str, str] | None:
     return title, markdown
 
 
+def _parse_arxiv_html(html: str, arxiv_id: str) -> tuple[str, list[str]]:
+    """Parse arXiv abstract page HTML and return ``(title, content_parts)``.
+
+    Extracts the paper title, authors, and abstract from the page.  The
+    ``content_parts`` list contains Markdown-formatted strings suitable for
+    joining into the final article body.
+    """
+    soup = BeautifulSoup(html, "html.parser")
+
+    # Title — <h1 class="title mathjax"> contains a nested <span class="descriptor">Title:</span>
+    title_tag = soup.find("h1", class_="title")
+    if title_tag:
+        descriptor = title_tag.find("span", class_="descriptor")
+        if descriptor:
+            descriptor.extract()
+        title = title_tag.get_text(separator=" ", strip=True)
+    else:
+        title = arxiv_id
+
+    parts: list[str] = []
+
+    # Authors — <div class="authors"> contains links for each author
+    authors_tag = soup.find("div", class_="authors")
+    if authors_tag:
+        descriptor = authors_tag.find("span", class_="descriptor")
+        if descriptor:
+            descriptor.extract()
+        # Collect individual author names from <a> links; fall back to the
+        # whole tag text if no links are present.
+        author_links = authors_tag.find_all("a")
+        if author_links:
+            authors_text = ", ".join(a.get_text(strip=True) for a in author_links)
+        else:
+            authors_text = authors_tag.get_text(separator=" ", strip=True)
+        if authors_text:
+            parts.append(f"**Authors:** {authors_text}")
+
+    # Abstract — <blockquote class="abstract mathjax">
+    abstract_tag = soup.find("blockquote", class_="abstract")
+    if abstract_tag:
+        descriptor = abstract_tag.find("span", class_="descriptor")
+        if descriptor:
+            descriptor.extract()
+        abstract_text = abstract_tag.get_text(separator=" ", strip=True)
+        if abstract_text:
+            parts.append(f"> {abstract_text}")
+
+    return title, parts
+
+
+def fetch_arxiv_abstract(url: str) -> tuple[str, str] | None:
+    """Return ``(title, markdown)`` for an arXiv abstract URL.
+
+    Fetches the abstract page at ``https://arxiv.org/abs/{id}`` and extracts
+    the paper title, authors, and abstract using BeautifulSoup.  The result is
+    formatted as Markdown with the authors in bold and the abstract as a
+    blockquote.
+
+    Returns *None* when *url* does not match an arXiv abstract URL or when the
+    fetch or parsing fails (the caller falls back to generic HTML extraction).
+    """
+    m = _ARXIV_ABS_RE.match(url)
+    if m is None:
+        return None
+
+    arxiv_id = m.group("arxiv_id")
+    abs_url = f"https://arxiv.org/abs/{arxiv_id}"
+
+    try:
+        html = fetch_html(abs_url)
+    except requests.RequestException as exc:
+        config.log("warn", f"fetch_arxiv_abstract fetch failed url={abs_url} err={type(exc).__name__}: {exc}")
+        return None
+
+    if not html:
+        return None
+
+    title, parts = _parse_arxiv_html(html, arxiv_id)
+
+    if not parts:
+        config.log("warn", f"fetch_arxiv_abstract no content extracted url={abs_url}")
+        return None
+
+    markdown = "\n\n".join(parts)
+    config.log("debug", f"fetch_arxiv_abstract ok arxiv_id={arxiv_id!r} title={title!r} markdown_len={len(markdown)}")
+    return title, markdown
+
+
 def is_lobsters_discussion(url: str) -> bool:
     if not url:
         return False
@@ -502,6 +597,19 @@ def extract_main_content(url: str) -> tuple[str, str, str, str]:
         config.log(
             "debug",
             f"extract_main_content used github readme url={url} markdown_len={len(markdown)}",
+        )
+        return title, markdown, fallback_text, intro
+
+    # For arXiv abstract URLs, extract the paper title, authors, and abstract
+    # directly from the abstract page HTML to avoid Readability returning an
+    # empty or truncated result.
+    if arxiv_result := fetch_arxiv_abstract(url):
+        title, markdown = arxiv_result
+        fallback_text = markdown_to_text(markdown)
+        intro = extract_intro(markdown, fallback_text)
+        config.log(
+            "debug",
+            f"extract_main_content used arxiv abstract url={url} markdown_len={len(markdown)}",
         )
         return title, markdown, fallback_text, intro
 
