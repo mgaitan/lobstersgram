@@ -17,6 +17,7 @@ from lobstergram.content import (
     _extract_leading_heading,
     _github_repo_match,
     _make_markdown_images_absolute,
+    _normalize_markdown_links,
     _strip_badge_paragraphs,
     extract_intro,
     fetch_arxiv_abstract,
@@ -675,6 +676,28 @@ def test_fetch_github_readme_strips_badge_paragraphs() -> None:
 
 
 # ---------------------------------------------------------------------------
+# _normalize_markdown_links tests
+# ---------------------------------------------------------------------------
+
+
+def test_normalize_markdown_links_converts_hard_break_before_inline_link() -> None:
+    """Hard line breaks before sentence links are downgraded to soft breaks."""
+    md = (
+        "If you like these, you can follow the  \n"
+        "[author](https://example.com/author), buy him a  \n"
+        "[coffee](https://example.com/coffee), or  \n"
+        "[suggest what comes next](https://example.com/next)"
+    )
+    normalized = _normalize_markdown_links(md)
+    assert normalized == (
+        "If you like these, you can follow the\n"
+        "[author](https://example.com/author), buy him a\n"
+        "[coffee](https://example.com/coffee), or\n"
+        "[suggest what comes next](https://example.com/next)"
+    )
+
+
+# ---------------------------------------------------------------------------
 # strip_leading_title_heading tests
 # ---------------------------------------------------------------------------
 
@@ -986,4 +1009,3 @@ This is a classic result.</blockquote>
     assert title == "A Classic Paper"
     assert "Old Author" in markdown
     assert "classic result" in markdown
-

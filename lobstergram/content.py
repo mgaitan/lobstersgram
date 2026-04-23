@@ -495,6 +495,7 @@ def preprocess_figures(content_html: str) -> str:
 
 
 _BROKEN_LINK_RE = re.compile(r"\[(\s*\n[ \t]*\n[ \t]*)([^\]]*)\]\(")
+_HARD_BREAK_BEFORE_LINK_RE = re.compile(r"(?<!\\) {2,}\n(?=\[[^\]]+\]\([^)]+\))")
 
 
 def _normalize_markdown_links(markdown: str) -> str:
@@ -512,13 +513,20 @@ def _normalize_markdown_links(markdown: str) -> str:
 
     This function collapses the leading whitespace/newlines so the link is
     recognised as valid Markdown.
+
+    It also downgrades Markdown hard line breaks (``"  \\n"``) that appear
+    immediately before an inline link to soft line breaks.  Some sources emit
+    ``<br>`` before inline anchors used as ordinary sentence links, which
+    markdownify turns into hard breaks and Telegraph renders as visible line
+    breaks.
     """
 
     def _fix(m: re.Match[str]) -> str:
         text = m.group(2).replace("\n", " ").strip()
         return f"[{text}]("
 
-    return _BROKEN_LINK_RE.sub(_fix, markdown)
+    normalized = _BROKEN_LINK_RE.sub(_fix, markdown)
+    return _HARD_BREAK_BEFORE_LINK_RE.sub("\n", normalized)
 
 
 def strip_leading_title_heading(markdown: str, title: str) -> str:
