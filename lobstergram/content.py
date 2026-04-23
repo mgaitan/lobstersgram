@@ -149,6 +149,21 @@ def _make_markdown_images_absolute(markdown: str, base_url: str) -> str:
     return re.sub(r"!\[([^\]]*)\]\(([^)]+)\)", _replace, markdown)
 
 
+def _make_markdown_links_absolute(markdown: str, base_url: str) -> str:
+    """Resolve relative Markdown link URLs in *markdown* against *base_url*."""
+
+    def _replace(m: re.Match[str]) -> str:
+        text, href = m.group(1), m.group(2).strip()
+        if href.startswith(("http://", "https://", "mailto:", "tel:", "data:")):
+            return m.group(0)
+        absolute = urllib.parse.urljoin(base_url, href)
+        if not absolute.startswith(("http://", "https://")):
+            return m.group(0)
+        return f"[{text}]({absolute})"
+
+    return re.sub(r"(?<!!)\[([^\]]+)\]\(([^)]+)\)", _replace, markdown)
+
+
 def _fetch_github_api_file(api_url: str) -> str | None:
     """Fetch a Markdown file from the GitHub REST API.
 
@@ -640,6 +655,7 @@ def extract_main_content(url: str) -> tuple[str, str, str, str]:
 
     extracted_markdown = html_to_md(content_html)
     extracted_markdown = _normalize_markdown_links(extracted_markdown)
+    extracted_markdown = _make_markdown_links_absolute(extracted_markdown, url)
     config.log(
         "debug",
         f"extract_main_content markdown_len={len(extracted_markdown)} url={url}",
