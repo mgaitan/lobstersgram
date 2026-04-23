@@ -684,14 +684,14 @@ def test_normalize_markdown_links_converts_hard_break_before_inline_link() -> No
     """Hard line breaks before sentence links are downgraded to soft breaks."""
     md = (
         "If you like these, you can follow the  \n"
-        "[author](https://example.com/author), buy him a  \n"
+        "[author](https://example.com/author), buy them a  \n"
         "[coffee](https://example.com/coffee), or  \n"
         "[suggest what comes next](https://example.com/next)"
     )
     normalized = _normalize_markdown_links(md)
     assert normalized == (
         "If you like these, you can follow the\n"
-        "[author](https://example.com/author), buy him a\n"
+        "[author](https://example.com/author), buy them a\n"
         "[coffee](https://example.com/coffee), or\n"
         "[suggest what comes next](https://example.com/next)"
     )
