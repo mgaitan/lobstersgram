@@ -118,43 +118,42 @@ def _github_repo_match(url: str) -> re.Match[str] | None:
 
 
 def _is_html_badge_block(html: str) -> bool:
-    """Return True if *html* is a ``<p>`` element containing only badge images.
+    """Return True if *html* is a ``<p>`` element containing at least two badge images.
 
     A badge block is a ``<p>`` element whose children are exclusively
     ``<a>`` elements containing a single ``<img>``, standalone ``<img>``
-    elements, or whitespace.  Such blocks appear at the top of many GitHub
-    READMEs (e.g. ``<p align="center"><a href="..."><img .../></a></p>``)
+    elements, or whitespace, and that contains **at least two** ``<img>``
+    elements in total.  The two-image minimum prevents lone logo or hero
+    images (a single centred ``<img>``) from being mistakenly discarded.
+    Such multi-badge blocks appear at the top of many GitHub READMEs
+    (e.g. ``<p align="center"><a href="..."><img .../></a> …</p>``)
     but render as raw HTML text when forwarded to Telegram.
     """
     soup = BeautifulSoup(html, "html.parser")
     p = soup.find("p")
     if p is None:
         return False
-    has_img = False
+    img_count = 0
     for child in p.children:
-        if isinstance(child, str):  # bs4.NavigableString subclasses str
-            if child.strip():
-                return False  # Non-whitespace text → not a badge block
-        elif isinstance(child, Tag):
-            if child.name == "img":
-                has_img = True
-            elif child.name == "a":
+        match child:
+            case str() as text:  # bs4.NavigableString subclasses str
+                if text.strip():
+                    return False  # Non-whitespace text → not a badge block
+            case Tag(name="img"):
+                img_count += 1
+            case Tag(name="a"):
                 for gc in child.children:
-                    if isinstance(gc, str):
-                        if gc.strip():
+                    match gc:
+                        case str() as text:
+                            if text.strip():
+                                return False
+                        case Tag(name="img"):
+                            img_count += 1
+                        case _:
                             return False
-                    elif isinstance(gc, Tag):
-                        if gc.name == "img":
-                            has_img = True
-                        else:
-                            return False
-                    else:
-                        return False
-            else:
+            case _:
                 return False  # Unexpected tag → not a badge block
-        else:
-            return False
-    return has_img
+    return img_count >= 2
 
 
 def _strip_badge_paragraphs(markdown: str) -> str:

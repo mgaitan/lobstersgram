@@ -639,9 +639,9 @@ def test_strip_badge_paragraphs_multiple_badge_paragraphs_all_removed() -> None:
 
 
 def test_is_html_badge_block_single_linked_image() -> None:
-    """A <p> with a single <a><img></a> is a badge block."""
+    """A <p> with only one <a><img></a> is NOT a badge block (logo/hero image)."""
     html = '<p align="center"><a href="https://example.com"><img src="https://img.shields.io/badge/x-blue.svg" alt="x"/></a></p>'
-    assert _is_html_badge_block(html) is True
+    assert _is_html_badge_block(html) is False
 
 
 def test_is_html_badge_block_multiple_linked_images() -> None:
@@ -656,8 +656,19 @@ def test_is_html_badge_block_multiple_linked_images() -> None:
 
 
 def test_is_html_badge_block_standalone_img() -> None:
-    """A <p> with a bare <img> (no wrapping <a>) is a badge block."""
+    """A <p> with a single bare <img> is NOT a badge block (below 2-image minimum)."""
     html = '<p><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License"/></p>'
+    assert _is_html_badge_block(html) is False
+
+
+def test_is_html_badge_block_two_standalone_imgs() -> None:
+    """A <p> with two bare <img> elements meets the 2-image minimum."""
+    html = (
+        "<p>"
+        '<img src="https://img.shields.io/badge/a-blue.svg" alt="a"/> '
+        '<img src="https://img.shields.io/badge/b-green.svg" alt="b"/>'
+        "</p>"
+    )
     assert _is_html_badge_block(html) is True
 
 
@@ -737,13 +748,31 @@ def test_strip_badge_paragraphs_html_badges_not_separated_by_blank_lines() -> No
     """Multiple consecutive HTML badge <p> blocks without blank lines are all removed."""
     md = (
         "# Title\n\n"
-        '<p align="center"><a href="https://example.com/a"><img src="https://img.shields.io/a.svg" alt="A"/></a></p>'
-        '<p align="center"><a href="https://example.com/b"><img src="https://img.shields.io/b.svg" alt="B"/></a></p>\n\n'
+        '<p align="center">'
+        '<a href="https://example.com/a"><img src="https://img.shields.io/a.svg" alt="A"/></a>'
+        '<a href="https://example.com/b"><img src="https://img.shields.io/b.svg" alt="B"/></a>'
+        "</p>"
+        '<p align="center">'
+        '<a href="https://example.com/c"><img src="https://img.shields.io/c.svg" alt="C"/></a>'
+        '<a href="https://example.com/d"><img src="https://img.shields.io/d.svg" alt="D"/></a>'
+        "</p>\n\n"
         "Real description."
     )
     result = _strip_badge_paragraphs(md)
     assert "shields.io" not in result
     assert "# Title" in result
+    assert "Real description." in result
+
+
+def test_strip_badge_paragraphs_keeps_single_img_p() -> None:
+    """A <p> with a single <img> (e.g. a logo) is kept, not treated as badges."""
+    md = (
+        "# Title\n\n"
+        '<p align="center"><a href="https://example.com"><img src="https://example.com/logo.png" alt="Logo"/></a></p>\n\n'
+        "Real description."
+    )
+    result = _strip_badge_paragraphs(md)
+    assert "logo.png" in result
     assert "Real description." in result
 
 
