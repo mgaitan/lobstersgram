@@ -17,6 +17,7 @@ from lobstergram.content import (
     _extract_leading_heading,
     _github_repo_match,
     _make_markdown_images_absolute,
+    _make_markdown_links_absolute,
     _normalize_markdown_links,
     _strip_badge_paragraphs,
     extract_intro,
@@ -438,6 +439,34 @@ def test_make_markdown_images_absolute_no_images_noop() -> None:
     md = "# Hello\n\nSome text without images."
     result = _make_markdown_images_absolute(md, _RAW_BASE)
     assert result == md
+
+
+# ---------------------------------------------------------------------------
+# _make_markdown_links_absolute tests
+# ---------------------------------------------------------------------------
+
+
+def test_make_markdown_links_absolute_root_relative() -> None:
+    """Root-relative markdown links are resolved against the page URL."""
+    md = "[LWN](//lwn.net/Articles/1066581/)\n[Telegraph](/Articles/1066581/)"
+    result = _make_markdown_links_absolute(md, "https://telegra.ph/Using-LLMs-04-22")
+    assert "[LWN](https://lwn.net/Articles/1066581/)" in result
+    assert "[Telegraph](https://telegra.ph/Articles/1066581/)" in result
+
+
+def test_make_markdown_links_absolute_relative_path() -> None:
+    """Relative markdown links are resolved against the page URL path."""
+    md = "[next](chapter-2)"
+    result = _make_markdown_links_absolute(md, "https://example.com/docs/chapter-1")
+    assert result == "[next](https://example.com/docs/chapter-2)"
+
+
+def test_make_markdown_links_absolute_keeps_absolute_and_images() -> None:
+    """Absolute links and markdown image syntax are left unchanged."""
+    md = "[site](https://example.com) ![img](/logo.png)"
+    result = _make_markdown_links_absolute(md, "https://telegra.ph/Using-LLMs-04-22")
+    assert "[site](https://example.com)" in result
+    assert "![img](/logo.png)" in result
 
 
 # ---------------------------------------------------------------------------
