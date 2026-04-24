@@ -132,7 +132,7 @@ def _is_html_badge_block(html: str) -> bool:
         return False
     has_img = False
     for child in p.children:
-        if isinstance(child, str):  # NavigableString is a subclass of str
+        if isinstance(child, str):  # bs4.NavigableString subclasses str
             if child.strip():
                 return False  # Non-whitespace text → not a badge block
         elif isinstance(child, Tag):
