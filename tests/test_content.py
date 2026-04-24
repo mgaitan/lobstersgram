@@ -16,6 +16,7 @@ os.environ.setdefault("TELEGRAPH_ACCESS_TOKEN", "test-token")
 from lobstergram.content import (
     _extract_leading_heading,
     _github_repo_match,
+    _is_html_badge_block,
     _make_markdown_images_absolute,
     _make_markdown_links_absolute,
     _normalize_markdown_links,
@@ -633,8 +634,119 @@ def test_strip_badge_paragraphs_multiple_badge_paragraphs_all_removed() -> None:
 
 
 # ---------------------------------------------------------------------------
-# markdown_to_text empty-link stripping tests
+# _is_html_badge_block tests
 # ---------------------------------------------------------------------------
+
+
+def test_is_html_badge_block_single_linked_image() -> None:
+    """A <p> with a single <a><img></a> is a badge block."""
+    html = '<p align="center"><a href="https://example.com"><img src="https://img.shields.io/badge/x-blue.svg" alt="x"/></a></p>'
+    assert _is_html_badge_block(html) is True
+
+
+def test_is_html_badge_block_multiple_linked_images() -> None:
+    """A <p> with multiple <a><img></a> patterns is a badge block."""
+    html = (
+        '<p align="center">'
+        '<a href="https://example.com/a"><img src="https://img.shields.io/a.svg" alt="a"/></a>'
+        ' <a href="https://example.com/b"><img src="https://img.shields.io/b.svg" alt="b"/></a>'
+        "</p>"
+    )
+    assert _is_html_badge_block(html) is True
+
+
+def test_is_html_badge_block_standalone_img() -> None:
+    """A <p> with a bare <img> (no wrapping <a>) is a badge block."""
+    html = '<p><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License"/></p>'
+    assert _is_html_badge_block(html) is True
+
+
+def test_is_html_badge_block_with_text_is_not_badge() -> None:
+    """A <p> that contains text alongside images is not a badge block."""
+    html = '<p>Install with pip. <img src="https://img.shields.io/x.svg" alt="x"/></p>'
+    assert _is_html_badge_block(html) is False
+
+
+def test_is_html_badge_block_no_img_is_not_badge() -> None:
+    """A <p> with only an <a> and no <img> is not a badge block."""
+    html = '<p><a href="https://example.com">Click here</a></p>'
+    assert _is_html_badge_block(html) is False
+
+
+def test_is_html_badge_block_empty_p_is_not_badge() -> None:
+    """An empty <p> (no <img>) is not considered a badge block."""
+    html = "<p></p>"
+    assert _is_html_badge_block(html) is False
+
+
+def test_is_html_badge_block_non_p_tag_is_not_badge() -> None:
+    """HTML that is not a <p> element is not a badge block."""
+    html = '<div><img src="https://img.shields.io/x.svg"/></div>'
+    assert _is_html_badge_block(html) is False
+
+
+# ---------------------------------------------------------------------------
+# _strip_badge_paragraphs – HTML badge block tests
+# ---------------------------------------------------------------------------
+
+
+def test_strip_badge_paragraphs_removes_html_badge_block() -> None:
+    """A <p> block containing only <a><img></a> badge links is removed."""
+    md = (
+        "# llm.rb\n\n"
+        '<p align="center">'
+        '<a href="https://0x1eef.github.io/x/llm.rb">'
+        '<img src="https://img.shields.io/badge/docs-blue.svg" alt="RubyDoc"/>'
+        "</a>"
+        ' <a href="https://opensource.org/license/0bsd">'
+        '<img src="https://img.shields.io/badge/License-0BSD-orange.svg" alt="License"/>'
+        "</a>"
+        "</p>\n\n"
+        "llm.rb is Ruby's most capable AI runtime."
+    )
+    result = _strip_badge_paragraphs(md)
+    assert "shields.io" not in result
+    assert "# llm.rb" in result
+    assert "llm.rb is Ruby" in result
+
+
+def test_strip_badge_paragraphs_removes_multiline_html_badge_block() -> None:
+    """A multiline <p> badge block (common in GitHub READMEs) is removed."""
+    md = (
+        "# Title\n\n"
+        '<p align="center">\n'
+        '  <a href="https://example.com/a"><img src="https://img.shields.io/a.svg" alt="A"/></a>\n'
+        '  <a href="https://example.com/b"><img src="https://img.shields.io/b.svg" alt="B"/></a>\n'
+        "</p>\n\n"
+        "Real description."
+    )
+    result = _strip_badge_paragraphs(md)
+    assert "shields.io" not in result
+    assert "# Title" in result
+    assert "Real description." in result
+
+
+def test_strip_badge_paragraphs_keeps_p_with_text() -> None:
+    """A <p> block that contains text (not only images) is kept."""
+    md = '<p>This is a description. <img src="https://img.shields.io/x.svg" alt="x"/></p>'
+    result = _strip_badge_paragraphs(md)
+    assert "This is a description." in result
+
+
+def test_strip_badge_paragraphs_html_badges_not_separated_by_blank_lines() -> None:
+    """Multiple consecutive HTML badge <p> blocks without blank lines are all removed."""
+    md = (
+        "# Title\n\n"
+        '<p align="center"><a href="https://example.com/a"><img src="https://img.shields.io/a.svg" alt="A"/></a></p>'
+        '<p align="center"><a href="https://example.com/b"><img src="https://img.shields.io/b.svg" alt="B"/></a></p>\n\n'
+        "Real description."
+    )
+    result = _strip_badge_paragraphs(md)
+    assert "shields.io" not in result
+    assert "# Title" in result
+    assert "Real description." in result
+
+
 
 
 def test_markdown_to_text_strips_empty_link_residue() -> None:
