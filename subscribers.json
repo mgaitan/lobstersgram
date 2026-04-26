@@ -41,7 +41,14 @@
       "username": "alirzajafarov",
       "first_name": "Alirza",
       "last_name": "Jafarov"
+    },
+    {
+      "chat_id": 15383,
+      "type": "private",
+      "username": "Aguere",
+      "first_name": ".",
+      "last_name": null
     }
   ],
-  "last_update_id": 283606401
+  "last_update_id": 283606402
 }
