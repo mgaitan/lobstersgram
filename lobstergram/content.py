@@ -43,6 +43,11 @@ _ARXIV_ABS_RE = re.compile(
 # Used to detect and remove badge-only paragraphs from README content.
 _BADGE_RE = re.compile(r"\[!\[[^\]]*\]\([^)]+\)\]\([^)]+\)")
 
+# Matches an HTML <p> block (possibly multiline with attributes).
+# Used to detect and remove HTML badge blocks such as the centered <p> sections
+# with <a><img></a> patterns that many GitHub READMEs place at the top.
+_HTML_P_BLOCK_RE = re.compile(r"<p(?:\s[^>]*)?>.*?</p>", re.IGNORECASE | re.DOTALL)
+
 
 @dataclass(frozen=True)
 class Item:
@@ -112,17 +117,62 @@ def _github_repo_match(url: str) -> re.Match[str] | None:
     return m
 
 
+def _is_html_badge_block(html: str) -> bool:
+    """Return True if *html* is a ``<p>`` element containing at least two badge images.
+
+    A badge block is a ``<p>`` element whose children are exclusively
+    ``<a>`` elements containing a single ``<img>``, standalone ``<img>``
+    elements, or whitespace, and that contains **at least two** ``<img>``
+    elements in total.  The two-image minimum prevents lone logo or hero
+    images (a single centred ``<img>``) from being mistakenly discarded.
+    Such multi-badge blocks appear at the top of many GitHub READMEs
+    (e.g. ``<p align="center"><a href="..."><img .../></a> …</p>``)
+    but render as raw HTML text when forwarded to Telegram.
+    """
+    soup = BeautifulSoup(html, "html.parser")
+    p = soup.find("p")
+    if p is None:
+        return False
+    img_count = 0
+    for child in p.children:
+        match child:
+            case str() as text:  # bs4.NavigableString subclasses str
+                if text.strip():
+                    return False  # Non-whitespace text → not a badge block
+            case Tag(name="img"):
+                img_count += 1
+            case Tag(name="a"):
+                for gc in child.children:
+                    match gc:
+                        case str() as text:
+                            if text.strip():
+                                return False
+                        case Tag(name="img"):
+                            img_count += 1
+                        case _:
+                            return False
+            case _:
+                return False  # Unexpected tag → not a badge block
+    return img_count >= 2
+
+
 def _strip_badge_paragraphs(markdown: str) -> str:
     """Remove badge-only paragraphs from *markdown*.
 
     A paragraph is considered badge-only when it consists entirely of
-    ``[![alt](img_url)](link_url)`` patterns and whitespace.  Such paragraphs
-    (common at the top of GitHub READMEs) render as broken or empty blocks on
-    Telegraph because many badge image hosts (e.g. shields.io) are not served
-    as Telegraph-compatible images.  Removing them prevents empty vertical
-    space in the rendered page and ensures ``extract_intro`` skips them in
-    favour of the actual description text.
+    ``[![alt](img_url)](link_url)`` patterns and whitespace, or is an HTML
+    ``<p>`` block containing only ``<a><img></a>`` or ``<img>`` elements.
+    Such paragraphs (common at the top of GitHub READMEs) render as broken
+    or empty blocks on Telegraph, or as raw HTML text in Telegram.  Removing
+    them prevents empty vertical space in the rendered page and ensures
+    ``extract_intro`` skips them in favour of the actual description text.
     """
+    # Strip HTML <p> badge blocks first (a single pass over the whole document
+    # handles blocks that are not separated by blank lines).
+    markdown = _HTML_P_BLOCK_RE.sub(
+        lambda m: "" if _is_html_badge_block(m.group(0)) else m.group(0),
+        markdown,
+    )
     result: list[str] = []
     for para in markdown.split("\n\n"):
         remaining = _BADGE_RE.sub("", para).strip()
