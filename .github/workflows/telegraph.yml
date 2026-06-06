@@ -1,0 +1,55 @@
+name: Publish URLs to Telegraph
+
+on:
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: "One or more URLs (space or newline separated)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Normalize URL input
+        id: urls
+        env:
+          URL_INPUT: ${{ inputs.urls }}
+        run: |
+          printf '%s\n' "$URL_INPUT" | tr -s '[:space:]' '\n' | sed '/^$/d' > urls.txt
+          if [ ! -s urls.txt ]; then
+            echo "No URLs were provided in input 'urls'." >&2
+            exit 1
+          fi
+
+      - name: Publish URLs to Telegraph
+        id: publish
+        env:
+          TELEGRAM_BOT_TOKEN: "unused"
+          TELEGRAPH_ACCESS_TOKEN: ${{ secrets.TELEGRAPH_ACCESS_TOKEN }}
+        run: |
+          mapfile -t URLS < urls.txt
+          uv run lobstergram publish-to-telegraph "${URLS[@]}" > telegraph_links.txt
+
+          {
+            echo "links<<EOF"
+            cat telegraph_links.txt
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Show generated links
+        run: |
+          echo "### telegra.ph links" >> "$GITHUB_STEP_SUMMARY"
+          while IFS= read -r link; do
+            [ -n "$link" ] && echo "- $link" >> "$GITHUB_STEP_SUMMARY"
+          done < telegraph_links.txt
