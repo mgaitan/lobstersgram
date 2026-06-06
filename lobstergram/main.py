@@ -17,6 +17,11 @@ from lobstergram.telegram import read_new_subscribers, resolve_recipient_chat_id
 from lobstergram.telegraph import telegraph_create_page
 
 
+class URLPublishError(RuntimeError):
+    def __init__(self, url: str) -> None:
+        super().__init__(f"Failed to process URL: {url}")
+
+
 def format_message(
     item: Item,
     telegraph_url: str,
@@ -78,8 +83,8 @@ def build_item_message(item: Item) -> tuple[str, dict[str, str]]:
     return msg, article_links
 
 
-def handle_single_url(url: str) -> int:
-    item = Item(
+def _build_item_from_url(url: str) -> Item:
+    return Item(
         id=url,
         title=url,
         link=url,
@@ -87,6 +92,25 @@ def handle_single_url(url: str) -> int:
         source=urllib.parse.urlparse(url).netloc or "direct",
         tags=[],
     )
+
+
+def publish_to_telegraph(urls: list[str]) -> int:
+    if not urls:
+        msg = "publish-to-telegraph requires at least one URL"
+        raise ValueError(msg)
+
+    for url in urls:
+        item = _build_item_from_url(url)
+        try:
+            _message, article_links = build_item_message(item)
+        except Exception as exc:
+            raise URLPublishError(url) from exc
+        print(article_links["telegraph_link"])
+    return 0
+
+
+def handle_single_url(url: str) -> int:
+    item = _build_item_from_url(url)
     msg, article_links = build_item_message(item)
     recipients = build_recipients()
     sent = send_to_recipients(recipients, msg, disable_preview=True)
@@ -162,6 +186,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--telegram-retry-attempts", type=int, default=config.TELEGRAM_RETRY_ATTEMPTS)
     parser.add_argument("--telegraph-retry-attempts", type=int, default=config.TELEGRAPH_RETRY_ATTEMPTS)
     parser.add_argument("--inter-message-delay", type=float, default=config.INTER_MESSAGE_DELAY)
+    parser.add_argument("command", nargs="?", choices=["publish-to-telegraph"])
+    parser.add_argument("urls", nargs="*")
     return parser.parse_args()
 
 
@@ -194,6 +220,9 @@ def main() -> int:
         read_new_subscribers()
         print("Read messages.")
         return 0
+
+    if args.command == "publish-to-telegraph":
+        return publish_to_telegraph(args.urls)
 
     if args.url:
         try:

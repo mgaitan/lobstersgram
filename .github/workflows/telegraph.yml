@@ -3,7 +3,7 @@ name: Publish URLs to Telegraph
 on:
   workflow_dispatch:
     inputs:
-      urla:
+      urls:
         description: "One or more URLs (space or newline separated)"
         required: true
         type: string
@@ -24,51 +24,22 @@ jobs:
       - name: Normalize URL input
         id: urls
         env:
-          URL_INPUT: ${{ inputs.urla }}
+          URL_INPUT: ${{ inputs.urls }}
         run: |
           printf '%s\n' "$URL_INPUT" | tr -s '[:space:]' '\n' | sed '/^$/d' > urls.txt
           if [ ! -s urls.txt ]; then
-            echo "No URLs were provided in input 'urla'." >&2
+            echo "No URLs were provided in input 'urls'." >&2
             exit 1
           fi
 
       - name: Publish URLs to Telegraph
         id: publish
         env:
+          TELEGRAM_BOT_TOKEN: "unused"
           TELEGRAPH_ACCESS_TOKEN: ${{ secrets.TELEGRAPH_ACCESS_TOKEN }}
         run: |
-          uv run python - <<'PY'
-          from __future__ import annotations
-
-          import os
-          import urllib.parse
-          from pathlib import Path
-
-          os.environ.setdefault("TELEGRAM_BOT_TOKEN", "unused")
-
-          from lobstergram.main import build_item_message
-          from lobstergram.content import Item
-
-          urls = [line.strip() for line in Path("urls.txt").read_text(encoding="utf-8").splitlines() if line.strip()]
-          links: list[str] = []
-
-          for url in urls:
-              item = Item(
-                  id=url,
-                  title=url,
-                  link=url,
-                  discussion_link="",
-                  source=urllib.parse.urlparse(url).netloc or "direct",
-                  tags=[],
-              )
-              try:
-                  _message, article_links = build_item_message(item)
-                  links.append(article_links["telegraph_link"])
-              except Exception as exc:
-                  raise RuntimeError(f"Failed to process URL: {url}") from exc
-
-          Path("telegraph_links.txt").write_text("\n".join(links) + "\n", encoding="utf-8")
-          PY
+          mapfile -t URLS < urls.txt
+          uv run lobstergram publish-to-telegraph "${URLS[@]}" > telegraph_links.txt
 
           {
             echo "links<<EOF"
