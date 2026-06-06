@@ -1,0 +1,79 @@
+name: Publish URLs to Telegraph
+
+on:
+  workflow_dispatch:
+    inputs:
+      urla:
+        description: "One or more URLs (space or newline separated)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Normalize URL input
+        id: urls
+        env:
+          URL_INPUT: ${{ inputs.urla }}
+        run: |
+          printf '%s\n' "$URL_INPUT" | tr -s '[:space:]' '\n' | sed '/^$/d' > urls.txt
+          if [ ! -s urls.txt ]; then
+            echo "No URLs were provided in input 'urla'." >&2
+            exit 1
+          fi
+
+      - name: Publish URLs to Telegraph
+        id: publish
+        env:
+          TELEGRAM_BOT_TOKEN: "placeholder-token"
+          TELEGRAPH_ACCESS_TOKEN: ${{ secrets.TELEGRAPH_ACCESS_TOKEN }}
+        run: |
+          uv run python - <<'PY'
+          from __future__ import annotations
+
+          import urllib.parse
+          from pathlib import Path
+
+          from lobstergram.main import build_item_message
+          from lobstergram.content import Item
+
+          urls = [line.strip() for line in Path("urls.txt").read_text(encoding="utf-8").splitlines() if line.strip()]
+          links: list[str] = []
+
+          for url in urls:
+              item = Item(
+                  id=url,
+                  title=url,
+                  link=url,
+                  discussion_link="",
+                  source=urllib.parse.urlparse(url).netloc or "direct",
+                  tags=[],
+              )
+              _message, article_links = build_item_message(item)
+              links.append(article_links["telegraph_link"])
+
+          Path("telegraph_links.txt").write_text("\n".join(links) + "\n", encoding="utf-8")
+          PY
+
+          {
+            echo "links<<EOF"
+            cat telegraph_links.txt
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Show generated links
+        run: |
+          echo "### telegra.ph links" >> "$GITHUB_STEP_SUMMARY"
+          while IFS= read -r link; do
+            [ -n "$link" ] && echo "- $link" >> "$GITHUB_STEP_SUMMARY"
+          done < telegraph_links.txt
