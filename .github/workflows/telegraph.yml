@@ -35,14 +35,16 @@ jobs:
       - name: Publish URLs to Telegraph
         id: publish
         env:
-          TELEGRAM_BOT_TOKEN: "placeholder-token"
           TELEGRAPH_ACCESS_TOKEN: ${{ secrets.TELEGRAPH_ACCESS_TOKEN }}
         run: |
           uv run python - <<'PY'
           from __future__ import annotations
 
+          import os
           import urllib.parse
           from pathlib import Path
+
+          os.environ.setdefault("TELEGRAM_BOT_TOKEN", "unused")
 
           from lobstergram.main import build_item_message
           from lobstergram.content import Item
@@ -59,8 +61,11 @@ jobs:
                   source=urllib.parse.urlparse(url).netloc or "direct",
                   tags=[],
               )
-              _message, article_links = build_item_message(item)
-              links.append(article_links["telegraph_link"])
+              try:
+                  _message, article_links = build_item_message(item)
+                  links.append(article_links["telegraph_link"])
+              except Exception as exc:
+                  raise RuntimeError(f"Failed to process URL: {url}") from exc
 
           Path("telegraph_links.txt").write_text("\n".join(links) + "\n", encoding="utf-8")
           PY
