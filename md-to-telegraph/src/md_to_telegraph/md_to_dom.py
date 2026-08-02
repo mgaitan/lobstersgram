@@ -1,3 +1,6 @@
+import html
+import re
+
 from mistletoe import Document, block_token, span_token
 from mistletoe.base_renderer import BaseRenderer
 
@@ -21,6 +24,9 @@ class TelegraphDomRenderer(BaseRenderer):
         for child in token.children:
             rendered = self.render(child)
             if rendered is None:
+                continue
+            if isinstance(rendered, list):
+                nodes.extend(rendered)
                 continue
             nodes.append(rendered)
         return nodes
@@ -105,17 +111,26 @@ class TelegraphDomRenderer(BaseRenderer):
     def render_thematic_break(self, token: block_token.ThematicBreak) -> dict[str, object]:
         return {"tag": "hr"}
 
-    def render_html_block(self, token: block_token.HTMLBlock) -> str:
-        return token.content
+    def render_html_block(self, token: block_token.HTMLBlock) -> NodeList | dict[str, object] | None:
+        text = _html_fragment_to_text(token.content)
+        paragraphs = [p.strip() for p in text.split("\n\n") if p.strip()]
+        if not paragraphs:
+            return None
+        if len(paragraphs) == 1:
+            return {"tag": "p", "children": [paragraphs[0]]}
+        return [{"tag": "p", "children": [paragraph]} for paragraph in paragraphs]
 
     def render_html_span(self, token: span_token.HTMLSpan) -> str:
-        return token.content
+        return _html_fragment_to_text(token.content).strip()
 
     def render_inner(self, token: object) -> NodeList:
         result: NodeList = []
         for child in token.children:
             rendered = self.render(child)
             if rendered is None:
+                continue
+            if isinstance(rendered, list):
+                result.extend(rendered)
                 continue
             if rendered != "":
                 result.append(rendered)
@@ -134,3 +149,20 @@ class TelegraphDomRenderer(BaseRenderer):
 def md_to_telegraph(markdown_text: str) -> NodeList:
     with TelegraphDomRenderer() as renderer:
         return renderer.render(Document(markdown_text))
+
+
+_BREAK_TAG_RE = re.compile(r"(?i)<br\s*/?>")
+_BLOCK_TAG_RE = re.compile(
+    r"(?i)</?(?:p|div|section|article|aside|header|footer|main|blockquote|pre|ul|ol|li|tr|td|th|h[1-6])\b[^>]*>"
+)
+_ANY_TAG_RE = re.compile(r"<[^>]+>")
+_BLANK_LINE_RE = re.compile(r"\n\s*\n+")
+
+
+def _html_fragment_to_text(fragment: str) -> str:
+    text = _BREAK_TAG_RE.sub("\n", fragment)
+    text = _BLOCK_TAG_RE.sub("\n", text)
+    text = _ANY_TAG_RE.sub("", text)
+    text = html.unescape(text).replace("\xa0", " ")
+    lines = [line.strip() for line in text.splitlines()]
+    return _BLANK_LINE_RE.sub("\n\n", "\n".join(lines)).strip()

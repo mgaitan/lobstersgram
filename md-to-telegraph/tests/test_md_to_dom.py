@@ -189,12 +189,12 @@ def test_inline_code_inside_link() -> None:
     assert link["children"] == [{"tag": "code", "children": ["code"]}]
 
 
-def test_inline_html_span_passthrough() -> None:
-    """Raw HTML spans are passed through as plain strings."""
+def test_inline_html_span_text_preserved() -> None:
+    """Raw HTML spans keep their text content without leaking HTML tags."""
     md = "<b>raw html</b>"
     result = md_to_telegraph(md)
     full = text_content(result)
-    assert "<b>" in full or "raw html" in full
+    assert full == "raw html"
 
 
 # ---------------------------------------------------------------------------
@@ -351,29 +351,56 @@ def test_nbsp_only_paragraph_in_blockquote_is_skipped() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Raw HTML passthrough
+# Raw HTML sanitizing
 # ---------------------------------------------------------------------------
 
 
-def test_html_block_passthrough() -> None:
-    """An HTML block (e.g. <pre>…</pre>) is passed through as a raw string."""
+def test_html_block_text_preserved_without_raw_tags() -> None:
+    """An HTML block is converted into Telegraph paragraphs with plain text."""
     md = "<pre>\ncode here\n</pre>"
     result = md_to_telegraph(md)
     assert len(result) == 1
-    assert isinstance(result[0], str)
-    assert "code here" in result[0]
+    assert result[0] == {"tag": "p", "children": ["code here"]}
 
 
-def test_html_span_passthrough() -> None:
-    """Inline HTML tags within a paragraph are passed through as raw strings."""
+def test_html_span_text_preserved_without_raw_tags() -> None:
+    """Inline HTML tags within a paragraph keep only their text content."""
     md = "text <em>emphasis</em> end"
     result = md_to_telegraph(md)
     full = text_content(result)
-    assert "text" in full
-    assert "emphasis" in full
-    assert "end" in full
+    assert full == "text emphasis end"
     children = result[0]["children"]
-    assert any(isinstance(c, str) and "<em>" in c for c in children)
+    assert all("<em>" not in c for c in children if isinstance(c, str))
+
+
+def test_html_block_multiple_paragraphs_are_split() -> None:
+    """Block HTML with multiple paragraphs becomes multiple Telegraph nodes."""
+    md = "<div><p>first</p><p>second</p></div>"
+    result = md_to_telegraph(md)
+    assert result == [
+        {"tag": "p", "children": ["first"]},
+        {"tag": "p", "children": ["second"]},
+    ]
+
+
+def test_empty_html_block_is_skipped() -> None:
+    """HTML blocks with no visible text do not create empty Telegraph nodes."""
+    assert md_to_telegraph("<div></div>") == []
+
+
+def test_html_block_inside_blockquote_is_flattened() -> None:
+    """Nested HTML blocks inside containers are flattened into child nodes."""
+    md = "> <div><p>first</p><p>second</p></div>"
+    result = md_to_telegraph(md)
+    assert result == [
+        {
+            "tag": "blockquote",
+            "children": [
+                {"tag": "p", "children": ["first"]},
+                {"tag": "p", "children": ["second"]},
+            ],
+        }
+    ]
 
 
 # ---------------------------------------------------------------------------
