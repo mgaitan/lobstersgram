@@ -413,7 +413,7 @@ def test_image_tag() -> None:
     result = md_to_telegraph(md)
     assert result[0]["children"][0] == {
         "tag": "img",
-        "attrs": {"src": "http://example.com/img.png", "alt": ["alt text"]},
+        "attrs": {"src": "http://example.com/img.png", "alt": "alt text"},
     }
 
 
@@ -423,7 +423,15 @@ def test_image_with_title() -> None:
     img = result[0]["children"][0]
     assert img["tag"] == "img"
     assert img["attrs"]["src"] == "http://example.com/img.png"
+    assert img["attrs"]["alt"] == "alt"
     assert img["attrs"]["title"] == "Caption"
+
+
+def test_image_alt_text_with_inline_markup_is_flattened() -> None:
+    md = "![**bold** and *em*](http://example.com/img.png)"
+    result = md_to_telegraph(md)
+    img = result[0]["children"][0]
+    assert img["attrs"]["alt"] == "bold and em"
 
 
 def test_image_no_alt_text() -> None:

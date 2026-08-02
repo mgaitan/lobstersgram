@@ -74,7 +74,7 @@ class TelegraphDomRenderer(BaseRenderer):
         attrs = {"src": token.src}
         alt_text = self.render_inner(token)
         if alt_text:
-            attrs["alt"] = alt_text
+            attrs["alt"] = _text_content(alt_text)
         if token.title:
             attrs["title"] = token.title
         return {"tag": "img", "attrs": attrs}
@@ -166,3 +166,13 @@ def _html_fragment_to_text(fragment: str) -> str:
     text = html.unescape(text).replace("\xa0", " ")
     lines = [line.strip() for line in text.splitlines()]
     return _BLANK_LINE_RE.sub("\n\n", "\n".join(lines)).strip()
+
+
+def _text_content(nodes: NodeList) -> str:
+    parts: list[str] = []
+    for node in nodes:
+        if isinstance(node, str):
+            parts.append(node)
+        elif isinstance(node, dict):
+            parts.append(_text_content(node.get("children") or []))
+    return "".join(parts)
