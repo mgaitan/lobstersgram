@@ -7,9 +7,9 @@ import time
 
 import requests
 from md_to_telegraph import md_to_telegraph
+from url_to_markdown import strip_leading_title_heading
 
 from lobstergram import config
-from lobstergram.content import strip_leading_title_heading
 
 
 class TelegraphAPIError(RuntimeError):

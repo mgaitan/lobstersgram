@@ -36,6 +36,33 @@ Demo:
 
 No callbacks, no pagination logic, no bot process running 24/7.
 
+## Reusable packages
+
+This workspace contains two reusable packages used by the bot:
+
+- [`url-to-markdown`](packages/url-to-markdown/README.md): extracts web pages and supported special URLs as Markdown.
+- [`md-to-telegraph`](packages/md-to-telegraph/README.md): converts Markdown into Telegraph DOM nodes.
+
+Each package has its own version and can be released independently from this workspace.
+
+### Independent releases
+
+Versions live in each package's own `pyproject.toml`. For example, to bump and
+release `url-to-markdown`:
+
+```bash
+uv version --package url-to-markdown --bump patch
+uv lock
+git commit -am "Release url-to-markdown $(uv version --package url-to-markdown --short)"
+git tag "url-to-markdown-v$(uv version --package url-to-markdown --short)"
+git push origin main --tags
+```
+
+Create the GitHub release from that tag. The `cd.yml` workflow verifies the
+matching package version, builds only that package, and publishes it to PyPI.
+Use the same commands with `md-to-telegraph` or `lobstergram` as the package
+name. The tag format is `<package>-v<version>`.
+
 ---
 
 ## Why Telegraph?
@@ -80,7 +107,7 @@ All secrets are stored securely in GitHub Actions.
 
 To register subscribers:
 - Send `/start` to the bot from the Telegram account or group you want to receive posts.
-- Run the workflow once (or run `uv run python main.py --read-messages`) to record the
+- Run the workflow once (or run `uv run lobstergram --read-messages`) to record the
   `chat_id` values into `subscribers.json`.
 
 For local development, you can set `TELEGRAM_DEV_CHAT_ID` to force all sends
