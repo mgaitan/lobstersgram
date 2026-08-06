@@ -36,6 +36,15 @@ nodes = md_to_telegraph("# Hello\n\nThis is **bold** text.")
 # ]
 ```
 
+For extracted content that may need a plain-text fallback, use
+`content_to_telegraph`:
+
+```python
+from md_to_telegraph import content_to_telegraph
+
+nodes = content_to_telegraph(content_markdown, fallback_text)
+```
+
 ## Markdown features supported
 
 | Markdown element       | Telegraph output           |

@@ -134,3 +134,16 @@ class TelegraphDomRenderer(BaseRenderer):
 def md_to_telegraph(markdown_text: str) -> NodeList:
     with TelegraphDomRenderer() as renderer:
         return renderer.render(Document(markdown_text))
+
+
+def content_to_telegraph(markdown_text: str, fallback_text: str = "") -> NodeList:
+    """Convert Markdown content, falling back to plain-text paragraphs."""
+    nodes = md_to_telegraph(markdown_text.strip()) if markdown_text.strip() else []
+    if nodes:
+        return nodes
+
+    paragraphs = [paragraph.strip() for paragraph in fallback_text.strip().split("\n\n") if paragraph.strip()]
+    if paragraphs:
+        return [{"tag": "p", "children": [paragraph]} for paragraph in paragraphs[:2000]]
+
+    return [{"tag": "p", "children": ["(No content extracted)"]}]

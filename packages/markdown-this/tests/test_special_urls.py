@@ -317,7 +317,19 @@ def test_extract_main_content_handles_special_and_generic_paths() -> None:
         unittest.mock.patch("markdown_this.extractor.fetch_github_blob_markdown", return_value=None),
         unittest.mock.patch("markdown_this.extractor.fetch_github_readme", return_value=("Repo", "Repo content")),
     ):
-        assert extractor_module.extract_main_content("https://github.com/owner/repo")[0] == "Repo"
+        result = extractor_module.extract_main_content("https://github.com/owner/repo")
+        assert result[0] == "Repo"
+        assert result[1] == "Repo content"
+
+    with (
+        unittest.mock.patch("markdown_this.extractor.fetch_github_blob_markdown", return_value=None),
+        unittest.mock.patch(
+            "markdown_this.extractor.fetch_github_readme", return_value=("Repo", "# Repo\n\nRepo content")
+        ),
+    ):
+        result = extractor_module.extract_main_content("https://github.com/owner/repo")
+        assert result[1] == "Repo content"
+        assert result[2] == "Repo content"
 
     with (
         unittest.mock.patch("markdown_this.extractor.fetch_github_blob_markdown", return_value=None),

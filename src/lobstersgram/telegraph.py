@@ -6,8 +6,7 @@ import json
 import time
 
 import requests
-from markdown_this import strip_leading_title_heading
-from md_to_telegraph import md_to_telegraph
+from md_to_telegraph import content_to_telegraph
 
 from lobstersgram import config
 
@@ -56,27 +55,8 @@ def telegraph_create_page(
     fallback_text: str,
     source_url: str,
 ) -> str:
-    """
-    Creates a Telegraph page from HTML content.
-    Telegraph expects 'content' as a JSON array of nodes.
-    Easiest minimal approach: wrap the HTML as a single <p> with escaped text is bad.
-    Better: use Telegraph HTML mode? Telegraph API uses node JSON, but it also accepts
-    'content' as JSON string of nodes. We'll create a small set of nodes by splitting paragraphs.
-    """
-    # Build nodes from Markdown first; fallback to plain paragraphs.
-    nodes: list[dict[str, object]] = []
-    markdown = strip_leading_title_heading(content_markdown.strip(), title)
-    if markdown:
-        nodes = md_to_telegraph(markdown)
-
-    if not nodes:
-        text = fallback_text.strip()
-        paragraphs = [p.strip() for p in text.split("\n\n") if p.strip()]
-        for p in paragraphs[:2000]:
-            nodes.append({"tag": "p", "children": [p]})
-
-    if not nodes:
-        nodes = [{"tag": "p", "children": ["(No content extracted)"]}]
+    """Create a Telegraph page from Markdown content and its plain-text fallback."""
+    nodes = content_to_telegraph(content_markdown, fallback_text)
 
     payload: dict[str, object] = {
         "access_token": config.TELEGRAPH_ACCESS_TOKEN,

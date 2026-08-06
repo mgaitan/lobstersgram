@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from md_to_telegraph import md_to_telegraph
+from md_to_telegraph import content_to_telegraph, md_to_telegraph
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -337,6 +337,26 @@ def test_empty_document() -> None:
 
 def test_whitespace_only_document() -> None:
     assert md_to_telegraph("   \n  \n  ") == []
+
+
+def test_content_to_telegraph_prefers_markdown_nodes() -> None:
+    result = content_to_telegraph("# Title\n\nBody", "Fallback")
+    assert result == [
+        {"tag": "h3", "children": ["Title"]},
+        {"tag": "p", "children": ["Body"]},
+    ]
+
+
+def test_content_to_telegraph_uses_fallback_paragraphs() -> None:
+    result = content_to_telegraph("", "First paragraph.\n\nSecond paragraph.")
+    assert result == [
+        {"tag": "p", "children": ["First paragraph."]},
+        {"tag": "p", "children": ["Second paragraph."]},
+    ]
+
+
+def test_content_to_telegraph_uses_empty_content_placeholder() -> None:
+    assert content_to_telegraph("", "   \n  ") == [{"tag": "p", "children": ["(No content extracted)"]}]
 
 
 def test_nbsp_only_paragraph_is_skipped() -> None:
