@@ -12,7 +12,7 @@ import pytest
 os.environ.setdefault("TELEGRAM_BOT_TOKEN", "test-token")
 os.environ.setdefault("TELEGRAPH_ACCESS_TOKEN", "test-token")
 
-from lobstergram.state import (
+from lobstersgram.state import (
     load_bookmarks,
     load_message_map,
     save_bookmarks,

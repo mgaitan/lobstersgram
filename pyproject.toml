@@ -3,7 +3,7 @@ requires = ["uv_build>=0.7,<0.12"]
 build-backend = "uv_build"
 
 [project]
-name = "lobstergram"
+name = "lobstersgram"
 version = "0.1.0"
 description = "Telegram bot that posts Lobsters links to Telegraph"
 readme = "README.md"
@@ -16,23 +16,23 @@ dependencies = [
     "python-dotenv>=1.2.1",
     "requests>=2.32.5",
     "rich>=14.2.0",
-    "url-to-markdown",
+    "markdown-this",
 ]
 
 [project.urls]
-Homepage = "https://github.com/mgaitan/lobstersgram/tree/main/src/lobstergram"
+Homepage = "https://github.com/mgaitan/lobstersgram/tree/main/src/lobstersgram"
 Repository = "https://github.com/mgaitan/lobstersgram"
 Issues = "https://github.com/mgaitan/lobstersgram/issues"
 
 [project.scripts]
-lobstergram = "lobstergram.main:main"
+lobstersgram = "lobstersgram.main:main"
 
 [tool.uv.workspace]
-members = ["packages/md-to-telegraph", "packages/url-to-markdown"]
+members = ["packages/md-to-telegraph", "packages/markdown-this"]
 
 [tool.uv.sources]
 md-to-telegraph = { workspace = true }
-url-to-markdown = { workspace = true }
+markdown-this = { workspace = true }
 
 [dependency-groups]
 dev = [
@@ -78,10 +78,10 @@ select = [
 ]
 
 [tool.pytest.ini_options]
-addopts = "--import-mode=importlib --cov=md_to_telegraph --cov=url_to_markdown --cov-report=term-missing --cov-fail-under=100"
+addopts = "--import-mode=importlib --cov=md_to_telegraph --cov=markdown_this --cov-report=term-missing --cov-fail-under=100"
 
 [tool.coverage.run]
-source = ["md_to_telegraph", "url_to_markdown"]
+source = ["md_to_telegraph", "markdown_this"]
 
 [tool.coverage.report]
 fail_under = 100

@@ -1,1 +1,0 @@
-"""Lobstergram: Lobsters → Telegraph → Telegram."""

@@ -5,7 +5,7 @@ from __future__ import annotations
 import csv
 import json
 
-from lobstergram import config
+from lobstersgram import config
 
 
 def load_state() -> dict[str, object]:

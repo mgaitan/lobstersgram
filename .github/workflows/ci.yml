@@ -10,7 +10,7 @@ on:
       - "packages/**"
       - "src/**"
       - "README.md"
-      - ".github/workflows/ci.yml"
+      - ".github/workflows/**"
   push:
     branches:
       - main
@@ -20,7 +20,7 @@ on:
       - "packages/**"
       - "src/**"
       - "README.md"
-      - ".github/workflows/ci.yml"
+      - ".github/workflows/**"
 
 permissions:
   contents: read

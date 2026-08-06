@@ -1,0 +1,51 @@
+name: Publish markdown-this
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version already written in packages/markdown-this/pyproject.toml"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    name: Publish markdown-this
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, 'markdown-this-v')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Verify package version
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          version="$(uv version --package markdown-this --short)"
+          if [ "${{ github.event_name }}" = "release" ]; then
+            expected="${RELEASE_TAG#markdown-this-v}"
+          else
+            expected="$INPUT_VERSION"
+          fi
+          test "$version" = "$expected" || {
+            echo "pyproject version ($version) does not match release version ($expected)"
+            exit 1
+          }
+
+      - name: Build package
+        run: uv build --package markdown-this --out-dir dist/markdown-this
+
+      - name: Publish to PyPI
+        run: uv publish dist/markdown-this/*

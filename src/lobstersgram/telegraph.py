@@ -6,10 +6,10 @@ import json
 import time
 
 import requests
+from markdown_this import strip_leading_title_heading
 from md_to_telegraph import md_to_telegraph
-from url_to_markdown import strip_leading_title_heading
 
-from lobstergram import config
+from lobstersgram import config
 
 
 class TelegraphAPIError(RuntimeError):

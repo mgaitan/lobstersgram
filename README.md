@@ -1,8 +1,8 @@
-# Lobstergram: Lobsters → Telegraph → Telegram (Serverless)
+# Lobstersgram: Lobsters → Telegraph → Telegram (Serverless)
 
 [![CI](https://github.com/mgaitan/lobstersgram/actions/workflows/ci.yml/badge.svg)](https://github.com/mgaitan/lobstersgram/actions/workflows/ci.yml)
 
-Lobstergram is a fast Telegram client for [lobste.rs](https://lobste.rs). It delivers the hottest Lobsters stories (articles that reached the home page) right into Telegram with a clean telegra.ph reading view.
+Lobstersgram is a fast Telegram client for [lobste.rs](https://lobste.rs). It delivers the hottest Lobsters stories (articles that reached the home page) right into Telegram with a clean telegra.ph reading view.
 
 Bot: [@lobstersgram_bot](https://t.me/lobstersgram_bot)
 Post: https://mgaitan.github.io/en/posts/lobstersgram-cliente-rapido-lobsters/
@@ -13,7 +13,7 @@ Commands:
 
 Demo:
 
-[![Lobstergram demo](https://img.youtube.com/vi/wdzIBFYjJ3Y/hqdefault.jpg)](https://youtube.com/shorts/wdzIBFYjJ3Y?si=yMhLPjz7kDGX_1Wl)
+[![Lobstersgram demo](https://img.youtube.com/vi/wdzIBFYjJ3Y/hqdefault.jpg)](https://youtube.com/shorts/wdzIBFYjJ3Y?si=yMhLPjz7kDGX_1Wl)
 
 ---
 
@@ -40,7 +40,7 @@ No callbacks, no pagination logic, no bot process running 24/7.
 
 This workspace contains two reusable packages used by the bot:
 
-- [`url-to-markdown`](packages/url-to-markdown/README.md): extracts web pages and supported special URLs as Markdown.
+- [`markdown-this`](packages/markdown-this/README.md): extracts web pages and supported special URLs as Markdown.
 - [`md-to-telegraph`](packages/md-to-telegraph/README.md): converts Markdown into Telegraph DOM nodes.
 
 Each package has its own version and can be released independently from this workspace.
@@ -48,20 +48,25 @@ Each package has its own version and can be released independently from this wor
 ### Independent releases
 
 Versions live in each package's own `pyproject.toml`. For example, to bump and
-release `url-to-markdown`:
+release `markdown-this`:
 
 ```bash
-uv version --package url-to-markdown --bump patch
+uv version --package markdown-this --bump patch
 uv lock
-git commit -am "Release url-to-markdown $(uv version --package url-to-markdown --short)"
-git tag "url-to-markdown-v$(uv version --package url-to-markdown --short)"
+git commit -am "Release markdown-this $(uv version --package markdown-this --short)"
+git tag "markdown-this-v$(uv version --package markdown-this --short)"
 git push origin main --tags
 ```
 
-Create the GitHub release from that tag. The `cd.yml` workflow verifies the
-matching package version, builds only that package, and publishes it to PyPI.
-Use the same commands with `md-to-telegraph` or `lobstergram` as the package
-name. The tag format is `<package>-v<version>`.
+Create the GitHub release from that tag. The matching publishing workflow
+verifies the package version, builds only that package, and publishes it to
+PyPI. The reusable packages have separate Trusted Publisher workflows:
+`publish-md-to-telegraph.yml` publishes `md-to-telegraph`, and
+`publish-markdown-this.yml` publishes `markdown-this`. The `lobstersgram`
+application is not published to PyPI yet.
+
+Use the same commands with `md-to-telegraph` as the package name. The tag
+format is `<package>-v<version>`.
 
 ---
 
@@ -107,7 +112,7 @@ All secrets are stored securely in GitHub Actions.
 
 To register subscribers:
 - Send `/start` to the bot from the Telegram account or group you want to receive posts.
-- Run the workflow once (or run `uv run lobstergram --read-messages`) to record the
+- Run the workflow once (or run `uv run lobstersgram --read-messages`) to record the
   `chat_id` values into `subscribers.json`.
 
 For local development, you can set `TELEGRAM_DEV_CHAT_ID` to force all sends

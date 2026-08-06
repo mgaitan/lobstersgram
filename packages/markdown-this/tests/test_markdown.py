@@ -9,7 +9,7 @@ import unittest.mock
 
 import requests
 from bs4 import BeautifulSoup
-from url_to_markdown import (
+from markdown_this import (
     ContentDownloadError,
     _extract_leading_heading,
     _github_repo_match,
@@ -29,9 +29,9 @@ from url_to_markdown import (
     preprocess_figures,
     strip_leading_title_heading,
 )
-from url_to_markdown import extractor as extractor_module
-from url_to_markdown import html as html_module
-from url_to_markdown import markdown as markdown_module
+from markdown_this import extractor as extractor_module
+from markdown_this import html as html_module
+from markdown_this import markdown as markdown_module
 
 BASE = "https://example.com/articles/my-post/"
 

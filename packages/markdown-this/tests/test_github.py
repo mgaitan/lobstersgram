@@ -9,7 +9,7 @@ import unittest.mock
 
 import requests
 from bs4 import BeautifulSoup
-from url_to_markdown import (
+from markdown_this import (
     ContentDownloadError,
     _extract_leading_heading,
     _github_repo_match,
@@ -29,9 +29,9 @@ from url_to_markdown import (
     preprocess_figures,
     strip_leading_title_heading,
 )
-from url_to_markdown import extractor as extractor_module
-from url_to_markdown import html as html_module
-from url_to_markdown import markdown as markdown_module
+from markdown_this import extractor as extractor_module
+from markdown_this import html as html_module
+from markdown_this import markdown as markdown_module
 
 BASE = "https://example.com/articles/my-post/"
 
@@ -173,7 +173,7 @@ def _make_fake_requests_get(repo_data: dict, readme_data: dict | None = None) ->
             return _FakeResp(readme_data or {})
         return _FakeResp(repo_data)
 
-    return unittest.mock.patch("url_to_markdown.fetchers.requests.get", side_effect=_side_effect)
+    return unittest.mock.patch("markdown_this.fetchers.requests.get", side_effect=_side_effect)
 
 
 def test_fetch_github_readme_returns_title_and_markdown() -> None:
@@ -261,7 +261,7 @@ def test_fetch_github_readme_api_failure_returns_none() -> None:
             raise requests.RequestException
         return _FakeResp(repo_data)
 
-    with unittest.mock.patch("url_to_markdown.fetchers.requests.get", side_effect=_side_effect):
+    with unittest.mock.patch("markdown_this.fetchers.requests.get", side_effect=_side_effect):
         result = fetch_github_readme("https://github.com/owner/repo")
 
     assert result is None
