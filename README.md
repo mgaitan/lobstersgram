@@ -60,12 +60,13 @@ git push origin main --tags
 
 Create the GitHub release from that tag. The matching publishing workflow
 verifies the package version, builds only that package, and publishes it to
-PyPI. The workflows are split so each package has its own Trusted Publisher:
-`cd.yml` publishes `md-to-telegraph`, `publish-markdown-this.yml` publishes
-`markdown-this`, and `publish-lobstergram.yml` publishes `lobstergram`.
+PyPI. The reusable packages have separate Trusted Publisher workflows:
+`publish-md-to-telegraph.yml` publishes `md-to-telegraph`, and
+`publish-markdown-this.yml` publishes `markdown-this`. The `lobstergram`
+application is not published to PyPI yet.
 
-Use the same commands with `md-to-telegraph` or `lobstergram` as the package
-name. The tag format is `<package>-v<version>`.
+Use the same commands with `md-to-telegraph` as the package name. The tag
+format is `<package>-v<version>`.
 
 ---
 

@@ -59,10 +59,10 @@ git tag markdown-this-v<version>
 git push origin markdown-this-v<version>
 ```
 
-Use the package names `lobstergram`, `md-to-telegraph`, or
-`markdown-this`. Each publishing workflow is dedicated to one package:
-`cd.yml` publishes `md-to-telegraph`, while `publish-markdown-this.yml` and
-`publish-lobstergram.yml` publish the other two packages. A release tag only
+The reusable packages are published independently. Each publishing workflow
+is dedicated to one package: `publish-md-to-telegraph.yml` publishes
+`md-to-telegraph`, and `publish-markdown-this.yml` publishes `markdown-this`.
+The `lobstergram` application is not published to PyPI yet. A release tag only
 activates the matching workflow.
 
 ## Editing and Verification
