@@ -5,13 +5,14 @@ from md_to_telegraph import split_front_matter
 
 def test_split_front_matter_reads_supported_fields() -> None:
     metadata, body = split_front_matter(
-        "---\ntitle: Title\nauthor: Author\nurl: https://example.com\ndate: 2026-08-06\n---\n\nBody"
+        "---\ntitle: Title\nauthor: Author\nurl: https://example.com\ndate: 2026-08-06\nimage: https://example.com/image.jpg\n---\n\nBody"
     )
     assert metadata == {
         "title": "Title",
         "author": "Author",
         "url": "https://example.com",
         "date": "2026-08-06",
+        "image": "https://example.com/image.jpg",
     }
     assert body == "Body"
 

@@ -3,11 +3,12 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
+from urllib.parse import urljoin, urlparse
 
 import yaml
 from bs4 import BeautifulSoup
 
-METADATA_FIELDS = ("title", "author", "url", "date")
+METADATA_FIELDS = ("title", "author", "url", "date", "image")
 
 
 def split_front_matter(markdown: str) -> tuple[dict[str, str], str]:
@@ -45,8 +46,8 @@ def add_front_matter(markdown: str, metadata: Mapping[str, str]) -> str:
     return f"---\n{header}\n---\n\n{markdown}" if markdown else f"---\n{header}\n---"
 
 
-def extract_html_metadata(content_html: str) -> dict[str, str]:
-    """Extract common author, canonical URL, and publication date metadata."""
+def extract_html_metadata(content_html: str, base_url: str = "") -> dict[str, str]:
+    """Extract common author, canonical URL, date, and primary image metadata."""
     soup = BeautifulSoup(content_html, "html.parser")
 
     def first_meta(*queries: dict[str, str]) -> str:
@@ -67,10 +68,25 @@ def extract_html_metadata(content_html: str) -> dict[str, str]:
         {"name": "date"},
         {"itemprop": "datePublished"},
     )
+    image = first_meta(
+        {"property": "og:image"},
+        {"property": "og:image:url"},
+        {"name": "twitter:image"},
+        {"property": "twitter:image"},
+        {"itemprop": "image"},
+    )
+    image = urljoin(base_url, image) if image else ""
+    parsed_image = urlparse(image)
+    if parsed_image.scheme not in {"http", "https"} or not parsed_image.netloc:
+        image = ""
     canonical = soup.find("link", rel=lambda value: value and "canonical" in value)
     url = str(canonical.get("href", "")).strip() if canonical else ""
     url = url or first_meta({"property": "og:url"})
     if not date:
         time_tag = soup.find("time", attrs={"datetime": True})
         date = str(time_tag["datetime"]).strip() if time_tag else ""
-    return {field: value for field, value in (("author", author), ("url", url), ("date", date)) if value}
+    return {
+        field: value
+        for field, value in (("author", author), ("url", url), ("date", date), ("image", image))
+        if value
+    }

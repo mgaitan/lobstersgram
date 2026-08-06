@@ -121,7 +121,10 @@ def test_create_page_reads_markdown_path_and_removes_duplicate_title_heading(tmp
 
 
 def test_create_page_reads_front_matter_defaults() -> None:
-    markdown = "---\ntitle: Front matter title\nauthor: Author\nurl: https://example.com\ndate: 2026-08-06\n---\n\nBody"
+    markdown = (
+        "---\ntitle: Front matter title\nauthor: Author\nurl: https://example.com\n"
+        "date: 2026-08-06\nimage: https://example.com/hero.jpg\n---\n\nBody"
+    )
     with unittest.mock.patch.object(telegraph_module.requests, "post", return_value=_success_response()) as post:
         create_page(content_markdown=markdown, access_token="token", warm_cache=False)
 
@@ -129,7 +132,33 @@ def test_create_page_reads_front_matter_defaults() -> None:
     assert payload["title"] == "Front matter title"
     assert payload["author_name"] == "Author"
     assert payload["author_url"] == "https://example.com"
-    assert json.loads(payload["content"]) == [{"tag": "p", "children": ["Body"]}]
+    assert json.loads(payload["content"]) == [
+        {"tag": "img", "attrs": {"src": "https://example.com/hero.jpg"}},
+        {"tag": "p", "children": ["Body"]},
+    ]
+
+
+def test_create_page_does_not_duplicate_front_matter_image() -> None:
+    markdown = "---\nimage: https://example.com/hero.jpg\n---\n\n![Hero](https://example.com/hero.jpg)"
+    with unittest.mock.patch.object(telegraph_module.requests, "post", return_value=_success_response()) as post:
+        create_page(
+            title="Title",
+            content_markdown=markdown,
+            access_token="token",
+            warm_cache=False,
+        )
+
+    assert json.loads(post.call_args.kwargs["data"]["content"]) == [
+        {
+            "tag": "p",
+            "children": [
+                {
+                    "tag": "img",
+                    "attrs": {"src": "https://example.com/hero.jpg", "alt": ["Hero"]},
+                }
+            ],
+        }
+    ]
 
 
 def test_create_page_explicit_values_override_front_matter() -> None:

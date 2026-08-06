@@ -92,7 +92,7 @@ def _extract_html_content(  # noqa: PLR0913
     extracted_markdown = _normalize_markdown_links(extracted_markdown)
     extracted_markdown = _make_markdown_links_absolute(extracted_markdown, base_url)
     fallback_text = BeautifulSoup(content_html_for_markdown, "html.parser").get_text(separator="\n").strip()
-    metadata = extract_html_metadata(content_html)
+    metadata = extract_html_metadata(content_html, base_url)
     if source_url:
         metadata["url"] = source_url
     return _finalize_content(title, extracted_markdown, fallback_text, intro_min_length, metadata)

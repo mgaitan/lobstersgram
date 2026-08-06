@@ -11,7 +11,7 @@ from pathlib import Path
 import requests
 
 from md_to_telegraph.markdown import extract_leading_title, strip_leading_title_heading
-from md_to_telegraph.md_to_dom import content_to_telegraph
+from md_to_telegraph.md_to_dom import content_to_telegraph, prepend_image
 from md_to_telegraph.metadata import split_front_matter
 
 logger = logging.getLogger(__name__)
@@ -138,7 +138,7 @@ def create_page(  # noqa: PLR0913
     markdown = strip_leading_title_heading(markdown, page_title)
     source_url = source_url or metadata.get("url", "")
     author_name = author_name or metadata.get("author", "")
-    nodes = content_to_telegraph(markdown, fallback_text)
+    nodes = prepend_image(content_to_telegraph(markdown, fallback_text), metadata.get("image", ""))
     payload: dict[str, object] = {
         "access_token": token,
         "title": page_title,

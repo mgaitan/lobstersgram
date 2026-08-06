@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from md_to_telegraph import content_to_telegraph, md_to_telegraph
+from md_to_telegraph.md_to_dom import prepend_image
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -357,6 +358,18 @@ def test_content_to_telegraph_uses_fallback_paragraphs() -> None:
 
 def test_content_to_telegraph_uses_empty_content_placeholder() -> None:
     assert content_to_telegraph("", "   \n  ") == [{"tag": "p", "children": ["(No content extracted)"]}]
+
+
+def test_prepend_image_adds_metadata_image() -> None:
+    assert prepend_image([{"tag": "p", "children": ["Body"]}], "https://example.com/hero.jpg") == [
+        {"tag": "img", "attrs": {"src": "https://example.com/hero.jpg"}},
+        {"tag": "p", "children": ["Body"]},
+    ]
+
+
+def test_prepend_image_does_not_duplicate_content_image() -> None:
+    nodes = md_to_telegraph("![Hero](https://example.com/hero.jpg)")
+    assert prepend_image(nodes, "https://example.com/hero.jpg") == nodes
 
 
 def test_nbsp_only_paragraph_is_skipped() -> None:
