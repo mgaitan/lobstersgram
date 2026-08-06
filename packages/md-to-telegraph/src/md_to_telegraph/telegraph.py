@@ -4,17 +4,22 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import time
+from pathlib import Path
 
 import requests
 
+from md_to_telegraph.markdown import extract_leading_title, strip_leading_title_heading
 from md_to_telegraph.md_to_dom import content_to_telegraph
+from md_to_telegraph.metadata import split_front_matter
 
 logger = logging.getLogger(__name__)
 
 DEFAULT_REQUEST_TIMEOUT = 20
 HTTP_SERVER_ERROR_MIN = 500
 TELEGRAPH_CREATE_PAGE_URL = "https://api.telegra.ph/createPage"
+TELEGRAPH_CREATE_ACCOUNT_URL = "https://api.telegra.ph/createAccount"
 
 
 class TelegraphAPIError(RuntimeError):
@@ -25,16 +30,31 @@ class TelegraphAPIError(RuntimeError):
         self.data = data
 
 
+class TelegraphTokenError(RuntimeError):
+    """Raised when a page needs an access token but none was provided."""
+
+    def __init__(self) -> None:
+        super().__init__("Pass access_token or set TELEGRAPH_API_TOKEN before creating a page")
+
+
+class TelegraphTitleError(RuntimeError):
+    """Raised when a page has no explicit or discoverable title."""
+
+    def __init__(self) -> None:
+        super().__init__("Pass title or include a title in YAML front matter or the first Markdown heading")
+
+
 def _post_with_retry(
+    endpoint: str,
     payload: dict[str, object],
     request_timeout: int,
     retry_attempts: int | None,
-) -> str:
-    """Create a Telegraph page, retrying transient responses when requested."""
+) -> dict[str, object]:
+    """POST a Telegraph API method, retrying transient responses when requested."""
     attempts = max(1, retry_attempts or 1)
     for attempt in range(1, attempts + 1):
         backoff = min(2.0**attempt, 30.0)
-        response = requests.post(TELEGRAPH_CREATE_PAGE_URL, data=payload, timeout=request_timeout)
+        response = requests.post(endpoint, data=payload, timeout=request_timeout)
         if response.status_code >= HTTP_SERVER_ERROR_MIN:
             logger.warning("Telegraph server error status=%s attempt=%s/%s", response.status_code, attempt, attempts)
             if attempt < attempts:
@@ -48,9 +68,30 @@ def _post_with_retry(
                 time.sleep(backoff)
                 continue
             raise TelegraphAPIError(data)
-        return str(data["result"]["url"])
+        return data
     msg = "Telegraph request exhausted all attempts without raising"  # pragma: no cover
     raise AssertionError(msg)  # pragma: no cover
+
+
+def create_account(
+    short_name: str,
+    author_name: str = "",
+    author_url: str = "",
+    *,
+    request_timeout: int = DEFAULT_REQUEST_TIMEOUT,
+    retry_attempts: int | None = None,
+) -> str:
+    """Create a Telegraph account and return its access token."""
+    payload: dict[str, object] = {"short_name": short_name}
+    if author_name:
+        payload["author_name"] = author_name
+    if author_url:
+        payload["author_url"] = author_url
+    data = _post_with_retry(TELEGRAPH_CREATE_ACCOUNT_URL, payload, request_timeout, retry_attempts)
+    result = data.get("result")
+    if not isinstance(result, dict) or not result.get("access_token"):
+        raise TelegraphAPIError(data)
+    return str(result["access_token"])
 
 
 def warm_telegraph_cache(url: str, request_timeout: int = DEFAULT_REQUEST_TIMEOUT) -> None:
@@ -65,11 +106,13 @@ def warm_telegraph_cache(url: str, request_timeout: int = DEFAULT_REQUEST_TIMEOU
 
 
 def create_page(  # noqa: PLR0913
-    access_token: str,
-    title: str,
-    content_markdown: str,
+    title: str | None = None,
+    content_markdown: Path | str = "",
     fallback_text: str = "",
     source_url: str = "",
+    author_name: str = "",
+    access_token: str | None = None,
+    *,
     request_timeout: int = DEFAULT_REQUEST_TIMEOUT,
     retry_attempts: int | None = None,
     warm_cache: bool = True,
@@ -79,19 +122,37 @@ def create_page(  # noqa: PLR0913
     ``retry_attempts=None`` performs one request. Set it to a larger value to
     retry transient server responses and unsuccessful Telegraph API responses.
     """
-    nodes = content_to_telegraph(content_markdown, fallback_text)
+    token = access_token or os.getenv("TELEGRAPH_API_TOKEN")
+    if not token:
+        raise TelegraphTokenError
+
+    markdown = content_markdown.read_text(encoding="utf-8") if isinstance(content_markdown, Path) else content_markdown
+    metadata, markdown = split_front_matter(markdown)
+    resolved_title = title or metadata.get("title") or extract_leading_title(markdown)
+    if not resolved_title and isinstance(content_markdown, Path):
+        resolved_title = content_markdown.stem
+    if not resolved_title:
+        raise TelegraphTitleError
+
+    page_title = resolved_title[:256]
+    markdown = strip_leading_title_heading(markdown, page_title)
+    source_url = source_url or metadata.get("url", "")
+    author_name = author_name or metadata.get("author", "")
+    nodes = content_to_telegraph(markdown, fallback_text)
     payload: dict[str, object] = {
-        "access_token": access_token,
-        "title": title[:256],
+        "access_token": token,
+        "title": page_title,
         "content": json.dumps(nodes, ensure_ascii=False),
         "return_content": False,
     }
+    if author_name:
+        payload["author_name"] = author_name
     if source_url:
-        payload["author_name"] = "Source"
         payload["author_url"] = source_url
 
-    logger.debug("Create Telegraph page title=%r url=%s", title[:80], source_url)
-    telegraph_url = _post_with_retry(payload, request_timeout, retry_attempts)
+    logger.debug("Create Telegraph page title=%r url=%s", page_title[:80], source_url)
+    data = _post_with_retry(TELEGRAPH_CREATE_PAGE_URL, payload, request_timeout, retry_attempts)
+    telegraph_url = str(data["result"]["url"])
     if warm_cache:
         warm_telegraph_cache(telegraph_url, request_timeout)
     return telegraph_url

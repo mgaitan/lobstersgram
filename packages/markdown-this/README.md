@@ -22,8 +22,44 @@ title, markdown, fallback_text, intro = extract_main_content(
 )
 ```
 
+The source can also be a local HTML file (`Path` or path string) or raw HTML:
+
+```python
+from pathlib import Path
+from markdown_this import extract_main_content
+
+title, markdown, fallback_text, intro = extract_main_content(Path("article.html"))
+title, markdown, fallback_text, intro = extract_main_content("<html><p>...</p></html>")
+```
+
 `extract_main_content` returns the title, extracted Markdown, plain-text
 fallback, and a short introduction suitable for a notification or preview.
+The Markdown value starts with YAML front matter containing the metadata that
+was found, such as `title`, `author`, `url`, and `date`.
+
+For example:
+
+```markdown
+---
+title: An article
+author: An author
+url: https://example.com/article
+date: 2026-08-06
+---
+
+Article content.
+```
+
+The package also installs a `markdown-this` command:
+
+```bash
+markdown-this https://example.com/article
+markdown-this article.html
+cat article.html | markdown-this -
+```
+
+The command writes the extracted Markdown to stdout. Its input may be a URL,
+an existing HTML path, or HTML read from stdin.
 
 The lower-level fetchers and normalization helpers are available from the
 package modules when an application needs more control over the pipeline.

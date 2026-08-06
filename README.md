@@ -43,6 +43,9 @@ This workspace contains two reusable packages used by the bot:
 - [`markdown-this`](packages/markdown-this/README.md): extracts web pages and supported special URLs as Markdown.
 - [`md-to-telegraph`](packages/md-to-telegraph/README.md): converts Markdown into Telegraph DOM nodes.
 
+The `md-to-telegraph` package also provides an `md-to-telegraph` CLI for
+publishing a Markdown file or stdin directly.
+
 Each package has its own version and can be released independently from this workspace.
 
 ### Independent releases
