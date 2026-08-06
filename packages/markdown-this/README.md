@@ -34,6 +34,21 @@ title, markdown, fallback_text, intro = extract_main_content("<html><p>...</p></
 
 `extract_main_content` returns the title, extracted Markdown, plain-text
 fallback, and a short introduction suitable for a notification or preview.
+The Markdown value starts with YAML front matter containing the metadata that
+was found, such as `title`, `author`, `url`, and `date`.
+
+For example:
+
+```markdown
+---
+title: An article
+author: An author
+url: https://example.com/article
+date: 2026-08-06
+---
+
+Article content.
+```
 
 The package also installs a `markdown-this` command:
 

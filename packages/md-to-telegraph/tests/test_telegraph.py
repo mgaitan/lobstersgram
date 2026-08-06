@@ -10,6 +10,7 @@ import pytest
 import requests
 from md_to_telegraph import (
     TelegraphAPIError,
+    TelegraphTitleError,
     TelegraphTokenError,
     create_account,
     create_page,
@@ -117,6 +118,53 @@ def test_create_page_reads_markdown_path_and_removes_duplicate_title_heading(tmp
 
     payload = post.call_args.kwargs["data"]
     assert json.loads(payload["content"]) == [{"tag": "p", "children": ["Body"]}]
+
+
+def test_create_page_reads_front_matter_defaults() -> None:
+    markdown = "---\ntitle: Front matter title\nauthor: Author\nurl: https://example.com\ndate: 2026-08-06\n---\n\nBody"
+    with unittest.mock.patch.object(telegraph_module.requests, "post", return_value=_success_response()) as post:
+        create_page(content_markdown=markdown, access_token="token", warm_cache=False)
+
+    payload = post.call_args.kwargs["data"]
+    assert payload["title"] == "Front matter title"
+    assert payload["author_name"] == "Author"
+    assert payload["author_url"] == "https://example.com"
+    assert json.loads(payload["content"]) == [{"tag": "p", "children": ["Body"]}]
+
+
+def test_create_page_explicit_values_override_front_matter() -> None:
+    markdown = "---\ntitle: Header title\nauthor: Header author\nurl: https://header.example\n---\n\nBody"
+    with unittest.mock.patch.object(telegraph_module.requests, "post", return_value=_success_response()) as post:
+        create_page(
+            title="Explicit title",
+            content_markdown=markdown,
+            author_name="Explicit author",
+            source_url="https://explicit.example",
+            access_token="token",
+            warm_cache=False,
+        )
+
+    payload = post.call_args.kwargs["data"]
+    assert payload["title"] == "Explicit title"
+    assert payload["author_name"] == "Explicit author"
+    assert payload["author_url"] == "https://explicit.example"
+
+
+def test_create_page_uses_path_stem_without_title(tmp_path: Path) -> None:
+    markdown_path = tmp_path / "article.md"
+    markdown_path.write_text("Body", encoding="utf-8")
+    with unittest.mock.patch.object(telegraph_module.requests, "post", return_value=_success_response()) as post:
+        create_page(content_markdown=markdown_path, access_token="token", warm_cache=False)
+
+    assert post.call_args.kwargs["data"]["title"] == "article"
+
+
+def test_create_page_requires_a_title_for_raw_markdown() -> None:
+    with (
+        unittest.mock.patch.object(telegraph_module.requests, "post", return_value=_success_response()),
+        pytest.raises(TelegraphTitleError),
+    ):
+        create_page(content_markdown="Body", access_token="token", warm_cache=False)
 
 
 def test_create_account_posts_account_details() -> None:

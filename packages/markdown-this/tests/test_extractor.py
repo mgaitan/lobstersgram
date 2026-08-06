@@ -5,7 +5,7 @@ from __future__ import annotations
 import unittest.mock
 from pathlib import Path
 
-from markdown_this import extract_main_content
+from markdown_this import extract_main_content, split_front_matter
 from markdown_this import extractor as extractor_module
 
 
@@ -23,7 +23,9 @@ def test_extract_main_content_accepts_path_object(tmp_path: Path) -> None:
         title, markdown, fallback_text, intro = extract_main_content(html_path, min_content_length=0)
 
     assert title == "Readable title"
-    assert markdown == "Readable body."
+    metadata, body = split_front_matter(markdown)
+    assert metadata == {"title": "Readable title"}
+    assert body == "Readable body."
     assert fallback_text == "Readable body."
     assert intro == "Readable body."
 
@@ -41,5 +43,26 @@ def test_extract_main_content_accepts_raw_html() -> None:
     with unittest.mock.patch.object(extractor_module, "Document", return_value=_document()):
         result = extract_main_content("<html><body>Raw HTML</body></html>", min_content_length=0)
 
-    assert result[:2] == ("Readable title", "Readable body.")
+    metadata, body = split_front_matter(result[1])
+    assert result[0] == "Readable title"
+    assert metadata == {"title": "Readable title"}
+    assert body == "Readable body."
 
+
+def test_extract_main_content_emits_html_metadata() -> None:
+    html = (
+        '<meta name="author" content="Author">'
+        '<link rel="canonical" href="https://example.com/article">'
+        '<meta property="article:published_time" content="2026-08-06">'
+        "<p>Raw HTML</p>"
+    )
+    with unittest.mock.patch.object(extractor_module, "Document", return_value=_document()):
+        result = extract_main_content(html, min_content_length=0)
+
+    metadata, _body = split_front_matter(result[1])
+    assert metadata == {
+        "title": "Readable title",
+        "author": "Author",
+        "url": "https://example.com/article",
+        "date": "2026-08-06",
+    }

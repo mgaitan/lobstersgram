@@ -20,6 +20,7 @@ from markdown_this.markdown import (
     extract_intro,
     markdown_to_text,
 )
+from markdown_this.metadata import add_front_matter, extract_html_metadata, split_front_matter
 
 __all__ = [
     "ContentDownloadError",
@@ -30,6 +31,8 @@ __all__ = [
     "_make_markdown_links_absolute",
     "_normalize_markdown_links",
     "_strip_badge_paragraphs",
+    "add_front_matter",
+    "extract_html_metadata",
     "extract_intro",
     "extract_main_content",
     "fetch_arxiv_abstract",
@@ -40,4 +43,5 @@ __all__ = [
     "make_images_absolute",
     "markdown_to_text",
     "preprocess_figures",
+    "split_front_matter",
 ]
