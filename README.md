@@ -44,6 +44,8 @@ This workspace contains reusable packages used by the bot and a small web UI:
 - [`md-to-telegraph`](packages/md-to-telegraph/README.md): converts Markdown into Telegraph DOM nodes.
 - [`markdown-web`](packages/markdown-web/README.md): FastAPI service with a web UI, URL endpoints, and bookmarklets for the two tools.
 
+The web app is available at <https://markdown.fastapicloud.dev/>.
+
 The `md-to-telegraph` package also provides an `md-to-telegraph` CLI for
 publishing a Markdown file or stdin directly.
 
