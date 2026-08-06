@@ -451,7 +451,7 @@ wheels = [
 
 [[package]]
 name = "markdown-this"
-version = "0.1.1"
+version = "0.1.3"
 source = { editable = "packages/markdown-this" }
 dependencies = [
     { name = "beautifulsoup4" },
@@ -497,7 +497,7 @@ wheels = [
 
 [[package]]
 name = "md-to-telegraph"
-version = "0.1.1"
+version = "0.1.3"
 source = { editable = "packages/md-to-telegraph" }
 dependencies = [
     { name = "mistletoe" },

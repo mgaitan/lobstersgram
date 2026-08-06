@@ -13,6 +13,7 @@ def test_front_matter_round_trip() -> None:
             "author": "Author",
             "url": "https://example.com/article",
             "date": "2026-08-06",
+            "image": "https://example.com/image.jpg",
         },
     )
 
@@ -22,6 +23,7 @@ def test_front_matter_round_trip() -> None:
         "author": "Author",
         "url": "https://example.com/article",
         "date": "2026-08-06",
+        "image": "https://example.com/image.jpg",
     }
     assert body == "Body"
 
@@ -57,8 +59,16 @@ def test_extract_html_metadata_reads_meta_tags_and_canonical_url() -> None:
 
 
 def test_extract_html_metadata_reads_open_graph_and_time_fallback() -> None:
-    html = '<meta property="og:url" content="https://example.com"><time datetime="2026-08-05">Yesterday</time>'
-    assert extract_html_metadata(html) == {"url": "https://example.com", "date": "2026-08-05"}
+    html = (
+        '<meta property="og:url" content="https://example.com">'
+        '<meta property="og:image" content="/images/hero.jpg">'
+        '<time datetime="2026-08-05">Yesterday</time>'
+    )
+    assert extract_html_metadata(html, "https://example.com/article") == {
+        "url": "https://example.com",
+        "date": "2026-08-05",
+        "image": "https://example.com/images/hero.jpg",
+    }
 
 
 def test_extract_html_metadata_returns_empty_for_missing_values() -> None:

@@ -54,6 +54,7 @@ def test_extract_main_content_emits_html_metadata() -> None:
         '<meta name="author" content="Author">'
         '<link rel="canonical" href="https://example.com/article">'
         '<meta property="article:published_time" content="2026-08-06">'
+        '<meta property="og:image" content="https://cdn.example.com/hero.jpg">'
         "<p>Raw HTML</p>"
     )
     with unittest.mock.patch.object(extractor_module, "Document", return_value=_document()):
@@ -65,4 +66,5 @@ def test_extract_main_content_emits_html_metadata() -> None:
         "author": "Author",
         "url": "https://example.com/article",
         "date": "2026-08-06",
+        "image": "https://cdn.example.com/hero.jpg",
     }

@@ -147,3 +147,23 @@ def content_to_telegraph(markdown_text: str, fallback_text: str = "") -> NodeLis
         return [{"tag": "p", "children": [paragraph]} for paragraph in paragraphs[:2000]]
 
     return [{"tag": "p", "children": ["(No content extracted)"]}]
+
+
+def prepend_image(nodes: NodeList, image_url: str) -> NodeList:
+    """Prepend a metadata image unless the same image is already in the content."""
+    if not image_url or _contains_image(nodes, image_url):
+        return nodes
+    return [{"tag": "img", "attrs": {"src": image_url}}, *nodes]
+
+
+def _contains_image(nodes: NodeList, image_url: str) -> bool:
+    for node in nodes:
+        if not isinstance(node, dict):
+            continue
+        attrs = node.get("attrs")
+        if isinstance(attrs, dict) and attrs.get("src") == image_url and node.get("tag") == "img":
+            return True
+        children = node.get("children")
+        if isinstance(children, list) and _contains_image(children, image_url):
+            return True
+    return False
