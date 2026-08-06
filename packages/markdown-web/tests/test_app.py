@@ -15,7 +15,8 @@ def _prepared(markdown: str = "# Title\n\nBody") -> PreparedContent:
 def test_home_and_static_assets() -> None:
     response = client.get("/")
     assert response.status_code == HTTP_200_OK
-    assert "Turn any page into Markdown" in response.text
+    assert "Turn any page into Markdown or publish it to Telegraph" in response.text
+    assert ">markdown-web<" not in response.text
     assert client.get("/static/styles.css").status_code == HTTP_200_OK
 
 
@@ -68,8 +69,13 @@ def test_post_markdown_accepts_raw_html_metadata(monkeypatch: pytest.MonkeyPatch
 def test_post_telegraph_returns_json_and_accepts_bearer_token(monkeypatch: pytest.MonkeyPatch) -> None:
     seen: dict[str, SourceRequest] = {}
 
-    def fake_publish(source: SourceRequest, bookmarklet_key: str | None = None) -> str:
+    def fake_publish(
+        source: SourceRequest,
+        bookmarklet_key: str | None = None,
+        cache_key: str | None = None,
+    ) -> str:
         seen["source"] = source
+        seen["cache_key"] = cache_key
         return "https://telegra.ph/page"
 
     monkeypatch.setattr(app_module, "publish_content", fake_publish)
@@ -86,12 +92,25 @@ def test_post_telegraph_returns_json_and_accepts_bearer_token(monkeypatch: pytes
 
 
 def test_get_telegraph_redirects(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr(app_module, "publish_content", lambda source: "https://telegra.ph/page")
+    seen: dict[str, object] = {}
+
+    def fake_publish(
+        source: SourceRequest,
+        bookmarklet_key: str | None = None,
+        cache_key: str | None = None,
+    ) -> str:
+        seen["source"] = source
+        seen["cache_key"] = cache_key
+        return "https://telegra.ph/page"
+
+    monkeypatch.setattr(app_module, "publish_content", fake_publish)
 
     response = client.get("/t/https://example.com/article", follow_redirects=False)
 
     assert response.status_code == HTTP_303_SEE_OTHER
     assert response.headers["location"] == "https://telegra.ph/page"
+    assert response.headers["cache-control"] == "public, max-age=86400"
+    assert seen["cache_key"] == "https://example.com/article"
 
 
 def test_bookmarklet_form_does_not_expose_token(monkeypatch: pytest.MonkeyPatch) -> None:

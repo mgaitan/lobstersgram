@@ -74,3 +74,23 @@ def test_publish_content_passes_resolved_token(monkeypatch: pytest.MonkeyPatch) 
 
     assert result == "https://telegra.ph/page"
     assert published["access_token"] == "environment-token"
+
+
+def test_publish_content_reuses_cached_source_url(monkeypatch: pytest.MonkeyPatch) -> None:
+    service.published_urls.clear()
+    calls = 0
+
+    def fake_create_page(**kwargs: object) -> str:
+        nonlocal calls
+        calls += 1
+        return "https://telegra.ph/cached"
+
+    monkeypatch.setenv("TELEGRAPH_API_TOKEN", "environment-token")
+    monkeypatch.setattr(service, "create_page", fake_create_page)
+    source = SourceRequest(markdown="# Title\n\nBody")
+
+    first = service.publish_content(source, cache_key="https://example.com")
+    second = service.publish_content(source, cache_key="https://example.com")
+
+    assert first == second == "https://telegra.ph/cached"
+    assert calls == 1
