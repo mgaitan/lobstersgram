@@ -451,7 +451,7 @@ wheels = [
 
 [[package]]
 name = "markdown-this"
-version = "0.1.0"
+version = "0.1.1"
 source = { editable = "packages/markdown-this" }
 dependencies = [
     { name = "beautifulsoup4" },
