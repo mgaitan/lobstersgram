@@ -10,8 +10,9 @@ from pathlib import Path
 
 import requests
 
-from md_to_telegraph.markdown import strip_leading_title_heading
+from md_to_telegraph.markdown import extract_leading_title, strip_leading_title_heading
 from md_to_telegraph.md_to_dom import content_to_telegraph
+from md_to_telegraph.metadata import split_front_matter
 
 logger = logging.getLogger(__name__)
 
@@ -34,6 +35,13 @@ class TelegraphTokenError(RuntimeError):
 
     def __init__(self) -> None:
         super().__init__("Pass access_token or set TELEGRAPH_API_TOKEN before creating a page")
+
+
+class TelegraphTitleError(RuntimeError):
+    """Raised when a page has no explicit or discoverable title."""
+
+    def __init__(self) -> None:
+        super().__init__("Pass title or include a title in YAML front matter or the first Markdown heading")
 
 
 def _post_with_retry(
@@ -98,8 +106,8 @@ def warm_telegraph_cache(url: str, request_timeout: int = DEFAULT_REQUEST_TIMEOU
 
 
 def create_page(  # noqa: PLR0913
-    title: str,
-    content_markdown: Path | str,
+    title: str | None = None,
+    content_markdown: Path | str = "",
     fallback_text: str = "",
     source_url: str = "",
     author_name: str = "",
@@ -118,9 +126,18 @@ def create_page(  # noqa: PLR0913
     if not token:
         raise TelegraphTokenError
 
-    page_title = title[:256]
     markdown = content_markdown.read_text(encoding="utf-8") if isinstance(content_markdown, Path) else content_markdown
+    metadata, markdown = split_front_matter(markdown)
+    resolved_title = title or metadata.get("title") or extract_leading_title(markdown)
+    if not resolved_title and isinstance(content_markdown, Path):
+        resolved_title = content_markdown.stem
+    if not resolved_title:
+        raise TelegraphTitleError
+
+    page_title = resolved_title[:256]
     markdown = strip_leading_title_heading(markdown, page_title)
+    source_url = source_url or metadata.get("url", "")
+    author_name = author_name or metadata.get("author", "")
     nodes = content_to_telegraph(markdown, fallback_text)
     payload: dict[str, object] = {
         "access_token": token,
@@ -133,7 +150,7 @@ def create_page(  # noqa: PLR0913
     if source_url:
         payload["author_url"] = source_url
 
-    logger.debug("Create Telegraph page title=%r url=%s", title[:80], source_url)
+    logger.debug("Create Telegraph page title=%r url=%s", page_title[:80], source_url)
     data = _post_with_retry(TELEGRAPH_CREATE_PAGE_URL, payload, request_timeout, retry_attempts)
     telegraph_url = str(data["result"]["url"])
     if warm_cache:

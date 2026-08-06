@@ -24,6 +24,7 @@ from markdown_this.markdown import (
     extract_intro,
     markdown_to_text,
 )
+from markdown_this.metadata import add_front_matter, extract_html_metadata, split_front_matter
 
 logger = getLogger(__name__)
 
@@ -40,12 +41,14 @@ def _finalize_content(
     markdown: str,
     fallback_text: str | None,
     intro_min_length: int,
+    metadata: dict[str, str] | None = None,
 ) -> tuple[str, str, str, str]:
     """Normalize extracted Markdown and derive its fallback text and intro."""
-    content_markdown = markdown.strip()
+    front_matter, content_markdown = split_front_matter(markdown.strip())
+    content_metadata = {**front_matter, **(metadata or {}), "title": title}
     content_fallback = fallback_text if fallback_text is not None else markdown_to_text(content_markdown)
     intro = extract_intro(content_markdown, content_fallback, intro_min_length)
-    return title, content_markdown, content_fallback, intro
+    return title, add_front_matter(content_markdown, content_metadata), content_fallback, intro
 
 
 def _is_http_url(source: str) -> bool:
@@ -60,10 +63,11 @@ def _existing_path(source: str) -> Path | None:
     return path if path.is_file() else None
 
 
-def _extract_html_content(
+def _extract_html_content(  # noqa: PLR0913
     content_html: str,
     source_label: str,
     base_url: str,
+    source_url: str,
     min_content_length: int,
     intro_min_length: int,
 ) -> tuple[str, str, str, str]:
@@ -87,7 +91,10 @@ def _extract_html_content(
     extracted_markdown = _normalize_markdown_links(extracted_markdown)
     extracted_markdown = _make_markdown_links_absolute(extracted_markdown, base_url)
     fallback_text = BeautifulSoup(content_html_for_markdown, "html.parser").get_text(separator="\n").strip()
-    return _finalize_content(title, extracted_markdown, fallback_text, intro_min_length)
+    metadata = extract_html_metadata(content_html)
+    if source_url:
+        metadata["url"] = source_url
+    return _finalize_content(title, extracted_markdown, fallback_text, intro_min_length, metadata)
 
 
 def _extract_url_content(
@@ -98,18 +105,18 @@ def _extract_url_content(
 ) -> tuple[str, str, str, str]:
     if github_blob_result := fetch_github_blob_markdown(url, request_timeout):
         title, markdown = github_blob_result
-        return _finalize_content(title, markdown, None, intro_min_length)
+        return _finalize_content(title, markdown, None, intro_min_length, {"url": url})
 
     if github_result := fetch_github_readme(url, request_timeout):
         title, markdown = github_result
-        return _finalize_content(title, markdown, None, intro_min_length)
+        return _finalize_content(title, markdown, None, intro_min_length, {"url": url})
 
     if arxiv_result := fetch_arxiv_abstract(url, request_timeout):
         title, markdown = arxiv_result
-        return _finalize_content(title, markdown, None, intro_min_length)
+        return _finalize_content(title, markdown, None, intro_min_length, {"url": url})
 
     downloaded = fetch_html(url, request_timeout)
-    return _extract_html_content(downloaded or "", url, url, min_content_length, intro_min_length)
+    return _extract_html_content(downloaded or "", url, url, url, min_content_length, intro_min_length)
 
 
 def extract_main_content(
@@ -124,6 +131,7 @@ def extract_main_content(
             source.read_text(encoding="utf-8"),
             source.stem,
             source.as_uri(),
+            "",
             min_content_length,
             intro_min_length,
         )
@@ -136,8 +144,9 @@ def extract_main_content(
             path.read_text(encoding="utf-8"),
             path.stem,
             path.as_uri(),
+            "",
             min_content_length,
             intro_min_length,
         )
 
-    return _extract_html_content(source, "HTML content", "", min_content_length, intro_min_length)
+    return _extract_html_content(source, "HTML content", "", "", min_content_length, intro_min_length)

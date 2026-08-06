@@ -4,12 +4,14 @@ from __future__ import annotations
 
 import argparse
 import os
-import re
 import sys
 from pathlib import Path
 
+from md_to_telegraph.markdown import extract_leading_title
+from md_to_telegraph.metadata import split_front_matter
 from md_to_telegraph.telegraph import (
     TelegraphAPIError,
+    TelegraphTitleError,
     TelegraphTokenError,
     create_account,
     create_page,
@@ -19,7 +21,7 @@ from md_to_telegraph.telegraph import (
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Publish Markdown content to Telegraph")
     parser.add_argument("path", nargs="?", type=Path, help="Markdown file; read stdin when omitted")
-    parser.add_argument("--title", help="Page title; required when reading stdin")
+    parser.add_argument("--title", help="Page title; overrides YAML front matter and Markdown headings")
     parser.add_argument("--fallback-text", default="", help="Plain-text fallback when Markdown has no nodes")
     parser.add_argument("--source-url", default="", help="Source URL shown as the author link")
     parser.add_argument("--author-name", default="", help="Author name shown below the page title")
@@ -38,14 +40,6 @@ def _read_markdown(path: Path | None) -> str:
     return path.read_text(encoding="utf-8")
 
 
-def _title_from_markdown(markdown: str) -> str:
-    """Return the first ATX heading, or an empty title when none is present."""
-    lines = markdown.splitlines()
-    first_line = lines[0] if lines else ""
-    match = re.match(r"^\s{0,3}#{1,6}\s+(.+?)\s*#*\s*$", first_line)
-    return match.group(1).strip() if match else ""
-
-
 def main(argv: list[str] | None = None) -> int:
     parser = _parser()
     args = parser.parse_args(argv)
@@ -55,9 +49,11 @@ def main(argv: list[str] | None = None) -> int:
     except OSError as exc:
         parser.error(str(exc))
 
-    title = args.title or (args.path.stem if args.path else _title_from_markdown(markdown))
+    metadata, markdown_body = split_front_matter(markdown)
+    title = args.title or metadata.get("title")
+    title = title or (args.path.stem if args.path else extract_leading_title(markdown_body))
     if not title:
-        parser.error("--title is required when stdin does not start with a Markdown heading")
+        parser.error("--title is required when no YAML title or first Markdown heading is available")
 
     token = args.access_token or os.getenv("TELEGRAPH_API_TOKEN")
     try:
@@ -81,7 +77,7 @@ def main(argv: list[str] | None = None) -> int:
             retry_attempts=args.retry_attempts,
             warm_cache=not args.no_warm_cache,
         )
-    except (TelegraphAPIError, TelegraphTokenError, OSError) as exc:
+    except (TelegraphAPIError, TelegraphTitleError, TelegraphTokenError, OSError) as exc:
         parser.error(str(exc))
 
     print(url)
