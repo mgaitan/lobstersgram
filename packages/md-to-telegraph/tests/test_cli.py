@@ -97,6 +97,52 @@ def test_main_can_create_an_account(monkeypatch: pytest.MonkeyPatch, capsys: pyt
     assert create_page.call_args.kwargs["access_token"] == "new-token"
 
 
+def test_create_account_subcommand_prints_shell_assignment(capsys: pytest.CaptureFixture[str]) -> None:
+    with unittest.mock.patch.object(cli, "create_account", return_value="new-token") as create_account:
+        assert cli.main(
+            [
+                "create-account",
+                "--short-name",
+                "lobstersgram",
+                "--author-name",
+                "Author",
+                "--author-url",
+                "https://example.com",
+                "--request-timeout",
+                "7",
+                "--retry-attempts",
+                "3",
+            ]
+        ) == 0
+
+    assert capsys.readouterr().out == "TELEGRAPH_API_TOKEN=new-token\n"
+    create_account.assert_called_once_with(
+        short_name="lobstersgram",
+        author_name="Author",
+        author_url="https://example.com",
+        request_timeout=7,
+        retry_attempts=3,
+    )
+
+
+def test_create_account_subcommand_uses_default_short_name(capsys: pytest.CaptureFixture[str]) -> None:
+    with unittest.mock.patch.object(cli, "create_account", return_value="new-token") as create_account:
+        assert cli.main(["create-account"]) == 0
+
+    assert capsys.readouterr().out == "TELEGRAPH_API_TOKEN=new-token\n"
+    assert create_account.call_args.kwargs["short_name"] == "md-to-telegraph"
+
+
+def test_create_account_subcommand_reports_api_errors(capsys: pytest.CaptureFixture[str]) -> None:
+    with (
+        unittest.mock.patch.object(cli, "create_account", side_effect=cli.TelegraphAPIError({"error": "bad"})),
+        pytest.raises(SystemExit),
+    ):
+        cli.main(["create-account"])
+
+    assert "Telegraph API error" in capsys.readouterr().err
+
+
 def test_main_infers_title_from_stdin_heading(
     monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:

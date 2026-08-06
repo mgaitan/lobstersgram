@@ -81,6 +81,20 @@ The token can be passed with `--access-token` or read from
 its token for the page, add `--create-account` (optionally with `--short-name`).
 The account creation uses Telegraph's `createAccount` method.
 
+To create only a token, use the `create-account` subcommand. It prints a shell
+assignment and does not publish a page:
+
+```bash
+md-to-telegraph create-account --short-name lobstersgram
+export $(md-to-telegraph create-account --short-name lobstersgram)
+```
+
+The output can also be appended to a shell startup file:
+
+```bash
+echo "export $(md-to-telegraph create-account --short-name lobstersgram)" >> ~/.bashrc
+```
+
 ## Markdown features supported
 
 | Markdown element       | Telegraph output           |

@@ -19,7 +19,10 @@ from md_to_telegraph.telegraph import (
 
 
 def _parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Publish Markdown content to Telegraph")
+    parser = argparse.ArgumentParser(
+        description="Publish Markdown content to Telegraph",
+        epilog="Use 'create-account' to print a TELEGRAPH_API_TOKEN assignment.",
+    )
     parser.add_argument("path", nargs="?", type=Path, help="Markdown file; read stdin when omitted")
     parser.add_argument("--title", help="Page title; overrides YAML front matter and Markdown headings")
     parser.add_argument("--fallback-text", default="", help="Plain-text fallback when Markdown has no nodes")
@@ -34,6 +37,34 @@ def _parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _account_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description="Create a Telegraph account and print its access token")
+    parser.add_argument("--short-name", default="md-to-telegraph", help="Telegraph account short name")
+    parser.add_argument("--author-name", default="", help="Account author name")
+    parser.add_argument("--author-url", default="", help="Account author URL")
+    parser.add_argument("--request-timeout", type=int, default=20)
+    parser.add_argument("--retry-attempts", type=int, default=None)
+    return parser
+
+
+def _create_account(argv: list[str]) -> int:
+    parser = _account_parser()
+    args = parser.parse_args(argv)
+    try:
+        token = create_account(
+            short_name=args.short_name,
+            author_name=args.author_name,
+            author_url=args.author_url,
+            request_timeout=args.request_timeout,
+            retry_attempts=args.retry_attempts,
+        )
+    except (TelegraphAPIError, OSError) as exc:
+        parser.error(str(exc))
+
+    print(f"TELEGRAPH_API_TOKEN={token}")
+    return 0
+
+
 def _read_markdown(path: Path | None) -> str:
     if path is None:
         return sys.stdin.read()
@@ -41,8 +72,12 @@ def _read_markdown(path: Path | None) -> str:
 
 
 def main(argv: list[str] | None = None) -> int:
+    command_line = sys.argv[1:] if argv is None else argv
+    if command_line and command_line[0] == "create-account":
+        return _create_account(command_line[1:])
+
     parser = _parser()
-    args = parser.parse_args(argv)
+    args = parser.parse_args(command_line)
 
     try:
         markdown = _read_markdown(args.path)
