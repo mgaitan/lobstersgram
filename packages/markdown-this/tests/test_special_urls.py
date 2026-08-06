@@ -335,6 +335,29 @@ def test_extract_main_content_handles_special_and_generic_paths() -> None:
         assert result[2] == "Repo\n\nRepo content"
 
     with (
+        unittest.mock.patch(
+            "markdown_this.extractor.fetch_github_blob_markdown",
+            return_value=("owner/repo/README.md", "---\ntitle: Declared title\n---\n\nREADME content"),
+        ),
+    ):
+        result = extractor_module.extract_main_content("https://github.com/owner/repo/blob/main/README.md")
+        metadata, body = extractor_module.split_front_matter(result[1])
+        assert result[0] == "Declared title"
+        assert metadata["title"] == "Declared title"
+        assert body == "README content"
+
+    with (
+        unittest.mock.patch("markdown_this.extractor.fetch_github_blob_markdown", return_value=None),
+        unittest.mock.patch(
+            "markdown_this.extractor.fetch_github_readme",
+            return_value=("owner/repo", "---\ntitle: Declared README title\n---\n\nREADME content"),
+        ),
+    ):
+        result = extractor_module.extract_main_content("https://github.com/owner/repo")
+        assert result[0] == "Declared README title"
+        assert result[2] == "README content"
+
+    with (
         unittest.mock.patch("markdown_this.extractor.fetch_github_blob_markdown", return_value=None),
         unittest.mock.patch("markdown_this.extractor.fetch_github_readme", return_value=None),
         unittest.mock.patch("markdown_this.extractor.fetch_arxiv_abstract", return_value=("Paper", "Paper content")),
