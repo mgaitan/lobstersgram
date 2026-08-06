@@ -29,9 +29,7 @@ def test_front_matter_round_trip() -> None:
 
 
 def test_front_matter_ignores_unknown_and_nested_values() -> None:
-    metadata, body = split_front_matter(
-        "---\ntitle: Title\nunknown: ignored\nextra:\n  value: ignored\n---\n\nBody"
-    )
+    metadata, body = split_front_matter("---\ntitle: Title\nunknown: ignored\nextra:\n  value: ignored\n---\n\nBody")
     assert metadata == {"title": "Title"}
     assert body == "Body"
 

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>markdown-web</title>
+    <link rel="stylesheet" href="/static/styles.css?v=2">
+  </head>
+  <body>
+    <main class="page">
+      <header class="masthead">
+        <a class="wordmark" href="/">markdown-web</a>
+        <a class="quiet-link" href="/bookmarklet/">bookmarklet</a>
+      </header>
+
+      <section class="workspace" aria-labelledby="page-title">
+        <h1 id="page-title">Turn any page into Markdown</h1>
+        <form id="process-form" class="source-form">
+          <label class="sr-only" for="source-url">URL</label>
+          <input id="source-url" name="url" type="url" placeholder="Paste a URL" required autofocus>
+          <button class="button button-primary" type="submit">Process</button>
+        </form>
+
+        <section id="result" class="result" hidden>
+          <div class="result-heading">
+            <span id="result-source" class="source-label"></span>
+            <button id="edit-button" class="text-button" type="button">Edit URL</button>
+          </div>
+          <label class="sr-only" for="markdown-output">Markdown</label>
+          <textarea id="markdown-output" spellcheck="false"></textarea>
+          <div class="result-actions">
+            <button id="copy-button" class="button button-secondary" type="button">Copy</button>
+            <button id="publish-button" class="button button-primary" type="button">Publish</button>
+          </div>
+          <p id="status" class="status" role="status"></p>
+        </section>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>Try</span>
+      <a href="/md/https://example.com">/md</a>
+      <span>for raw Markdown</span>
+      <span>or</span>
+      <a href="/t/https://example.com">/t</a>
+      <span>for Telegraph.</span>
+    </footer>
+
+    <script>
+      const form = document.querySelector("#process-form");
+      const result = document.querySelector("#result");
+      const output = document.querySelector("#markdown-output");
+      const sourceInput = document.querySelector("#source-url");
+      const sourceLabel = document.querySelector("#result-source");
+      const status = document.querySelector("#status");
+      let currentUrl = "";
+
+      function setStatus(message, error = false) {
+        status.textContent = message;
+        status.classList.toggle("error", error);
+      }
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        currentUrl = sourceInput.value.trim();
+        setStatus("Processing…");
+        try {
+          const response = await fetch("/md/" + encodeURIComponent(currentUrl));
+          if (!response.ok) throw new Error(await response.text());
+          output.value = await response.text();
+          sourceLabel.textContent = currentUrl;
+          form.hidden = true;
+          result.hidden = false;
+          setStatus("");
+        } catch (error) {
+          setStatus(error.message, true);
+        }
+      });
+
+      document.querySelector("#edit-button").addEventListener("click", () => {
+        result.hidden = true;
+        form.hidden = false;
+        sourceInput.focus();
+      });
+
+      document.querySelector("#copy-button").addEventListener("click", async () => {
+        await navigator.clipboard.writeText(output.value);
+        setStatus("Copied");
+      });
+
+      document.querySelector("#publish-button").addEventListener("click", async () => {
+        setStatus("Publishing…");
+        try {
+          const response = await fetch("/t", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({markdown: output.value, metadata: {url: currentUrl}})
+          });
+          const data = await response.json();
+          if (!response.ok) throw new Error(data.detail || "Publish failed");
+          window.location.href = data.url;
+        } catch (error) {
+          setStatus(error.message, true);
+        }
+      });
+    </script>
+  </body>
+</html>

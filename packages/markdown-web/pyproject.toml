@@ -1,0 +1,28 @@
+[project]
+name = "markdown-web"
+version = "0.1.0"
+description = "Minimal web service for extracting Markdown and publishing it to Telegraph"
+readme = "README.md"
+authors = [{ name = "Martín Gaitán", email = "gaitan@gmail.com" }]
+license = { text = "MIT" }
+requires-python = ">=3.12"
+keywords = ["markdown", "telegraph", "fastapi", "bookmarklet"]
+dependencies = [
+    "fastapi>=0.116.1",
+    "jinja2>=3.1.6",
+    "markdown-this",
+    "md-to-telegraph",
+    "uvicorn[standard]>=0.35.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/mgaitan/lobstersgram/tree/main/packages/markdown-web"
+Repository = "https://github.com/mgaitan/lobstersgram"
+Issues = "https://github.com/mgaitan/lobstersgram/issues"
+
+[project.scripts]
+markdown-web = "markdown_web.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.7,<0.12"]
+build-backend = "uv_build"

@@ -86,7 +86,5 @@ def extract_html_metadata(content_html: str, base_url: str = "") -> dict[str, st
         time_tag = soup.find("time", attrs={"datetime": True})
         date = str(time_tag["datetime"]).strip() if time_tag else ""
     return {
-        field: value
-        for field, value in (("author", author), ("url", url), ("date", date), ("image", image))
-        if value
+        field: value for field, value in (("author", author), ("url", url), ("date", date), ("image", image)) if value
     }
