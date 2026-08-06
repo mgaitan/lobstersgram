@@ -107,7 +107,7 @@ All secrets are stored securely in GitHub Actions.
 
 To register subscribers:
 - Send `/start` to the bot from the Telegram account or group you want to receive posts.
-- Run the workflow once (or run `uv run python main.py --read-messages`) to record the
+- Run the workflow once (or run `uv run lobstergram --read-messages`) to record the
   `chat_id` values into `subscribers.json`.
 
 For local development, you can set `TELEGRAM_DEV_CHAT_ID` to force all sends
