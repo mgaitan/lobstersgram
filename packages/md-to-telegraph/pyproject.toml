@@ -17,6 +17,9 @@ Homepage = "https://github.com/mgaitan/lobstersgram/tree/main/packages/md-to-tel
 Repository = "https://github.com/mgaitan/lobstersgram"
 Issues = "https://github.com/mgaitan/lobstersgram/issues"
 
+[project.scripts]
+md-to-telegraph = "md_to_telegraph.cli:main"
+
 [build-system]
 requires = ["uv_build>=0.7,<0.12"]
 build-backend = "uv_build"

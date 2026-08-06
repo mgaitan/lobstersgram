@@ -21,7 +21,6 @@ from markdown_this.markdown import (
     _normalize_markdown_links,
     extract_intro,
     markdown_to_text,
-    strip_leading_title_heading,
 )
 
 logger = getLogger(__name__)
@@ -41,7 +40,7 @@ def _finalize_content(
     intro_min_length: int,
 ) -> tuple[str, str, str, str]:
     """Normalize extracted Markdown and derive its fallback text and intro."""
-    content_markdown = strip_leading_title_heading(markdown, title).strip()
+    content_markdown = markdown.strip()
     content_fallback = fallback_text if fallback_text is not None else markdown_to_text(content_markdown)
     intro = extract_intro(content_markdown, content_fallback, intro_min_length)
     return title, content_markdown, content_fallback, intro

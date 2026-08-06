@@ -62,6 +62,19 @@ url = create_page(
 )
 ```
 
+The same operation is available as a command-line tool. A file uses its stem
+as the default title; stdin requires `--title`:
+
+```bash
+md-to-telegraph article.md --access-token "$TELEGRAPH_API_TOKEN"
+cat article.md | md-to-telegraph --title "An article"
+```
+
+The token can be passed with `--access-token` or read from
+`TELEGRAPH_API_TOKEN`. To create a new Telegraph account explicitly and use
+its token for the page, add `--create-account` (optionally with `--short-name`).
+The account creation uses Telegraph's `createAccount` method.
+
 ## Markdown features supported
 
 | Markdown element       | Telegraph output           |
