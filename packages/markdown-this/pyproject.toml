@@ -10,6 +10,7 @@ keywords = ["html", "markdown", "readability", "github", "arxiv"]
 dependencies = [
     "beautifulsoup4>=4.14.3",
     "markdownify>=1.2.2",
+    "pyyaml>=6.0.3",
     "readability-lxml>=0.8.4.1",
     "requests>=2.32.5",
 ]

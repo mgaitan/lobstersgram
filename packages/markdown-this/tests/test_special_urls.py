@@ -318,7 +318,9 @@ def test_extract_main_content_handles_special_and_generic_paths() -> None:
     ):
         result = extractor_module.extract_main_content("https://github.com/owner/repo")
         assert result[0] == "Repo"
-        assert result[1] == "Repo content"
+        metadata, body = extractor_module.split_front_matter(result[1])
+        assert metadata == {"title": "Repo", "url": "https://github.com/owner/repo"}
+        assert body == "Repo content"
 
     with (
         unittest.mock.patch("markdown_this.extractor.fetch_github_blob_markdown", return_value=None),
@@ -327,7 +329,9 @@ def test_extract_main_content_handles_special_and_generic_paths() -> None:
         ),
     ):
         result = extractor_module.extract_main_content("https://github.com/owner/repo")
-        assert result[1] == "# Repo\n\nRepo content"
+        metadata, body = extractor_module.split_front_matter(result[1])
+        assert metadata == {"title": "Repo", "url": "https://github.com/owner/repo"}
+        assert body == "# Repo\n\nRepo content"
         assert result[2] == "Repo\n\nRepo content"
 
     with (

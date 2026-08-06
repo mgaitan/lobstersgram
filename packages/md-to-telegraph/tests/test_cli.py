@@ -65,6 +65,18 @@ def test_main_reads_stdin_and_uses_explicit_options(
     assert create.call_args.kwargs["warm_cache"] is True
 
 
+def test_main_uses_front_matter_title_from_stdin(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    markdown = "---\ntitle: Header title\n---\n\nBody"
+    monkeypatch.setattr(cli.sys, "stdin", io.StringIO(markdown))
+    with unittest.mock.patch.object(cli, "create_page", return_value="https://telegra.ph/header") as create:
+        assert cli.main(["--access-token", "token"]) == 0
+
+    assert capsys.readouterr().out == "https://telegra.ph/header\n"
+    assert create.call_args.kwargs["title"] == "Header title"
+
+
 def test_main_can_create_an_account(monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]) -> None:
     monkeypatch.setenv("TELEGRAPH_API_TOKEN", "unused-environment-token")
     monkeypatch.setattr(cli.sys, "stdin", io.StringIO("Body"))
@@ -103,7 +115,7 @@ def test_main_requires_title_when_stdin_has_no_heading(
     with pytest.raises(SystemExit):
         cli.main([])
 
-    assert "does not start with a Markdown heading" in capsys.readouterr().err
+    assert "no YAML title" in capsys.readouterr().err
 
 
 def test_main_reports_file_and_api_errors(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:

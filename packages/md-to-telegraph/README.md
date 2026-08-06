@@ -62,6 +62,11 @@ url = create_page(
 )
 ```
 
+`create_page` reads YAML front matter from `content_markdown`. When these
+arguments are omitted, it uses `title`, `author`, and `url` from the header;
+explicit arguments always take precedence. The `date` field is preserved as
+metadata but Telegraph has no native page-date field.
+
 The same operation is available as a command-line tool. A file uses its stem
 as the default title; stdin uses its first Markdown heading, or accepts an
 explicit `--title`:
