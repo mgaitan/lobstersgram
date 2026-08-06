@@ -2,7 +2,8 @@
 
 [![PyPI](https://img.shields.io/pypi/v/md-to-telegraph)](https://pypi.org/project/md-to-telegraph/)
 
-Convert Markdown text into [Telegraph](https://telegra.ph/) DOM nodes.
+Convert Markdown text into [Telegraph](https://telegra.ph/) DOM nodes and
+publish pages through the Telegraph API.
 
 ## Overview
 
@@ -43,6 +44,22 @@ For extracted content that may need a plain-text fallback, use
 from md_to_telegraph import content_to_telegraph
 
 nodes = content_to_telegraph(content_markdown, fallback_text)
+```
+
+To create a page directly, use `create_page`. The default performs one API
+request; pass `retry_attempts` to retry transient failures:
+
+```python
+from md_to_telegraph import create_page
+
+url = create_page(
+    access_token="telegraph-token",
+    title="An article",
+    content_markdown=content_markdown,
+    fallback_text=fallback_text,
+    source_url="https://example.com/article",
+    retry_attempts=3,
+)
 ```
 
 ## Markdown features supported

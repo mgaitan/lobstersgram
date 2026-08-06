@@ -10,12 +10,12 @@ from pathlib import Path
 
 import feedparser
 from markdown_this import extract_main_content, fetch_url
+from md_to_telegraph import create_page
 
 from lobstersgram import config
 from lobstersgram.content import Item, collect_new_items
 from lobstersgram.state import load_state, load_subscribers, save_state, update_message_map
 from lobstersgram.telegram import read_new_subscribers, resolve_recipient_chat_ids, send_to_recipients
-from lobstersgram.telegraph import telegraph_create_page
 
 
 class URLPublishError(RuntimeError):
@@ -68,11 +68,14 @@ def build_item_message(item: Item) -> tuple[str, dict[str, str]]:
         intro_min_length=config.INTRO_MIN_LENGTH,
     )
     telegraph_title = extracted_title if extracted_title and extracted_title != final_url else item.title
-    telegraph_url = telegraph_create_page(
+    telegraph_url = create_page(
+        access_token=config.TELEGRAPH_ACCESS_TOKEN,
         title=telegraph_title,
         content_markdown=content_markdown,
         fallback_text=fallback_text,
         source_url=final_url,
+        request_timeout=config.REQUEST_TIMEOUT,
+        retry_attempts=config.TELEGRAPH_RETRY_ATTEMPTS,
     )
     msg = format_message(
         item,
