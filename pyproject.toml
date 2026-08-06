@@ -28,15 +28,18 @@ Issues = "https://github.com/mgaitan/lobstersgram/issues"
 lobstersgram = "lobstersgram.main:main"
 
 [tool.uv.workspace]
-members = ["packages/md-to-telegraph", "packages/markdown-this"]
+members = ["packages/md-to-telegraph", "packages/markdown-this", "packages/markdown-web"]
 
 [tool.uv.sources]
 md-to-telegraph = { workspace = true }
 markdown-this = { workspace = true }
+markdown-web = { workspace = true }
 
 [dependency-groups]
 dev = [
+    "httpx>=0.28.1",
     "ipython>=9.8.0",
+    "markdown-web",
     "pytest>=8.3.5",
     "pytest-cov>=6.0.0",
     "ruff>=0.14.10",

@@ -38,15 +38,26 @@ No callbacks, no pagination logic, no bot process running 24/7.
 
 ## Reusable packages
 
-This workspace contains two reusable packages used by the bot:
+This workspace contains reusable packages used by the bot and a small web UI:
 
 - [`markdown-this`](packages/markdown-this/README.md): extracts web pages and supported special URLs as Markdown.
 - [`md-to-telegraph`](packages/md-to-telegraph/README.md): converts Markdown into Telegraph DOM nodes.
+- [`markdown-web`](packages/markdown-web/README.md): FastAPI service with a web UI, URL endpoints, and bookmarklets for the two tools.
+
+The web app is available at <https://markdown.fastapicloud.dev/>.
 
 The `md-to-telegraph` package also provides an `md-to-telegraph` CLI for
 publishing a Markdown file or stdin directly.
 
 Each package has its own version and can be released independently from this workspace.
+
+Run the web service locally with:
+
+```bash
+uv run --package markdown-web markdown-web
+```
+
+It exposes `/md/{url}` for Markdown and `/t/{url}` for Telegraph publishing.
 
 ### Independent releases
 

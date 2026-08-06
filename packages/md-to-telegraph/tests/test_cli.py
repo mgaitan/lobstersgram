@@ -38,24 +38,27 @@ def test_main_reads_stdin_and_uses_explicit_options(
 ) -> None:
     monkeypatch.setattr(cli.sys, "stdin", io.StringIO("Body"))
     with unittest.mock.patch.object(cli, "create_page", return_value="https://telegra.ph/stdin") as create:
-        assert cli.main(
-            [
-                "--title",
-                "From stdin",
-                "--fallback-text",
-                "Fallback",
-                "--source-url",
-                "https://example.com",
-                "--author-name",
-                "Author",
-                "--access-token",
-                "token",
-                "--request-timeout",
-                str(REQUEST_TIMEOUT),
-                "--retry-attempts",
-                str(RETRY_ATTEMPTS),
-            ]
-        ) == 0
+        assert (
+            cli.main(
+                [
+                    "--title",
+                    "From stdin",
+                    "--fallback-text",
+                    "Fallback",
+                    "--source-url",
+                    "https://example.com",
+                    "--author-name",
+                    "Author",
+                    "--access-token",
+                    "token",
+                    "--request-timeout",
+                    str(REQUEST_TIMEOUT),
+                    "--retry-attempts",
+                    str(RETRY_ATTEMPTS),
+                ]
+            )
+            == 0
+        )
 
     assert capsys.readouterr().out == "https://telegra.ph/stdin\n"
     assert create.call_args.kwargs["content_markdown"] == "Body"
@@ -99,21 +102,24 @@ def test_main_can_create_an_account(monkeypatch: pytest.MonkeyPatch, capsys: pyt
 
 def test_create_account_subcommand_prints_shell_assignment(capsys: pytest.CaptureFixture[str]) -> None:
     with unittest.mock.patch.object(cli, "create_account", return_value="new-token") as create_account:
-        assert cli.main(
-            [
-                "create-account",
-                "--short-name",
-                "lobstersgram",
-                "--author-name",
-                "Author",
-                "--author-url",
-                "https://example.com",
-                "--request-timeout",
-                "7",
-                "--retry-attempts",
-                "3",
-            ]
-        ) == 0
+        assert (
+            cli.main(
+                [
+                    "create-account",
+                    "--short-name",
+                    "lobstersgram",
+                    "--author-name",
+                    "Author",
+                    "--author-url",
+                    "https://example.com",
+                    "--request-timeout",
+                    "7",
+                    "--retry-attempts",
+                    "3",
+                ]
+            )
+            == 0
+        )
 
     assert capsys.readouterr().out == "TELEGRAPH_API_TOKEN=new-token\n"
     create_account.assert_called_once_with(

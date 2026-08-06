@@ -197,9 +197,7 @@ def test_create_page_requires_a_title_for_raw_markdown() -> None:
 
 
 def test_create_account_posts_account_details() -> None:
-    with unittest.mock.patch.object(
-        telegraph_module.requests, "post", return_value=_account_response()
-    ) as post:
+    with unittest.mock.patch.object(telegraph_module.requests, "post", return_value=_account_response()) as post:
         token = create_account(
             "short-name",
             author_name="Author",

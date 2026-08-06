@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bookmarklet | markdown-web</title>
+    <link rel="stylesheet" href="/static/styles.css?v=2">
+  </head>
+  <body>
+    <main class="page narrow">
+      <header class="masthead">
+        <a class="wordmark" href="/">markdown-web</a>
+      </header>
+      <h1>Save the bookmarklets</h1>
+      {% if not bookmarklets %}
+      <p class="lede">Create two browser bookmarks that send the page you are reading here.</p>
+      <form method="post" class="bookmarklet-form">
+        <label for="access-token">Telegraph token <span>(optional)</span></label>
+        <input id="access-token" name="access_token" type="password" autocomplete="off" placeholder="Uses the server account when empty">
+        <button class="button button-primary" type="submit">Generate bookmarklets</button>
+      </form>
+      {% else %}
+      <p class="lede">Drag each link to your bookmarks bar.</p>
+      <div class="bookmarklet-list">
+        <a class="bookmarklet" href="{{ bookmarklets.markdown }}">Save as Markdown</a>
+        <a class="bookmarklet" href="{{ bookmarklets.telegraph }}">Publish to Telegraph</a>
+      </div>
+      <p class="note">The token stays on this server and is represented in the bookmarklets by a temporary key.</p>
+      {% endif %}
+    </main>
+    <footer class="footer">
+      <a href="https://github.com/mgaitan/lobstersgram/tree/main/packages/markdown-web">GitHub</a>
+    </footer>
+  </body>
+</html>
