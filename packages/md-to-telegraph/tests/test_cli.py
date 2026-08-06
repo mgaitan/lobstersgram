@@ -85,14 +85,25 @@ def test_main_can_create_an_account(monkeypatch: pytest.MonkeyPatch, capsys: pyt
     assert create_page.call_args.kwargs["access_token"] == "new-token"
 
 
-def test_main_requires_title_for_stdin(
+def test_main_infers_title_from_stdin_heading(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    monkeypatch.setattr(cli.sys, "stdin", io.StringIO("# From Markdown\n\nBody"))
+    with unittest.mock.patch.object(cli, "create_page", return_value="https://telegra.ph/inferred") as create:
+        assert cli.main(["--access-token", "token"]) == 0
+
+    assert capsys.readouterr().out == "https://telegra.ph/inferred\n"
+    assert create.call_args.kwargs["title"] == "From Markdown"
+
+
+def test_main_requires_title_when_stdin_has_no_heading(
     monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
     monkeypatch.setattr(cli.sys, "stdin", io.StringIO("Body"))
     with pytest.raises(SystemExit):
         cli.main([])
 
-    assert "--title is required" in capsys.readouterr().err
+    assert "does not start with a Markdown heading" in capsys.readouterr().err
 
 
 def test_main_reports_file_and_api_errors(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
