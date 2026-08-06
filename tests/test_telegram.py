@@ -8,7 +8,7 @@ import os
 os.environ.setdefault("TELEGRAM_BOT_TOKEN", "test-token")
 os.environ.setdefault("TELEGRAPH_ACCESS_TOKEN", "test-token")
 
-from lobstergram.telegram import _extract_reaction_row
+from lobstersgram.telegram import _extract_reaction_row
 
 _ARTICLE_LINKS = {
     "telegraph_link": "https://telegra.ph/test-article",

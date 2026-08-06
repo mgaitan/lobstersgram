@@ -11,8 +11,8 @@ import pytest
 os.environ.setdefault("TELEGRAM_BOT_TOKEN", "test-token")
 os.environ.setdefault("TELEGRAPH_ACCESS_TOKEN", "test-token")
 
-from lobstergram import config
-from lobstergram.main import apply_runtime_config, publish_to_telegraph
+from lobstersgram import config
+from lobstersgram.main import apply_runtime_config, publish_to_telegraph
 
 
 def test_apply_runtime_config_updates_new_state_paths(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -57,7 +57,7 @@ def test_publish_to_telegraph_prints_links(monkeypatch: pytest.MonkeyPatch, caps
         url = item.link  # type: ignore[attr-defined]
         return "", {"telegraph_link": f"https://telegra.ph/{url.rsplit('/', 1)[-1]}"}
 
-    monkeypatch.setattr("lobstergram.main.build_item_message", _fake_build_item_message)
+    monkeypatch.setattr("lobstersgram.main.build_item_message", _fake_build_item_message)
 
     rc = publish_to_telegraph(["https://example.com/one", "https://example.com/two"])
     out = capsys.readouterr().out.strip().splitlines()
@@ -70,7 +70,7 @@ def test_publish_to_telegraph_wraps_failed_url(monkeypatch: pytest.MonkeyPatch) 
     def _boom(_item: object) -> tuple[str, dict[str, str]]:
         raise ValueError("boom")
 
-    monkeypatch.setattr("lobstergram.main.build_item_message", _boom)
+    monkeypatch.setattr("lobstersgram.main.build_item_message", _boom)
 
     with pytest.raises(RuntimeError, match=r"Failed to process URL: https://example\.com/fail"):
         publish_to_telegraph(["https://example.com/fail"])

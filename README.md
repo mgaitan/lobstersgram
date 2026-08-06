@@ -1,8 +1,8 @@
-# Lobstergram: Lobsters → Telegraph → Telegram (Serverless)
+# Lobstersgram: Lobsters → Telegraph → Telegram (Serverless)
 
 [![CI](https://github.com/mgaitan/lobstersgram/actions/workflows/ci.yml/badge.svg)](https://github.com/mgaitan/lobstersgram/actions/workflows/ci.yml)
 
-Lobstergram is a fast Telegram client for [lobste.rs](https://lobste.rs). It delivers the hottest Lobsters stories (articles that reached the home page) right into Telegram with a clean telegra.ph reading view.
+Lobstersgram is a fast Telegram client for [lobste.rs](https://lobste.rs). It delivers the hottest Lobsters stories (articles that reached the home page) right into Telegram with a clean telegra.ph reading view.
 
 Bot: [@lobstersgram_bot](https://t.me/lobstersgram_bot)
 Post: https://mgaitan.github.io/en/posts/lobstersgram-cliente-rapido-lobsters/
@@ -13,7 +13,7 @@ Commands:
 
 Demo:
 
-[![Lobstergram demo](https://img.youtube.com/vi/wdzIBFYjJ3Y/hqdefault.jpg)](https://youtube.com/shorts/wdzIBFYjJ3Y?si=yMhLPjz7kDGX_1Wl)
+[![Lobstersgram demo](https://img.youtube.com/vi/wdzIBFYjJ3Y/hqdefault.jpg)](https://youtube.com/shorts/wdzIBFYjJ3Y?si=yMhLPjz7kDGX_1Wl)
 
 ---
 
@@ -62,7 +62,7 @@ Create the GitHub release from that tag. The matching publishing workflow
 verifies the package version, builds only that package, and publishes it to
 PyPI. The reusable packages have separate Trusted Publisher workflows:
 `publish-md-to-telegraph.yml` publishes `md-to-telegraph`, and
-`publish-markdown-this.yml` publishes `markdown-this`. The `lobstergram`
+`publish-markdown-this.yml` publishes `markdown-this`. The `lobstersgram`
 application is not published to PyPI yet.
 
 Use the same commands with `md-to-telegraph` as the package name. The tag
@@ -112,7 +112,7 @@ All secrets are stored securely in GitHub Actions.
 
 To register subscribers:
 - Send `/start` to the bot from the Telegram account or group you want to receive posts.
-- Run the workflow once (or run `uv run lobstergram --read-messages`) to record the
+- Run the workflow once (or run `uv run lobstersgram --read-messages`) to record the
   `chat_id` values into `subscribers.json`.
 
 For local development, you can set `TELEGRAM_DEV_CHAT_ID` to force all sends

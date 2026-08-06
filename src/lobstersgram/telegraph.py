@@ -9,7 +9,7 @@ import requests
 from markdown_this import strip_leading_title_heading
 from md_to_telegraph import md_to_telegraph
 
-from lobstergram import config
+from lobstersgram import config
 
 
 class TelegraphAPIError(RuntimeError):

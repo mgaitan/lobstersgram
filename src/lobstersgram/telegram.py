@@ -8,8 +8,8 @@ from datetime import UTC, datetime
 
 import requests
 
-from lobstergram import config
-from lobstergram.state import load_message_map, load_subscribers, save_subscribers, sync_bookmarks
+from lobstersgram import config
+from lobstersgram.state import load_message_map, load_subscribers, save_subscribers, sync_bookmarks
 
 
 class TelegramAPIError(RuntimeError):

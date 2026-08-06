@@ -4,7 +4,7 @@ requires-python = ">=3.12"
 
 [manifest]
 members = [
-    "lobstergram",
+    "lobstersgram",
     "markdown-this",
     "md-to-telegraph",
 ]
@@ -302,7 +302,7 @@ wheels = [
 ]
 
 [[package]]
-name = "lobstergram"
+name = "lobstersgram"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [

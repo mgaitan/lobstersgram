@@ -1,6 +1,6 @@
 # Working with This Workspace
 
-Lobstergram is a uv-managed Python workspace. Keep changes small, preserve the
+Lobstersgram is a uv-managed Python workspace. Keep changes small, preserve the
 boundaries between the application and reusable packages, and run the checks
 that cover the code you touched.
 
@@ -8,8 +8,8 @@ This file is adapted from the [python-package-copier-template AGENTS.md](https:/
 
 ## Workspace Layout
 
-- `src/lobstergram/` contains the main Telegram application and its
-  `lobstergram` command-line entrypoint.
+- `src/lobstersgram/` contains the main Telegram application and its
+  `lobstersgram` command-line entrypoint.
 - `packages/md-to-telegraph/` contains the reusable Markdown-to-Telegraph
   package.
 - `packages/markdown-this/` contains the reusable URL/HTML-to-Markdown
@@ -25,7 +25,7 @@ This file is adapted from the [python-package-copier-template AGENTS.md](https:/
 
 ```bash
 uv sync
-uv run lobstergram --help
+uv run lobstersgram --help
 uv run pytest -q
 uv run pytest packages/markdown-this/tests/test_html.py
 uv run ruff check .
@@ -35,14 +35,14 @@ uv build --all-packages
 
 The default coverage gate measures `md_to_telegraph` and `markdown_this` at
 100%. The application tests run in the same pytest invocation, but the root
-configuration does not currently enforce 100% coverage for `lobstergram`.
+configuration does not currently enforce 100% coverage for `lobstersgram`.
 
 ## Package Boundaries
 
 - Keep Telegram orchestration, configuration, persistence, and runtime state
-  in `src/lobstergram/`.
+  in `src/lobstersgram/`.
 - Keep reusable conversion and extraction logic in the relevant child package.
-- Reusable packages should not import application modules from `lobstergram`.
+- Reusable packages should not import application modules from `lobstersgram`.
 - Put shared QA configuration in the root `pyproject.toml`; keep package
   metadata and package-specific runtime dependencies in the child package's
   `pyproject.toml`.
@@ -62,7 +62,7 @@ git push origin markdown-this-v<version>
 The reusable packages are published independently. Each publishing workflow
 is dedicated to one package: `publish-md-to-telegraph.yml` publishes
 `md-to-telegraph`, and `publish-markdown-this.yml` publishes `markdown-this`.
-The `lobstergram` application is not published to PyPI yet. A release tag only
+The `lobstersgram` application is not published to PyPI yet. A release tag only
 activates the matching workflow.
 
 ## Editing and Verification

@@ -3,7 +3,7 @@ requires = ["uv_build>=0.7,<0.12"]
 build-backend = "uv_build"
 
 [project]
-name = "lobstergram"
+name = "lobstersgram"
 version = "0.1.0"
 description = "Telegram bot that posts Lobsters links to Telegraph"
 readme = "README.md"
@@ -20,12 +20,12 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/mgaitan/lobstersgram/tree/main/src/lobstergram"
+Homepage = "https://github.com/mgaitan/lobstersgram/tree/main/src/lobstersgram"
 Repository = "https://github.com/mgaitan/lobstersgram"
 Issues = "https://github.com/mgaitan/lobstersgram/issues"
 
 [project.scripts]
-lobstergram = "lobstergram.main:main"
+lobstersgram = "lobstersgram.main:main"
 
 [tool.uv.workspace]
 members = ["packages/md-to-telegraph", "packages/markdown-this"]
