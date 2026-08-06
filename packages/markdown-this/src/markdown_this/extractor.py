@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import urllib.parse
 from logging import getLogger
+from pathlib import Path
 
 from bs4 import BeautifulSoup
 from markdownify import markdownify as html_to_md
@@ -27,7 +29,7 @@ logger = getLogger(__name__)
 
 
 class ContentDownloadError(RuntimeError):
-    """Raised when a URL cannot provide HTML content."""
+    """Raised when a content source cannot provide HTML content."""
 
     def __init__(self) -> None:
         super().__init__("Failed to download content")
@@ -46,13 +48,54 @@ def _finalize_content(
     return title, content_markdown, content_fallback, intro
 
 
-def extract_main_content(
-    url: str,
-    request_timeout: int = DEFAULT_REQUEST_TIMEOUT,
-    min_content_length: int = 200,
-    intro_min_length: int = 40,
+def _is_http_url(source: str) -> bool:
+    parsed = urllib.parse.urlparse(source)
+    return parsed.scheme in {"http", "https"} and bool(parsed.netloc)
+
+
+def _existing_path(source: str) -> Path | None:
+    if source.lstrip().startswith("<"):
+        return None
+    path = Path(source)
+    return path if path.is_file() else None
+
+
+def _extract_html_content(
+    content_html: str,
+    source_label: str,
+    base_url: str,
+    min_content_length: int,
+    intro_min_length: int,
 ) -> tuple[str, str, str, str]:
-    """Return ``(title, markdown, fallback_text, intro)`` for *url*."""
+    if not content_html:
+        raise ContentDownloadError
+
+    content_html_for_markdown = ""
+    title = source_label
+    try:
+        document = Document(content_html)
+        content_html_for_markdown = document.summary() or ""
+        title = document.title() or source_label
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("readability failed error=%s", exc)
+
+    if not content_html_for_markdown or len(content_html_for_markdown.strip()) < min_content_length:
+        content_html_for_markdown = content_html
+
+    content_html_for_markdown = preprocess_figures(make_images_absolute(content_html_for_markdown, base_url))
+    extracted_markdown = html_to_md(content_html_for_markdown)
+    extracted_markdown = _normalize_markdown_links(extracted_markdown)
+    extracted_markdown = _make_markdown_links_absolute(extracted_markdown, base_url)
+    fallback_text = BeautifulSoup(content_html_for_markdown, "html.parser").get_text(separator="\n").strip()
+    return _finalize_content(title, extracted_markdown, fallback_text, intro_min_length)
+
+
+def _extract_url_content(
+    url: str,
+    request_timeout: int,
+    min_content_length: int,
+    intro_min_length: int,
+) -> tuple[str, str, str, str]:
     if github_blob_result := fetch_github_blob_markdown(url, request_timeout):
         title, markdown = github_blob_result
         return _finalize_content(title, markdown, None, intro_min_length)
@@ -66,24 +109,35 @@ def extract_main_content(
         return _finalize_content(title, markdown, None, intro_min_length)
 
     downloaded = fetch_html(url, request_timeout)
-    if not downloaded:
-        raise ContentDownloadError
+    return _extract_html_content(downloaded or "", url, url, min_content_length, intro_min_length)
 
-    content_html = ""
-    title = url
-    try:
-        document = Document(downloaded)
-        content_html = document.summary() or ""
-        title = document.title() or url
-    except Exception as exc:  # noqa: BLE001
-        logger.warning("readability failed error=%s", exc)
 
-    if not content_html or len(content_html.strip()) < min_content_length:
-        content_html = downloaded
+def extract_main_content(
+    source: Path | str,
+    request_timeout: int = DEFAULT_REQUEST_TIMEOUT,
+    min_content_length: int = 200,
+    intro_min_length: int = 40,
+) -> tuple[str, str, str, str]:
+    """Return ``(title, markdown, fallback_text, intro)`` for a URL, path, or HTML."""
+    if isinstance(source, Path):
+        return _extract_html_content(
+            source.read_text(encoding="utf-8"),
+            source.stem,
+            source.as_uri(),
+            min_content_length,
+            intro_min_length,
+        )
 
-    content_html = preprocess_figures(make_images_absolute(content_html, url))
-    extracted_markdown = html_to_md(content_html)
-    extracted_markdown = _normalize_markdown_links(extracted_markdown)
-    extracted_markdown = _make_markdown_links_absolute(extracted_markdown, url)
-    fallback_text = BeautifulSoup(content_html, "html.parser").get_text(separator="\n").strip()
-    return _finalize_content(title, extracted_markdown, fallback_text, intro_min_length)
+    if _is_http_url(source):
+        return _extract_url_content(source, request_timeout, min_content_length, intro_min_length)
+
+    if path := _existing_path(source):
+        return _extract_html_content(
+            path.read_text(encoding="utf-8"),
+            path.stem,
+            path.as_uri(),
+            min_content_length,
+            intro_min_length,
+        )
+
+    return _extract_html_content(source, "HTML content", "", min_content_length, intro_min_length)
