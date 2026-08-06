@@ -45,10 +45,11 @@ def _finalize_content(
 ) -> tuple[str, str, str, str]:
     """Normalize extracted Markdown and derive its fallback text and intro."""
     front_matter, content_markdown = split_front_matter(markdown.strip())
-    content_metadata = {**front_matter, **(metadata or {}), "title": title}
+    resolved_title = front_matter.get("title") or title
+    content_metadata = {**front_matter, **(metadata or {}), "title": resolved_title}
     content_fallback = fallback_text if fallback_text is not None else markdown_to_text(content_markdown)
     intro = extract_intro(content_markdown, content_fallback, intro_min_length)
-    return title, add_front_matter(content_markdown, content_metadata), content_fallback, intro
+    return resolved_title, add_front_matter(content_markdown, content_metadata), content_fallback, intro
 
 
 def _is_http_url(source: str) -> bool:
