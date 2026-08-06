@@ -27,7 +27,6 @@ from markdown_this import (
     make_images_absolute,
     markdown_to_text,
     preprocess_figures,
-    strip_leading_title_heading,
 )
 from markdown_this import extractor as extractor_module
 from markdown_this import html as html_module

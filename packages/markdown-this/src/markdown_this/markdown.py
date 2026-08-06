@@ -107,15 +107,6 @@ def _normalize_markdown_links(markdown: str) -> str:
     return _HARD_BREAK_BEFORE_LINK_RE.sub("\n", normalized)
 
 
-def strip_leading_title_heading(markdown: str, title: str) -> str:
-    """Remove a leading Markdown heading when it duplicates *title*."""
-    stripped = markdown.lstrip("\n")
-    match = re.match(r"^#{1,6}\s+(.*)\s*$", stripped, re.MULTILINE)
-    if match and match.group(1).strip().lower() == title.strip().lower():
-        return stripped[match.end() :].lstrip("\n")
-    return markdown
-
-
 def markdown_to_text(markdown_text: str) -> str:
     """Reduce Markdown to plain text suitable for previews."""
     text = markdown_text

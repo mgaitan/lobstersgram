@@ -19,7 +19,6 @@ from markdown_this.markdown import (
     _strip_badge_paragraphs,
     extract_intro,
     markdown_to_text,
-    strip_leading_title_heading,
 )
 
 __all__ = [
@@ -41,5 +40,4 @@ __all__ = [
     "make_images_absolute",
     "markdown_to_text",
     "preprocess_figures",
-    "strip_leading_title_heading",
 ]

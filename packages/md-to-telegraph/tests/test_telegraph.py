@@ -4,10 +4,17 @@ from __future__ import annotations
 
 import json
 import unittest.mock
+from pathlib import Path
 
 import pytest
 import requests
-from md_to_telegraph import TelegraphAPIError, create_page, warm_telegraph_cache
+from md_to_telegraph import (
+    TelegraphAPIError,
+    TelegraphTokenError,
+    create_account,
+    create_page,
+    warm_telegraph_cache,
+)
 from md_to_telegraph import telegraph as telegraph_module
 
 HTTP_CLIENT_ERROR_MIN = 400
@@ -31,6 +38,10 @@ def _success_response(url: str = "https://telegra.ph/page") -> FakeResponse:
     return FakeResponse(200, {"ok": True, "result": {"url": url}})
 
 
+def _account_response(token: str = "new-token") -> FakeResponse:
+    return FakeResponse(200, {"ok": True, "result": {"access_token": token}})
+
+
 def test_create_page_posts_content_and_warms_cache() -> None:
     post_response = _success_response()
     cache_response = FakeResponse(200, {})
@@ -44,6 +55,7 @@ def test_create_page_posts_content_and_warms_cache() -> None:
             content_markdown="# Article\n\nBody",
             fallback_text="Fallback",
             source_url="https://example.com/article",
+            author_name="Source",
             request_timeout=7,
         )
 
@@ -83,12 +95,69 @@ def test_create_page_without_retry_or_cache() -> None:
     post.assert_called_once()
 
 
+def test_create_page_reads_token_from_environment(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("TELEGRAPH_API_TOKEN", "environment-token")
+    with unittest.mock.patch.object(telegraph_module.requests, "post", return_value=_success_response()) as post:
+        create_page("Title", "Body", warm_cache=False)
+
+    assert post.call_args.kwargs["data"]["access_token"] == "environment-token"
+
+
+def test_create_page_requires_a_token(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.delenv("TELEGRAPH_API_TOKEN", raising=False)
+    with pytest.raises(TelegraphTokenError):
+        create_page("Title", "Body", warm_cache=False)
+
+
+def test_create_page_reads_markdown_path_and_removes_duplicate_title_heading(tmp_path: Path) -> None:
+    markdown_path = tmp_path / "article.md"
+    markdown_path.write_text("\n\n# Final title\n\nBody", encoding="utf-8")
+    with unittest.mock.patch.object(telegraph_module.requests, "post", return_value=_success_response()) as post:
+        create_page("Final title", markdown_path, access_token="token", warm_cache=False)
+
+    payload = post.call_args.kwargs["data"]
+    assert json.loads(payload["content"]) == [{"tag": "p", "children": ["Body"]}]
+
+
+def test_create_account_posts_account_details() -> None:
+    with unittest.mock.patch.object(
+        telegraph_module.requests, "post", return_value=_account_response()
+    ) as post:
+        token = create_account(
+            "short-name",
+            author_name="Author",
+            author_url="https://example.com/author",
+            request_timeout=9,
+        )
+
+    assert token == "new-token"
+    post.assert_called_once_with(
+        "https://api.telegra.ph/createAccount",
+        data={
+            "short_name": "short-name",
+            "author_name": "Author",
+            "author_url": "https://example.com/author",
+        },
+        timeout=9,
+    )
+
+
+def test_create_account_rejects_missing_token_in_response() -> None:
+    with (
+        unittest.mock.patch.object(
+            telegraph_module.requests, "post", return_value=FakeResponse(200, {"ok": True, "result": {}})
+        ),
+        pytest.raises(TelegraphAPIError),
+    ):
+        create_account("short-name")
+
+
 def test_create_page_retries_server_error(monkeypatch: pytest.MonkeyPatch) -> None:
     responses = [FakeResponse(500, {}), _success_response()]
     with unittest.mock.patch.object(telegraph_module.requests, "post", side_effect=responses):
         sleep = unittest.mock.Mock()
         monkeypatch.setattr(telegraph_module.time, "sleep", sleep)
-        result = create_page("token", "Title", "Body", retry_attempts=2, warm_cache=False)
+        result = create_page("Title", "Body", access_token="token", retry_attempts=2, warm_cache=False)
 
     assert result == "https://telegra.ph/page"
     sleep.assert_called_once_with(2.0)
@@ -100,7 +169,7 @@ def test_create_page_retries_unsuccessful_api_response() -> None:
         unittest.mock.patch.object(telegraph_module.requests, "post", side_effect=responses),
         unittest.mock.patch.object(telegraph_module.time, "sleep"),
     ):
-        result = create_page("token", "Title", "Body", retry_attempts=2, warm_cache=False)
+        result = create_page("Title", "Body", access_token="token", retry_attempts=2, warm_cache=False)
 
     assert result == "https://telegra.ph/page"
 
@@ -112,7 +181,7 @@ def test_create_page_raises_after_api_retries() -> None:
         unittest.mock.patch.object(telegraph_module.time, "sleep"),
         pytest.raises(TelegraphAPIError) as exc_info,
     ):
-        create_page("token", "Title", "Body", retry_attempts=2, warm_cache=False)
+        create_page("Title", "Body", access_token="token", retry_attempts=2, warm_cache=False)
 
     assert exc_info.value.data == {"ok": False, "error": "permanent"}
 
@@ -122,7 +191,7 @@ def test_create_page_raises_for_final_server_error() -> None:
         unittest.mock.patch.object(telegraph_module.requests, "post", return_value=FakeResponse(500, {})),
         pytest.raises(requests.HTTPError),
     ):
-        create_page("token", "Title", "Body", retry_attempts=2, warm_cache=False)
+        create_page("Title", "Body", access_token="token", retry_attempts=2, warm_cache=False)
 
 
 def test_warm_telegraph_cache_ignores_request_errors() -> None:

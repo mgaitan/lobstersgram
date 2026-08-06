@@ -69,11 +69,12 @@ def build_item_message(item: Item) -> tuple[str, dict[str, str]]:
     )
     telegraph_title = extracted_title if extracted_title and extracted_title != final_url else item.title
     telegraph_url = create_page(
-        access_token=config.TELEGRAPH_ACCESS_TOKEN,
         title=telegraph_title,
         content_markdown=content_markdown,
         fallback_text=fallback_text,
         source_url=final_url,
+        author_name="Source",
+        access_token=config.TELEGRAPH_ACCESS_TOKEN,
         request_timeout=config.REQUEST_TIMEOUT,
         retry_attempts=config.TELEGRAPH_RETRY_ATTEMPTS,
     )
