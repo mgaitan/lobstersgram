@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import os
+import re
 import sys
 from pathlib import Path
 
@@ -37,6 +38,14 @@ def _read_markdown(path: Path | None) -> str:
     return path.read_text(encoding="utf-8")
 
 
+def _title_from_markdown(markdown: str) -> str:
+    """Return the first ATX heading, or an empty title when none is present."""
+    lines = markdown.splitlines()
+    first_line = lines[0] if lines else ""
+    match = re.match(r"^\s{0,3}#{1,6}\s+(.+?)\s*#*\s*$", first_line)
+    return match.group(1).strip() if match else ""
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = _parser()
     args = parser.parse_args(argv)
@@ -46,9 +55,9 @@ def main(argv: list[str] | None = None) -> int:
     except OSError as exc:
         parser.error(str(exc))
 
-    title = args.title or (args.path.stem if args.path else "")
+    title = args.title or (args.path.stem if args.path else _title_from_markdown(markdown))
     if not title:
-        parser.error("--title is required when reading Markdown from stdin")
+        parser.error("--title is required when stdin does not start with a Markdown heading")
 
     token = args.access_token or os.getenv("TELEGRAPH_API_TOKEN")
     try:

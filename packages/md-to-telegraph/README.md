@@ -63,7 +63,8 @@ url = create_page(
 ```
 
 The same operation is available as a command-line tool. A file uses its stem
-as the default title; stdin requires `--title`:
+as the default title; stdin uses its first Markdown heading, or accepts an
+explicit `--title`:
 
 ```bash
 md-to-telegraph article.md --access-token "$TELEGRAPH_API_TOKEN"
