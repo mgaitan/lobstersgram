@@ -19,6 +19,9 @@ Homepage = "https://github.com/mgaitan/lobstersgram/tree/main/packages/markdown-
 Repository = "https://github.com/mgaitan/lobstersgram"
 Issues = "https://github.com/mgaitan/lobstersgram/issues"
 
+[project.scripts]
+markdown-this = "markdown_this.cli:main"
+
 [build-system]
 requires = ["uv_build>=0.7,<0.12"]
 build-backend = "uv_build"
