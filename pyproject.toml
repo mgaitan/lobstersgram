@@ -1,40 +1,44 @@
 [build-system]
-requires = ["uv_build"]
+requires = ["uv_build>=0.7,<0.12"]
 build-backend = "uv_build"
-
-[tool.uv.build-backend]
-module-root = ""
 
 [project]
 name = "lobstergram"
 version = "0.1.0"
 description = "Telegram bot that posts Lobsters links to Telegraph"
 readme = "README.md"
-requires-python = ">=3.14"
+authors = [{ name = "Martín Gaitán", email = "gaitan@gmail.com" }]
+license = { text = "MIT" }
+requires-python = ">=3.12"
 dependencies = [
     "feedparser>=6.0.12",
-    "markdownify>=1.2.2",
     "md-to-telegraph",
     "python-dotenv>=1.2.1",
-    "readability-lxml>=0.8.4.1",
     "requests>=2.32.5",
     "rich>=14.2.0",
-    "beautifulsoup4>=4.14.3",
+    "url-to-markdown",
 ]
+
+[project.urls]
+Homepage = "https://github.com/mgaitan/lobstersgram/tree/main/src/lobstergram"
+Repository = "https://github.com/mgaitan/lobstersgram"
+Issues = "https://github.com/mgaitan/lobstersgram/issues"
 
 [project.scripts]
 lobstergram = "lobstergram.main:main"
 
 [tool.uv.workspace]
-members = ["md-to-telegraph"]
+members = ["packages/md-to-telegraph", "packages/url-to-markdown"]
 
 [tool.uv.sources]
 md-to-telegraph = { workspace = true }
+url-to-markdown = { workspace = true }
 
 [dependency-groups]
 dev = [
     "ipython>=9.8.0",
     "pytest>=8.3.5",
+    "pytest-cov>=6.0.0",
     "ruff>=0.14.10",
 ]
 
@@ -72,3 +76,12 @@ select = [
     "RET",    # https://docs.astral.sh/ruff/rules/#flake8-return-ret
     "TID252", # https://docs.astral.sh/ruff/rules/relative-imports/
 ]
+
+[tool.pytest.ini_options]
+addopts = "--import-mode=importlib --cov=md_to_telegraph --cov=url_to_markdown --cov-report=term-missing --cov-fail-under=100"
+
+[tool.coverage.run]
+source = ["md_to_telegraph", "url_to_markdown"]
+
+[tool.coverage.report]
+fail_under = 100

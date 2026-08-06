@@ -9,9 +9,10 @@ import urllib.parse
 from pathlib import Path
 
 import feedparser
+from url_to_markdown import extract_main_content, fetch_url
 
 from lobstergram import config
-from lobstergram.content import Item, collect_new_items, extract_main_content, fetch_url
+from lobstergram.content import Item, collect_new_items
 from lobstergram.state import load_state, load_subscribers, save_state, update_message_map
 from lobstergram.telegram import read_new_subscribers, resolve_recipient_chat_ids, send_to_recipients
 from lobstergram.telegraph import telegraph_create_page
@@ -59,8 +60,13 @@ def build_recipients() -> list[str | int]:
 
 
 def build_item_message(item: Item) -> tuple[str, dict[str, str]]:
-    final_url = fetch_url(item.link)
-    extracted_title, content_markdown, fallback_text, intro = extract_main_content(final_url)
+    final_url = fetch_url(item.link, timeout=config.REQUEST_TIMEOUT)
+    extracted_title, content_markdown, fallback_text, intro = extract_main_content(
+        final_url,
+        request_timeout=config.REQUEST_TIMEOUT,
+        min_content_length=config.MIN_CONTENT_LENGTH,
+        intro_min_length=config.INTRO_MIN_LENGTH,
+    )
     telegraph_title = extracted_title if extracted_title and extracted_title != final_url else item.title
     telegraph_url = telegraph_create_page(
         title=telegraph_title,

@@ -6,14 +6,20 @@ on:
       - main
     paths:
       - "**.py"
-      - "pyproject.toml"
+      - "**/pyproject.toml"
+      - "packages/**"
+      - "src/**"
+      - "README.md"
       - ".github/workflows/ci.yml"
   push:
     branches:
       - main
     paths:
       - "**.py"
-      - "pyproject.toml"
+      - "**/pyproject.toml"
+      - "packages/**"
+      - "src/**"
+      - "README.md"
       - ".github/workflows/ci.yml"
 
 permissions:
