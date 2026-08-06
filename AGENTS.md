@@ -12,7 +12,7 @@ This file is adapted from the [python-package-copier-template AGENTS.md](https:/
   `lobstergram` command-line entrypoint.
 - `packages/md-to-telegraph/` contains the reusable Markdown-to-Telegraph
   package.
-- `packages/url-to-markdown/` contains the reusable URL/HTML-to-Markdown
+- `packages/markdown-this/` contains the reusable URL/HTML-to-Markdown
   package.
 - Each child package has its own `pyproject.toml`, metadata, dependencies,
   version, `README.md`, `src/<import_name>/`, and package-local tests.
@@ -27,13 +27,13 @@ This file is adapted from the [python-package-copier-template AGENTS.md](https:/
 uv sync
 uv run lobstergram --help
 uv run pytest -q
-uv run pytest packages/url-to-markdown/tests/test_html.py
+uv run pytest packages/markdown-this/tests/test_html.py
 uv run ruff check .
 uv run ruff format --check .
 uv build --all-packages
 ```
 
-The default coverage gate measures `md_to_telegraph` and `url_to_markdown` at
+The default coverage gate measures `md_to_telegraph` and `markdown_this` at
 100%. The application tests run in the same pytest invocation, but the root
 configuration does not currently enforce 100% coverage for `lobstergram`.
 
@@ -53,15 +53,17 @@ Packages are versioned and released independently. Bump a package from the
 workspace root, for example:
 
 ```bash
-uv version --package url-to-markdown --bump patch
+uv version --package markdown-this --bump patch
 uv lock
-git tag url-to-markdown-v<version>
-git push origin url-to-markdown-v<version>
+git tag markdown-this-v<version>
+git push origin markdown-this-v<version>
 ```
 
 Use the package names `lobstergram`, `md-to-telegraph`, or
-`url-to-markdown`. The `cd.yml` workflow builds and publishes only the package
-selected by its tag.
+`markdown-this`. Each publishing workflow is dedicated to one package:
+`cd.yml` publishes `md-to-telegraph`, while `publish-markdown-this.yml` and
+`publish-lobstergram.yml` publish the other two packages. A release tag only
+activates the matching workflow.
 
 ## Editing and Verification
 

@@ -8,15 +8,15 @@ from bs4 import BeautifulSoup
 from markdownify import markdownify as html_to_md
 from readability import Document
 
-from url_to_markdown.fetchers import (
+from markdown_this.fetchers import (
     DEFAULT_REQUEST_TIMEOUT,
     fetch_arxiv_abstract,
     fetch_github_blob_markdown,
     fetch_github_readme,
     fetch_html,
 )
-from url_to_markdown.html import make_images_absolute, preprocess_figures
-from url_to_markdown.markdown import (
+from markdown_this.html import make_images_absolute, preprocess_figures
+from markdown_this.markdown import (
     _make_markdown_links_absolute,
     _normalize_markdown_links,
     extract_intro,

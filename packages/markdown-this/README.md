@@ -1,6 +1,6 @@
-# url-to-markdown
+# markdown-this
 
-[![PyPI](https://img.shields.io/pypi/v/url-to-markdown)](https://pypi.org/project/url-to-markdown/)
+[![PyPI](https://img.shields.io/pypi/v/markdown-this)](https://pypi.org/project/markdown-this/)
 
 Extract the readable content of a URL and convert it to Markdown. The package
 also handles GitHub repositories and Markdown files through the GitHub API,
@@ -9,13 +9,13 @@ and arXiv abstract pages through their HTML representation.
 ## Installation
 
 ```bash
-uv add url-to-markdown
+uv add markdown-this
 ```
 
 ## Usage
 
 ```python
-from url_to_markdown import extract_main_content
+from markdown_this import extract_main_content
 
 title, markdown, fallback_text, intro = extract_main_content(
     "https://example.com/article"
@@ -31,8 +31,8 @@ package modules when an application needs more control over the pipeline.
 ## Development
 
 ```bash
-uv run pytest packages/url-to-markdown/tests
-uv run ruff check packages/url-to-markdown
+uv run pytest packages/markdown-this/tests
+uv run ruff check packages/markdown-this
 ```
 
 ## License

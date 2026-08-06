@@ -1,5 +1,5 @@
 [project]
-name = "url-to-markdown"
+name = "markdown-this"
 version = "0.1.0"
 description = "Extract web pages and supported special URLs as Markdown"
 readme = "README.md"
@@ -15,7 +15,7 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/mgaitan/lobstersgram/tree/main/packages/url-to-markdown"
+Homepage = "https://github.com/mgaitan/lobstersgram/tree/main/packages/markdown-this"
 Repository = "https://github.com/mgaitan/lobstersgram"
 Issues = "https://github.com/mgaitan/lobstersgram/issues"
 

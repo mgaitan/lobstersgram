@@ -1,4 +1,4 @@
-name: Publish md-to-telegraph
+name: Publish lobstergram
 
 on:
   release:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Version already written in packages/md-to-telegraph/pyproject.toml"
+        description: "Version already written in pyproject.toml"
         required: true
         type: string
 
@@ -16,9 +16,9 @@ permissions:
 
 jobs:
   publish:
-    name: Publish md-to-telegraph
+    name: Publish lobstergram
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, 'md-to-telegraph-v')
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, 'lobstergram-v')
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,9 +33,9 @@ jobs:
           RELEASE_TAG: ${{ github.event.release.tag_name }}
           INPUT_VERSION: ${{ inputs.version }}
         run: |
-          version="$(uv version --package md-to-telegraph --short)"
+          version="$(uv version --package lobstergram --short)"
           if [ "${{ github.event_name }}" = "release" ]; then
-            expected="${RELEASE_TAG#md-to-telegraph-v}"
+            expected="${RELEASE_TAG#lobstergram-v}"
           else
             expected="$INPUT_VERSION"
           fi
@@ -45,7 +45,7 @@ jobs:
           }
 
       - name: Build package
-        run: uv build --package md-to-telegraph --out-dir dist/md-to-telegraph
+        run: uv build --package lobstergram --out-dir dist/lobstergram
 
       - name: Publish to PyPI
-        run: uv publish dist/md-to-telegraph/*
+        run: uv publish dist/lobstergram/*

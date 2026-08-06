@@ -40,7 +40,7 @@ No callbacks, no pagination logic, no bot process running 24/7.
 
 This workspace contains two reusable packages used by the bot:
 
-- [`url-to-markdown`](packages/url-to-markdown/README.md): extracts web pages and supported special URLs as Markdown.
+- [`markdown-this`](packages/markdown-this/README.md): extracts web pages and supported special URLs as Markdown.
 - [`md-to-telegraph`](packages/md-to-telegraph/README.md): converts Markdown into Telegraph DOM nodes.
 
 Each package has its own version and can be released independently from this workspace.
@@ -48,18 +48,22 @@ Each package has its own version and can be released independently from this wor
 ### Independent releases
 
 Versions live in each package's own `pyproject.toml`. For example, to bump and
-release `url-to-markdown`:
+release `markdown-this`:
 
 ```bash
-uv version --package url-to-markdown --bump patch
+uv version --package markdown-this --bump patch
 uv lock
-git commit -am "Release url-to-markdown $(uv version --package url-to-markdown --short)"
-git tag "url-to-markdown-v$(uv version --package url-to-markdown --short)"
+git commit -am "Release markdown-this $(uv version --package markdown-this --short)"
+git tag "markdown-this-v$(uv version --package markdown-this --short)"
 git push origin main --tags
 ```
 
-Create the GitHub release from that tag. The `cd.yml` workflow verifies the
-matching package version, builds only that package, and publishes it to PyPI.
+Create the GitHub release from that tag. The matching publishing workflow
+verifies the package version, builds only that package, and publishes it to
+PyPI. The workflows are split so each package has its own Trusted Publisher:
+`cd.yml` publishes `md-to-telegraph`, `publish-markdown-this.yml` publishes
+`markdown-this`, and `publish-lobstergram.yml` publishes `lobstergram`.
+
 Use the same commands with `md-to-telegraph` or `lobstergram` as the package
 name. The tag format is `<package>-v<version>`.
 

@@ -9,7 +9,7 @@ import unittest.mock
 
 import requests
 from bs4 import BeautifulSoup
-from url_to_markdown import (
+from markdown_this import (
     ContentDownloadError,
     _extract_leading_heading,
     _github_repo_match,
@@ -29,9 +29,9 @@ from url_to_markdown import (
     preprocess_figures,
     strip_leading_title_heading,
 )
-from url_to_markdown import extractor as extractor_module
-from url_to_markdown import html as html_module
-from url_to_markdown import markdown as markdown_module
+from markdown_this import extractor as extractor_module
+from markdown_this import html as html_module
+from markdown_this import markdown as markdown_module
 
 BASE = "https://example.com/articles/my-post/"
 
@@ -57,7 +57,7 @@ def _make_fake_blob_api_get(
                 "download_url": download_url,
             }
 
-    return unittest.mock.patch("url_to_markdown.fetchers.requests.get", return_value=_FakeResp())
+    return unittest.mock.patch("markdown_this.fetchers.requests.get", return_value=_FakeResp())
 
 
 def test_fetch_github_blob_markdown_extracts_title_from_h2() -> None:
@@ -121,7 +121,7 @@ def test_fetch_github_blob_markdown_request_failure_returns_none() -> None:
     """Returns None when the raw content fetch fails."""
     url = "https://github.com/owner/repo/blob/main/file.md"
     with unittest.mock.patch(
-        "url_to_markdown.fetchers.requests.get",
+        "markdown_this.fetchers.requests.get",
         side_effect=requests.RequestException("network error"),
     ):
         result = fetch_github_blob_markdown(url)
@@ -170,7 +170,7 @@ def _make_fake_arxiv_get(html: str) -> unittest.mock.MagicMock:
         def raise_for_status(self) -> None:
             pass
 
-    return unittest.mock.patch("url_to_markdown.fetchers.requests.get", return_value=_FakeResp())
+    return unittest.mock.patch("markdown_this.fetchers.requests.get", return_value=_FakeResp())
 
 
 def test_fetch_arxiv_abstract_returns_title_authors_and_abstract() -> None:
@@ -203,7 +203,7 @@ def test_fetch_arxiv_abstract_request_failure_returns_none() -> None:
     """Returns None when the HTTP request fails."""
     url = "https://arxiv.org/abs/2604.07902"
     with unittest.mock.patch(
-        "url_to_markdown.fetchers.requests.get",
+        "markdown_this.fetchers.requests.get",
         side_effect=requests.RequestException("network error"),
     ):
         result = fetch_arxiv_abstract(url)
@@ -251,7 +251,7 @@ This is a classic result.</blockquote>
 
 def test_fetch_url_returns_redirect_target() -> None:
     response = unittest.mock.Mock(url="https://example.com/final", status_code=200)
-    with unittest.mock.patch("url_to_markdown.fetchers.requests.get", return_value=response):
+    with unittest.mock.patch("markdown_this.fetchers.requests.get", return_value=response):
         result = fetch_url("https://example.com/start", timeout=3)
     assert result == "https://example.com/final"
 
@@ -259,10 +259,8 @@ def test_fetch_url_returns_redirect_target() -> None:
 def test_fetch_html_falls_back_to_latin1_when_encoding_detection_has_no_result() -> None:
     response = unittest.mock.Mock(content=b"\xff")
     with (
-        unittest.mock.patch("url_to_markdown.fetchers.requests.get", return_value=response),
-        unittest.mock.patch(
-            "url_to_markdown.fetchers.UnicodeDammit", return_value=unittest.mock.Mock(unicode_markup="")
-        ),
+        unittest.mock.patch("markdown_this.fetchers.requests.get", return_value=response),
+        unittest.mock.patch("markdown_this.fetchers.UnicodeDammit", return_value=unittest.mock.Mock(unicode_markup="")),
     ):
         result = fetch_html("https://example.com/article")
     assert result == "ÿ"
@@ -276,21 +274,21 @@ def test_fetch_github_readme_keeps_default_title_when_metadata_request_fails() -
     }
     responses = [requests.RequestException("metadata failed"), unittest.mock.Mock(**{"json.return_value": readme})]
     responses[1].raise_for_status = unittest.mock.Mock()
-    with unittest.mock.patch("url_to_markdown.fetchers.requests.get", side_effect=responses):
+    with unittest.mock.patch("markdown_this.fetchers.requests.get", side_effect=responses):
         result = fetch_github_readme("https://github.com/owner/repo")
     assert result == ("owner/repo", "A useful README.")
 
 
 def test_fetch_arxiv_abstract_uses_fallback_fields_and_handles_empty_pages() -> None:
     html = '<div class="authors">Authors: Plain Author</div>'
-    with unittest.mock.patch("url_to_markdown.fetchers.fetch_html", return_value=html):
+    with unittest.mock.patch("markdown_this.fetchers.fetch_html", return_value=html):
         result = fetch_arxiv_abstract("https://arxiv.org/abs/1234")
     assert result == ("1234", "**Authors:** Authors: Plain Author")
 
-    with unittest.mock.patch("url_to_markdown.fetchers.fetch_html", return_value=""):
+    with unittest.mock.patch("markdown_this.fetchers.fetch_html", return_value=""):
         assert fetch_arxiv_abstract("https://arxiv.org/abs/1234") is None
 
-    with unittest.mock.patch("url_to_markdown.fetchers.fetch_html", return_value="<html></html>"):
+    with unittest.mock.patch("markdown_this.fetchers.fetch_html", return_value="<html></html>"):
         assert fetch_arxiv_abstract("https://arxiv.org/abs/1234") is None
 
 
@@ -311,31 +309,31 @@ def test_markdown_helpers_cover_invalid_links_and_intro_fallback() -> None:
 
 def test_extract_main_content_handles_special_and_generic_paths() -> None:
     with unittest.mock.patch(
-        "url_to_markdown.extractor.fetch_github_blob_markdown", return_value=("Blob", "# body\n\nBlob content")
+        "markdown_this.extractor.fetch_github_blob_markdown", return_value=("Blob", "# body\n\nBlob content")
     ):
         assert extractor_module.extract_main_content("https://github.com/owner/repo/blob/main/a.md")[0] == "Blob"
 
     with (
-        unittest.mock.patch("url_to_markdown.extractor.fetch_github_blob_markdown", return_value=None),
-        unittest.mock.patch("url_to_markdown.extractor.fetch_github_readme", return_value=("Repo", "Repo content")),
+        unittest.mock.patch("markdown_this.extractor.fetch_github_blob_markdown", return_value=None),
+        unittest.mock.patch("markdown_this.extractor.fetch_github_readme", return_value=("Repo", "Repo content")),
     ):
         assert extractor_module.extract_main_content("https://github.com/owner/repo")[0] == "Repo"
 
     with (
-        unittest.mock.patch("url_to_markdown.extractor.fetch_github_blob_markdown", return_value=None),
-        unittest.mock.patch("url_to_markdown.extractor.fetch_github_readme", return_value=None),
-        unittest.mock.patch("url_to_markdown.extractor.fetch_arxiv_abstract", return_value=("Paper", "Paper content")),
+        unittest.mock.patch("markdown_this.extractor.fetch_github_blob_markdown", return_value=None),
+        unittest.mock.patch("markdown_this.extractor.fetch_github_readme", return_value=None),
+        unittest.mock.patch("markdown_this.extractor.fetch_arxiv_abstract", return_value=("Paper", "Paper content")),
     ):
         assert extractor_module.extract_main_content("https://arxiv.org/abs/1234")[0] == "Paper"
 
 
 def test_extract_main_content_generic_fallback_and_download_error() -> None:
     with (
-        unittest.mock.patch("url_to_markdown.extractor.fetch_github_blob_markdown", return_value=None),
-        unittest.mock.patch("url_to_markdown.extractor.fetch_github_readme", return_value=None),
-        unittest.mock.patch("url_to_markdown.extractor.fetch_arxiv_abstract", return_value=None),
+        unittest.mock.patch("markdown_this.extractor.fetch_github_blob_markdown", return_value=None),
+        unittest.mock.patch("markdown_this.extractor.fetch_github_readme", return_value=None),
+        unittest.mock.patch("markdown_this.extractor.fetch_arxiv_abstract", return_value=None),
         unittest.mock.patch(
-            "url_to_markdown.extractor.fetch_html", return_value="<html><p>Generic article body.</p></html>"
+            "markdown_this.extractor.fetch_html", return_value="<html><p>Generic article body.</p></html>"
         ),
         unittest.mock.patch.object(extractor_module, "Document", side_effect=ValueError("bad document")),
     ):
@@ -349,20 +347,20 @@ def test_extract_main_content_generic_fallback_and_download_error() -> None:
         title=unittest.mock.Mock(return_value="Extracted title"),
     )
     with (
-        unittest.mock.patch("url_to_markdown.extractor.fetch_github_blob_markdown", return_value=None),
-        unittest.mock.patch("url_to_markdown.extractor.fetch_github_readme", return_value=None),
-        unittest.mock.patch("url_to_markdown.extractor.fetch_arxiv_abstract", return_value=None),
-        unittest.mock.patch("url_to_markdown.extractor.fetch_html", return_value="<html>source</html>"),
+        unittest.mock.patch("markdown_this.extractor.fetch_github_blob_markdown", return_value=None),
+        unittest.mock.patch("markdown_this.extractor.fetch_github_readme", return_value=None),
+        unittest.mock.patch("markdown_this.extractor.fetch_arxiv_abstract", return_value=None),
+        unittest.mock.patch("markdown_this.extractor.fetch_html", return_value="<html>source</html>"),
         unittest.mock.patch.object(extractor_module, "Document", return_value=document),
     ):
         result = extractor_module.extract_main_content("https://example.com/article")
     assert result[0] == "Extracted title"
 
     with (
-        unittest.mock.patch("url_to_markdown.extractor.fetch_github_blob_markdown", return_value=None),
-        unittest.mock.patch("url_to_markdown.extractor.fetch_github_readme", return_value=None),
-        unittest.mock.patch("url_to_markdown.extractor.fetch_arxiv_abstract", return_value=None),
-        unittest.mock.patch("url_to_markdown.extractor.fetch_html", return_value=None),
+        unittest.mock.patch("markdown_this.extractor.fetch_github_blob_markdown", return_value=None),
+        unittest.mock.patch("markdown_this.extractor.fetch_github_readme", return_value=None),
+        unittest.mock.patch("markdown_this.extractor.fetch_arxiv_abstract", return_value=None),
+        unittest.mock.patch("markdown_this.extractor.fetch_html", return_value=None),
     ):
         try:
             extractor_module.extract_main_content("https://example.com/missing")

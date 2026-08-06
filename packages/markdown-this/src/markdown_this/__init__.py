@@ -1,7 +1,7 @@
 """Convert web pages and supported special URLs to Markdown."""
 
-from url_to_markdown.extractor import ContentDownloadError, extract_main_content
-from url_to_markdown.fetchers import (
+from markdown_this.extractor import ContentDownloadError, extract_main_content
+from markdown_this.fetchers import (
     _github_repo_match,
     fetch_arxiv_abstract,
     fetch_github_blob_markdown,
@@ -9,8 +9,8 @@ from url_to_markdown.fetchers import (
     fetch_html,
     fetch_url,
 )
-from url_to_markdown.html import make_images_absolute, preprocess_figures
-from url_to_markdown.markdown import (
+from markdown_this.html import make_images_absolute, preprocess_figures
+from markdown_this.markdown import (
     _extract_leading_heading,
     _is_html_badge_block,
     _make_markdown_images_absolute,

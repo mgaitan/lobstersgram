@@ -9,7 +9,7 @@ import unittest.mock
 
 import requests
 from bs4 import BeautifulSoup
-from url_to_markdown import (
+from markdown_this import (
     ContentDownloadError,
     _extract_leading_heading,
     _github_repo_match,
@@ -29,9 +29,9 @@ from url_to_markdown import (
     preprocess_figures,
     strip_leading_title_heading,
 )
-from url_to_markdown import extractor as extractor_module
-from url_to_markdown import html as html_module
-from url_to_markdown import markdown as markdown_module
+from markdown_this import extractor as extractor_module
+from markdown_this import html as html_module
+from markdown_this import markdown as markdown_module
 
 BASE = "https://example.com/articles/my-post/"
 
@@ -317,7 +317,7 @@ def test_fetch_html_uses_apparent_encoding_for_utf8_content() -> None:
 
     fake_response = _FakeResponse(content=utf8_bytes)
 
-    with unittest.mock.patch("url_to_markdown.fetchers.requests.get", return_value=fake_response):
+    with unittest.mock.patch("markdown_this.fetchers.requests.get", return_value=fake_response):
         result = fetch_html("https://example.com/article")
 
     assert result is not None
@@ -345,7 +345,7 @@ def test_fetch_html_decodes_curly_apostrophe_via_meta_charset() -> None:
     # here only as documentation of the failure mode this test addresses.
     fake_response = _FakeResponse(content=utf8_bytes)
 
-    with unittest.mock.patch("url_to_markdown.fetchers.requests.get", return_value=fake_response):
+    with unittest.mock.patch("markdown_this.fetchers.requests.get", return_value=fake_response):
         result = fetch_html("https://example.com/article")
 
     assert result is not None

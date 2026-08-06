@@ -9,7 +9,7 @@ import urllib.parse
 from pathlib import Path
 
 import feedparser
-from url_to_markdown import extract_main_content, fetch_url
+from markdown_this import extract_main_content, fetch_url
 
 from lobstergram import config
 from lobstergram.content import Item, collect_new_items

@@ -10,7 +10,7 @@ from logging import getLogger
 import requests
 from bs4 import BeautifulSoup, UnicodeDammit
 
-from url_to_markdown.markdown import (
+from markdown_this.markdown import (
     _extract_leading_heading,
     _make_markdown_images_absolute,
     _strip_badge_paragraphs,
