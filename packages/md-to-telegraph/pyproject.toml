@@ -1,6 +1,6 @@
 [project]
 name = "md-to-telegraph"
-version = "0.1.0"
+version = "0.1.1"
 description = "Convert Markdown to Telegraph DOM nodes"
 readme = "README.md"
 authors = [{ name = "Martín Gaitán", email = "gaitan@gmail.com" }]
@@ -9,6 +9,7 @@ requires-python = ">=3.12"
 keywords = ["markdown", "telegraph", "dom"]
 dependencies = [
     "mistletoe>=1.5.1",
+    "requests>=2.32.5",
 ]
 
 [project.urls]
