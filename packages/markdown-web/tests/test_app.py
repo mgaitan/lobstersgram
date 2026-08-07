@@ -39,6 +39,8 @@ def test_about_describes_routes_and_cli() -> None:
     assert "/t/published/" in response.text
     assert "uvx markdown-this" in response.text
     assert "github.com/mgaitan" in response.text
+    assert "Is this site useful to you?" in response.text
+    assert 'href="https://cafecito.app/tin_nqn_">cafecito</a>' in response.text
 
 
 def test_search_engine_discovery_metadata() -> None:
