@@ -3,12 +3,16 @@
 from __future__ import annotations
 
 import os
+from pathlib import Path
+
+import pytest
 
 # Provide required env vars before importing the package (they are read at module level).
 os.environ.setdefault("TELEGRAM_BOT_TOKEN", "test-token")
 os.environ.setdefault("TELEGRAPH_ACCESS_TOKEN", "test-token")
 
-from lobstersgram.telegram import _extract_reaction_row
+from lobstersgram import config
+from lobstersgram.telegram import _extract_reaction_row, send_to_legacy_subscribers
 
 _ARTICLE_LINKS = {
     "telegraph_link": "https://telegra.ph/test-article",
@@ -131,3 +135,21 @@ def test_extract_reaction_row_actor_chat_fallback() -> None:
     assert row is not None
     assert row["username"] == "My Channel"
     assert row["user_id"] == "555"
+
+
+def test_send_to_legacy_subscribers_ignores_dev_chat_override(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    subscribers_path = tmp_path / "subscribers.json"
+    subscribers_path.write_text(
+        '{"subscribers": [{"chat_id": 111}, {"chat_id": 222}], "last_update_id": 0}',
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(config, "SUBSCRIBERS_PATH", subscribers_path)
+    monkeypatch.setattr(config, "TELEGRAM_DEV_CHAT_ID", "390225349")
+    monkeypatch.setattr(
+        "lobstersgram.telegram.send_to_recipients",
+        lambda recipients, message, disable_preview: {
+            chat_id: index for index, chat_id in enumerate(recipients, start=1)
+        },
+    )
+
+    assert send_to_legacy_subscribers("migration") == {111: 1, 222: 2}

@@ -21,10 +21,11 @@ jobs:
       - name: Run pipeline
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
           TELEGRAPH_ACCESS_TOKEN: ${{ secrets.TELEGRAPH_ACCESS_TOKEN }}
           MAX_ITEMS_PER_RUN: "5"
         run: |
-          uv run lobstersgram --read-messages
+          uv run lobstersgram --sync-updates
           uv run lobstersgram
 
       - name: Commit state.json if changed
@@ -37,5 +38,5 @@ jobs:
             echo "No changes to commit."
             exit 0
           fi
-          git commit -m "Update state, subscribers, message map and bookmarks"
+          git commit -m "Update state, Telegram updates, message map and bookmarks"
           git push

@@ -68,6 +68,15 @@ def telegram_send_message(chat_id: str | int, text_html: str, disable_preview: b
     raise AssertionError(msg)  # pragma: no cover
 
 
+def resolve_channel_chat_id() -> str | int:
+    if config.TELEGRAM_DEV_CHAT_ID:
+        return config.TELEGRAM_DEV_CHAT_ID
+    if config.TELEGRAM_CHANNEL_ID:
+        return config.TELEGRAM_CHANNEL_ID
+    msg = "TELEGRAM_CHANNEL_ID is required when TELEGRAM_DEV_CHAT_ID is not set"
+    raise RuntimeError(msg)
+
+
 def resolve_recipient_chat_ids(subscribers: list[dict[str, object]]) -> list[str | int]:
     if config.TELEGRAM_DEV_CHAT_ID:
         return [config.TELEGRAM_DEV_CHAT_ID]
@@ -90,6 +99,13 @@ def send_to_recipients(recipients: list[str | int], message: str, disable_previe
         if i < len(recipients) - 1:
             time.sleep(config.INTER_MESSAGE_DELAY)
     return sent
+
+
+def send_to_legacy_subscribers(message: str, disable_preview: bool = True) -> dict[str | int, int]:
+    state = load_subscribers()
+    subscribers = state.get("subscribers") or []
+    recipients = [subscriber["chat_id"] for subscriber in subscribers]
+    return send_to_recipients(recipients, message, disable_preview=disable_preview)
 
 
 def _extract_reaction_row(
@@ -184,7 +200,7 @@ def _handle_command_update(
     return 1, 0
 
 
-def read_new_subscribers() -> int:
+def read_new_subscribers(process_commands: bool = True) -> int:
     state = load_subscribers()
     last_update_id = int(state.get("last_update_id") or 0)
     offset = last_update_id + 1 if last_update_id else 0
@@ -211,6 +227,8 @@ def read_new_subscribers() -> int:
                 reaction_rows.append(row)
             continue
 
+        if not process_commands:
+            continue
         added, removed = _handle_command_update(update, subscribers)
         new_count += added
         removed_count += removed
@@ -225,3 +243,8 @@ def read_new_subscribers() -> int:
         f"read_messages new_subscribers={new_count} removed_subscribers={removed_count} reactions={synced_reactions}",
     )
     return new_count
+
+
+def sync_telegram_updates() -> int:
+    """Consume updates for reaction bookmarks without changing subscriptions."""
+    return read_new_subscribers(process_commands=False)

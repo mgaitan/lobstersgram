@@ -2,14 +2,12 @@
 
 [![CI](https://github.com/mgaitan/lobstersgram/actions/workflows/ci.yml/badge.svg)](https://github.com/mgaitan/lobstersgram/actions/workflows/ci.yml)
 
-Lobstersgram is a fast Telegram client for [lobste.rs](https://lobste.rs). It delivers the hottest Lobsters stories (articles that reached the home page) right into Telegram with a clean telegra.ph reading view.
+Lobstersgram is a fast Telegram client for [lobste.rs](https://lobste.rs). It delivers the hottest Lobsters stories (articles that reached the home page) to the [@lobstersgram](https://t.me/lobstersgram) channel with a clean telegra.ph reading view.
 
 Bot: [@lobstersgram_bot](https://t.me/lobstersgram_bot)
 Post: https://mgaitan.github.io/en/posts/lobstersgram-cliente-rapido-lobsters/
 
-Commands:
-- `/start` to subscribe
-- `/unsubscribe` to stop receiving posts
+The bot publishes to the channel; readers join the channel directly.
 
 Demo:
 
@@ -26,7 +24,7 @@ Demo:
    - The final article URL is resolved.
    - The main content is extracted (Readability-style).
    - A full article page is created on **telegra.ph**.
-   - A Telegram message is sent with:
+   - A Telegram channel post is sent with:
      - Title (bold)
      - Source domain
      - Link to the Telegraph page
@@ -102,15 +100,14 @@ Using **telegra.ph** gives us:
 
 - Python 3.11+ (used by GitHub Actions)
 - A Telegram bot token
-- One or more Telegram subscribers (see below)
+- A Telegram channel where the bot can post
 - A Telegraph access token
 - Optional: `TELEGRAM_DEV_CHAT_ID` to force sends only to your chat during local testing
 
-## Subscribers
+## Telegram channel
 
-Users subscribe by sending `/start` to the bot. Run the workflow in `--read-messages`
-mode to fetch pending updates and store subscribers in `subscribers.json`. The normal
-mode sends each post to every subscriber in that file.
+The scheduled workflow publishes each new item to `@lobstersgram`. Readers join
+the channel directly, so the bot does not need to maintain a recipient list.
 
 All secrets are stored securely in GitHub Actions.
 
@@ -118,22 +115,22 @@ All secrets are stored securely in GitHub Actions.
 
 ## Setup
 
-### 1. Create a Telegram bot
+### 1. Create a Telegram bot and channel
 
 1. Talk to `@BotFather`
 2. Create a new bot
 3. Save the bot token (`TELEGRAM_BOT_TOKEN`)
 
-To register subscribers:
-- Send `/start` to the bot from the Telegram account or group you want to receive posts.
-- Run the workflow once (or run `uv run lobstersgram --read-messages`) to record the
-  `chat_id` values into `subscribers.json`.
+Create a Telegram channel and add the bot as an administrator with the **Post
+Messages** permission. Keep channel publishing restricted to administrators.
+The current production channel is `@lobstersgram`.
 
-For local development, you can set `TELEGRAM_DEV_CHAT_ID` to force all sends
-to your own chat without touching `subscribers.json`.
+Set the `TELEGRAM_CHANNEL_ID` GitHub Actions secret to `@lobstersgram`. Public
+channel usernames can be used directly; private channels require their numeric
+chat ID, usually starting with `-100`.
 
-To stop receiving posts, send `/unsubscribe` to the bot and run `--read-messages`
-again to remove the chat from `subscribers.json`.
+For local development, you can set `TELEGRAM_DEV_CHAT_ID` to force sends only
+to your own chat.
 
 ---
 
@@ -168,6 +165,7 @@ In your repository:
 Add the following secrets:
 
 - `TELEGRAM_BOT_TOKEN`
+- `TELEGRAM_CHANNEL_ID`
 - `TELEGRAPH_ACCESS_TOKEN`
 
 ---
@@ -179,8 +177,9 @@ Automatically committed by GitHub Actions.
 
 ### `subscribers.json`
 
-Local subscribers file used to store `chat_id` values from `/start`.
-Automatically committed by GitHub Actions when it changes.
+Legacy subscribers file containing the `chat_id` values collected by the old
+`/start` subscription mechanism. It is retained for the one-time migration
+message and is still updated when reaction offsets are synchronized.
 
 ### `.github/workflows/lobsters.yml`
 
@@ -208,6 +207,23 @@ Actions → Lobsters to Telegram → Run workflow
 ```
 
 Useful for testing or initial bootstrapping.
+
+The scheduled workflow runs `--sync-updates` before publishing. This consumes
+Telegram reaction updates so the existing bookmark export keeps working, but it
+does not process `/start` or `/unsubscribe` commands.
+
+## Legacy direct-subscription mechanism
+
+Before channel publishing, readers sent `/start` to the bot and the workflow
+stored their private or group `chat_id` values in `subscribers.json`. The
+`--read-messages` option remains available for reading that legacy state, and
+`send-migration-message` sends the prepared migration notice to those stored
+chat IDs.
+
+The migration workflow is manual and intentionally separate from the scheduled
+publisher. Run it once, after reviewing the message, from:
+
+`Actions → Migrate Telegram subscribers to channel → Run workflow`
 
 ---
 
