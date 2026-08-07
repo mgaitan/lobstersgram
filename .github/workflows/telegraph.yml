@@ -39,7 +39,7 @@ jobs:
           TELEGRAPH_ACCESS_TOKEN: ${{ secrets.TELEGRAPH_ACCESS_TOKEN }}
         run: |
           mapfile -t URLS < urls.txt
-          uv run lobstergram publish-to-telegraph "${URLS[@]}" > telegraph_links.txt
+          uv run lobstersgram publish-to-telegraph "${URLS[@]}" > telegraph_links.txt
 
           {
             echo "links<<EOF"
