@@ -140,17 +140,10 @@ async def telegraph_from_post(request: Request) -> JSONResponse:
 
 @app.get("/bookmarklet/", response_class=HTMLResponse)
 def bookmarklet_form(request: Request) -> HTMLResponse:
-    return templates.TemplateResponse(request=request, name="bookmarklet.html", context={"bookmarklets": None})
-
-
-@app.post("/bookmarklet/", response_class=HTMLResponse)
-async def create_bookmarklet(request: Request) -> HTMLResponse:
-    body = await request.body()
-    values = {key: items[-1] for key, items in parse_qs(body.decode("utf-8")).items() if items}
     try:
-        token = telegraph_tokens.resolve(values.get("access_token") or None)
+        token = telegraph_tokens.resolve()
+        key = bookmarklet_tokens.create(token)
+        bookmarks = build_bookmarklets(str(request.base_url).rstrip("/"), key)
     except Exception as exc:
         raise _handle_source_error(exc) from exc
-    key = bookmarklet_tokens.create(token)
-    bookmarks = build_bookmarklets(str(request.base_url).rstrip("/"), key)
     return templates.TemplateResponse(request=request, name="bookmarklet.html", context={"bookmarklets": bookmarks})

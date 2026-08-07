@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bookmarklets | Page to Telegraph</title>
-    <link rel="stylesheet" href="/static/styles.css?v=3">
+    <link rel="stylesheet" href="/static/styles.css?v=4">
   </head>
   <body>
     <main class="page narrow">
@@ -12,21 +12,17 @@
         <a class="wordmark" href="/">Page to Telegraph</a>
       </header>
       <h1>Save the bookmarklets</h1>
-      {% if not bookmarklets %}
-      <p class="lede">Create two browser bookmarks that send the page you are reading here.</p>
-      <form method="post" class="bookmarklet-form">
-        <label for="access-token">Telegraph token <span>(optional)</span></label>
-        <input id="access-token" name="access_token" type="password" autocomplete="off" placeholder="Uses the server account when empty">
-        <button class="button button-primary" type="submit">Generate bookmarklets</button>
-      </form>
-      {% else %}
-      <p class="lede">Drag each link to your bookmarks bar.</p>
+      <p class="lede">Save these links as browser bookmarks to run them on the page you are reading.</p>
+      <ol class="bookmarklet-instructions">
+        <li>Drag either link below onto your browser's bookmarks bar.</li>
+        <li>Open an article you want to save.</li>
+        <li>Click the bookmark you saved. Markdown opens in a new tab; Telegraph publishes the page and opens it.</li>
+      </ol>
       <div class="bookmarklet-list">
         <a class="bookmarklet" href="{{ bookmarklets.markdown }}">Save as Markdown</a>
         <a class="bookmarklet" href="{{ bookmarklets.telegraph }}">Publish to Telegraph</a>
       </div>
-      <p class="note">The token stays on this server and is represented in the bookmarklets by a temporary key.</p>
-      {% endif %}
+      <p class="note">Publishing uses the server's Telegraph account. Your page content is sent directly from the browser.</p>
     </main>
     <footer class="footer">
       <a href="https://github.com/mgaitan/lobstersgram/tree/main/packages/markdown-web">GitHub</a>

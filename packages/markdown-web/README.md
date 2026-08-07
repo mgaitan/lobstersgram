@@ -46,10 +46,12 @@ account; otherwise the server token is used.
 
 ## Bookmarklets
 
-Visit `/bookmarklet/` to generate two bookmarklets. They capture the current
-document HTML in the browser, so they also work with pages rendered by
-JavaScript. The generated links contain a temporary server-side key rather
-than the raw Telegraph token.
+Visit `/bookmarklet/` to get two bookmarklets. Drag either link to your
+browser's bookmarks bar, then click it while reading a page. They capture the
+current document HTML in the browser, so they also work with pages rendered by
+JavaScript. Publishing uses the server's `TELEGRAPH_API_TOKEN` (or its
+automatically created account); the raw token is never included in the
+bookmarklet.
 
 ## Development
 
