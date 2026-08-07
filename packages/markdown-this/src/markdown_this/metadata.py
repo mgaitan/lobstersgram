@@ -62,6 +62,8 @@ def extract_html_metadata(content_html: str, base_url: str = "") -> dict[str, st
         {"property": "article:author"},
         {"name": "byline"},
         {"itemprop": "author"},
+        {"property": "og:site_name"},
+        {"name": "publisher"},
     )
     date = first_meta(
         {"property": "article:published_time"},
