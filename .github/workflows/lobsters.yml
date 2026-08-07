@@ -33,7 +33,11 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add state.json subscribers.json
-          git add message_map.json bookmark.csv 2>/dev/null || true
+          for path in message_map.json bookmark.csv; do
+            if [ -f "$path" ]; then
+              git add "$path"
+            fi
+          done
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
