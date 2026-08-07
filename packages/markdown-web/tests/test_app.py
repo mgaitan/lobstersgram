@@ -6,7 +6,6 @@ from markdown_web.service import PreparedContent
 from starlette.status import (
     HTTP_200_OK,
     HTTP_303_SEE_OTHER,
-    HTTP_308_PERMANENT_REDIRECT,
     HTTP_422_UNPROCESSABLE_CONTENT,
 )
 
@@ -127,13 +126,6 @@ def test_get_telegraph_redirects(monkeypatch: pytest.MonkeyPatch) -> None:
     assert response.headers["location"] == "https://telegra.ph/page"
     assert response.headers["cache-control"] == "public, max-age=86400"
     assert seen["cache_key"] == "https://example.com/article"
-
-
-def test_old_telegraph_log_redirects() -> None:
-    response = client.get("/t/_log/", follow_redirects=False)
-
-    assert response.status_code == HTTP_308_PERMANENT_REDIRECT
-    assert response.headers["location"] == "/t/published/"
 
 
 def test_telegraph_published_lists_pages(monkeypatch: pytest.MonkeyPatch) -> None:

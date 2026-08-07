@@ -112,11 +112,6 @@ def about(request: Request) -> HTMLResponse:
     return templates.TemplateResponse(request=request, name="about.html")
 
 
-@app.get("/t/_log/", include_in_schema=False)
-def old_telegraph_log() -> RedirectResponse:
-    return RedirectResponse("/t/published/", status_code=308)
-
-
 @app.get("/t/published/", response_class=HTMLResponse)
 def telegraph_published(request: Request) -> HTMLResponse:
     try:
