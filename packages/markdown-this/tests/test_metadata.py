@@ -69,5 +69,11 @@ def test_extract_html_metadata_reads_open_graph_and_time_fallback() -> None:
     }
 
 
+def test_extract_html_metadata_uses_site_name_when_author_is_missing() -> None:
+    html = '<meta name="author" content=""><meta property="og:site_name" content="Página|12">'
+
+    assert extract_html_metadata(html) == {"author": "Página|12"}
+
+
 def test_extract_html_metadata_returns_empty_for_missing_values() -> None:
     assert extract_html_metadata("<html></html>") == {}
