@@ -116,12 +116,14 @@ def test_get_telegraph_redirects(monkeypatch: pytest.MonkeyPatch) -> None:
 def test_bookmarklet_form_does_not_expose_token(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("TELEGRAPH_API_TOKEN", "secret-token")
 
-    response = client.post("/bookmarklet/", data={"access_token": "secret-token"})
+    response = client.get("/bookmarklet/")
 
     assert response.status_code == HTTP_200_OK
     assert "Save as Markdown" in response.text
     assert "javascript:" in response.text
     assert "secret-token" not in response.text
+    assert "Generate bookmarklets" not in response.text
+    assert "Drag either link" in response.text
 
 
 def test_invalid_post_source_returns_client_error() -> None:
