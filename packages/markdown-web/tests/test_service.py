@@ -76,6 +76,23 @@ def test_publish_content_passes_resolved_token(monkeypatch: pytest.MonkeyPatch) 
     assert published["access_token"] == "environment-token"
 
 
+def test_publish_content_passes_source_metadata_to_telegraph(monkeypatch: pytest.MonkeyPatch) -> None:
+    published: dict[str, object] = {}
+
+    def fake_create_page(**kwargs: object) -> str:
+        published.update(kwargs)
+        return "https://telegra.ph/page"
+
+    monkeypatch.setenv("TELEGRAPH_API_TOKEN", "environment-token")
+    monkeypatch.setattr(service, "create_page", fake_create_page)
+
+    service.publish_content(
+        SourceRequest(markdown="---\ntitle: Title\nurl: https://www.pagina12.com.ar/article\n---\n\nBody")
+    )
+
+    assert published["source_url"] == "https://www.pagina12.com.ar/article"
+
+
 def test_publish_content_reuses_cached_source_url(monkeypatch: pytest.MonkeyPatch) -> None:
     service.published_urls.clear()
     calls = 0

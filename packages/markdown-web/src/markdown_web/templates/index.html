@@ -67,7 +67,9 @@
               headers: {"Content-Type": "application/json"},
               body: JSON.stringify({markdown: output.value, metadata: {url: currentUrl}})
             });
-            const data = await response.json();
+            const data = response.headers.get("content-type")?.includes("application/json")
+              ? await response.json()
+              : {detail: await response.text()};
             if (!response.ok) throw new Error(data.detail || "Publish failed");
             window.location.href = data.url;
           } catch (error) {

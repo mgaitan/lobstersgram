@@ -201,6 +201,8 @@ def _publish_content(request: SourceRequest, bookmarklet_key: str | None = None)
         title=prepared.title or None,
         content_markdown=prepared.markdown,
         fallback_text=prepared.fallback_text,
+        source_url=prepared.metadata.url,
+        author_name=prepared.metadata.author,
         access_token=token,
     )
 

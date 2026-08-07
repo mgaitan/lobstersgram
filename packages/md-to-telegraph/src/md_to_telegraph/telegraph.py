@@ -7,6 +7,7 @@ import logging
 import os
 import time
 from pathlib import Path
+from urllib.parse import urlparse
 
 import requests
 
@@ -61,7 +62,11 @@ def _post_with_retry(
                 time.sleep(backoff)
                 continue
         response.raise_for_status()
-        data = response.json()
+        try:
+            data = response.json()
+        except ValueError:
+            logger.warning("Telegraph returned a non-JSON response attempt=%s/%s", attempt, attempts)
+            data = {"ok": False, "error": "invalid_json_response"}
         if not data.get("ok"):
             logger.warning("Telegraph API error attempt=%s/%s data=%s", attempt, attempts, data)
             if attempt < attempts:
@@ -137,7 +142,7 @@ def create_page(  # noqa: PLR0913
     page_title = resolved_title[:256]
     markdown = strip_leading_title_heading(markdown, page_title)
     source_url = source_url or metadata.get("url", "")
-    author_name = author_name or metadata.get("author", "")
+    author_name = author_name or metadata.get("author", "") or _source_domain(source_url)
     nodes = prepend_image(content_to_telegraph(markdown, fallback_text), metadata.get("image", ""))
     payload: dict[str, object] = {
         "access_token": token,
@@ -156,3 +161,9 @@ def create_page(  # noqa: PLR0913
     if warm_cache:
         warm_telegraph_cache(telegraph_url, request_timeout)
     return telegraph_url
+
+
+def _source_domain(source_url: str) -> str:
+    """Return a readable default author name for a source URL."""
+    hostname = urlparse(source_url).hostname or ""
+    return hostname.removeprefix("www.")

@@ -66,6 +66,8 @@ url = create_page(
 arguments are omitted, it uses `title`, `author`, and `url` from the header;
 explicit arguments always take precedence. The `date` field is preserved as
 metadata but Telegraph has no native page-date field.
+When an author is not available, the source URL's domain is used as the author
+name, while the complete source URL is sent as `author_url`.
 
 The same operation is available as a command-line tool. A file uses its stem
 as the default title; stdin uses its first Markdown heading, or accepts an

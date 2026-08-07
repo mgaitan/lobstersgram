@@ -87,3 +87,20 @@ def test_extract_main_content_excludes_structural_ad_slots() -> None:
     assert "Story text" in markdown
     assert "More story text" in markdown
     assert "PUBLICIDAD" not in markdown
+
+
+def test_extract_main_content_excludes_wikipedia_infoboxes() -> None:
+    html = """
+    <html><head><title>Jorge Luis Borges</title></head><body><article>
+      <table class="infobox biography vcard">
+        <tr><th>Jorge Luis Borges</th></tr>
+        <tr><td>Información personal</td></tr>
+      </table>
+      <p>Jorge Luis Borges fue un escritor, poeta y ensayista argentino.</p>
+    </article></body></html>
+    """
+
+    _title, markdown, _fallback, _intro = extract_main_content(html, min_content_length=0)
+
+    assert "Jorge Luis Borges fue" in markdown
+    assert "Información personal" not in markdown

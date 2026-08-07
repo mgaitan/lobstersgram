@@ -30,7 +30,7 @@ from markdown_this.metadata import add_front_matter, extract_html_metadata, spli
 logger = getLogger(__name__)
 
 AD_NEGATIVE_KEYWORDS = re.compile(
-    r"(?:^|[-_ ])(?:ad|ads|advert|advertising|advertisement|sponsor|sponsored|promo)(?:$|[-_ ])",
+    r"(?:^|[-_ ])(?:ad|ads|advert|advertising|advertisement|sponsor|sponsored|promo|infobox)(?:$|[-_ ])",
     re.IGNORECASE,
 )
 

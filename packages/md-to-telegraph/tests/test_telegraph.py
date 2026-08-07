@@ -138,6 +138,31 @@ def test_create_page_reads_front_matter_defaults() -> None:
     ]
 
 
+def test_create_page_uses_source_domain_as_default_author() -> None:
+    markdown = "---\ntitle: Article\nurl: https://www.pagina12.com.ar/article\n---\n\nBody"
+    with unittest.mock.patch.object(telegraph_module.requests, "post", return_value=_success_response()) as post:
+        create_page(content_markdown=markdown, access_token="token", warm_cache=False)
+
+    payload = post.call_args.kwargs["data"]
+    assert payload["author_name"] == "pagina12.com.ar"
+    assert payload["author_url"] == "https://www.pagina12.com.ar/article"
+
+
+def test_create_page_handles_non_json_api_response() -> None:
+    response = unittest.mock.Mock()
+    response.status_code = 200
+    response.raise_for_status.return_value = None
+    response.json.side_effect = ValueError
+
+    with (
+        unittest.mock.patch.object(telegraph_module.requests, "post", return_value=response),
+        pytest.raises(TelegraphAPIError) as exc_info,
+    ):
+        create_page("Title", "Body", access_token="token", warm_cache=False)
+
+    assert exc_info.value.data == {"ok": False, "error": "invalid_json_response"}
+
+
 def test_create_page_does_not_duplicate_front_matter_image() -> None:
     markdown = "---\nimage: https://example.com/hero.jpg\n---\n\n![Hero](https://example.com/hero.jpg)"
     with unittest.mock.patch.object(telegraph_module.requests, "post", return_value=_success_response()) as post:
