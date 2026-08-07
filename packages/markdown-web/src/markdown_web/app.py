@@ -24,7 +24,7 @@ from markdown_web.service import (
     telegraph_tokens,
 )
 
-app = FastAPI(title="Page to Telegraph", description="Extract Markdown and publish it to Telegraph")
+app = FastAPI(title="Markdown Web", description="Extract Markdown and publish it to Telegraph")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["POST"], allow_headers=["*"])
 PACKAGE_DIR = Path(__file__).resolve().parent
 templates = Jinja2Templates(directory=str(PACKAGE_DIR / "templates"))
