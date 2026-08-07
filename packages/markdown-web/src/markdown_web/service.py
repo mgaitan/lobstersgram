@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import os
-import secrets
 import threading
 from dataclasses import dataclass
 from urllib.parse import urlparse
@@ -30,13 +29,6 @@ class MissingSourceError(SourceError):
 
     def __init__(self) -> None:
         super().__init__("Provide one of url, html, or markdown")
-
-
-class UnknownBookmarkletError(SourceError):
-    """Raised when a bookmarklet key is not known by this process."""
-
-    def __init__(self) -> None:
-        super().__init__("Unknown or expired bookmarklet key")
 
 
 class InvalidURLSourceError(SourceError):
@@ -129,28 +121,7 @@ class TelegraphTokenStore:
         return self._token
 
 
-class BookmarkletTokenStore:
-    """Keep short-lived bookmarklet keys separate from raw Telegraph tokens."""
-
-    def __init__(self) -> None:
-        self._tokens: dict[str, str] = {}
-        self._lock = threading.Lock()
-
-    def create(self, token: str) -> str:
-        key = secrets.token_urlsafe(24)
-        with self._lock:
-            self._tokens[key] = token
-        return key
-
-    def resolve(self, key: str | None) -> str | None:
-        if not key:
-            return None
-        with self._lock:
-            return self._tokens.get(key)
-
-
 telegraph_tokens = TelegraphTokenStore()
-bookmarklet_tokens = BookmarkletTokenStore()
 published_urls: dict[str, str] = {}
 published_urls_lock = threading.Lock()
 
@@ -192,10 +163,10 @@ def prepare_content(request: SourceRequest) -> PreparedContent:
     return PreparedContent(title=title, markdown=markdown, fallback_text=fallback_text, metadata=metadata)
 
 
-def _publish_content(request: SourceRequest, bookmarklet_key: str | None = None) -> str:
+def _publish_content(request: SourceRequest) -> str:
     """Publish request content to Telegraph and return its public URL."""
     prepared = prepare_content(request)
-    token = request.access_token or bookmarklet_tokens.resolve(bookmarklet_key)
+    token = request.access_token
     token = telegraph_tokens.resolve(token)
     return create_page(
         title=prepared.title or None,
@@ -209,23 +180,15 @@ def _publish_content(request: SourceRequest, bookmarklet_key: str | None = None)
 
 def publish_content(
     request: SourceRequest,
-    bookmarklet_key: str | None = None,
     cache_key: str | None = None,
 ) -> str:
     """Publish content, optionally reusing the Telegraph page for a source URL."""
     if not cache_key:
-        return _publish_content(request, bookmarklet_key)
+        return _publish_content(request)
 
     with published_urls_lock:
         if target := published_urls.get(cache_key):
             return target
-        target = _publish_content(request, bookmarklet_key)
+        target = _publish_content(request)
         published_urls[cache_key] = target
         return target
-
-
-def require_bookmarklet_token(key: str | None) -> str:
-    """Return a token for a bookmarklet request or raise a useful source error."""
-    if not (token := bookmarklet_tokens.resolve(key)):
-        raise UnknownBookmarkletError
-    return token

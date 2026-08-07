@@ -48,10 +48,10 @@ account; otherwise the server token is used.
 
 ## Bookmarklets
 
-Visit `/bookmarklet/` to get two bookmarklets. Drag either link to your
-browser's bookmarks bar, then click it while reading a page. They capture the
-current document HTML in the browser, so they also work with pages rendered by
-JavaScript or pages the server cannot access itself. Publishing uses the
+Visit `/bookmarklet/` to get two permanent bookmarklets. Drag either link to
+your browser's bookmarks bar, then click it while reading a page. They capture
+the current document HTML in the browser, so they also work with pages rendered
+by JavaScript or pages the server cannot access itself. Publishing uses the
 server's `TELEGRAPH_API_TOKEN` (or its automatically created account); the raw
 token is never included in the bookmarklet.
 

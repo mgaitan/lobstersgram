@@ -17,12 +17,9 @@ from markdown_web.bookmarklet import build_bookmarklets
 from markdown_web.schemas import SourceMetadata, SourceRequest
 from markdown_web.service import (
     SourceError,
-    bookmarklet_tokens,
     list_published_pages,
     prepare_content,
     publish_content,
-    require_bookmarklet_token,
-    telegraph_tokens,
 )
 
 app = FastAPI(title="Markdown Web", description="Extract Markdown and publish it to Telegraph")
@@ -158,16 +155,10 @@ def telegraph_from_url(url: str, request: Request) -> RedirectResponse:
 @app.post("/t")
 async def telegraph_from_post(request: Request) -> JSONResponse:
     source = await _request_data(request)
-    key = request.headers.get("x-bookmarklet-key")
-    if key:
-        try:
-            source = source.model_copy(update={"access_token": require_bookmarklet_token(key)})
-        except SourceError as exc:
-            raise _handle_source_error(exc) from exc
-    elif not source.access_token:
+    if not source.access_token:
         source = source.model_copy(update={"access_token": _authorization_token(request) or None})
     try:
-        target = publish_content(source, key)
+        target = publish_content(source)
     except Exception as exc:
         raise _handle_source_error(exc) from exc
     return JSONResponse({"url": target})
@@ -176,9 +167,7 @@ async def telegraph_from_post(request: Request) -> JSONResponse:
 @app.get("/bookmarklet/", response_class=HTMLResponse)
 def bookmarklet_form(request: Request) -> HTMLResponse:
     try:
-        token = telegraph_tokens.resolve()
-        key = bookmarklet_tokens.create(token)
-        bookmarks = build_bookmarklets(str(request.base_url).rstrip("/"), key)
+        bookmarks = build_bookmarklets(str(request.base_url).rstrip("/"))
     except Exception as exc:
         raise _handle_source_error(exc) from exc
     return templates.TemplateResponse(

@@ -55,11 +55,6 @@ def test_prepare_content_rejects_non_http_url() -> None:
         service.prepare_content(SourceRequest(url="file:///etc/passwd"))
 
 
-def test_bookmarklet_token_store_rejects_unknown_key() -> None:
-    with pytest.raises(service.SourceError, match="Unknown or expired"):
-        service.require_bookmarklet_token("missing")
-
-
 def test_publish_content_passes_resolved_token(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("TELEGRAPH_API_TOKEN", "environment-token")
     published: dict[str, object] = {}

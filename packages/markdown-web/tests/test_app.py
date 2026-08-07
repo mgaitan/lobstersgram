@@ -105,7 +105,6 @@ def test_post_telegraph_returns_json_and_accepts_bearer_token(monkeypatch: pytes
 
     def fake_publish(
         source: SourceRequest,
-        bookmarklet_key: str | None = None,
         cache_key: str | None = None,
     ) -> str:
         seen["source"] = source
@@ -130,7 +129,6 @@ def test_get_telegraph_redirects(monkeypatch: pytest.MonkeyPatch) -> None:
 
     def fake_publish(
         source: SourceRequest,
-        bookmarklet_key: str | None = None,
         cache_key: str | None = None,
     ) -> str:
         seen["source"] = source

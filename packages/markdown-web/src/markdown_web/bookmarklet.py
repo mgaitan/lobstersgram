@@ -5,9 +5,9 @@ from __future__ import annotations
 from urllib.parse import quote
 
 
-def _script(url: str, key: str, action: str) -> str:
+def _script(url: str, action: str) -> str:
     endpoint = quote(url, safe=":/@?=&")
-    headers = "{'Content-Type':'application/json','X-Bookmarklet-Key':'" + key + "'}"
+    headers = "{'Content-Type':'application/json'}"
     payload = (
         "JSON.stringify({html:document.documentElement.outerHTML,metadata:{url:location.href,title:document.title}})"
     )
@@ -37,7 +37,7 @@ def _script(url: str, key: str, action: str) -> str:
     return "javascript:(()=>{" + result + "})()"
 
 
-def build_bookmarklets(base_url: str, key: str) -> dict[str, str]:
-    """Return bookmarklet URLs for Markdown extraction and Telegraph publishing."""
+def build_bookmarklets(base_url: str) -> dict[str, str]:
+    """Return permanent bookmarklet URLs for Markdown and Telegraph."""
     root = base_url.rstrip("/")
-    return {"markdown": _script(root + "/md", key, "md"), "telegraph": _script(root + "/t", key, "t")}
+    return {"markdown": _script(root + "/md", "md"), "telegraph": _script(root + "/t", "t")}
