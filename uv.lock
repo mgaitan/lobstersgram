@@ -782,7 +782,7 @@ requires-dist = [
 
 [[package]]
 name = "markdown-web"
-version = "0.1.2"
+version = "0.1.3"
 source = { editable = "packages/markdown-web" }
 dependencies = [
     { name = "fastapi", extra = ["standard"] },
