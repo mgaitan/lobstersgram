@@ -111,7 +111,21 @@ async def markdown_from_post(request: Request) -> PlainTextResponse:
 
 @app.get("/about", response_class=HTMLResponse)
 def about(request: Request) -> HTMLResponse:
-    return templates.TemplateResponse(request=request, name="about.html")
+    return templates.TemplateResponse(request=request, name="about.html", context={"site_url": SITE_URL})
+
+
+@app.get("/robots.txt", response_class=PlainTextResponse, include_in_schema=False)
+def robots() -> PlainTextResponse:
+    body = f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}/sitemap.xml\n"
+    return PlainTextResponse(body)
+
+
+@app.get("/sitemap.xml", response_class=PlainTextResponse, include_in_schema=False)
+def sitemap() -> PlainTextResponse:
+    paths = ("/", "/about", "/bookmarklets/", "/t/published/")
+    locations = "".join(f"  <url><loc>{SITE_URL}{path}</loc></url>\n" for path in paths)
+    body = f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{locations}</urlset>\n'
+    return PlainTextResponse(body, media_type="application/xml")
 
 
 @app.get("/t/published/", response_class=HTMLResponse)
@@ -123,7 +137,7 @@ def telegraph_published(request: Request) -> HTMLResponse:
     return templates.TemplateResponse(
         request=request,
         name="log.html",
-        context={"pages": pages, "total_count": total_count},
+        context={"pages": pages, "total_count": total_count, "site_url": SITE_URL},
     )
 
 
@@ -167,4 +181,13 @@ def bookmarklet_form(request: Request) -> HTMLResponse:
         bookmarks = build_bookmarklets(str(request.base_url).rstrip("/"), key)
     except Exception as exc:
         raise _handle_source_error(exc) from exc
-    return templates.TemplateResponse(request=request, name="bookmarklet.html", context={"bookmarklets": bookmarks})
+    return templates.TemplateResponse(
+        request=request,
+        name="bookmarklet.html",
+        context={"bookmarklets": bookmarks, "site_url": SITE_URL},
+    )
+
+
+@app.get("/bookmarklets/", response_class=HTMLResponse, include_in_schema=False)
+def bookmarklets_form(request: Request) -> HTMLResponse:
+    return bookmarklet_form(request)

@@ -21,7 +21,7 @@ def test_home_and_static_assets() -> None:
     assert response.status_code == HTTP_200_OK
     assert "Turn any page into Markdown or publish it to Telegraph" in response.text
     assert ">markdown-web<" not in response.text
-    assert 'href="/bookmarklet/">Bookmarklets</a>' in response.text
+    assert 'href="/bookmarklets/">Bookmarklets</a>' in response.text
     assert 'property="og:title" content="Markdown and Telegraph"' in response.text
     assert (
         'property="og:description" content="Turn any page into Markdown or publish it to Telegraph."' in response.text
@@ -38,6 +38,20 @@ def test_about_describes_routes_and_cli() -> None:
     assert "/t/published/" in response.text
     assert "uvx markdown-this" in response.text
     assert "github.com/mgaitan" in response.text
+
+
+def test_search_engine_discovery_metadata() -> None:
+    about_response = client.get("/about")
+    bookmarklet_response = client.get("/bookmarklets/")
+    sitemap_response = client.get("/sitemap.xml")
+    robots_response = client.get("/robots.txt")
+
+    assert 'name="robots" content="index,follow"' in about_response.text
+    assert 'rel="canonical" href="https://markdown.fastapicloud.dev/about"' in about_response.text
+    assert 'rel="canonical" href="https://markdown.fastapicloud.dev/bookmarklets/"' in bookmarklet_response.text
+    assert "https://markdown.fastapicloud.dev/about" in sitemap_response.text
+    assert "https://markdown.fastapicloud.dev/bookmarklets/" in sitemap_response.text
+    assert "Sitemap: https://markdown.fastapicloud.dev/sitemap.xml" in robots_response.text
 
 
 def test_get_markdown_uses_jina_style_path_and_preserves_query(monkeypatch: pytest.MonkeyPatch) -> None:
