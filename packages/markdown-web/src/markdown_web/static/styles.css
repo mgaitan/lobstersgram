@@ -47,6 +47,9 @@ h1 {
 
 .source-form { display: block; }
 .source-entry { display: flex; gap: 18px; align-items: center; }
+.source-fields { flex: 1; display: grid; gap: 10px; }
+.file-choice { color: #666; font: 14px system-ui, sans-serif; cursor: pointer; }
+.file-choice input { width: auto; margin-left: 8px; }
 
 input, textarea {
   width: 100%;

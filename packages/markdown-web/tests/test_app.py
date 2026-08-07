@@ -103,6 +103,23 @@ def test_post_markdown_accepts_raw_html_metadata(monkeypatch: pytest.MonkeyPatch
     assert seen["source"].metadata.url == "https://example.com"
 
 
+def test_post_markdown_accepts_document_upload(monkeypatch: pytest.MonkeyPatch) -> None:
+    seen: dict[str, SourceRequest] = {}
+
+    def fake_prepare(source: SourceRequest) -> PreparedContent:
+        seen["source"] = source
+        return _prepared("# From document")
+
+    monkeypatch.setattr(app_module, "prepare_content", fake_prepare)
+
+    response = client.post("/md", files={"file": ("report.epub", b"document", "application/epub+zip")})
+
+    assert response.status_code == HTTP_200_OK
+    assert response.text == "# From document"
+    assert seen["source"].document == b"document"
+    assert seen["source"].filename == "report.epub"
+
+
 def test_post_telegraph_returns_json_and_accepts_bearer_token(monkeypatch: pytest.MonkeyPatch) -> None:
     seen: dict[str, SourceRequest] = {}
 

@@ -27,6 +27,12 @@ by this running service. POST `/t` always publishes the supplied content.
 GET `/t/published/` lists the pages published by the configured Telegraph account.
 The original source is shown when Telegraph has it in the page's author URL.
 
+The home page also accepts document uploads. The web package uses
+[`firecrawl-anydoc`](https://github.com/firecrawl/anydoc) to convert PDF, Word,
+PowerPoint, Excel, OpenDocument, RTF, EPUB, and CSV files to Markdown. Uploads
+are limited to 50 MB. URLs ending in one of those document extensions are
+converted through the same path.
+
 The target URL should be URL-encoded when it contains characters that have a
 meaning to the web server. POST endpoints accept JSON with a URL, raw HTML, or
 Markdown:
@@ -45,6 +51,13 @@ Raw HTML can also be posted as `text/html`. Optional metadata is supplied with
 `X-Source-URL`, `X-Title`, `X-Author-Name`, `X-Published-Date`, and `X-Image-URL`.
 An `access_token` JSON field or `Authorization` header can select a Telegraph
 account; otherwise the server token is used.
+
+Documents can be posted as multipart form data using the `file` field:
+
+```bash
+curl -X POST http://127.0.0.1:8000/md \
+  -F 'file=@report.epub'
+```
 
 ## Bookmarklets
 

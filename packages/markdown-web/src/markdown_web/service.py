@@ -5,8 +5,10 @@ from __future__ import annotations
 import os
 import threading
 from dataclasses import dataclass
+from pathlib import Path
 from urllib.parse import urlparse
 
+import anydoc
 import requests
 from markdown_this import add_front_matter, extract_main_content, markdown_to_text, split_front_matter
 from md_to_telegraph import create_account, create_page
@@ -18,6 +20,27 @@ DEFAULT_AUTHOR_NAME = "page-to-telegraph"
 TELEGRAPH_API_URL = "https://api.telegra.ph"
 TELEGRAPH_PAGE_LIST_LIMIT = 200
 TELEGRAPH_REQUEST_TIMEOUT = 20
+MAX_DOCUMENT_BYTES = 50 * 1024 * 1024
+DOCUMENT_EXTENSIONS = frozenset(
+    {
+        "doc",
+        "docx",
+        "docm",
+        "ppt",
+        "pptx",
+        "pptm",
+        "xls",
+        "xlsx",
+        "xlsm",
+        "odt",
+        "ods",
+        "odp",
+        "rtf",
+        "epub",
+        "csv",
+        "pdf",
+    }
+)
 
 
 class SourceError(ValueError):
@@ -36,6 +59,35 @@ class InvalidURLSourceError(SourceError):
 
     def __init__(self) -> None:
         super().__init__("URL sources must use http or https")
+
+
+class DocumentSourceError(SourceError):
+    """Raised when a document cannot be converted to Markdown."""
+
+
+class EmptyDocumentError(DocumentSourceError):
+    def __init__(self) -> None:
+        super().__init__("Uploaded document is empty")
+
+
+class DocumentTooLargeError(DocumentSourceError):
+    def __init__(self) -> None:
+        super().__init__("Documents must be 50 MB or smaller")
+
+
+class DocumentConversionError(DocumentSourceError):
+    def __init__(self, detail: Exception) -> None:
+        super().__init__(f"Could not convert document: {detail}")
+
+
+class EmptyDocumentContentError(DocumentSourceError):
+    def __init__(self) -> None:
+        super().__init__("Document did not contain readable content")
+
+
+class DocumentDownloadError(DocumentSourceError):
+    def __init__(self) -> None:
+        super().__init__("Could not download document")
 
 
 class TelegraphAPIError(RuntimeError):
@@ -139,6 +191,37 @@ def _require_source(request: SourceRequest) -> str:
     raise MissingSourceError
 
 
+def _is_document_url(url: str) -> bool:
+    suffix = Path(urlparse(url).path).suffix.lower().lstrip(".")
+    return suffix in DOCUMENT_EXTENSIONS
+
+
+def _convert_document(data: bytes, filename: str) -> str:
+    if not data:
+        raise EmptyDocumentError
+    if len(data) > MAX_DOCUMENT_BYTES:
+        raise DocumentTooLargeError
+    extension = Path(filename).suffix.lower().lstrip(".")
+    document_format = anydoc.format_from_extension(extension) if extension else None
+    try:
+        markdown = anydoc.to_markdown_bytes(data, document_format)
+    except (anydoc.ConvertError, OSError, ValueError) as exc:
+        raise DocumentConversionError(exc) from exc
+    if not markdown.strip():
+        raise EmptyDocumentContentError
+    return markdown
+
+
+def _download_document(url: str) -> tuple[bytes, str]:
+    try:
+        response = requests.get(url, timeout=TELEGRAPH_REQUEST_TIMEOUT, headers={"User-Agent": "markdown-web"})
+        response.raise_for_status()
+    except requests.RequestException as exc:
+        raise DocumentDownloadError from exc
+    filename = Path(urlparse(url).path).name or "document"
+    return response.content, filename
+
+
 def _merge_metadata(markdown: str, supplied: SourceMetadata) -> tuple[str, SourceMetadata]:
     existing, body = split_front_matter(markdown.strip())
     merged = {**existing, **supplied.values()}
@@ -147,18 +230,35 @@ def _merge_metadata(markdown: str, supplied: SourceMetadata) -> tuple[str, Sourc
 
 def prepare_content(request: SourceRequest) -> PreparedContent:
     """Extract and normalize a request into Markdown with YAML front matter."""
-    source = _require_source(request)
-    if request.url:
-        title, markdown, fallback_text, _intro = extract_main_content(request.url)
-    elif request.html is not None:
-        title, markdown, fallback_text, _intro = extract_main_content(request.html)
-    else:
-        front_matter, body = split_front_matter(source.strip())
-        title = front_matter.get("title", "")
-        markdown = source
+    if request.document is not None or (request.url and _is_document_url(request.url)):
+        document, filename = (
+            (request.document, request.filename)
+            if request.document is not None
+            else _download_document(request.url or "")
+        )
+        markdown = _convert_document(document or b"", filename)
+        metadata = request.metadata
+        if request.url and not metadata.url:
+            metadata = metadata.model_copy(update={"url": request.url})
+        if not metadata.title and filename:
+            metadata = metadata.model_copy(update={"title": Path(filename).stem})
+        front_matter, body = split_front_matter(markdown.strip())
+        title = metadata.title or front_matter.get("title", "") or Path(filename).stem or "Document"
         fallback_text = markdown_to_text(body)
+    else:
+        source = _require_source(request)
+        if request.url:
+            title, markdown, fallback_text, _intro = extract_main_content(request.url)
+        elif request.html is not None:
+            title, markdown, fallback_text, _intro = extract_main_content(request.html)
+        else:
+            front_matter, body = split_front_matter(source.strip())
+            title = front_matter.get("title", "")
+            markdown = source
+            fallback_text = markdown_to_text(body)
+        metadata = request.metadata
 
-    markdown, metadata = _merge_metadata(markdown, request.metadata)
+    markdown, metadata = _merge_metadata(markdown, metadata)
     title = metadata.title or title
     return PreparedContent(title=title, markdown=markdown, fallback_text=fallback_text, metadata=metadata)
 

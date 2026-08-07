@@ -38,6 +38,32 @@ def test_prepare_content_accepts_raw_html(monkeypatch: pytest.MonkeyPatch) -> No
     assert "url: https://example.com" in result.markdown
 
 
+def test_prepare_content_converts_uploaded_document(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(service.anydoc, "to_markdown_bytes", lambda data, document_format: "# Report\n\nBody")
+
+    result = service.prepare_content(SourceRequest(document=b"document", filename="report.epub"))
+
+    assert result.title == "report"
+    assert "title: report" in result.markdown
+    assert result.fallback_text == "Report\n\nBody"
+
+
+def test_prepare_content_downloads_document_url(monkeypatch: pytest.MonkeyPatch) -> None:
+    class FakeResponse:
+        content = b"document"
+
+        def raise_for_status(self) -> None:
+            return None
+
+    monkeypatch.setattr(service.requests, "get", lambda *args, **kwargs: FakeResponse())
+    monkeypatch.setattr(service.anydoc, "to_markdown_bytes", lambda data, document_format: "# Report\n\nBody")
+
+    result = service.prepare_content(SourceRequest(url="https://example.com/report.epub"))
+
+    assert result.title == "report"
+    assert "url: https://example.com/report.epub" in result.markdown
+
+
 def test_prepare_content_keeps_markdown_front_matter() -> None:
     result = service.prepare_content(SourceRequest(markdown="---\ntitle: Existing\n---\n\n# Existing\n\nBody"))
 

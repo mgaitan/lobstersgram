@@ -23,7 +23,12 @@
         <form id="process-form" class="source-form">
           <div id="source-entry" class="source-entry">
             <label class="sr-only" for="source-url">URL</label>
-            <input id="source-url" name="url" type="url" placeholder="Paste a URL" required autofocus>
+            <div class="source-fields">
+              <input id="source-url" name="url" type="url" placeholder="Paste a URL" autofocus>
+              <label class="file-choice" for="source-file">Choose a document
+                <input id="source-file" type="file" accept=".pdf,.doc,.docx,.epub,.ppt,.pptx,.xls,.xlsx,.odt,.ods,.odp,.rtf,.csv">
+              </label>
+            </div>
             <button id="submit-button" class="button button-primary" type="submit">Process</button>
           </div>
 
@@ -57,6 +62,7 @@
       const result = document.querySelector("#result");
       const output = document.querySelector("#markdown-output");
       const sourceInput = document.querySelector("#source-url");
+      const sourceFile = document.querySelector("#source-file");
       const sourceLabel = document.querySelector("#result-source");
       const status = document.querySelector("#status");
       let currentUrl = "";
@@ -89,12 +95,29 @@
         }
 
         currentUrl = sourceInput.value.trim();
+        const file = sourceFile.files[0];
+        if (!currentUrl && !file) {
+          setStatus("Paste a URL or choose a document", true);
+          sourceInput.focus();
+          return;
+        }
+        if (currentUrl && file) {
+          setStatus("Choose a URL or a document, not both", true);
+          return;
+        }
         setStatus("Processing…");
         try {
-          const response = await fetch("/md/" + encodeURIComponent(currentUrl));
+          let response;
+          if (file) {
+            const data = new FormData();
+            data.append("file", file);
+            response = await fetch("/md", {method: "POST", body: data});
+          } else {
+            response = await fetch("/md/" + encodeURIComponent(currentUrl));
+          }
           if (!response.ok) throw new Error(await response.text());
           output.value = await response.text();
-          sourceLabel.textContent = currentUrl;
+          sourceLabel.textContent = currentUrl || file.name;
           sourceEntry.hidden = true;
           result.hidden = false;
           mode = "publish";
