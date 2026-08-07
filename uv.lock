@@ -770,7 +770,7 @@ wheels = [
 
 [[package]]
 name = "markdown-this"
-version = "0.1.6"
+version = "0.1.7"
 source = { editable = "packages/markdown-this" }
 dependencies = [
     { name = "beautifulsoup4" },
@@ -793,7 +793,7 @@ requires-dist = [
 
 [[package]]
 name = "markdown-web"
-version = "0.1.4"
+version = "0.1.5"
 source = { editable = "packages/markdown-web" }
 dependencies = [
     { name = "fastapi", extra = ["standard"] },
