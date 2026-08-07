@@ -13,6 +13,7 @@ dependencies = [
     "pyyaml>=6.0.3",
     "readability-lxml>=0.8.4.1",
     "requests>=2.32.5",
+    "youtube-transcript-api>=1.2.4",
 ]
 
 [project.urls]
