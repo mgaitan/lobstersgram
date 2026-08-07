@@ -100,5 +100,29 @@
     "article_link": "https://matklad.github.io/2026/08/06/neat-io-threaded.html",
     "discussion_link": "https://lobste.rs/s/aegq82/zig_s_io_threaded_is_neat",
     "title": "Zig's Io.Threaded is Neat"
+  },
+  "@lobstersgram:25": {
+    "telegraph_link": "https://telegra.ph/Thoroughly-Understanding-C-ABI--ykikos-blog-08-07",
+    "article_link": "https://ykiko.me/en/articles/692886292/",
+    "discussion_link": "https://lobste.rs/s/puodea/thoroughly_understanding_c_abi",
+    "title": "Thoroughly Understanding C++ ABI"
+  },
+  "@lobstersgram:26": {
+    "telegraph_link": "https://telegra.ph/xoreaxeaxeaxasm-hall-of-shame--Racing-to-the-bottom-of-CPU-performance-08-07",
+    "article_link": "https://github.com/xoreaxeaxeax/asm-hall-of-shame",
+    "discussion_link": "https://lobste.rs/s/hw1y12/assembly_hall_shame_racing_bottom_cpu",
+    "title": "Assembly Hall of Shame: Racing to the bottom of CPU performance"
+  },
+  "@lobstersgram:27": {
+    "telegraph_link": "https://telegra.ph/PS3-emulation-is-fast-on-ARM-now-08-07",
+    "article_link": "https://www.youtube.com/watch?v=-aI_XEwmKFk",
+    "discussion_link": "https://lobste.rs/s/ykzv1a/ps3_emulation_is_fast_on_arm_now",
+    "title": "PS3 emulation is fast on ARM now"
+  },
+  "@lobstersgram:28": {
+    "telegraph_link": "https://telegra.ph/Am-I-the-problem-Interviewing-another-team-to-find-out-08-07-2",
+    "article_link": "https://www.macchaffee.com/blog/2026/am-i-the-problem/",
+    "discussion_link": "https://lobste.rs/s/c30jsd/am_i_problem_interviewing_another_team",
+    "title": "Am I the problem? Interviewing another team to find out"
   }
 }
