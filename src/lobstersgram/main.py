@@ -32,7 +32,12 @@ while keeping the same reading format.
 Join the channel at <a href="https://t.me/lobstersgram">@lobstersgram</a> to keep receiving the content.
 
 I also built a small web service, powered by the same code behind Lobstersgram, for publishing arbitrary links:
-<a href="https://markdown.fastapicloud.dev/">markdown.fastapicloud.dev</a>"""
+<a href="https://markdown.fastapicloud.dev/">markdown.fastapicloud.dev</a>
+
+Also, remember that Lobstersgram is open source. Report bugs and request features!
+<a href="https://github.com/mgaitan/lobstersgram">github.com/mgaitan/lobstersgram</a>
+
+Hope to see you in the channel soon!"""
 
 
 class URLPublishError(RuntimeError):
