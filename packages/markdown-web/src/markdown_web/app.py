@@ -17,6 +17,7 @@ from markdown_web.schemas import SourceMetadata, SourceRequest
 from markdown_web.service import (
     SourceError,
     bookmarklet_tokens,
+    list_published_pages,
     prepare_content,
     publish_content,
     require_bookmarklet_token,
@@ -104,6 +105,19 @@ async def markdown_from_post(request: Request) -> PlainTextResponse:
     except Exception as exc:
         raise _handle_source_error(exc) from exc
     return PlainTextResponse(prepared.markdown, media_type="text/markdown")
+
+
+@app.get("/t/_log/", response_class=HTMLResponse)
+def telegraph_log(request: Request) -> HTMLResponse:
+    try:
+        total_count, pages = list_published_pages()
+    except Exception as exc:
+        raise _handle_source_error(exc) from exc
+    return templates.TemplateResponse(
+        request=request,
+        name="log.html",
+        context={"pages": pages, "total_count": total_count},
+    )
 
 
 @app.get("/t/{url:path}")

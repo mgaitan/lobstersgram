@@ -113,6 +113,32 @@ def test_get_telegraph_redirects(monkeypatch: pytest.MonkeyPatch) -> None:
     assert seen["cache_key"] == "https://example.com/article"
 
 
+def test_telegraph_log_lists_pages(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(
+        app_module,
+        "list_published_pages",
+        lambda: (
+            1,
+            [
+                {
+                    "url": "https://telegra.ph/Article-08-07",
+                    "title": "Article",
+                    "author_url": "https://example.com/article",
+                    "views": 12,
+                }
+            ],
+        ),
+    )
+
+    response = client.get("/t/_log/")
+
+    assert response.status_code == HTTP_200_OK
+    assert "Published pages" in response.text
+    assert 'href="https://telegra.ph/Article-08-07"' in response.text
+    assert 'href="https://example.com/article"' in response.text
+    assert "12 views" in response.text
+
+
 def test_bookmarklet_form_does_not_expose_token(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("TELEGRAPH_API_TOKEN", "secret-token")
 

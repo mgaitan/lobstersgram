@@ -12,6 +12,7 @@ dependencies = [
     "jinja2>=3.1.6",
     "markdown-this>=0.1.4",
     "md-to-telegraph",
+    "requests>=2.32.5",
     "uvicorn[standard]>=0.35.0",
 ]
 

@@ -8,6 +8,7 @@ import threading
 from dataclasses import dataclass
 from urllib.parse import urlparse
 
+import requests
 from markdown_this import add_front_matter, extract_main_content, markdown_to_text, split_front_matter
 from md_to_telegraph import create_account, create_page
 
@@ -15,6 +16,9 @@ from markdown_web.schemas import SourceMetadata, SourceRequest
 
 DEFAULT_ACCOUNT_NAME = "page-to-telegraph"
 DEFAULT_AUTHOR_NAME = "page-to-telegraph"
+TELEGRAPH_API_URL = "https://api.telegra.ph"
+TELEGRAPH_PAGE_LIST_LIMIT = 200
+TELEGRAPH_REQUEST_TIMEOUT = 20
 
 
 class SourceError(ValueError):
@@ -42,6 +46,13 @@ class InvalidURLSourceError(SourceError):
         super().__init__("URL sources must use http or https")
 
 
+class TelegraphAPIError(RuntimeError):
+    """Raised when Telegraph cannot return a valid API response."""
+
+    def __init__(self) -> None:
+        super().__init__("Could not read the Telegraph page list")
+
+
 @dataclass(frozen=True)
 class PreparedContent:
     """Normalized content ready for Markdown output or Telegraph."""
@@ -50,6 +61,47 @@ class PreparedContent:
     markdown: str
     fallback_text: str
     metadata: SourceMetadata
+
+
+def list_published_pages() -> tuple[int, list[dict[str, object]]]:
+    """Return all pages published by the configured Telegraph account."""
+    token = telegraph_tokens.resolve()
+    pages: list[dict[str, object]] = []
+    offset = 0
+    total_count = 0
+
+    while True:
+        try:
+            response = requests.get(
+                f"{TELEGRAPH_API_URL}/getPageList",
+                params={
+                    "access_token": token,
+                    "offset": offset,
+                    "limit": TELEGRAPH_PAGE_LIST_LIMIT,
+                },
+                timeout=TELEGRAPH_REQUEST_TIMEOUT,
+            )
+            response.raise_for_status()
+            payload = response.json()
+        except (requests.RequestException, ValueError) as exc:
+            raise TelegraphAPIError from exc
+
+        if not isinstance(payload, dict) or not payload.get("ok"):
+            raise TelegraphAPIError
+        result = payload.get("result")
+        if not isinstance(result, dict):
+            raise TelegraphAPIError
+
+        raw_total = result.get("total_count", 0)
+        raw_pages = result.get("pages", [])
+        if not isinstance(raw_total, int) or not isinstance(raw_pages, list):
+            raise TelegraphAPIError
+        total_count = raw_total
+        pages.extend(page for page in raw_pages if isinstance(page, dict))
+
+        if not raw_pages or len(pages) >= total_count:
+            return total_count, pages
+        offset += len(raw_pages)
 
 
 class TelegraphTokenStore:

@@ -789,6 +789,7 @@ dependencies = [
     { name = "jinja2" },
     { name = "markdown-this" },
     { name = "md-to-telegraph" },
+    { name = "requests" },
     { name = "uvicorn", extra = ["standard"] },
 ]
 
@@ -798,6 +799,7 @@ requires-dist = [
     { name = "jinja2", specifier = ">=3.1.6" },
     { name = "markdown-this", editable = "packages/markdown-this" },
     { name = "md-to-telegraph", editable = "packages/md-to-telegraph" },
+    { name = "requests", specifier = ">=2.32.5" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.35.0" },
 ]
 

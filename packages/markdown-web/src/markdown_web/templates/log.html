@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Published pages | Page to Telegraph</title>
+    <link rel="stylesheet" href="/static/styles.css?v=5">
+  </head>
+  <body>
+    <main class="page narrow">
+      <header class="masthead">
+        <a class="wordmark" href="/">Page to Telegraph</a>
+        <a class="quiet-link" href="/bookmarklet/">bookmarklet</a>
+      </header>
+
+      <h1>Published pages</h1>
+      <p class="lede">{{ total_count }} page{% if total_count != 1 %}s{% endif %} published from this account.</p>
+
+      {% if pages %}
+      <ol class="page-list">
+        {% for page in pages %}
+        <li class="page-item">
+          <a class="page-title" href="{{ page.url }}">{{ page.title or "Untitled page" }}</a>
+          <div class="page-details">
+            {% if page.author_url %}<a href="{{ page.author_url }}">original source</a>{% endif %}
+            {% if page.views is defined %}<span>{{ page.views }} views</span>{% endif %}
+          </div>
+          {% if page.description %}<p class="page-description">{{ page.description }}</p>{% endif %}
+        </li>
+        {% endfor %}
+      </ol>
+      {% else %}
+      <p class="note">No pages have been published yet.</p>
+      {% endif %}
+    </main>
+    <footer class="footer">
+      <a href="https://github.com/mgaitan/lobstersgram/tree/main/packages/markdown-web">GitHub</a>
+    </footer>
+  </body>
+</html>

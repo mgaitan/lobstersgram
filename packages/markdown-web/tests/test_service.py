@@ -94,3 +94,41 @@ def test_publish_content_reuses_cached_source_url(monkeypatch: pytest.MonkeyPatc
 
     assert first == second == "https://telegra.ph/cached"
     assert calls == 1
+
+
+def test_list_published_pages_paginates(monkeypatch: pytest.MonkeyPatch) -> None:
+    class FakeResponse:
+        def __init__(self, pages: list[dict[str, object]]) -> None:
+            self.pages = pages
+
+        def raise_for_status(self) -> None:
+            return None
+
+        def json(self) -> dict[str, object]:
+            return {"ok": True, "result": {"total_count": 2, "pages": self.pages}}
+
+    calls: list[dict[str, object]] = []
+    responses = [
+        FakeResponse([{"url": "https://telegra.ph/one", "title": "One"}]),
+        FakeResponse([{"url": "https://telegra.ph/two", "title": "Two"}]),
+    ]
+
+    def fake_get(url: str, **kwargs: object) -> FakeResponse:
+        calls.append({"url": url, **kwargs})
+        return responses.pop(0)
+
+    monkeypatch.setenv("TELEGRAPH_API_TOKEN", "environment-token")
+    monkeypatch.setattr(service.requests, "get", fake_get)
+
+    total, pages = service.list_published_pages()
+
+    expected_total = 2
+    assert total == expected_total
+    assert pages == [
+        {"url": "https://telegra.ph/one", "title": "One"},
+        {"url": "https://telegra.ph/two", "title": "Two"},
+    ]
+    assert [call["params"] for call in calls] == [
+        {"access_token": "environment-token", "offset": 0, "limit": 200},
+        {"access_token": "environment-token", "offset": 1, "limit": 200},
+    ]

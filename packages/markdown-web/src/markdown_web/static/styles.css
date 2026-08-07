@@ -109,6 +109,13 @@ textarea {
 .bookmarklet { display: inline-block; width: fit-content; border-bottom: 1px solid #333; padding-bottom: 4px; text-decoration: none; }
 .note { margin-top: 36px; }
 
+.page-list { margin: 36px 0 0; padding: 0; list-style: none; }
+.page-item { border-top: 1px solid #eee; padding: 18px 0 20px; }
+.page-title { font-size: 21px; text-decoration: none; }
+.page-title:hover { text-decoration: underline; }
+.page-details { display: flex; gap: 14px; margin-top: 6px; color: #777; font-size: 13px; }
+.page-description { margin: 8px 0 0; color: #666; font-size: 15px; }
+
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
 
 @media (max-width: 560px) {
