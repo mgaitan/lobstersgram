@@ -20,7 +20,7 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/mgaitan/lobstersgram/tree/main/src/lobstersgram"
+Homepage = "https://github.com/mgaitan/lobstersgram/tree/master/src/lobstersgram"
 Repository = "https://github.com/mgaitan/lobstersgram"
 Issues = "https://github.com/mgaitan/lobstersgram/issues"
 

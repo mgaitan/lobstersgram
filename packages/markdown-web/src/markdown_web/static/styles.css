@@ -41,7 +41,7 @@ a { color: inherit; }
 h1 {
   margin: 0 0 32px;
   color: #888;
-  font-size: 34px;
+  font-size: 28px;
   font-weight: 400;
 }
 
@@ -121,7 +121,7 @@ textarea {
 @media (max-width: 560px) {
   .page { padding: 20px 20px 48px; }
   .masthead { margin-bottom: 64px; }
-  h1 { font-size: 28px; }
+  h1 { font-size: 26px; }
   .source-entry { display: block; }
   .source-entry .button { margin-top: 22px; }
   .result-toolbar { align-items: flex-start; flex-direction: column; }

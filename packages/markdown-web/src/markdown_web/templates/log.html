@@ -4,17 +4,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Published pages | Page to Telegraph</title>
-    <link rel="stylesheet" href="/static/styles.css?v=5">
+    <link rel="stylesheet" href="/static/styles.css?v=6">
   </head>
   <body>
     <main class="page narrow">
       <header class="masthead">
-        <a class="wordmark" href="/">Page to Telegraph</a>
         <a class="quiet-link" href="/bookmarklet/">bookmarklet</a>
       </header>
 
       <h1>Published pages</h1>
-      <p class="lede">{{ total_count }} page{% if total_count != 1 %}s{% endif %} published from this account.</p>
+      <p class="lede">{{ total_count }} page{% if total_count != 1 %}s{% endif %} published.</p>
 
       {% if pages %}
       <ol class="page-list">
@@ -34,7 +33,7 @@
       {% endif %}
     </main>
     <footer class="footer">
-      <a href="https://github.com/mgaitan/lobstersgram/tree/main/packages/markdown-web">GitHub</a>
+      <a href="https://github.com/mgaitan/lobstersgram/tree/master/packages/markdown-web">GitHub</a>
     </footer>
   </body>
 </html>

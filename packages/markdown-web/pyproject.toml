@@ -17,7 +17,7 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/mgaitan/lobstersgram/tree/main/packages/markdown-web"
+Homepage = "https://github.com/mgaitan/lobstersgram/tree/master/packages/markdown-web"
 Repository = "https://github.com/mgaitan/lobstersgram"
 Issues = "https://github.com/mgaitan/lobstersgram/issues"
 
