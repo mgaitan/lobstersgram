@@ -124,6 +124,31 @@ def test_post_telegraph_returns_json_and_accepts_bearer_token(monkeypatch: pytes
     assert seen["source"].access_token == "request-token"
 
 
+def test_bookmarklet_post_redirects_without_fetch_or_cors(monkeypatch: pytest.MonkeyPatch) -> None:
+    seen: dict[str, SourceRequest] = {}
+
+    def fake_publish(source: SourceRequest, cache_key: str | None = None) -> str:
+        seen["source"] = source
+        return "https://telegra.ph/page"
+
+    monkeypatch.setattr(app_module, "publish_content", fake_publish)
+
+    response = client.post(
+        "/t/bookmarklet",
+        data={
+            "html": "<h1>Title</h1><p>Body</p>",
+            "title": "Title",
+            "source_url": "https://chatgpt.com/c/example",
+        },
+        follow_redirects=False,
+    )
+
+    assert response.status_code == HTTP_303_SEE_OTHER
+    assert response.headers["location"] == "https://telegra.ph/page"
+    assert seen["source"].html == "<h1>Title</h1><p>Body</p>"
+    assert seen["source"].metadata.url == "https://chatgpt.com/c/example"
+
+
 def test_get_telegraph_redirects(monkeypatch: pytest.MonkeyPatch) -> None:
     seen: dict[str, object] = {}
 

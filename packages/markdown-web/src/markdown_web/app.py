@@ -164,6 +164,18 @@ async def telegraph_from_post(request: Request) -> JSONResponse:
     return JSONResponse({"url": target})
 
 
+@app.post("/t/bookmarklet")
+async def telegraph_from_bookmarklet(request: Request) -> RedirectResponse:
+    source = await _request_data(request)
+    if not source.access_token:
+        source = source.model_copy(update={"access_token": _authorization_token(request) or None})
+    try:
+        target = publish_content(source)
+    except Exception as exc:
+        raise _handle_source_error(exc) from exc
+    return RedirectResponse(target, status_code=303)
+
+
 @app.get("/bookmarklet/", response_class=HTMLResponse)
 def bookmarklet_form(request: Request) -> HTMLResponse:
     try:
