@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 import urllib.parse
 from logging import getLogger
 from pathlib import Path
@@ -27,6 +28,11 @@ from markdown_this.markdown import (
 from markdown_this.metadata import add_front_matter, extract_html_metadata, split_front_matter
 
 logger = getLogger(__name__)
+
+AD_NEGATIVE_KEYWORDS = re.compile(
+    r"(?:^|[-_ ])(?:ad|ads|advert|advertising|advertisement|sponsor|sponsored|promo)(?:$|[-_ ])",
+    re.IGNORECASE,
+)
 
 
 class ContentDownloadError(RuntimeError):
@@ -75,10 +81,11 @@ def _extract_html_content(  # noqa: PLR0913
     if not content_html:
         raise ContentDownloadError
 
+    metadata = extract_html_metadata(content_html, base_url)
     content_html_for_markdown = ""
     title = source_label
     try:
-        document = Document(content_html)
+        document = Document(content_html, negative_keywords=AD_NEGATIVE_KEYWORDS)
         content_html_for_markdown = document.summary() or ""
         title = document.title() or source_label
     except Exception as exc:  # noqa: BLE001
@@ -92,7 +99,6 @@ def _extract_html_content(  # noqa: PLR0913
     extracted_markdown = _normalize_markdown_links(extracted_markdown)
     extracted_markdown = _make_markdown_links_absolute(extracted_markdown, base_url)
     fallback_text = BeautifulSoup(content_html_for_markdown, "html.parser").get_text(separator="\n").strip()
-    metadata = extract_html_metadata(content_html, base_url)
     if source_url:
         metadata["url"] = source_url
     return _finalize_content(title, extracted_markdown, fallback_text, intro_min_length, metadata)

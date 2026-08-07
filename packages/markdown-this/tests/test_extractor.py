@@ -68,3 +68,22 @@ def test_extract_main_content_emits_html_metadata() -> None:
         "date": "2026-08-06",
         "image": "https://cdn.example.com/hero.jpg",
     }
+
+
+def test_extract_main_content_excludes_structural_ad_slots() -> None:
+    html = """
+    <html><head><title>Story</title></head><body><article>
+      <p>Story text with enough content to be selected by readability.</p>
+      <div class="c-ad advertising">
+        <div class="c-ad__adzone"></div>
+        <div class="c-ad__placeholder"><span>PUBLICIDAD</span></div>
+      </div>
+      <p>More story text after the ad.</p>
+    </article></body></html>
+    """
+
+    _title, markdown, _fallback, _intro = extract_main_content(html, min_content_length=0)
+
+    assert "Story text" in markdown
+    assert "More story text" in markdown
+    assert "PUBLICIDAD" not in markdown
