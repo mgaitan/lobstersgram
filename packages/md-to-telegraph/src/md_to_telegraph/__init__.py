@@ -3,6 +3,7 @@ from md_to_telegraph.md_to_dom import content_to_telegraph, md_to_telegraph
 from md_to_telegraph.metadata import split_front_matter
 from md_to_telegraph.telegraph import (
     TelegraphAPIError,
+    TelegraphContentError,
     TelegraphTitleError,
     TelegraphTokenError,
     create_account,
@@ -12,6 +13,7 @@ from md_to_telegraph.telegraph import (
 
 __all__ = [
     "TelegraphAPIError",
+    "TelegraphContentError",
     "TelegraphTitleError",
     "TelegraphTokenError",
     "content_to_telegraph",

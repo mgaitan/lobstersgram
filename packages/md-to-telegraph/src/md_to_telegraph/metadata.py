@@ -6,7 +6,7 @@ from collections.abc import Mapping
 
 import yaml
 
-METADATA_FIELDS = ("title", "author", "url", "date", "image")
+METADATA_FIELDS = ("title", "author", "url", "date", "image", "type")
 
 
 def split_front_matter(markdown: str) -> tuple[dict[str, str], str]:

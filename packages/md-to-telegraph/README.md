@@ -69,6 +69,11 @@ metadata but Telegraph has no native page-date field.
 When an author is not available, the source URL's domain is used as the author
 name, while the complete source URL is sent as `author_url`.
 
+When the front matter declares a non-document page type such as `website`,
+`home`, `collection`, or `search`, `create_page` refuses to publish it.
+This prevents accidentally turning site home pages and listings into
+Telegraph articles.
+
 The same operation is available as a command-line tool. A file uses its stem
 as the default title; stdin uses its first Markdown heading, or accepts an
 explicit `--title`:

@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+import re
 import time
 from pathlib import Path
 from urllib.parse import urlparse
@@ -19,6 +20,25 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_REQUEST_TIMEOUT = 20
 HTTP_SERVER_ERROR_MIN = 500
+NON_DOCUMENT_TYPES = frozenset(
+    {
+        "category",
+        "categorypage",
+        "collection",
+        "collectionpage",
+        "home",
+        "homepage",
+        "itemlist",
+        "landingpage",
+        "profilepage",
+        "search",
+        "searchpage",
+        "searchresultspage",
+        "section",
+        "sectionpage",
+        "website",
+    }
+)
 TELEGRAPH_CREATE_PAGE_URL = "https://api.telegra.ph/createPage"
 TELEGRAPH_CREATE_ACCOUNT_URL = "https://api.telegra.ph/createAccount"
 
@@ -43,6 +63,18 @@ class TelegraphTitleError(RuntimeError):
 
     def __init__(self) -> None:
         super().__init__("Pass title or include a title in YAML front matter or the first Markdown heading")
+
+
+class TelegraphContentError(RuntimeError):
+    """Raised when metadata identifies a source as a non-document page."""
+
+    def __init__(self, page_type: str) -> None:
+        super().__init__(f"Refusing to publish non-document page (type: {page_type})")
+
+
+def _is_non_document_type(page_type: str) -> bool:
+    normalized = re.sub(r"[^a-z]", "", page_type.casefold())
+    return normalized in NON_DOCUMENT_TYPES
 
 
 def _post_with_retry(
@@ -133,6 +165,8 @@ def create_page(  # noqa: PLR0913
 
     markdown = content_markdown.read_text(encoding="utf-8") if isinstance(content_markdown, Path) else content_markdown
     metadata, markdown = split_front_matter(markdown)
+    if (page_type := metadata.get("type", "")) and _is_non_document_type(page_type):
+        raise TelegraphContentError(page_type)
     resolved_title = title or metadata.get("title") or extract_leading_title(markdown)
     if not resolved_title and isinstance(content_markdown, Path):
         resolved_title = content_markdown.stem

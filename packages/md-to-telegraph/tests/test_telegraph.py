@@ -10,6 +10,7 @@ import pytest
 import requests
 from md_to_telegraph import (
     TelegraphAPIError,
+    TelegraphContentError,
     TelegraphTitleError,
     TelegraphTokenError,
     create_account,
@@ -136,6 +137,13 @@ def test_create_page_reads_front_matter_defaults() -> None:
         {"tag": "img", "attrs": {"src": "https://example.com/hero.jpg"}},
         {"tag": "p", "children": ["Body"]},
     ]
+
+
+def test_create_page_rejects_non_document_page_type() -> None:
+    markdown = "---\ntitle: LA NACION\ntype: website\n---\n\nHome links"
+
+    with pytest.raises(TelegraphContentError, match="non-document"):
+        create_page(content_markdown=markdown, access_token="token", warm_cache=False)
 
 
 def test_create_page_uses_source_domain_as_default_author() -> None:

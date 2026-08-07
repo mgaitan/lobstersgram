@@ -3,6 +3,7 @@ import pytest
 from fastapi.testclient import TestClient
 from markdown_web.schemas import SourceMetadata, SourceRequest
 from markdown_web.service import PreparedContent
+from md_to_telegraph import TelegraphContentError
 from starlette.status import (
     HTTP_200_OK,
     HTTP_303_SEE_OTHER,
@@ -147,6 +148,18 @@ def test_bookmarklet_post_redirects_without_fetch_or_cors(monkeypatch: pytest.Mo
     assert response.headers["location"] == "https://telegra.ph/page"
     assert seen["source"].html == "<h1>Title</h1><p>Body</p>"
     assert seen["source"].metadata.url == "https://chatgpt.com/c/example"
+
+
+def test_post_telegraph_rejects_non_document_sources(monkeypatch: pytest.MonkeyPatch) -> None:
+    def reject_source(source: SourceRequest, cache_key: str | None = None) -> str:
+        raise TelegraphContentError("website")
+
+    monkeypatch.setattr(app_module, "publish_content", reject_source)
+
+    response = client.post("/t", json={"markdown": "---\ntype: website\n---\n\nHome"})
+
+    assert response.status_code == HTTP_422_UNPROCESSABLE_CONTENT
+    assert response.json() == {"detail": "Refusing to publish non-document page (type: website)"}
 
 
 def test_get_telegraph_redirects(monkeypatch: pytest.MonkeyPatch) -> None:

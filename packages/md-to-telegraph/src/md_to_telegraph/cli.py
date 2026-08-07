@@ -11,6 +11,7 @@ from md_to_telegraph.markdown import extract_leading_title
 from md_to_telegraph.metadata import split_front_matter
 from md_to_telegraph.telegraph import (
     TelegraphAPIError,
+    TelegraphContentError,
     TelegraphTitleError,
     TelegraphTokenError,
     create_account,
@@ -112,7 +113,7 @@ def main(argv: list[str] | None = None) -> int:
             retry_attempts=args.retry_attempts,
             warm_cache=not args.no_warm_cache,
         )
-    except (TelegraphAPIError, TelegraphTitleError, TelegraphTokenError, OSError) as exc:
+    except (TelegraphAPIError, TelegraphContentError, TelegraphTitleError, TelegraphTokenError, OSError) as exc:
         parser.error(str(exc))
 
     print(url)

@@ -2,13 +2,30 @@
 
 from __future__ import annotations
 
+import json
 from collections.abc import Mapping
 from urllib.parse import urljoin, urlparse
 
 import yaml
 from bs4 import BeautifulSoup
 
-METADATA_FIELDS = ("title", "author", "url", "date", "image")
+METADATA_FIELDS = ("title", "author", "url", "date", "image", "type")
+
+
+def _extract_json_ld_page_type(soup: BeautifulSoup) -> str:
+    for script in soup.find_all("script", attrs={"type": "application/ld+json"}):
+        try:
+            structured_data = json.loads(script.string or script.get_text())
+        except (TypeError, json.JSONDecodeError):
+            continue
+        candidates = structured_data if isinstance(structured_data, list) else [structured_data]
+        for candidate in candidates:
+            if not isinstance(candidate, Mapping):
+                continue
+            value = candidate.get("pagetype") or candidate.get("pageType")
+            if isinstance(value, str) and value.strip():
+                return value.strip()
+    return ""
 
 
 def split_front_matter(markdown: str) -> tuple[dict[str, str], str]:
@@ -47,7 +64,7 @@ def add_front_matter(markdown: str, metadata: Mapping[str, str]) -> str:
 
 
 def extract_html_metadata(content_html: str, base_url: str = "") -> dict[str, str]:
-    """Extract common author, canonical URL, date, and primary image metadata."""
+    """Extract common document metadata, including the page type when declared."""
     soup = BeautifulSoup(content_html, "html.parser")
 
     def first_meta(*queries: dict[str, str]) -> str:
@@ -87,6 +104,16 @@ def extract_html_metadata(content_html: str, base_url: str = "") -> dict[str, st
     if not date:
         time_tag = soup.find("time", attrs={"datetime": True})
         date = str(time_tag["datetime"]).strip() if time_tag else ""
+    page_type = first_meta({"property": "og:type"}, {"name": "pagetype"}, {"name": "page-type"})
+    page_type = page_type or _extract_json_ld_page_type(soup)
     return {
-        field: value for field, value in (("author", author), ("url", url), ("date", date), ("image", image)) if value
+        field: value
+        for field, value in (
+            ("author", author),
+            ("url", url),
+            ("date", date),
+            ("image", image),
+            ("type", page_type),
+        )
+        if value
     }

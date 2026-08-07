@@ -12,6 +12,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from md_to_telegraph import TelegraphContentError
 
 from markdown_web.bookmarklet import build_bookmarklets
 from markdown_web.schemas import SourceMetadata, SourceRequest
@@ -71,7 +72,7 @@ def _source_request_from_path(url: str, request: Request) -> SourceRequest:
 
 
 def _handle_source_error(exc: Exception) -> HTTPException:
-    if isinstance(exc, SourceError):
+    if isinstance(exc, (SourceError, TelegraphContentError)):
         return HTTPException(status_code=422, detail=str(exc))
     return HTTPException(status_code=502, detail=str(exc))
 

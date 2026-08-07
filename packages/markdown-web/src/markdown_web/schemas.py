@@ -13,6 +13,7 @@ class SourceMetadata(BaseModel):
     url: str = ""
     date: str = ""
     image: str = ""
+    type: str = ""
 
     def values(self) -> dict[str, str]:
         return {key: value for key, value in self.model_dump().items() if value}

@@ -69,6 +69,24 @@ def test_extract_html_metadata_reads_open_graph_and_time_fallback() -> None:
     }
 
 
+def test_extract_html_metadata_reads_page_type() -> None:
+    html = '<meta property="og:type" content="website">'
+
+    assert extract_html_metadata(html) == {"type": "website"}
+
+
+def test_extract_html_metadata_reads_json_ld_page_type() -> None:
+    html = '<script type="application/ld+json">[1, {"pagetype": "home"}]</script>'
+
+    assert extract_html_metadata(html) == {"type": "home"}
+
+
+def test_extract_html_metadata_ignores_invalid_json_ld() -> None:
+    html = '<script type="application/ld+json">not json</script>'
+
+    assert extract_html_metadata(html) == {}
+
+
 def test_extract_html_metadata_uses_site_name_when_author_is_missing() -> None:
     html = '<meta name="author" content=""><meta property="og:site_name" content="Página|12">'
 

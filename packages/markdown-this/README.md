@@ -35,7 +35,8 @@ title, markdown, fallback_text, intro = extract_main_content("<html><p>...</p></
 `extract_main_content` returns the title, extracted Markdown, plain-text
 fallback, and a short introduction suitable for a notification or preview.
 The Markdown value starts with YAML front matter containing the metadata that
-was found, such as `title`, `author`, `url`, and `date`.
+was found, such as `title`, `author`, `url`, `date`, and the declared page
+`type` (`article`, `website`, `home`, and so on).
 
 For example:
 
