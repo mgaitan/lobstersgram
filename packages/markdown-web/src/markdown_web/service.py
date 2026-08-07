@@ -13,8 +13,8 @@ from md_to_telegraph import create_account, create_page
 
 from markdown_web.schemas import SourceMetadata, SourceRequest
 
-DEFAULT_ACCOUNT_NAME = "markdown-web"
-DEFAULT_AUTHOR_NAME = "markdown-web"
+DEFAULT_ACCOUNT_NAME = "page-to-telegraph"
+DEFAULT_AUTHOR_NAME = "page-to-telegraph"
 
 
 class SourceError(ValueError):
@@ -99,6 +99,8 @@ class BookmarkletTokenStore:
 
 telegraph_tokens = TelegraphTokenStore()
 bookmarklet_tokens = BookmarkletTokenStore()
+published_urls: dict[str, str] = {}
+published_urls_lock = threading.Lock()
 
 
 def _require_source(request: SourceRequest) -> str:
@@ -138,7 +140,7 @@ def prepare_content(request: SourceRequest) -> PreparedContent:
     return PreparedContent(title=title, markdown=markdown, fallback_text=fallback_text, metadata=metadata)
 
 
-def publish_content(request: SourceRequest, bookmarklet_key: str | None = None) -> str:
+def _publish_content(request: SourceRequest, bookmarklet_key: str | None = None) -> str:
     """Publish request content to Telegraph and return its public URL."""
     prepared = prepare_content(request)
     token = request.access_token or bookmarklet_tokens.resolve(bookmarklet_key)
@@ -149,6 +151,23 @@ def publish_content(request: SourceRequest, bookmarklet_key: str | None = None) 
         fallback_text=prepared.fallback_text,
         access_token=token,
     )
+
+
+def publish_content(
+    request: SourceRequest,
+    bookmarklet_key: str | None = None,
+    cache_key: str | None = None,
+) -> str:
+    """Publish content, optionally reusing the Telegraph page for a source URL."""
+    if not cache_key:
+        return _publish_content(request, bookmarklet_key)
+
+    with published_urls_lock:
+        if target := published_urls.get(cache_key):
+            return target
+        target = _publish_content(request, bookmarklet_key)
+        published_urls[cache_key] = target
+        return target
 
 
 def require_bookmarklet_token(key: str | None) -> str:

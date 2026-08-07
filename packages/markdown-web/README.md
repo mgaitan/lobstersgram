@@ -1,4 +1,4 @@
-# markdown-web
+# Page to Telegraph
 
 Minimal FastAPI service around [`markdown-this`](../markdown-this/) and
 [`md-to-telegraph`](../md-to-telegraph/).
@@ -21,6 +21,9 @@ The URL is a path, in the style of `r.jina.ai`:
 curl http://127.0.0.1:8000/md/https://example.com/article
 curl -L http://127.0.0.1:8000/t/https://example.com/article
 ```
+
+GET `/t/<url>` reuses the Telegraph page already created for that source URL
+by this running service. POST `/t` always publishes the supplied content.
 
 The target URL should be URL-encoded when it contains characters that have a
 meaning to the web server. POST endpoints accept JSON with a URL, raw HTML, or

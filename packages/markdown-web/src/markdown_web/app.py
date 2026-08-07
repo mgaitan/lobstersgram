@@ -23,7 +23,7 @@ from markdown_web.service import (
     telegraph_tokens,
 )
 
-app = FastAPI(title="markdown-web", description="Extract Markdown and publish it to Telegraph")
+app = FastAPI(title="Page to Telegraph", description="Extract Markdown and publish it to Telegraph")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["POST"], allow_headers=["*"])
 PACKAGE_DIR = Path(__file__).resolve().parent
 templates = Jinja2Templates(directory=str(PACKAGE_DIR / "templates"))
@@ -109,10 +109,15 @@ async def markdown_from_post(request: Request) -> PlainTextResponse:
 @app.get("/t/{url:path}")
 def telegraph_from_url(url: str, request: Request) -> RedirectResponse:
     try:
-        target = publish_content(_source_request_from_path(url, request))
+        source_url = _path_source(url, request)
+        target = publish_content(SourceRequest(url=source_url), cache_key=source_url)
     except Exception as exc:
         raise _handle_source_error(exc) from exc
-    return RedirectResponse(target, status_code=303)
+    return RedirectResponse(
+        target,
+        status_code=303,
+        headers={"Cache-Control": "public, max-age=86400"},
+    )
 
 
 @app.post("/t")
