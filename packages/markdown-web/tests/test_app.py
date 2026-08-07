@@ -3,7 +3,12 @@ import pytest
 from fastapi.testclient import TestClient
 from markdown_web.schemas import SourceMetadata, SourceRequest
 from markdown_web.service import PreparedContent
-from starlette.status import HTTP_200_OK, HTTP_303_SEE_OTHER, HTTP_422_UNPROCESSABLE_CONTENT
+from starlette.status import (
+    HTTP_200_OK,
+    HTTP_303_SEE_OTHER,
+    HTTP_308_PERMANENT_REDIRECT,
+    HTTP_422_UNPROCESSABLE_CONTENT,
+)
 
 client = TestClient(app_module.app)
 
@@ -17,7 +22,18 @@ def test_home_and_static_assets() -> None:
     assert response.status_code == HTTP_200_OK
     assert "Turn any page into Markdown or publish it to Telegraph" in response.text
     assert ">markdown-web<" not in response.text
+    assert 'href="/bookmarklet/">Bookmarklets</a>' in response.text
     assert client.get("/static/styles.css").status_code == HTTP_200_OK
+
+
+def test_about_describes_routes_and_cli() -> None:
+    response = client.get("/about")
+
+    assert response.status_code == HTTP_200_OK
+    assert "/md/&lt;url&gt;" in response.text
+    assert "/t/published/" in response.text
+    assert "uvx markdown-this" in response.text
+    assert "github.com/mgaitan" in response.text
 
 
 def test_get_markdown_uses_jina_style_path_and_preserves_query(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -113,7 +129,14 @@ def test_get_telegraph_redirects(monkeypatch: pytest.MonkeyPatch) -> None:
     assert seen["cache_key"] == "https://example.com/article"
 
 
-def test_telegraph_log_lists_pages(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_old_telegraph_log_redirects() -> None:
+    response = client.get("/t/_log/", follow_redirects=False)
+
+    assert response.status_code == HTTP_308_PERMANENT_REDIRECT
+    assert response.headers["location"] == "/t/published/"
+
+
+def test_telegraph_published_lists_pages(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(
         app_module,
         "list_published_pages",
@@ -130,7 +153,7 @@ def test_telegraph_log_lists_pages(monkeypatch: pytest.MonkeyPatch) -> None:
         ),
     )
 
-    response = client.get("/t/_log/")
+    response = client.get("/t/published/")
 
     assert response.status_code == HTTP_200_OK
     assert "Published pages" in response.text

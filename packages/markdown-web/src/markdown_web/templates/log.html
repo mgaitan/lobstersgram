@@ -8,10 +8,6 @@
   </head>
   <body>
     <main class="page narrow">
-      <header class="masthead">
-        <a class="quiet-link" href="/bookmarklet/">bookmarklet</a>
-      </header>
-
       <h1>Published pages</h1>
       <p class="lede">{{ total_count }} page{% if total_count != 1 %}s{% endif %} published.</p>
 
@@ -33,6 +29,9 @@
       {% endif %}
     </main>
     <footer class="footer">
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/bookmarklet/">Bookmarklets</a>
       <a href="https://github.com/mgaitan/lobstersgram/tree/master/packages/markdown-web">GitHub</a>
     </footer>
   </body>

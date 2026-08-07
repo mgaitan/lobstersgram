@@ -109,6 +109,10 @@ textarea {
 .bookmarklet { display: inline-block; width: fit-content; border-bottom: 1px solid #333; padding-bottom: 4px; text-decoration: none; }
 .note { margin-top: 36px; }
 
+.about-list { margin: 32px 0; padding-left: 24px; }
+.about-list li { margin: 14px 0; padding-left: 4px; }
+pre { overflow-x: auto; margin: 24px 0; border: 1px solid #eee; padding: 16px; font-size: 14px; }
+
 .page-list { margin: 36px 0 0; padding: 0; list-style: none; }
 .page-item { border-top: 1px solid #eee; padding: 18px 0 20px; }
 .page-title { font-size: 21px; text-decoration: none; }

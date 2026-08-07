@@ -8,8 +8,6 @@
   </head>
   <body>
     <main class="page narrow">
-      <header class="masthead">
-      </header>
       <h1>Save the bookmarklets</h1>
       <p class="lede">Save these links as browser bookmarks to run them on the page you are reading.</p>
       <ol class="bookmarklet-instructions">
@@ -21,9 +19,12 @@
         <a class="bookmarklet" href="{{ bookmarklets.markdown }}">Save as Markdown</a>
         <a class="bookmarklet" href="{{ bookmarklets.telegraph }}">Publish to Telegraph</a>
       </div>
-      <p class="note">Publishing uses the server's Telegraph account. Your page content is sent directly from the browser.</p>
+      <p class="note">Publishing uses the server's Telegraph account. The bookmarklet sends the current page's HTML directly from your browser, so it can process pages the server cannot access itself, including JavaScript-rendered pages or pages available only to you.</p>
     </main>
     <footer class="footer">
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/bookmarklet/">Bookmarklets</a>
       <a href="https://github.com/mgaitan/lobstersgram/tree/master/packages/markdown-web">GitHub</a>
     </footer>
   </body>

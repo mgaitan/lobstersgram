@@ -24,7 +24,7 @@ curl -L http://127.0.0.1:8000/t/https://example.com/article
 
 GET `/t/<url>` reuses the Telegraph page already created for that source URL
 by this running service. POST `/t` always publishes the supplied content.
-GET `/t/_log/` lists the pages published by the configured Telegraph account.
+GET `/t/published/` lists the pages published by the configured Telegraph account.
 The original source is shown when Telegraph has it in the page's author URL.
 
 The target URL should be URL-encoded when it contains characters that have a
@@ -51,9 +51,9 @@ account; otherwise the server token is used.
 Visit `/bookmarklet/` to get two bookmarklets. Drag either link to your
 browser's bookmarks bar, then click it while reading a page. They capture the
 current document HTML in the browser, so they also work with pages rendered by
-JavaScript. Publishing uses the server's `TELEGRAPH_API_TOKEN` (or its
-automatically created account); the raw token is never included in the
-bookmarklet.
+JavaScript or pages the server cannot access itself. Publishing uses the
+server's `TELEGRAPH_API_TOKEN` (or its automatically created account); the raw
+token is never included in the bookmarklet.
 
 ## Development
 

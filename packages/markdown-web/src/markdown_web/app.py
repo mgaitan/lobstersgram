@@ -107,8 +107,18 @@ async def markdown_from_post(request: Request) -> PlainTextResponse:
     return PlainTextResponse(prepared.markdown, media_type="text/markdown")
 
 
-@app.get("/t/_log/", response_class=HTMLResponse)
-def telegraph_log(request: Request) -> HTMLResponse:
+@app.get("/about", response_class=HTMLResponse)
+def about(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(request=request, name="about.html")
+
+
+@app.get("/t/_log/", include_in_schema=False)
+def old_telegraph_log() -> RedirectResponse:
+    return RedirectResponse("/t/published/", status_code=308)
+
+
+@app.get("/t/published/", response_class=HTMLResponse)
+def telegraph_published(request: Request) -> HTMLResponse:
     try:
         total_count, pages = list_published_pages()
     except Exception as exc:

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>About | Markdown</title>
+    <link rel="stylesheet" href="/static/styles.css?v=7">
+  </head>
+  <body>
+    <main class="page narrow">
+      <h1>About</h1>
+      <p class="lede">Turn web pages into Markdown, or publish them to Telegraph.</p>
+
+      <ul class="about-list">
+        <li><a href="/md/https://example.com">/md/&lt;url&gt;</a> returns raw Markdown.</li>
+        <li><a href="/t/https://example.com">/t/&lt;url&gt;</a> extracts and publishes a page to Telegraph.</li>
+        <li><a href="/t/published/">/t/published/</a> lists the pages published by this service.</li>
+        <li><a href="/bookmarklet/">Bookmarklets</a> send the current page's HTML from your browser, so they can process pages the server cannot reach on its own.</li>
+      </ul>
+
+      <p>You can also use the command line:</p>
+      <pre><code>uvx markdown-this &lt;url&gt; | uvx md-to-telegraph</code></pre>
+
+      <p class="note">A small project by <a href="https://github.com/mgaitan">Martín Gaitán</a>.</p>
+    </main>
+    <footer class="footer">
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/bookmarklet/">Bookmarklets</a>
+      <a href="https://github.com/mgaitan/lobstersgram/tree/master/packages/markdown-web">GitHub</a>
+    </footer>
+  </body>
+</html>
