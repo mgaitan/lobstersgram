@@ -22,6 +22,11 @@ def test_home_and_static_assets() -> None:
     assert "Turn any page into Markdown or publish it to Telegraph" in response.text
     assert ">markdown-web<" not in response.text
     assert 'href="/bookmarklet/">Bookmarklets</a>' in response.text
+    assert 'property="og:title" content="Markdown and Telegraph"' in response.text
+    assert (
+        'property="og:description" content="Turn any page into Markdown or publish it to Telegraph."' in response.text
+    )
+    assert 'name="twitter:card" content="summary"' in response.text
     assert client.get("/static/styles.css").status_code == HTTP_200_OK
 
 

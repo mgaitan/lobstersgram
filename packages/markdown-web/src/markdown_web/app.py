@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 from urllib.parse import parse_qs
 
@@ -29,6 +30,7 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["POST"], 
 PACKAGE_DIR = Path(__file__).resolve().parent
 templates = Jinja2Templates(directory=str(PACKAGE_DIR / "templates"))
 app.mount("/static", StaticFiles(directory=PACKAGE_DIR / "static"), name="static")
+SITE_URL = os.getenv("SITE_URL", "https://markdown.fastapicloud.dev").rstrip("/")
 
 
 def _path_source(url: str, request: Request) -> str:
@@ -85,7 +87,7 @@ def _authorization_token(request: Request) -> str:
 
 @app.get("/", response_class=HTMLResponse)
 def home(request: Request) -> HTMLResponse:
-    return templates.TemplateResponse(request=request, name="index.html")
+    return templates.TemplateResponse(request=request, name="index.html", context={"site_url": SITE_URL})
 
 
 @app.get("/md/{url:path}", response_class=PlainTextResponse)
