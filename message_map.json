@@ -148,5 +148,29 @@
     "article_link": "https://notes.hella.cheap/twitter-isnt-a-town-square-its-a-high-school-cafeteria.html",
     "discussion_link": "https://lobste.rs/s/hmi3v1/social_media_rabbit_holes_clusters",
     "title": "social media rabbit holes, clusters, and the relative mixing times of random walks"
+  },
+  "@lobstersgram:33": {
+    "telegraph_link": "https://telegra.ph/tldv-Too-Lazy-Didnt-Validate-181874-Meetings-Left-Wide-Open--bobdahacker-08-08",
+    "article_link": "https://bobdahacker.com/blog/tldv-hack",
+    "discussion_link": "https://lobste.rs/s/97laur/tl_dv_too_lazy_didn_t_validate_181_874",
+    "title": "tl;dv (Too Lazy; Didn't Validate): 181,874 Meetings Left Wide Open"
+  },
+  "@lobstersgram:34": {
+    "telegraph_link": "https://telegra.ph/Im-leaving-OpenAI-to-build-Jurassic-Park-08-08",
+    "article_link": "https://taylor.town/leaving-openai",
+    "discussion_link": "https://lobste.rs/s/ch83co/i_m_leaving_openai_build_jurassic_park",
+    "title": "I'm leaving OpenAI to build Jurassic Park"
+  },
+  "@lobstersgram:35": {
+    "telegraph_link": "https://telegra.ph/What-are-you-doing-this-weekend--Lobsters-08-08",
+    "article_link": "https://lobste.rs/s/ucaatd/what_are_you_doing_this_weekend",
+    "discussion_link": "https://lobste.rs/s/ucaatd/what_are_you_doing_this_weekend",
+    "title": "What are you doing this weekend?"
+  },
+  "@lobstersgram:36": {
+    "telegraph_link": "https://telegra.ph/A-shell-exclamation-mark-is-not-for-yelling-Be-lazy--Filip-Roséen---refpse-08-08",
+    "article_link": "https://refp.se/articles/your-shell-and-the-lazy-exclamation-mark",
+    "discussion_link": "https://lobste.rs/s/0mjyep/shell_exclamation_mark_is_not_for_yelling",
+    "title": "A shell exclamation mark is not for yelling. Be lazy"
   }
 }
