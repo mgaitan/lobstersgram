@@ -250,5 +250,17 @@
     "article_link": "https://revisionprompting.info/",
     "discussion_link": "https://lobste.rs/s/wkx6jf/revision_prompting_improves_industrial",
     "title": "Revision Prompting improves industrial LLM processes"
+  },
+  "@lobstersgram:50": {
+    "telegraph_link": "https://telegra.ph/Understanding-stdcounting-semaphore-and-stdbinary-semaphore-from-C20---C-Stories-08-08",
+    "article_link": "https://www.cppstories.com/2026/semaphore/",
+    "discussion_link": "https://lobste.rs/s/safj18/understanding_std_counting_semaphore",
+    "title": "Understanding std::counting_semaphore and std::binary_semaphore from C++20"
+  },
+  "@lobstersgram:51": {
+    "telegraph_link": "https://telegra.ph/Multistack-Concatenative-Programming-Languages-08-08",
+    "article_link": "https://www.sheeeeeeeep.art/multistack-catlangs.html",
+    "discussion_link": "https://lobste.rs/s/lv7kzs/multistack_concatenative_programming",
+    "title": "Multistack Concatenative Programming Languages"
   }
 }
