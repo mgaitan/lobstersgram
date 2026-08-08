@@ -124,5 +124,29 @@
     "article_link": "https://www.macchaffee.com/blog/2026/am-i-the-problem/",
     "discussion_link": "https://lobste.rs/s/c30jsd/am_i_problem_interviewing_another_team",
     "title": "Am I the problem? Interviewing another team to find out"
+  },
+  "@lobstersgram:29": {
+    "telegraph_link": "https://telegra.ph/chenxiaolongBasicSync--A-simple-app-for-running-Syncthing-on-Android-08-08",
+    "article_link": "https://github.com/chenxiaolong/BasicSync",
+    "discussion_link": "https://lobste.rs/s/ekxllh/basicsync_simple_app_for_running",
+    "title": "BasicSync: A simple app for running Syncthing on Android"
+  },
+  "@lobstersgram:30": {
+    "telegraph_link": "https://telegra.ph/Domain-specific-hyperspecialization-for-SAT--cmov-08-08",
+    "article_link": "https://c.mov/lymphosat/",
+    "discussion_link": "https://lobste.rs/s/cccby7/domain_specific_hyperspecialization",
+    "title": "Domain-specific hyperspecialization (for SAT)"
+  },
+  "@lobstersgram:31": {
+    "telegraph_link": "https://telegra.ph/xoreaxeaxeaxREpsych--Psychological-warfare-in-reverse-engineering-08-08",
+    "article_link": "https://github.com/xoreaxeaxeax/repsych",
+    "discussion_link": "https://lobste.rs/s/ufvii3/repsych_psychological_warfare_reverse",
+    "title": "REpsych: Psychological warfare in reverse engineering"
+  },
+  "@lobstersgram:32": {
+    "telegraph_link": "https://telegra.ph/Twitter-isnt-a-town-square-its-a-high-school-cafeteria--notes-08-08",
+    "article_link": "https://notes.hella.cheap/twitter-isnt-a-town-square-its-a-high-school-cafeteria.html",
+    "discussion_link": "https://lobste.rs/s/hmi3v1/social_media_rabbit_holes_clusters",
+    "title": "social media rabbit holes, clusters, and the relative mixing times of random walks"
   }
 }
