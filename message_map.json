@@ -232,5 +232,23 @@
     "article_link": "https://robot.villas/",
     "discussion_link": "https://lobste.rs/s/zubijk/robot_villas_rss_mastodon_bridge",
     "title": "robot.villas – RSS-to-Mastodon Bridge"
+  },
+  "@lobstersgram:47": {
+    "telegraph_link": "https://telegra.ph/Turning-molecules-into-reliable-electronic-devices--MIT-News--Massachusetts-Institute-of-Technology-08-08",
+    "article_link": "https://news.mit.edu/2026/turning-molecules-into-reliable-electronic-devices-0803",
+    "discussion_link": "https://lobste.rs/s/gurxoe/turning_molecules_into_reliable",
+    "title": "Turning molecules into reliable electronic devices"
+  },
+  "@lobstersgram:48": {
+    "telegraph_link": "https://telegra.ph/systemd-Dynamic-Users-08-08",
+    "article_link": "https://ethulhu.co.uk/systemd-dynamicuser",
+    "discussion_link": "https://lobste.rs/s/kjuxof/systemd_dynamic_users_2020",
+    "title": "Systemd Dynamic Users (2020)"
+  },
+  "@lobstersgram:49": {
+    "telegraph_link": "https://telegra.ph/Revision-Prompting-08-08",
+    "article_link": "https://revisionprompting.info/",
+    "discussion_link": "https://lobste.rs/s/wkx6jf/revision_prompting_improves_industrial",
+    "title": "Revision Prompting improves industrial LLM processes"
   }
 }
