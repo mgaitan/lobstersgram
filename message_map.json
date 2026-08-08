@@ -196,5 +196,23 @@
     "article_link": "https://lobste.rs/s/dfkuly/skred_self_created_sound_engine_as",
     "discussion_link": "https://lobste.rs/s/dfkuly/skred_self_created_sound_engine_as",
     "title": "Skred (self-created sound engine) as an effects box"
+  },
+  "@lobstersgram:41": {
+    "telegraph_link": "https://telegra.ph/Amiga-August-2026-Update-08-08-2",
+    "article_link": "https://amiga.com/news/20260804-amiga-update",
+    "discussion_link": "https://lobste.rs/s/lmnmwg/amiga_august_2026_update",
+    "title": "Amiga August 2026 Update"
+  },
+  "@lobstersgram:42": {
+    "telegraph_link": "https://telegra.ph/iterate-think-thoughts-Program-images-and-portable-Scheme-backends-for-Jolt-08-08",
+    "article_link": "https://yogthos.net/posts/2026-08-07-portable-jolt.html",
+    "discussion_link": "https://lobste.rs/s/2b5zzw/program_images_portable_scheme_backends",
+    "title": "Program images and portable Scheme backends for Jolt"
+  },
+  "@lobstersgram:43": {
+    "telegraph_link": "https://telegra.ph/some-software-talks-i-like---charlotte-08-08-2",
+    "article_link": "https://char.lt/blog/2026/08/talks-i-like/",
+    "discussion_link": "https://lobste.rs/s/cmrfrj/some_software_talks_i_like",
+    "title": "some software talks i like"
   }
 }
