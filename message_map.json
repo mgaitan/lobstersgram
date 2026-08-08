@@ -214,5 +214,23 @@
     "article_link": "https://char.lt/blog/2026/08/talks-i-like/",
     "discussion_link": "https://lobste.rs/s/cmrfrj/some_software_talks_i_like",
     "title": "some software talks i like"
+  },
+  "@lobstersgram:44": {
+    "telegraph_link": "https://telegra.ph/experiments-with-isolation-on-blue-pill---lopuhvoid-08-08",
+    "article_link": "https://l0puh.github.io/log/2026/08/04/experiments_with_isolation/",
+    "discussion_link": "https://lobste.rs/s/bbkpzc/experiments_with_isolation_on_blue_pill",
+    "title": "experiments with isolation on blue pill"
+  },
+  "@lobstersgram:45": {
+    "telegraph_link": "https://telegra.ph/OpenSSH-Key-Structure-Guide-08-08",
+    "article_link": "https://sshref.dev/",
+    "discussion_link": "https://lobste.rs/s/lnxdje/openssh_key_structure_guide",
+    "title": "OpenSSH Key Structure Guide"
+  },
+  "@lobstersgram:46": {
+    "telegraph_link": "https://telegra.ph/robotvillas---RSS-to-Mastodon-Bridge-08-08",
+    "article_link": "https://robot.villas/",
+    "discussion_link": "https://lobste.rs/s/zubijk/robot_villas_rss_mastodon_bridge",
+    "title": "robot.villas – RSS-to-Mastodon Bridge"
   }
 }
