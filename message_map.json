@@ -364,5 +364,17 @@
     "article_link": "https://blog.terrygodier.com/2026/08/09/mea-culpa-dark-hours.html",
     "discussion_link": "https://lobste.rs/s/jnbujx/mea_culpa_dark_hours",
     "title": "Mea Culpa - Dark Hours"
+  },
+  "@lobstersgram:69": {
+    "telegraph_link": "https://telegra.ph/postmarketOS--in-2026-07-libcamera-072-08-09",
+    "article_link": "https://postmarketos.org/blog/2026/08/06/pmOS-update-2026-07/",
+    "discussion_link": "https://lobste.rs/s/a5pnxx/postmarketos_2026_07_libcamera_0_7_2",
+    "title": "postmarketOS in 2026-07: libcamera 0.7.2"
+  },
+  "@lobstersgram:70": {
+    "telegraph_link": "https://telegra.ph/IRC-technology-news-from-the-first-half-of-2026--Ilmari-Lauhakangas-08-09",
+    "article_link": "https://www.ilmarilauhakangas.fi/irc_technology_news_from_the_first_half_of_2026/",
+    "discussion_link": "https://lobste.rs/s/u0ks1k/irc_technology_news_from_first_half_2026",
+    "title": "IRC technology news from the first half of 2026"
   }
 }
