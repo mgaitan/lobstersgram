@@ -304,5 +304,23 @@
     "article_link": "https://seg6.space/posts/phone-server/",
     "discussion_link": "https://lobste.rs/s/ykuqrc/my_server_is_phone_now",
     "title": "my server is a phone now"
+  },
+  "@lobstersgram:59": {
+    "telegraph_link": "https://telegra.ph/NetBSD-Blog-08-09",
+    "article_link": "https://blog.netbsd.org/tnf/entry/gsoc2026_enlightenment",
+    "discussion_link": "https://lobste.rs/s/xkdbhe/port_enlightenment_desktop_environment",
+    "title": "Port the Enlightenment desktop environment to NetBSD"
+  },
+  "@lobstersgram:60": {
+    "telegraph_link": "https://telegra.ph/Rails-is-done--lucasdohmenio-08-09",
+    "article_link": "https://lucas.dohmen.io/posts/2026/08/09/rails-is-done/",
+    "discussion_link": "https://lobste.rs/s/paryb7/rails_is_done",
+    "title": "Rails is done"
+  },
+  "@lobstersgram:61": {
+    "telegraph_link": "https://telegra.ph/Tracking-down-a-Zsh-history-data-loss-bug----Michael-Stapelberg-08-09",
+    "article_link": "https://michael.stapelberg.ch/posts/2026-08-09-zsh-history-truncation-bug/",
+    "discussion_link": "https://lobste.rs/s/x0jlp7/tracking_down_zsh_history_data_loss_bug",
+    "title": "Tracking down a Zsh history data loss bug"
   }
 }
