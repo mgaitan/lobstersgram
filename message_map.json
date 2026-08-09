@@ -328,5 +328,11 @@
     "article_link": "https://github.com/GrammaTech/ddisasm",
     "discussion_link": "https://lobste.rs/s/m70pcl/ddisasm_fast_accurate_disassembler",
     "title": "ddisasm: A fast and accurate disassembler"
+  },
+  "@lobstersgram:63": {
+    "telegraph_link": "https://telegra.ph/3G-at-last--Nick-vs-Networking-08-09",
+    "article_link": "https://nickvsnetworking.com/3g-at-last/",
+    "discussion_link": "https://lobste.rs/s/dd9poy/3g_at_last",
+    "title": "3G at last"
   }
 }
