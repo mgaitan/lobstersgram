@@ -322,5 +322,11 @@
     "article_link": "https://michael.stapelberg.ch/posts/2026-08-09-zsh-history-truncation-bug/",
     "discussion_link": "https://lobste.rs/s/x0jlp7/tracking_down_zsh_history_data_loss_bug",
     "title": "Tracking down a Zsh history data loss bug"
+  },
+  "@lobstersgram:62": {
+    "telegraph_link": "https://telegra.ph/GrammaTechddisasm--A-fast-and-accurate-disassembler-08-09",
+    "article_link": "https://github.com/GrammaTech/ddisasm",
+    "discussion_link": "https://lobste.rs/s/m70pcl/ddisasm_fast_accurate_disassembler",
+    "title": "ddisasm: A fast and accurate disassembler"
   }
 }
