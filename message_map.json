@@ -334,5 +334,35 @@
     "article_link": "https://nickvsnetworking.com/3g-at-last/",
     "discussion_link": "https://lobste.rs/s/dd9poy/3g_at_last",
     "title": "3G at last"
+  },
+  "@lobstersgram:64": {
+    "telegraph_link": "https://telegra.ph/Alexander-Petros--Getting-off-the-Modernization-Treadmill--Big-Sky-DevCon-2026-08-09",
+    "article_link": "https://www.youtube.com/watch?v=vRJVw8Di-4s",
+    "discussion_link": "https://lobste.rs/s/ogtybl/getting_off_modernization_treadmill",
+    "title": "Getting off the Modernization Treadmill"
+  },
+  "@lobstersgram:65": {
+    "telegraph_link": "https://telegra.ph/Relying-on-Go-08-09-3",
+    "article_link": "https://antonz.org/relying-on-go/",
+    "discussion_link": "https://lobste.rs/s/1ygxcp/relying_on_go",
+    "title": "Relying on Go"
+  },
+  "@lobstersgram:66": {
+    "telegraph_link": "https://telegra.ph/On-scripts-and-hooks--Arch-Linux-Dev-Blog-08-09",
+    "article_link": "https://devblog.archlinux.page/2026/on-scripts-and-hooks/",
+    "discussion_link": "https://lobste.rs/s/0mrntr/on_arch_linux_scripts_hooks",
+    "title": "On Arch Linux scripts and hooks"
+  },
+  "@lobstersgram:67": {
+    "telegraph_link": "https://telegra.ph/I-think-the-vibecoding-tag-has-gotten-out-of-hand--Lobsters-08-09",
+    "article_link": "https://lobste.rs/s/he9j7y/i_think_vibecoding_tag_has_gotten_out_hand",
+    "discussion_link": "https://lobste.rs/s/he9j7y/i_think_vibecoding_tag_has_gotten_out_hand",
+    "title": "I think the vibecoding tag has gotten out of hand"
+  },
+  "@lobstersgram:68": {
+    "telegraph_link": "https://telegra.ph/Mea-Culpa---Dark-Hours---Terry-Godier-08-09-2",
+    "article_link": "https://blog.terrygodier.com/2026/08/09/mea-culpa-dark-hours.html",
+    "discussion_link": "https://lobste.rs/s/jnbujx/mea_culpa_dark_hours",
+    "title": "Mea Culpa - Dark Hours"
   }
 }
