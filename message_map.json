@@ -412,5 +412,11 @@
     "article_link": "https://dev.to/isaachagoel/you-dont-know-undoredo-4hol",
     "discussion_link": "https://lobste.rs/s/wew6tz/undo_redo_systems_collaborative_editing",
     "title": "Undo/redo systems and collaborative editing (2024)"
+  },
+  "@lobstersgram:77": {
+    "telegraph_link": "https://telegra.ph/IBM-i-OS400-The-Database-Operating-System---OSAdmins-08-10",
+    "article_link": "https://osadmins.com/en/ibm-i-os-400-the-database-operating-system/",
+    "discussion_link": "https://lobste.rs/s/ssljs6/ibm_i_os_400_database_operating_system",
+    "title": "IBM i (OS/400) The Database Operating System"
   }
 }
