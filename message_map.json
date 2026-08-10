@@ -442,5 +442,23 @@
     "article_link": "https://ignorethecode.net/blog/2026/08/09/toggles_considered_harmful/",
     "discussion_link": "https://lobste.rs/s/ulinck/toggles_considered_harmful",
     "title": "Toggles Considered Harmful"
+  },
+  "@lobstersgram:82": {
+    "telegraph_link": "https://telegra.ph/LLMs-and-xfwl4---Brian-Tarricone-08-10",
+    "article_link": "https://www.spurint.org/journal/2026/07/llms-and-xfwl4",
+    "discussion_link": "https://lobste.rs/s/32ptwj/llms_xfwl4",
+    "title": "LLMs and xfwl4"
+  },
+  "@lobstersgram:83": {
+    "telegraph_link": "https://telegra.ph/Easy-Sandboxing-on-Linux-with-Bubblewrap--Ivan-Molodetskikhs-Webpage-08-10",
+    "article_link": "https://bxt.rs/blog/easy-sandboxing-on-linux-with-bubblewrap/",
+    "discussion_link": "https://lobste.rs/s/stehhb/easy_sandboxing_on_linux_with_bubblewrap",
+    "title": "Easy Sandboxing on Linux with Bubblewrap"
+  },
+  "@lobstersgram:84": {
+    "telegraph_link": "https://telegra.ph/Firefox-Containers-Preview-08-10",
+    "article_link": "https://blog.mozilla.org/en/firefox/firefox-containers-preview/",
+    "discussion_link": "https://lobste.rs/s/ja2gzr/firefox_containers_preview",
+    "title": "Firefox Containers Preview"
   }
 }
