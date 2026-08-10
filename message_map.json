@@ -418,5 +418,29 @@
     "article_link": "https://osadmins.com/en/ibm-i-os-400-the-database-operating-system/",
     "discussion_link": "https://lobste.rs/s/ssljs6/ibm_i_os_400_database_operating_system",
     "title": "IBM i (OS/400) The Database Operating System"
+  },
+  "@lobstersgram:78": {
+    "telegraph_link": "https://telegra.ph/How-do-programming-languages-impact-token-efficiency-and-correctness-08-10",
+    "article_link": "https://danluu.com/pl-tokens/",
+    "discussion_link": "https://lobste.rs/s/4waghh/how_do_programming_languages_impact",
+    "title": "How do programming languages impact token efficiency and correctness?"
+  },
+  "@lobstersgram:79": {
+    "telegraph_link": "https://telegra.ph/an-ambiguity-in-c89-which-will-never-be-fixed-08-10-2",
+    "article_link": "https://sebsite.pw/w/20260810-c89ambiguity.html",
+    "discussion_link": "https://lobste.rs/s/p3mmqr/ambiguity_c89_which_will_never_be_fixed",
+    "title": "an ambiguity in c89 which will never be fixed"
+  },
+  "@lobstersgram:80": {
+    "telegraph_link": "https://telegra.ph/LightDarkSystem-Theme-Setting-Design---10-Aug-2026-0330-UTC--ValeRocks-08-10",
+    "article_link": "https://vale.rocks/micros/20260810-0330",
+    "discussion_link": "https://lobste.rs/s/rgpvd6/light_dark_system_theme_setting_design",
+    "title": "Light/Dark/System Theme Setting Design"
+  },
+  "@lobstersgram:81": {
+    "telegraph_link": "https://telegra.ph/ignore-the-code-Toggles-Considered-Harmful-08-10",
+    "article_link": "https://ignorethecode.net/blog/2026/08/09/toggles_considered_harmful/",
+    "discussion_link": "https://lobste.rs/s/ulinck/toggles_considered_harmful",
+    "title": "Toggles Considered Harmful"
   }
 }
