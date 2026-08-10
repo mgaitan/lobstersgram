@@ -514,5 +514,23 @@
     "article_link": "https://arstechnica.com/security/2026/08/a-researcher-bought-noreply-net-companies-started-sending-him-secrets/",
     "discussion_link": "https://lobste.rs/s/exgfc0/researcher_bought_noreply_net_companies",
     "title": "A researcher bought noreply.net. Companies started sending him secrets"
+  },
+  "@lobstersgram:94": {
+    "telegraph_link": "https://telegra.ph/A-C-toolchain-from-357-bytes-in-Bazel--Farid-Zakarias-Blog-08-10",
+    "article_link": "https://fzakaria.com/2026/08/01/a-c++-toolchain-from-357-bytes-in-bazel",
+    "discussion_link": "https://lobste.rs/s/pq7dtk/c_toolchain_from_357_bytes_bazel",
+    "title": "A C++ toolchain from 357 bytes in Bazel"
+  },
+  "@lobstersgram:95": {
+    "telegraph_link": "https://telegra.ph/Remaking-Party-House--MONDTECH-MAGAZINE-08-10",
+    "article_link": "https://herecomesthemoon.net/2026/08/remaking-party-house/",
+    "discussion_link": "https://lobste.rs/s/gkuj8b/remaking_party_house",
+    "title": "Remaking Party House"
+  },
+  "@lobstersgram:96": {
+    "telegraph_link": "https://telegra.ph/Dark-mode-toggles-two-states-are-enough--Lea-Verou-08-10",
+    "article_link": "https://lea.verou.me/blog/2026/dark-mode-toggles/",
+    "discussion_link": "https://lobste.rs/s/nkoni1/dark_mode_toggles_two_states_are_enough",
+    "title": "Dark mode toggles: two states are enough"
   }
 }
