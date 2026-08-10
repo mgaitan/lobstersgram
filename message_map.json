@@ -490,5 +490,17 @@
     "article_link": "https://blog.yossarian.net/2026/08/10/github-actions-needs-oidc-audience-constraints",
     "discussion_link": "https://lobste.rs/s/ipt1em/github_actions_needs_oidc_audience",
     "title": "GitHub Actions needs OIDC audience constraints"
+  },
+  "@lobstersgram:90": {
+    "telegraph_link": "https://telegra.ph/nixpkgs-isnt-doing-too-hot--foxgirlengineering-08-10",
+    "article_link": "https://foxgirl.engineering/blog/nixpkgs-not-hot/",
+    "discussion_link": "https://lobste.rs/s/olo2k9/nixpkgs_isn_t_doing_too_hot",
+    "title": "nixpkgs isn't doing too hot"
+  },
+  "@lobstersgram:91": {
+    "telegraph_link": "https://telegra.ph/jackyzha0sunlit--a-pure-css-implementation-of-some-sunlight-streaming-in-through-the-window-08-10",
+    "article_link": "https://github.com/jackyzha0/sunlit",
+    "discussion_link": "https://lobste.rs/s/lkp7x3/pure_css_implementation_some_sunlight",
+    "title": "a pure css implementation of some sunlight streaming in through the window"
   }
 }
