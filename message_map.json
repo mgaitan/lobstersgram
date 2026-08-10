@@ -532,5 +532,17 @@
     "article_link": "https://lea.verou.me/blog/2026/dark-mode-toggles/",
     "discussion_link": "https://lobste.rs/s/nkoni1/dark_mode_toggles_two_states_are_enough",
     "title": "Dark mode toggles: two states are enough"
+  },
+  "@lobstersgram:97": {
+    "telegraph_link": "https://telegra.ph/The-Early-Days-The-History-of-Interactive-Computing-08-10",
+    "article_link": "https://obsolescence.dev/interactive-computing-history.html",
+    "discussion_link": "https://lobste.rs/s/tvfhvm/early_days_history_interactive",
+    "title": "The Early Days: A History of Interactive Computing"
+  },
+  "@lobstersgram:98": {
+    "telegraph_link": "https://telegra.ph/Moving-integer-division-to-floating-point-is-trivial-08-10",
+    "article_link": "http://marc-b-reynolds.github.io/math/2026/08/10/IntDivByFP.html",
+    "discussion_link": "https://lobste.rs/s/nvmbfe/moving_integer_division_floating_point",
+    "title": "Moving integer division to floating-point is trivial"
   }
 }
