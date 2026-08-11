@@ -568,5 +568,23 @@
     "article_link": "https://typesanitizer.com/blog/code-review.html",
     "discussion_link": "https://lobste.rs/s/gyxkma/reviewing_code_is_skill",
     "title": "Reviewing code is a skill"
+  },
+  "@lobstersgram:103": {
+    "telegraph_link": "https://telegra.ph/Odd-Comments-and-Strange-Doings-in-Unix-08-11",
+    "article_link": "https://9p.io/who/dmr/odd.html",
+    "discussion_link": "https://lobste.rs/s/csc385/odd_comments_strange_doings_unix",
+    "title": "Odd Comments and Strange Doings in Unix"
+  },
+  "@lobstersgram:104": {
+    "telegraph_link": "https://telegra.ph/An-inter-mesh-deployment-pipeline-08-11",
+    "article_link": "https://blog.zm.is/an-inter-mesh-deployment-pipeline/",
+    "discussion_link": "https://lobste.rs/s/xoivjb/inter_mesh_deployment_pipeline",
+    "title": "An inter-mesh deployment pipeline"
+  },
+  "@lobstersgram:105": {
+    "telegraph_link": "https://telegra.ph/Theres-a-dungeon-under-this-blog--Ata-Kuyumcus-Blog-08-11",
+    "article_link": "https://blog.lvmbdv.dev/posts/theres-a-dungeon-under-this-blog/",
+    "discussion_link": "https://lobste.rs/s/ci7bnd/there_s_dungeon_under_this_blog",
+    "title": "There's a dungeon under this blog"
   }
 }
