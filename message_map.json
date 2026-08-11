@@ -586,5 +586,17 @@
     "article_link": "https://blog.lvmbdv.dev/posts/theres-a-dungeon-under-this-blog/",
     "discussion_link": "https://lobste.rs/s/ci7bnd/there_s_dungeon_under_this_blog",
     "title": "There's a dungeon under this blog"
+  },
+  "@lobstersgram:106": {
+    "telegraph_link": "https://telegra.ph/Briar-is-in-maintenance-mode---Briar-08-11",
+    "article_link": "https://briarproject.org/news/2026-maintenance-mode/",
+    "discussion_link": "https://lobste.rs/s/pqq2gi/briar_is_maintenance_mode",
+    "title": "Briar is in maintenance mode"
+  },
+  "@lobstersgram:107": {
+    "telegraph_link": "https://telegra.ph/Making-holograms-with-a-pen-plotter---Jordan-Matelsky---Code-Coffee--Cortex-08-11",
+    "article_link": "https://blog.jordan.matelsky.com/Penplotter-holography/",
+    "discussion_link": "https://lobste.rs/s/9iliea/making_etched_holograms_with_pen_plotter",
+    "title": "Making [etched] holograms with a pen plotter"
   }
 }
