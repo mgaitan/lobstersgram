@@ -562,5 +562,11 @@
     "article_link": "https://www.b-list.org/weblog/2026/aug/10/newlines/",
     "discussion_link": "https://lobste.rs/s/imdlp6/breaking_up_lines_is_hard_do",
     "title": "Breaking up (lines) is hard to do"
+  },
+  "@lobstersgram:102": {
+    "telegraph_link": "https://telegra.ph/Reviewing-code-is-a-skill-08-11",
+    "article_link": "https://typesanitizer.com/blog/code-review.html",
+    "discussion_link": "https://lobste.rs/s/gyxkma/reviewing_code_is_skill",
+    "title": "Reviewing code is a skill"
   }
 }
