@@ -544,5 +544,17 @@
     "article_link": "http://marc-b-reynolds.github.io/math/2026/08/10/IntDivByFP.html",
     "discussion_link": "https://lobste.rs/s/nvmbfe/moving_integer_division_floating_point",
     "title": "Moving integer division to floating-point is trivial"
+  },
+  "@lobstersgram:99": {
+    "telegraph_link": "https://telegra.ph/Making-Need-for-Speed-2015-using-GameMaker-08-11-2",
+    "article_link": "https://www.youtube.com/watch?v=ffGqjOBowIc",
+    "discussion_link": "https://lobste.rs/s/kwo9cn/making_need_for_speed_2015_with_game_maker",
+    "title": "Making Need For Speed 2015 with Game Maker"
+  },
+  "@lobstersgram:100": {
+    "telegraph_link": "https://telegra.ph/Watch-out-for-cache-read-costs---Martin-Alderson-08-11",
+    "article_link": "https://martinalderson.com/posts/watch-out-for-cache-read-costs/",
+    "discussion_link": "https://lobste.rs/s/bgvipl/watch_out_for_cache_read_costs",
+    "title": "Watch out for cache read costs"
   }
 }
