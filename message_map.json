@@ -556,5 +556,11 @@
     "article_link": "https://martinalderson.com/posts/watch-out-for-cache-read-costs/",
     "discussion_link": "https://lobste.rs/s/bgvipl/watch_out_for_cache_read_costs",
     "title": "Watch out for cache read costs"
+  },
+  "@lobstersgram:101": {
+    "telegraph_link": "https://telegra.ph/Breaking-up-lines-is-hard-to-do-08-11",
+    "article_link": "https://www.b-list.org/weblog/2026/aug/10/newlines/",
+    "discussion_link": "https://lobste.rs/s/imdlp6/breaking_up_lines_is_hard_do",
+    "title": "Breaking up (lines) is hard to do"
   }
 }
