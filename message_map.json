@@ -730,5 +730,23 @@
     "article_link": "https://var0.xyz/posts/mindful-coding-purpose-and-intention.html",
     "discussion_link": "https://lobste.rs/s/864m3v/mindful_coding_purpose_intention",
     "title": "Mindful coding: Purpose and intention"
+  },
+  "@lobstersgram:130": {
+    "telegraph_link": "https://telegra.ph/Apple-Limits-Bug-Bounty-Submissions-After-a-Barrage-of-AI-Entries--PCMag-08-12",
+    "article_link": "https://www.pcmag.com/news/apple-limits-bug-bounty-submissions-after-a-barrage-of-ai-entries",
+    "discussion_link": "https://lobste.rs/s/uyyfhi/apple_limits_bug_bounty_submissions",
+    "title": "Apple Limits Bug Bounty Submissions After a Barrage of AI Entries"
+  },
+  "@lobstersgram:131": {
+    "telegraph_link": "https://telegra.ph/My-Homelab-Got-Hacked---A-Postmortem---Phunky-Cafe-08-12",
+    "article_link": "https://phunky.cafe/my-homelab-got-hacked/",
+    "discussion_link": "https://lobste.rs/s/ugkhor/my_homelab_got_hacked_postmortem",
+    "title": "My Homelab Got Hacked - A Postmortem"
+  },
+  "@lobstersgram:132": {
+    "telegraph_link": "https://telegra.ph/How-Tailscale-helped-find-the-SQLite-WAL-Reset-bug-08-12-2",
+    "article_link": "https://tailscale.com/blog/sqlite-wal-reset-bug",
+    "discussion_link": "https://lobste.rs/s/e0lkmi/how_tailscale_helped_find_sqlite_wal",
+    "title": "How Tailscale helped find the SQLite WAL-Reset bug"
   }
 }
