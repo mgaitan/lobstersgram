@@ -664,5 +664,29 @@
     "article_link": "https://laurent.le-brun.eu/blog/making-a-game-on-a-custom-bytecode-vm-in-7-days-and-3kb",
     "discussion_link": "https://lobste.rs/s/he9kpd/making_game_on_custom_bytecode_vm_7_days",
     "title": "Making a game on a custom bytecode VM in 7 days and 3kB"
+  },
+  "@lobstersgram:119": {
+    "telegraph_link": "https://telegra.ph/RangeFrom-Part-1-History-and-background-08-12",
+    "article_link": "https://erk.dev/2026/08/12/rangefrom-part-1",
+    "discussion_link": "https://lobste.rs/s/xgnakx/rangefrom_part_1",
+    "title": "RangeFrom, Part 1․․"
+  },
+  "@lobstersgram:120": {
+    "telegraph_link": "https://telegra.ph/Tail-Call-Interpreters-in-Rust---Jimmy-Ostler-08-12",
+    "article_link": "https://lordgoati.us/blog/tail-call/",
+    "discussion_link": "https://lobste.rs/s/bp6bmx/tail_call_interpreters_rust",
+    "title": "Tail-Call Interpreters in Rust"
+  },
+  "@lobstersgram:121": {
+    "telegraph_link": "https://telegra.ph/C26-stdindirect--Sandor-Dargos-Blog-08-12",
+    "article_link": "https://www.sandordargo.com/blog/2026/08/12/cpp26-indirect",
+    "discussion_link": "https://lobste.rs/s/k4ri7d/c_26_std_indirect",
+    "title": "C++26: std::indirect"
+  },
+  "@lobstersgram:122": {
+    "telegraph_link": "https://telegra.ph/Why-Go-is-an-Ideal-Language-for-AI-Assisted-Software-Engineering---Google-Developers-Blog-08-12",
+    "article_link": "https://developers.googleblog.com/why-go-is-an-ideal-language-for-ai-assisted-software-engineering/",
+    "discussion_link": "https://lobste.rs/s/0rtina/why_go_is_ideal_language_for_ai_assisted",
+    "title": "Why Go is an Ideal Language for AI-Assisted Software Engineering- Google Developers Blog"
   }
 }
