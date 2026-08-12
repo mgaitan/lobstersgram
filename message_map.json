@@ -748,5 +748,17 @@
     "article_link": "https://tailscale.com/blog/sqlite-wal-reset-bug",
     "discussion_link": "https://lobste.rs/s/e0lkmi/how_tailscale_helped_find_sqlite_wal",
     "title": "How Tailscale helped find the SQLite WAL-Reset bug"
+  },
+  "@lobstersgram:133": {
+    "telegraph_link": "https://telegra.ph/Hacking-in-the-nameOf-08-12",
+    "article_link": "https://committing-crimes.com/articles/2026-08-04-java-nameof/",
+    "discussion_link": "https://lobste.rs/s/bcfzer/hacking_nameof",
+    "title": "Hacking in the 'nameOf'"
+  },
+  "@lobstersgram:134": {
+    "telegraph_link": "https://telegra.ph/Guillaume-Técher-08-12-5",
+    "article_link": "https://guillaumetech.github.io/posts/jpg-scaling-chrome/",
+    "discussion_link": "https://lobste.rs/s/xwo03g/why_tiny_jpegs_look_different_chrome",
+    "title": "Why tiny JPEGs look different in Chrome"
   }
 }
