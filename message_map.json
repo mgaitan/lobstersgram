@@ -760,5 +760,17 @@
     "article_link": "https://guillaumetech.github.io/posts/jpg-scaling-chrome/",
     "discussion_link": "https://lobste.rs/s/xwo03g/why_tiny_jpegs_look_different_chrome",
     "title": "Why tiny JPEGs look different in Chrome"
+  },
+  "@lobstersgram:135": {
+    "telegraph_link": "https://telegra.ph/Decrypting-Flume-Water-Monitor-Traffic-08-12",
+    "article_link": "https://lithostech.com/2026/08/decrypting-flume-water-monitor-traffic/",
+    "discussion_link": "https://lobste.rs/s/g94aro/decrypting_flume_water_monitor_traffic",
+    "title": "Decrypting Flume Water Monitor Traffic"
+  },
+  "@lobstersgram:136": {
+    "telegraph_link": "https://telegra.ph/Tail-Call-Interpreters-in-Rust---Jimmy-Ostler-08-12-3",
+    "article_link": "https://lordgoati.us/blog/tail-call/",
+    "discussion_link": "https://lobste.rs/s/bp6bmx/tail_call_interpreters_rust",
+    "title": "Tail-Call Interpreters in Rust"
   }
 }
