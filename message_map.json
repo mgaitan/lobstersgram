@@ -712,5 +712,23 @@
     "article_link": "https://infosec.exchange/@rebane2001/117078420917152774",
     "discussion_link": "https://lobste.rs/s/omcyaz/guide_not_fucking_up_qr_codes",
     "title": "Guide to (not) fucking up QR codes"
+  },
+  "@lobstersgram:127": {
+    "telegraph_link": "https://telegra.ph/Numba-in-the-Browser-Unlocking-a-New-Scientific-Python-Stack-in-JupyterLite--Notebooklink-Documentation-08-12",
+    "article_link": "https://notebook.link/blog/numba-in-the-browser/",
+    "discussion_link": "https://lobste.rs/s/l3ephx/numba_browser_unlocking_new_scientific",
+    "title": "Numba in the Browser: Unlocking a New Scientific Python Stack in JupyterLite"
+  },
+  "@lobstersgram:128": {
+    "telegraph_link": "https://telegra.ph/Im-done-using-AI---Brett-Codes-08-12",
+    "article_link": "https://brettcodes.com/im-done-using-ai/",
+    "discussion_link": "https://lobste.rs/s/rfiuko/i_m_done_using_ai",
+    "title": "I'm done using AI"
+  },
+  "@lobstersgram:129": {
+    "telegraph_link": "https://telegra.ph/Mindful-coding-Purpose-and-intention---var0xyz-08-12",
+    "article_link": "https://var0.xyz/posts/mindful-coding-purpose-and-intention.html",
+    "discussion_link": "https://lobste.rs/s/864m3v/mindful_coding_purpose_intention",
+    "title": "Mindful coding: Purpose and intention"
   }
 }
