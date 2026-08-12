@@ -694,5 +694,23 @@
     "article_link": "https://dustri.org/b/unpacking-ioncube.html",
     "discussion_link": "https://lobste.rs/s/ohc3cr/unpacking_ioncube",
     "title": "Unpacking ionCube"
+  },
+  "@lobstersgram:124": {
+    "telegraph_link": "https://telegra.ph/I-hate-packaging-my-software-for-Linux--Fresh-08-12-2",
+    "article_link": "https://getfresh.dev/docs/blog/packaging-for-linux/",
+    "discussion_link": "https://lobste.rs/s/ixbrmc/i_hate_packaging_my_software_for_linux",
+    "title": "I hate packaging my software for Linux"
+  },
+  "@lobstersgram:125": {
+    "telegraph_link": "https://telegra.ph/On-AI-Coding-and-Its-Discontents---Cal-Newport-08-12-2",
+    "article_link": "https://calnewport.com/on-ai-coding-and-its-discontents/",
+    "discussion_link": "https://lobste.rs/s/9yslt6/on_ai_coding_its_discontents",
+    "title": "On AI Coding and Its Discontents"
+  },
+  "@lobstersgram:126": {
+    "telegraph_link": "https://telegra.ph/Rebane-i-love-seeing-creative-qr-code-designs-so-i-made---Infosec-Exchange-08-12",
+    "article_link": "https://infosec.exchange/@rebane2001/117078420917152774",
+    "discussion_link": "https://lobste.rs/s/omcyaz/guide_not_fucking_up_qr_codes",
+    "title": "Guide to (not) fucking up QR codes"
   }
 }
