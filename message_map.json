@@ -688,5 +688,11 @@
     "article_link": "https://developers.googleblog.com/why-go-is-an-ideal-language-for-ai-assisted-software-engineering/",
     "discussion_link": "https://lobste.rs/s/0rtina/why_go_is_ideal_language_for_ai_assisted",
     "title": "Why Go is an Ideal Language for AI-Assisted Software Engineering- Google Developers Blog"
+  },
+  "@lobstersgram:123": {
+    "telegraph_link": "https://telegra.ph/Unpacking-ionCube-08-12",
+    "article_link": "https://dustri.org/b/unpacking-ioncube.html",
+    "discussion_link": "https://lobste.rs/s/ohc3cr/unpacking_ioncube",
+    "title": "Unpacking ionCube"
   }
 }
