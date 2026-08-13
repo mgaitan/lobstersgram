@@ -826,5 +826,17 @@
     "article_link": "https://stallman.org/articles/on-hacking.html",
     "discussion_link": "https://lobste.rs/s/0o3xpp/on_hacking",
     "title": "On Hacking"
+  },
+  "@lobstersgram:146": {
+    "telegraph_link": "https://telegra.ph/Whats-new-in-Flutter-347--The-Flutter-Blog-08-13-2",
+    "article_link": "https://flutter.dev/blog/whats-new-in-flutter-3-47",
+    "discussion_link": "https://lobste.rs/s/p02oa2/what_s_new_flutter_3_47",
+    "title": "What’s new in Flutter 3.47"
+  },
+  "@lobstersgram:147": {
+    "telegraph_link": "https://telegra.ph/Abstract-Heresies-Why-vibe-code-in-Lisp-08-13",
+    "article_link": "http://funcall.blogspot.com/2026/08/why-vibe-code-in-lisp.html",
+    "discussion_link": "https://lobste.rs/s/tkzdj2/why_vibe_code_lisp",
+    "title": "Why vibe code in Lisp?"
   }
 }
