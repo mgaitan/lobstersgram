@@ -856,5 +856,17 @@
     "article_link": "http://eurozig.eu/",
     "discussion_link": "https://lobste.rs/s/rn4sp8/eurozig",
     "title": "EuroZig"
+  },
+  "@lobstersgram:151": {
+    "telegraph_link": "https://telegra.ph/I-want-extern-fil-c--Domen-Kožar-08-13",
+    "article_link": "https://domenkozar.com/2026/08/13/i-want-extern-fil-c/",
+    "discussion_link": "https://lobste.rs/s/tssf5y/i_want_extern_fil_c",
+    "title": "I want extern \"fil-c\""
+  },
+  "@lobstersgram:152": {
+    "telegraph_link": "https://telegra.ph/xoreaxeaxeaxskitter-creek-bath-salts--Unlocking-everything-on-the-CPU-with-DRAM-scrambling-08-13",
+    "article_link": "https://github.com/xoreaxeaxeax/skitter-creek-bath-salts",
+    "discussion_link": "https://lobste.rs/s/a4zifd/unlocking_everything_on_cpu_with_dram",
+    "title": "Unlocking _everything_ on the CPU with DRAM scrambling"
   }
 }
