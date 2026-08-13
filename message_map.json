@@ -868,5 +868,17 @@
     "article_link": "https://github.com/xoreaxeaxeax/skitter-creek-bath-salts",
     "discussion_link": "https://lobste.rs/s/a4zifd/unlocking_everything_on_cpu_with_dram",
     "title": "Unlocking _everything_ on the CPU with DRAM scrambling"
+  },
+  "@lobstersgram:153": {
+    "telegraph_link": "https://telegra.ph/The-SvelteKit-3-Release-Candidate-is-here-08-13-2",
+    "article_link": "https://svelte.dev/blog/sveltekit-3-release-candidate",
+    "discussion_link": "https://lobste.rs/s/avlnjl/sveltekit_3_release_candidate_is_here",
+    "title": "The SvelteKit 3 Release Candidate is here"
+  },
+  "@lobstersgram:154": {
+    "telegraph_link": "https://telegra.ph/A-Preview-of-Roc-010-by-Richard-Feldman-08-13-3",
+    "article_link": "https://www.youtube.com/watch?v=a7qEOtkkDb8&feature=youtu.be",
+    "discussion_link": "https://lobste.rs/s/utpgi9/preview_roc_0_1_0",
+    "title": "A preview of Roc 0.1.0"
   }
 }
