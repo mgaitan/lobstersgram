@@ -844,5 +844,17 @@
     "article_link": "https://www.youtube.com/watch?v=ZSKLA81tBis",
     "discussion_link": "https://lobste.rs/s/v2xrcm/sqlite_how_it_works_by_richard_hipp_2024",
     "title": "SQLite: How it works, by Richard Hipp (2024)"
+  },
+  "@lobstersgram:149": {
+    "telegraph_link": "https://telegra.ph/AI-is-removing-the-middle-class-of-software-engineering-08-13-2",
+    "article_link": "https://blog.florianherrengt.com/ai-removing-middle-class-software-engineering.html",
+    "discussion_link": "https://lobste.rs/s/xk3ley/ai_is_removing_middle_class_software",
+    "title": "AI is removing the middle class of software engineering"
+  },
+  "@lobstersgram:150": {
+    "telegraph_link": "https://telegra.ph/EuroZig-08-13",
+    "article_link": "http://eurozig.eu/",
+    "discussion_link": "https://lobste.rs/s/rn4sp8/eurozig",
+    "title": "EuroZig"
   }
 }
