@@ -784,5 +784,23 @@
     "article_link": "https://alan.norbauer.com/articles/github-stacks-with-jujutsu/",
     "discussion_link": "https://lobste.rs/s/keiw21/github_stacks_jujutsu",
     "title": "GitHub Stacks in Jujutsu"
+  },
+  "@lobstersgram:139": {
+    "telegraph_link": "https://telegra.ph/henrygdbeszel--Lightweight-server-monitoring-with-historical-data-docker-stats-and-alerts-08-13",
+    "article_link": "https://github.com/henrygd/beszel",
+    "discussion_link": "https://lobste.rs/s/6dw7pl/beszel",
+    "title": "beszel"
+  },
+  "@lobstersgram:140": {
+    "telegraph_link": "https://telegra.ph/Introducing-chestnut---commaai-blog-08-13",
+    "article_link": "https://blog.comma.ai/chestnut/",
+    "discussion_link": "https://lobste.rs/s/m0ure0/introducing_chestnut",
+    "title": "Introducing chestnut"
+  },
+  "@lobstersgram:141": {
+    "telegraph_link": "https://telegra.ph/Does-anyone-run-Postgres-without-PgBouncer---brandurorg-08-13",
+    "article_link": "https://brandur.org/fragments/postgres-without-pgbouncer",
+    "discussion_link": "https://lobste.rs/s/xic1nn/does_anyone_run_postgres_without",
+    "title": "Does anyone run Postgres without PgBouncer?"
   }
 }
