@@ -838,5 +838,11 @@
     "article_link": "http://funcall.blogspot.com/2026/08/why-vibe-code-in-lisp.html",
     "discussion_link": "https://lobste.rs/s/tkzdj2/why_vibe_code_lisp",
     "title": "Why vibe code in Lisp?"
+  },
+  "@lobstersgram:148": {
+    "telegraph_link": "https://telegra.ph/SQLite-How-it-works-by-Richard-Hipp-08-13",
+    "article_link": "https://www.youtube.com/watch?v=ZSKLA81tBis",
+    "discussion_link": "https://lobste.rs/s/v2xrcm/sqlite_how_it_works_by_richard_hipp_2024",
+    "title": "SQLite: How it works, by Richard Hipp (2024)"
   }
 }
