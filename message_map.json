@@ -814,5 +814,17 @@
     "article_link": "https://sebsite.pw/w/20260801-pythonconstants.html",
     "discussion_link": "https://lobste.rs/s/62kxco/python_s_pre_declared_constants_are_kinda",
     "title": "python's pre-declared constants are kinda weird"
+  },
+  "@lobstersgram:144": {
+    "telegraph_link": "https://telegra.ph/Introducing-Delta---Zeds-Blog-08-13",
+    "article_link": "https://zed.dev/blog/introducing-delta",
+    "discussion_link": "https://lobste.rs/s/go39b7/zed_introducing_delta",
+    "title": "Zed: Introducing Delta"
+  },
+  "@lobstersgram:145": {
+    "telegraph_link": "https://telegra.ph/On-Hacking---Richard-Stallman-08-13",
+    "article_link": "https://stallman.org/articles/on-hacking.html",
+    "discussion_link": "https://lobste.rs/s/0o3xpp/on_hacking",
+    "title": "On Hacking"
   }
 }
