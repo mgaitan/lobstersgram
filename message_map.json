@@ -778,5 +778,11 @@
     "article_link": "https://blog.himanshuanand.com/2026/08/i-found-a-kvm-guest-to-host-heap-corruption-bug-and-someone-else-got-there-first/",
     "discussion_link": "https://lobste.rs/s/octplv/i_found_kvm_guest_host_heap_corruption_bug",
     "title": "I found a KVM guest-to-host heap corruption bug and someone else got there first"
+  },
+  "@lobstersgram:138": {
+    "telegraph_link": "https://telegra.ph/GitHub-Stacks-in-Jujutsu--Alan-Norbauer-08-13",
+    "article_link": "https://alan.norbauer.com/articles/github-stacks-with-jujutsu/",
+    "discussion_link": "https://lobste.rs/s/keiw21/github_stacks_jujutsu",
+    "title": "GitHub Stacks in Jujutsu"
   }
 }
