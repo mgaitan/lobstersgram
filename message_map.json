@@ -958,5 +958,17 @@
     "article_link": "https://cekrem.github.io/posts/there-is-still-no-silver-bullet/",
     "discussion_link": "https://lobste.rs/s/pf0hfr/there_is_still_no_silver_bullet",
     "title": "There Is Still No Silver Bullet"
+  },
+  "@lobstersgram:168": {
+    "telegraph_link": "https://telegra.ph/Whos-Tracking-You-Use-This-New-Service-to-Find-Out---Krebs-on-Security-08-14-3",
+    "article_link": "https://krebsonsecurity.com/2026/08/whos-tracking-you-use-this-new-service-to-find-out/",
+    "discussion_link": "https://lobste.rs/s/dfel1t/find_out_who_s_tracking_you_with",
+    "title": "Find out who’s tracking you with DecryptAds"
+  },
+  "@lobstersgram:169": {
+    "telegraph_link": "https://telegra.ph/Desktop-Calendar-A-Design-Journey---The-Thunderbird-Blog-08-14-2",
+    "article_link": "https://blog.thunderbird.net/2026/08/desktop-calendar-a-design-journey/",
+    "discussion_link": "https://lobste.rs/s/lxuwtv/thunderbird_s_desktop_calendar_visual",
+    "title": "Thunderbird’s Desktop Calendar Visual Redesign"
   }
 }
