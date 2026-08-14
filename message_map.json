@@ -898,5 +898,23 @@
     "article_link": "https://www.youtube.com/watch?v=eETHOyuSiMA",
     "discussion_link": "https://lobste.rs/s/4d7o9o/logging_into_linux_machine_from_flip",
     "title": "Logging into a Linux machine from a flip phone over Bluetooth (2020)"
+  },
+  "@lobstersgram:158": {
+    "telegraph_link": "https://telegra.ph/A-long-division-story---Novak-Kaluđerović---Kolja-08-14",
+    "article_link": "https://kolja.rs/algorithm-d/",
+    "discussion_link": "https://lobste.rs/s/d857ms/long_division_story",
+    "title": "A long division story"
+  },
+  "@lobstersgram:159": {
+    "telegraph_link": "https://telegra.ph/I-Made-the-Worlds-First-Link-Compressor-08-14",
+    "article_link": "https://www.youtube.com/watch?v=TOr1Vvji6jA",
+    "discussion_link": "https://lobste.rs/s/ybo5gr/i_made_world_s_first_link_compressor",
+    "title": "I Made the World's First \"Link Compressor\""
+  },
+  "@lobstersgram:160": {
+    "telegraph_link": "https://telegra.ph/Speeding-Up-small-Ruby-Hashes--byroots-blog-08-14",
+    "article_link": "https://byroot.github.io/ruby/performance/2026/08/13/speeding-up-ruby-hashes.html",
+    "discussion_link": "https://lobste.rs/s/zoexyi/speeding_up_small_ruby_hashes",
+    "title": "Speeding Up (small) Ruby Hashes"
   }
 }
