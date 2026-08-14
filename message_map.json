@@ -946,5 +946,17 @@
     "article_link": "https://daniel.haxx.se/blog/2026/08/14/curl-performance-2/",
     "discussion_link": "https://lobste.rs/s/avjfxw/curl_performance",
     "title": "Curl Performance"
+  },
+  "@lobstersgram:166": {
+    "telegraph_link": "https://telegra.ph/Unexpected-to-me-behaviour-in-Lisp-sub-typing--Simon-Dobson-08-14",
+    "article_link": "https://simondobson.org/2026/08/07/strange-behaviour-in-lisp-sub-typing/",
+    "discussion_link": "https://lobste.rs/s/zkgab8/unexpected_me_behaviour_lisp_sub_typing",
+    "title": "Unexpected (to me) behaviour in Lisp sub-typing"
+  },
+  "@lobstersgram:167": {
+    "telegraph_link": "https://telegra.ph/There-Is-Still-No-Silver-Bullet--cekremgithubio-08-14-2",
+    "article_link": "https://cekrem.github.io/posts/there-is-still-no-silver-bullet/",
+    "discussion_link": "https://lobste.rs/s/pf0hfr/there_is_still_no_silver_bullet",
+    "title": "There Is Still No Silver Bullet"
   }
 }
