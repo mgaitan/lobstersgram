@@ -880,5 +880,17 @@
     "article_link": "https://www.youtube.com/watch?v=a7qEOtkkDb8&feature=youtu.be",
     "discussion_link": "https://lobste.rs/s/utpgi9/preview_roc_0_1_0",
     "title": "A preview of Roc 0.1.0"
+  },
+  "@lobstersgram:155": {
+    "telegraph_link": "https://telegra.ph/djcoxish-08-14",
+    "article_link": "https://github.com/djc/oxish",
+    "discussion_link": "https://lobste.rs/s/xi7txx/oxish_ssh_server_written_rust",
+    "title": "OxiSH: SSH server written in Rust"
+  },
+  "@lobstersgram:156": {
+    "telegraph_link": "https://telegra.ph/Lets-not-call-it-tech-debt-its-just-mess-08-14",
+    "article_link": "https://www.simplermachines.com/lets-not-call-it-tech-debt-its-just-mess/",
+    "discussion_link": "https://lobste.rs/s/dnlhah/let_s_not_call_it_tech_debt_it_s_just_mess",
+    "title": "Let's not call it \"tech debt,\" it's just \"mess\""
   }
 }
