@@ -916,5 +916,23 @@
     "article_link": "https://byroot.github.io/ruby/performance/2026/08/13/speeding-up-ruby-hashes.html",
     "discussion_link": "https://lobste.rs/s/zoexyi/speeding_up_small_ruby_hashes",
     "title": "Speeding Up (small) Ruby Hashes"
+  },
+  "@lobstersgram:161": {
+    "telegraph_link": "https://telegra.ph/What-are-you-doing-this-weekend--Lobsters-08-14",
+    "article_link": "https://lobste.rs/s/n3pkuh/what_are_you_doing_this_weekend",
+    "discussion_link": "https://lobste.rs/s/n3pkuh/what_are_you_doing_this_weekend",
+    "title": "What are you doing this weekend?"
+  },
+  "@lobstersgram:162": {
+    "telegraph_link": "https://telegra.ph/no-title-08-14-860",
+    "article_link": "https://beyondloom.com/blog/artofchip8.html",
+    "discussion_link": "https://lobste.rs/s/aqmagt/art_chip_8",
+    "title": "The Art of CHIP-8"
+  },
+  "@lobstersgram:163": {
+    "telegraph_link": "https://telegra.ph/The-comments-that-go-into-code-versus-those-that-go-into-the-pull-request-description---The-Old-New-Thing-08-14",
+    "article_link": "https://devblogs.microsoft.com/oldnewthing/20260812-00/?p=112607",
+    "discussion_link": "https://lobste.rs/s/2dsufc/comments_code_vs_pr_description",
+    "title": "Comments in the code vs PR description"
   }
 }
