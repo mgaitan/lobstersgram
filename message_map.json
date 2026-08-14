@@ -970,5 +970,17 @@
     "article_link": "https://blog.thunderbird.net/2026/08/desktop-calendar-a-design-journey/",
     "discussion_link": "https://lobste.rs/s/lxuwtv/thunderbird_s_desktop_calendar_visual",
     "title": "Thunderbird’s Desktop Calendar Visual Redesign"
+  },
+  "@lobstersgram:170": {
+    "telegraph_link": "https://telegra.ph/ActivityPub-Won-by-Being-Boring---Owl-Owl-OÜ-08-14",
+    "article_link": "https://o.ee/blog/activitypub-won-by-being-boring/",
+    "discussion_link": "https://lobste.rs/s/ngz2wn/activitypub_won_by_being_boring",
+    "title": "ActivityPub Won by Being Boring"
+  },
+  "@lobstersgram:171": {
+    "telegraph_link": "https://telegra.ph/RISC-V-They-Should-Have-Known-Better---DmitryGR-08-14",
+    "article_link": "https://dmitry.gr/?r=06.%20Thoughts&proj=12.%20RV",
+    "discussion_link": "https://lobste.rs/s/pu3yzg/risc_v_they_should_have_known_better",
+    "title": "RISC-V: They Should Have Known Better"
   }
 }
