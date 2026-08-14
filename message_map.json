@@ -892,5 +892,11 @@
     "article_link": "https://www.simplermachines.com/lets-not-call-it-tech-debt-its-just-mess/",
     "discussion_link": "https://lobste.rs/s/dnlhah/let_s_not_call_it_tech_debt_it_s_just_mess",
     "title": "Let's not call it \"tech debt,\" it's just \"mess\""
+  },
+  "@lobstersgram:157": {
+    "telegraph_link": "https://telegra.ph/Logging-into-a-Linux-machine-from-a-flip-phone-over-Bluetooth-08-14",
+    "article_link": "https://www.youtube.com/watch?v=eETHOyuSiMA",
+    "discussion_link": "https://lobste.rs/s/4d7o9o/logging_into_linux_machine_from_flip",
+    "title": "Logging into a Linux machine from a flip phone over Bluetooth (2020)"
   }
 }
