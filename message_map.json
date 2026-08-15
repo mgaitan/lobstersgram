@@ -1024,5 +1024,17 @@
     "article_link": "https://jkm.dev/posts/how-2004-runescape-fit-a-multiplayer-rpg-into-56k-dialup/",
     "discussion_link": "https://lobste.rs/s/bedqru/how_2004_runescape_fit_multiplayer_rpg",
     "title": "How 2004 RuneScape fit a multiplayer RPG into 56k dial-up"
+  },
+  "@lobstersgram:179": {
+    "telegraph_link": "https://telegra.ph/Flirt-GitHub-and-Mailing-List-backends-08-15",
+    "article_link": "https://blog.buenzli.dev/flirt-github-and-mailing-list/",
+    "discussion_link": "https://lobste.rs/s/scwuwv/flirt_github_mailing_list_backends",
+    "title": "Flirt: GitHub and Mailing List backends"
+  },
+  "@lobstersgram:180": {
+    "telegraph_link": "https://telegra.ph/Everything-is-about-to-go-dark---A-Few-Thoughts-on-Cryptographic-Engineering-08-15",
+    "article_link": "https://blog.cryptographyengineering.com/2026/08/14/everything-is-about-to-go-dark/",
+    "discussion_link": "https://lobste.rs/s/w5rmwi/everything_is_about_go_dark",
+    "title": "Everything is about to “go dark”"
   }
 }
