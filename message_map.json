@@ -1036,5 +1036,11 @@
     "article_link": "https://blog.cryptographyengineering.com/2026/08/14/everything-is-about-to-go-dark/",
     "discussion_link": "https://lobste.rs/s/w5rmwi/everything_is_about_go_dark",
     "title": "Everything is about to “go dark”"
+  },
+  "@lobstersgram:181": {
+    "telegraph_link": "https://telegra.ph/Are-Latent-Reasoning-Models-Easily-Interpretable-08-15",
+    "article_link": "https://arxiv.org/abs/2604.04902",
+    "discussion_link": "https://lobste.rs/s/obo3ie/are_latent_reasoning_models_easily",
+    "title": "Are Latent Reasoning Models Easily Interpretable?"
   }
 }
