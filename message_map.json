@@ -1000,5 +1000,11 @@
     "article_link": "https://gist.github.com/camel-cdr/3a7aed17e017e8cab675ad696c7d14af",
     "discussion_link": "https://lobste.rs/s/lhkquh/rva23_vs_armv9_small_experiment",
     "title": "RVA23 vs ARMv9 a Small Experiment"
+  },
+  "@lobstersgram:175": {
+    "telegraph_link": "https://telegra.ph/Firefox-is-now-the-last-major-browser-that-still-supports-uBlock-Origin--PCWorld-08-15",
+    "article_link": "https://www.pcworld.com/article/3212428/firefox-is-now-the-last-major-browser-that-still-supports-ublock-origin.html",
+    "discussion_link": "https://lobste.rs/s/lfmss9/firefox_is_now_last_major_browser_still",
+    "title": "Firefox is now the last major browser that still supports uBlock Origin"
   }
 }
