@@ -1006,5 +1006,17 @@
     "article_link": "https://www.pcworld.com/article/3212428/firefox-is-now-the-last-major-browser-that-still-supports-ublock-origin.html",
     "discussion_link": "https://lobste.rs/s/lfmss9/firefox_is_now_last_major_browser_still",
     "title": "Firefox is now the last major browser that still supports uBlock Origin"
+  },
+  "@lobstersgram:176": {
+    "telegraph_link": "https://telegra.ph/vmartinvnek--Nintento-Entertainment-Kernel-Nintendo-emulator-08-15",
+    "article_link": "https://github.com/vmartinv/nek",
+    "discussion_link": "https://lobste.rs/s/nqmm3r/kernel_only_runs_nes_emulator",
+    "title": "Kernel that only runs an NES emulator"
+  },
+  "@lobstersgram:177": {
+    "telegraph_link": "https://telegra.ph/nixpkgs-multiverse-fast-mode--Farid-Zakarias-Blog-08-15",
+    "article_link": "https://fzakaria.com/2026/08/14/nixpkgs-multiverse-fast-mode",
+    "discussion_link": "https://lobste.rs/s/1r13yd/nixpkgs_multiverse_fast_mode",
+    "title": "nixpkgs-multiverse: fast mode"
   }
 }
