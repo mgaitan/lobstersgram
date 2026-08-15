@@ -982,5 +982,11 @@
     "article_link": "https://dmitry.gr/?r=06.%20Thoughts&proj=12.%20RV",
     "discussion_link": "https://lobste.rs/s/pu3yzg/risc_v_they_should_have_known_better",
     "title": "RISC-V: They Should Have Known Better"
+  },
+  "@lobstersgram:172": {
+    "telegraph_link": "https://telegra.ph/My-comment-section-is-static-HTML--jvalol-08-15",
+    "article_link": "https://jva.lol/weblog/my-comment-section-is-static-html/",
+    "discussion_link": "https://lobste.rs/s/fjwpeh/my_comment_section_is_static_html",
+    "title": "My comment section is static HTML"
   }
 }
