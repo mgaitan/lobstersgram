@@ -1048,5 +1048,17 @@
     "article_link": "https://bencornia.com/blog/recap-software-should-work-2026",
     "discussion_link": "https://lobste.rs/s/khcojf/recap_software_should_work_2026_ben",
     "title": "Recap: Software Should Work 2026 | Ben Cornia"
+  },
+  "@lobstersgram:183": {
+    "telegraph_link": "https://telegra.ph/lazy-promiselazy-promise--A-Promise-like-primitive-which-is-lazy-cancelable-emits-synchronously-instead-of-in-a-microtask-and-su-08-16",
+    "article_link": "https://github.com/lazy-promise/lazy-promise",
+    "discussion_link": "https://lobste.rs/s/djlv1s/what_do_you_think_lazypromise_as",
+    "title": "What do you think of LazyPromise as a lightweight alternative to Effect?"
+  },
+  "@lobstersgram:184": {
+    "telegraph_link": "https://telegra.ph/paperpaperpdf-at-main--cordiversepaper--GitHub-08-16",
+    "article_link": "https://github.com/cordiverse/paper/blob/main/paper.pdf",
+    "discussion_link": "https://lobste.rs/s/wwf3th/programming_paradigm_for",
+    "title": "A Programming Paradigm for Spatiotemporal Composability"
   }
 }
