@@ -1102,5 +1102,35 @@
     "article_link": "https://heiwiper.com/posts/magit-status-tour/",
     "discussion_link": "https://lobste.rs/s/bhhcf3/tour_magit_s_status_interface",
     "title": "A Tour of Magit's Status Interface"
+  },
+  "@lobstersgram:192": {
+    "telegraph_link": "https://telegra.ph/djr-747nokia-dct3-emulator--Open-source-emulator--analysis-toolkit-for-Nokia-DCT3-phones-331034105210821082508850-Boots-real-fir-08-16",
+    "article_link": "https://github.com/djr-747/nokia-dct3-emulator",
+    "discussion_link": "https://lobste.rs/s/pb8wvr/nokia_dct3_emulator_open_source_emulator",
+    "title": "nokia-dct3-emulator: Open-source emulator + analysis toolkit for Nokia DCT3 phones"
+  },
+  "@lobstersgram:193": {
+    "telegraph_link": "https://telegra.ph/CVE-2026-33696-From-a-Schema-Name-to-RCE-in-n8n--Simon-Koeck-08-16",
+    "article_link": "https://simonkoeck.com/writeups/n8n-gsuiteadmin-prototype-pollution-rce",
+    "discussion_link": "https://lobste.rs/s/0emxj9/cve_2026_33696_from_schema_name_rce_n8n",
+    "title": "CVE-2026-33696: From a Schema Name to RCE in n8n"
+  },
+  "@lobstersgram:194": {
+    "telegraph_link": "https://telegra.ph/You-can-just-choose-how-many-bugs-you-want-now--Read-the-Tea-Leaves-08-16",
+    "article_link": "https://nolanlawson.com/2026/08/16/you-can-just-choose-how-many-bugs-you-want-now/",
+    "discussion_link": "https://lobste.rs/s/8izobt/you_can_just_choose_how_many_bugs_you_want",
+    "title": "You can just choose how many bugs you want now"
+  },
+  "@lobstersgram:195": {
+    "telegraph_link": "https://telegra.ph/Anti-Social-Media--Christian-Heilmann-08-16",
+    "article_link": "https://christianheilmann.com/2026/08/11/anti-social-media/",
+    "discussion_link": "https://lobste.rs/s/zjg7ux/anti_social_media",
+    "title": "Anti-Social Media"
+  },
+  "@lobstersgram:196": {
+    "telegraph_link": "https://telegra.ph/A-Third-World-Embedded-Engineer-Responds-to-RISC-V-They-Should-Have-Known-Better-08-16-2",
+    "article_link": "https://rvembedded.com/blog_post/12/",
+    "discussion_link": "https://lobste.rs/s/zeqgd4/third_world_embedded_engineer_responds",
+    "title": "A Third World Embedded Engineer Responds to \"RISC-V: They Should Have Known Better\""
   }
 }
