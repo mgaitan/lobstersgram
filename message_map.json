@@ -1138,5 +1138,23 @@
     "article_link": "https://unsung.aresluna.org/i-think-theres-a-lot-of-value-in-these/",
     "discussion_link": "https://lobste.rs/s/xhliz8/human_interface_guidelines_from_various",
     "title": "Human Interface Guidelines from various platforms"
+  },
+  "@lobstersgram:198": {
+    "telegraph_link": "https://telegra.ph/Models-Are-Getting-Dumber-on-Purpose---Walter-van-der-Giessen-08-16-2",
+    "article_link": "https://w4g1.dev/blog/models-are-getting-dumber-on-purpose",
+    "discussion_link": "https://lobste.rs/s/cgpbme/models_are_getting_dumber_on_purpose",
+    "title": "Models Are Getting Dumber on Purpose"
+  },
+  "@lobstersgram:199": {
+    "telegraph_link": "https://telegra.ph/A-faster-way-to-calculate-the-day-of-the-week-08-16-2",
+    "article_link": "https://www.benjoffe.com/fast-day-of-week",
+    "discussion_link": "https://lobste.rs/s/ln3dao/faster_way_calculate_day_week",
+    "title": "A faster way to calculate the day-of-the-week"
+  },
+  "@lobstersgram:200": {
+    "telegraph_link": "https://telegra.ph/Every-Fucking-Website---Slop-Edition-08-16",
+    "article_link": "https://op.tngl.io/every-fucking-website/",
+    "discussion_link": "https://lobste.rs/s/ii5tun/every_fucking_website",
+    "title": "Every Fucking Website"
   }
 }
