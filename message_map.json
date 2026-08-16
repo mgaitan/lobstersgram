@@ -1060,5 +1060,17 @@
     "article_link": "https://github.com/cordiverse/paper/blob/main/paper.pdf",
     "discussion_link": "https://lobste.rs/s/wwf3th/programming_paradigm_for",
     "title": "A Programming Paradigm for Spatiotemporal Composability"
+  },
+  "@lobstersgram:185": {
+    "telegraph_link": "https://telegra.ph/Whats-missing-to-have-reproducible-builds-on-PyPI-08-16",
+    "article_link": "https://snarky.ca/whats-missing-to-have-reproducible-builds-on-pypi/",
+    "discussion_link": "https://lobste.rs/s/rexoqj/what_s_missing_have_reproducible_builds",
+    "title": "What's missing to have reproducible builds on PyPI"
+  },
+  "@lobstersgram:186": {
+    "telegraph_link": "https://telegra.ph/Aiki-Alpha-Milestone-26-Update---decusers-blog-08-16",
+    "article_link": "https://decuser.github.io/posts/aiki-alpha-mileston26-update/",
+    "discussion_link": "https://lobste.rs/s/qlvnlu/aiki_reaches_recursive_self",
+    "title": "Aiki reaches recursive self-interpretation"
   }
 }
