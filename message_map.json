@@ -1090,5 +1090,17 @@
     "article_link": "https://www.ufried.com/blog/essence_of_architecture_5/",
     "discussion_link": "https://lobste.rs/s/cdzcx4/essence_architectural_work_part_5",
     "title": "The essence of architectural work - Part 5"
+  },
+  "@lobstersgram:190": {
+    "telegraph_link": "https://telegra.ph/Monitoring-SystemD-services-with-Healthchecksio--passbecom-08-16",
+    "article_link": "https://passbe.com/2022/healthchecks-io-systemd-checks/",
+    "discussion_link": "https://lobste.rs/s/dxfl0r/monitoring_systemd_services_with",
+    "title": "Monitoring SystemD services with Healthchecks.io"
+  },
+  "@lobstersgram:191": {
+    "telegraph_link": "https://telegra.ph/A-Tour-of-Magits-Status-Interface--heiwipers-website-08-16",
+    "article_link": "https://heiwiper.com/posts/magit-status-tour/",
+    "discussion_link": "https://lobste.rs/s/bhhcf3/tour_magit_s_status_interface",
+    "title": "A Tour of Magit's Status Interface"
   }
 }
