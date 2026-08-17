@@ -1156,5 +1156,23 @@
     "article_link": "https://op.tngl.io/every-fucking-website/",
     "discussion_link": "https://lobste.rs/s/ii5tun/every_fucking_website",
     "title": "Every Fucking Website"
+  },
+  "@lobstersgram:201": {
+    "telegraph_link": "https://telegra.ph/AI-Software-Development---What-Does-The-Data-Say---Codemanships-Blog-08-17",
+    "article_link": "https://codemanship.wordpress.com/2026/08/12/ai-software-development-what-does-the-data-say/",
+    "discussion_link": "https://lobste.rs/s/joyawz/ai_software_development_what_does_data",
+    "title": "AI Software Development – What Does The Data Say?"
+  },
+  "@lobstersgram:202": {
+    "telegraph_link": "https://telegra.ph/The-Limits-of-AI---Hubert-Dreyfus-1985-08-17",
+    "article_link": "https://www.youtube.com/watch?v=ePsQksj99LM",
+    "discussion_link": "https://lobste.rs/s/xculjp/limits_ai_hubert_dreyfus_1985",
+    "title": "The Limits of AI - Hubert Dreyfus (1985)"
+  },
+  "@lobstersgram:203": {
+    "telegraph_link": "https://telegra.ph/Ponys-Arena-Allocator---Pony-08-17",
+    "article_link": "https://www.ponylang.io/blog/2026/08/ponys-arena-allocator/",
+    "discussion_link": "https://lobste.rs/s/vnpw9j/pony_s_arena_allocator",
+    "title": "Pony's Arena Allocator"
   }
 }
