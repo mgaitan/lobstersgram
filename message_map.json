@@ -1180,5 +1180,11 @@
     "article_link": "https://brennan.day/webmaster-a-manifesto-for-everyone/",
     "discussion_link": "https://lobste.rs/s/g1rpmg/webmaster_manifesto_for_everyone",
     "title": "WEBMASTER@ a manifesto for everyone"
+  },
+  "@lobstersgram:205": {
+    "telegraph_link": "https://telegra.ph/SCM-RIGHTS-API-quirks--GitHub-08-17",
+    "article_link": "https://gist.github.com/kentonv/bc7592af98c68ba2738f4436920868dc",
+    "discussion_link": "https://lobste.rs/s/qcasbd/scm_rights_api_quirks_2019",
+    "title": "SCM_RIGHTS API quirks (2019)"
   }
 }
