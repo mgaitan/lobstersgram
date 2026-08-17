@@ -1282,5 +1282,11 @@
     "article_link": "https://lalitm.com/post/github-alternatives/",
     "discussion_link": "https://lobste.rs/s/izrwdc/github_has_alternatives_no_replacement",
     "title": "GitHub has alternatives, but no replacement"
+  },
+  "@lobstersgram:222": {
+    "telegraph_link": "https://telegra.ph/How-Go-detects-struct-copies-with-syncnoCopy-08-17-7",
+    "article_link": "https://func25.dev/posts/go-sync-nocopy/",
+    "discussion_link": "https://lobste.rs/s/ttrnw5/how_go_detects_struct_copies_with_sync",
+    "title": "How Go detects struct copies with sync.noCopy"
   }
 }
