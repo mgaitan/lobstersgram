@@ -1288,5 +1288,23 @@
     "article_link": "https://func25.dev/posts/go-sync-nocopy/",
     "discussion_link": "https://lobste.rs/s/ttrnw5/how_go_detects_struct_copies_with_sync",
     "title": "How Go detects struct copies with sync.noCopy"
+  },
+  "@lobstersgram:223": {
+    "telegraph_link": "https://telegra.ph/We-Tracked-a-Shipment-of-Rare-Books-It-Ended-at-an-Amazon-AI-Training-Facility-08-17-5",
+    "article_link": "https://simonwillison.net/2026/Aug/17/we-tracked-a-shipment-of-rare-books-it-ended-at-an-amazon-ai-tra/",
+    "discussion_link": "https://lobste.rs/s/flcpeu/we_tracked_shipment_rare_books_it_ended_at",
+    "title": "We Tracked a Shipment of Rare Books. It Ended at an Amazon AI Training Facility"
+  },
+  "@lobstersgram:224": {
+    "telegraph_link": "https://telegra.ph/How-Bluesky-draws-its-logo-on-screenshots-08-17",
+    "article_link": "https://timmarinin.net/2026/bluesky-screenshots/",
+    "discussion_link": "https://lobste.rs/s/05ocit/how_bluesky_draws_its_logo_on_screenshots",
+    "title": "How Bluesky draws its logo on screenshots"
+  },
+  "@lobstersgram:225": {
+    "telegraph_link": "https://telegra.ph/AIDR-AI-Didnt-Read---Rick-Maneliuss-Newsletter-08-17-2",
+    "article_link": "https://www.rickmanelius.com/p/aidr-ai-didnt-read",
+    "discussion_link": "https://lobste.rs/s/fx9pic/ai_dr_ai_didn_t_read",
+    "title": "AI;DR (AI; Didn’t Read)"
   }
 }
