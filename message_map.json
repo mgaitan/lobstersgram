@@ -1264,5 +1264,17 @@
     "article_link": "https://thefloatingcontinent.com/blog/upside-down-arrow-unicode/",
     "discussion_link": "https://lobste.rs/s/gwc2me/when_down_arrow_is_not_upside_down_up_arrow",
     "title": "When the Down Arrow is not an Upside-Down Up Arrow (2022)"
+  },
+  "@lobstersgram:219": {
+    "telegraph_link": "https://telegra.ph/A-Preview-of-DuckDB-v20---DuckDB-08-17-2",
+    "article_link": "https://duckdb.org/2026/08/17/duckdb-20-highlights",
+    "discussion_link": "https://lobste.rs/s/wya4zt/preview_duckdb_v2_0",
+    "title": "A Preview of DuckDB v2.0"
+  },
+  "@lobstersgram:220": {
+    "telegraph_link": "https://telegra.ph/Qwen-38-27B-is-excellent-but-it-defaults-to-wildly-overthinking-things-08-17-81",
+    "article_link": "https://simonwillison.net/2026/Aug/16/qwen-38-27b/",
+    "discussion_link": "https://lobste.rs/s/k7myyp/qwen_3_8_27b_is_excellent_it_defaults",
+    "title": "Qwen 3.8 27B is excellent, but it defaults to wildly overthinking things"
   }
 }
