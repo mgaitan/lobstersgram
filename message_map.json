@@ -1222,5 +1222,29 @@
     "article_link": "https://www.bevuta.com/en/blog/passphraseless-reboots-using-kexec/",
     "discussion_link": "https://lobste.rs/s/nrnwc6/passphrase_less_reboots_using_kexec",
     "title": "Passphrase-less reboots using kexec under NixOS"
+  },
+  "@lobstersgram:212": {
+    "telegraph_link": "https://telegra.ph/Writing-a-Fast-Compiler---Marc-Kerbiquet-08-17",
+    "article_link": "https://tibleiz.net/blog/2024-02-04-writing-a-fast-compiler.html",
+    "discussion_link": "https://lobste.rs/s/6i1at9/writing_fast_compiler",
+    "title": "Writing a Fast Compiler"
+  },
+  "@lobstersgram:213": {
+    "telegraph_link": "https://telegra.ph/Vetted-AI-code-is-hard-to-justify-08-17-2",
+    "article_link": "https://amoffat.github.io/blog/vetting-burnout.html",
+    "discussion_link": "https://lobste.rs/s/os20fa/vetted_ai_code_is_hard_justify",
+    "title": "Vetted AI code is hard to justify"
+  },
+  "@lobstersgram:214": {
+    "telegraph_link": "https://telegra.ph/ANNOUNCE-linux-72-ck1-MuQSS-CPU-scheduler-for-linux-72---Con-Kolivas-08-17",
+    "article_link": "https://lore.kernel.org/lkml/CABqErrH=oQ3povVuSPhRON97v63=mB85jQmZjf443ofdYAuxxw@mail.gmail.com/",
+    "discussion_link": "https://lobste.rs/s/o5vcbw/muqss_cpu_scheduler_for_linux_7_2_by_con",
+    "title": "MuQSS CPU scheduler for Linux 7.2 by Con Kolivas"
+  },
+  "@lobstersgram:215": {
+    "telegraph_link": "https://telegra.ph/Thinking-about-tests-assertions-and-matchers-08-17",
+    "article_link": "https://zverok.space/blog/2026-08-16-assertions-and-matchers.html",
+    "discussion_link": "https://lobste.rs/s/usr2t2/thinking_about_tests_assertions",
+    "title": "Thinking about tests: assertions and matchers"
   }
 }
