@@ -1306,5 +1306,23 @@
     "article_link": "https://www.rickmanelius.com/p/aidr-ai-didnt-read",
     "discussion_link": "https://lobste.rs/s/fx9pic/ai_dr_ai_didn_t_read",
     "title": "AI;DR (AI; Didn’t Read)"
+  },
+  "@lobstersgram:226": {
+    "telegraph_link": "https://telegra.ph/iterate-think-thoughts-A-practical-workflow-for-LLM-assisted-development-08-18",
+    "article_link": "https://yogthos.net/posts/2026-08-17-llm-workflow.html",
+    "discussion_link": "https://lobste.rs/s/bx8zu1/practical_workflow_for_llm_assisted",
+    "title": "A practical workflow for LLM-assisted development"
+  },
+  "@lobstersgram:227": {
+    "telegraph_link": "https://telegra.ph/How-AI-text-watermarking-works-a-visual-guide-08-18",
+    "article_link": "https://declaude.org/watermarking/",
+    "discussion_link": "https://lobste.rs/s/5odlru/how_ai_text_watermarking_works_visual",
+    "title": "How AI text watermarking works: a visual guide"
+  },
+  "@lobstersgram:228": {
+    "telegraph_link": "https://telegra.ph/Quake-Shareware-a-CD-ROM-just-a-little-too-full-08-18-5",
+    "article_link": "https://fabiensanglard.net/quake_shareware_cd/index.html",
+    "discussion_link": "https://lobste.rs/s/j5xjf2/quake_shareware_cd_rom_just_little_too",
+    "title": "Quake Shareware, a CD-ROM just a little too full"
   }
 }
