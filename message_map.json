@@ -1384,5 +1384,17 @@
     "article_link": "https://philo.gay/linecam/",
     "discussion_link": "https://lobste.rs/s/n7i1jn/using_railway_network_as_flatbed_scanner",
     "title": "Using the railway network as a flatbed scanner"
+  },
+  "@lobstersgram:239": {
+    "telegraph_link": "https://telegra.ph/gajuscss-in-js-arena--Comparison-of-modern-CSS-in-JS-frameworks-08-18",
+    "article_link": "https://github.com/gajus/css-in-js-arena",
+    "discussion_link": "https://lobste.rs/s/wj7pei/css_js_arena_bamboo_stylex_panda_on_pixel",
+    "title": "CSS-in-JS Arena Bamboo, StyleX and Panda on Pixel-Identical Apps"
+  },
+  "@lobstersgram:240": {
+    "telegraph_link": "https://telegra.ph/Fairphone-6--PostmarketOS-working-main-camera---Catcrafts-08-18",
+    "article_link": "https://catcrafts.net/posts/fairphone-6-postmarketos-working-main-camera",
+    "discussion_link": "https://lobste.rs/s/hisxut/fairphone_6_postmarketos_working_main",
+    "title": "Fairphone 6 + PostmarketOS working main camera"
   }
 }
