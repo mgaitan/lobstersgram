@@ -1402,5 +1402,17 @@
     "article_link": "https://lobste.rs/s/ttxwdz/what_software_do_you_use_daily_2026",
     "discussion_link": "https://lobste.rs/s/ttxwdz/what_software_do_you_use_daily_2026",
     "title": "What software do you use daily in 2026?"
+  },
+  "@lobstersgram:242": {
+    "telegraph_link": "https://telegra.ph/Inline-asm-Templates-Overview--Odin-Programming-Language-08-18",
+    "article_link": "https://odin-lang.org/docs/inline-asm/",
+    "discussion_link": "https://lobste.rs/s/loltt2/odin_s_new_inline_assembly_templates",
+    "title": "Odin's New Inline Assembly Templates"
+  },
+  "@lobstersgram:243": {
+    "telegraph_link": "https://telegra.ph/Kakoune---Official-site-08-18",
+    "article_link": "https://kakoune.org/",
+    "discussion_link": "https://lobste.rs/s/3dqrwr/kakoune_code_editor",
+    "title": "Kakoune code editor"
   }
 }
