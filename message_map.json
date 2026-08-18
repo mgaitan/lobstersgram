@@ -1324,5 +1324,23 @@
     "article_link": "https://fabiensanglard.net/quake_shareware_cd/index.html",
     "discussion_link": "https://lobste.rs/s/j5xjf2/quake_shareware_cd_rom_just_little_too",
     "title": "Quake Shareware, a CD-ROM just a little too full"
+  },
+  "@lobstersgram:229": {
+    "telegraph_link": "https://telegra.ph/Retrofitting-a-build-system-into-a-compiler--Notes-from-the-Windows-corner-08-18",
+    "article_link": "https://www.dra27.uk/blog/platform/2025/09/25/building-with-effects.html",
+    "discussion_link": "https://lobste.rs/s/izkimy/retrofitting_build_system_into_compiler",
+    "title": "Retrofitting a build system into a compiler"
+  },
+  "@lobstersgram:230": {
+    "telegraph_link": "https://telegra.ph/codereportmax-odd-binaryWHY-BQN-WINSmd-08-18",
+    "article_link": "https://github.com/codereport/max-odd-binary/blob/main/WHY_BQN_WINS.md",
+    "discussion_link": "https://lobste.rs/s/lqelb1/why_bqn_wins",
+    "title": "Why BQN Wins"
+  },
+  "@lobstersgram:231": {
+    "telegraph_link": "https://telegra.ph/The-benchmarkpocalypse-08-18-3",
+    "article_link": "https://danluu.com/benchpocalypse/",
+    "discussion_link": "https://lobste.rs/s/wlofzl/benchmarkpocalypse",
+    "title": "The benchmarkpocalypse"
   }
 }
