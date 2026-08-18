@@ -1366,5 +1366,23 @@
     "article_link": "https://acadia.engineering/blog/rethinking-database-programming",
     "discussion_link": "https://lobste.rs/s/ykq7ym/rethinking_database_programming",
     "title": "Rethinking Database Programming"
+  },
+  "@lobstersgram:236": {
+    "telegraph_link": "https://telegra.ph/How-I-browse-the-Web-with-uBlock-Hard-Mode-08-18",
+    "article_link": "https://untrusem.party/blog/how-I-browse-the-web-with-Ublock-Hard-Mode.html",
+    "discussion_link": "https://lobste.rs/s/nsywuo/how_i_browse_web_with_ublock_hard_mode",
+    "title": "How I browse the Web with uBlock (Hard Mode)"
+  },
+  "@lobstersgram:237": {
+    "telegraph_link": "https://telegra.ph/Selective-Applicative-Functors-08-18",
+    "article_link": "https://blog.veritates.love/selective-applicatives-theoretical-basis",
+    "discussion_link": "https://lobste.rs/s/jin8t5/selective_applicative_functors",
+    "title": "Selective Applicative Functors"
+  },
+  "@lobstersgram:238": {
+    "telegraph_link": "https://telegra.ph/Using-the-railway-network-as-a-flatbed-scanner-08-18",
+    "article_link": "https://philo.gay/linecam/",
+    "discussion_link": "https://lobste.rs/s/n7i1jn/using_railway_network_as_flatbed_scanner",
+    "title": "Using the railway network as a flatbed scanner"
   }
 }
