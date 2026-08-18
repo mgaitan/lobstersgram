@@ -1348,5 +1348,17 @@
     "article_link": "https://actualbudget.org/",
     "discussion_link": "https://lobste.rs/s/tfjoxv/actual_budget",
     "title": "Actual Budget"
+  },
+  "@lobstersgram:233": {
+    "telegraph_link": "https://telegra.ph/Encoding-vcmpps-and-vcmppd-08-18",
+    "article_link": "https://www.corsix.org/content/encoding-vcmpps-vcmppd",
+    "discussion_link": "https://lobste.rs/s/qhs0pn/encoding_vcmpps_vcmppd",
+    "title": "Encoding vcmpps and vcmppd"
+  },
+  "@lobstersgram:234": {
+    "telegraph_link": "https://telegra.ph/Biboumi---XMPP-gateway-to-IRC---biboumi-100-documentation-08-18",
+    "article_link": "https://biboumi.codeberg.page/doc/",
+    "discussion_link": "https://lobste.rs/s/ih4bmy/biboumi_xmpp_gateway_irc",
+    "title": "Biboumi – XMPP gateway to IRC"
   }
 }
