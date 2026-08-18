@@ -1360,5 +1360,11 @@
     "article_link": "https://biboumi.codeberg.page/doc/",
     "discussion_link": "https://lobste.rs/s/ih4bmy/biboumi_xmpp_gateway_irc",
     "title": "Biboumi – XMPP gateway to IRC"
+  },
+  "@lobstersgram:235": {
+    "telegraph_link": "https://telegra.ph/Rethinking-Database-Programming-08-18-3",
+    "article_link": "https://acadia.engineering/blog/rethinking-database-programming",
+    "discussion_link": "https://lobste.rs/s/ykq7ym/rethinking_database_programming",
+    "title": "Rethinking Database Programming"
   }
 }
