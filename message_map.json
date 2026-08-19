@@ -1534,5 +1534,11 @@
     "article_link": "https://www.jvt.me/posts/2026/08/17/hand-write-commits/",
     "discussion_link": "https://lobste.rs/s/kj1bvt/why_i_still_hand_write_my_commit_messages",
     "title": "Why I still hand write my commit messages"
+  },
+  "@lobstersgram:264": {
+    "telegraph_link": "https://telegra.ph/SQLite-for-Everything--JoeCode-08-19",
+    "article_link": "https://joecode.com/2026-08-19-sqlite3/",
+    "discussion_link": "https://lobste.rs/s/gmherj/sqlite_for_everything",
+    "title": "SQLite for Everything"
   }
 }
