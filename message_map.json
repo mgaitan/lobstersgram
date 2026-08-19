@@ -1540,5 +1540,35 @@
     "article_link": "https://joecode.com/2026-08-19-sqlite3/",
     "discussion_link": "https://lobste.rs/s/gmherj/sqlite_for_everything",
     "title": "SQLite for Everything"
+  },
+  "@lobstersgram:265": {
+    "telegraph_link": "https://telegra.ph/Extreme-Programming-A-Gentle-Introduction-08-19",
+    "article_link": "http://www.extremeprogramming.org/",
+    "discussion_link": "https://lobste.rs/s/qmx2sh/extreme_programming_gentle",
+    "title": "Extreme Programming: A Gentle Introduction"
+  },
+  "@lobstersgram:266": {
+    "telegraph_link": "https://telegra.ph/Go-127-is-released---The-Go-Programming-Language-08-19",
+    "article_link": "https://go.dev/blog/go1.27",
+    "discussion_link": "https://lobste.rs/s/smrw3n/go_1_27_is_released_go_programming",
+    "title": "Go 1.27 is released - The Go Programming Language"
+  },
+  "@lobstersgram:267": {
+    "telegraph_link": "https://telegra.ph/capri--v020-08-19",
+    "article_link": "https://capri.hexdocs.pm/",
+    "discussion_link": "https://lobste.rs/s/3tbpsd/capri_type_safe_atomic_gleam_bindings_for",
+    "title": "capri: Type-safe, atomic Gleam bindings for Khepri, the modern distributed database for the BEAM"
+  },
+  "@lobstersgram:268": {
+    "telegraph_link": "https://telegra.ph/Introducing-Microlighter---daverupertcom-08-19",
+    "article_link": "https://daverupert.com/2026/08/microlighter/",
+    "discussion_link": "https://lobste.rs/s/lxo74i/introducing_microlighter",
+    "title": "Introducing Microlighter"
+  },
+  "@lobstersgram:269": {
+    "telegraph_link": "https://telegra.ph/Plain-Text-Accounting-is-Pretty-Cool---Sumner-Evans-08-19",
+    "article_link": "https://sumnerevans.com/posts/money/plain-text-accounting/",
+    "discussion_link": "https://lobste.rs/s/i4lxyt/plain_text_accounting_is_pretty_cool",
+    "title": "Plain Text Accounting is Pretty Cool"
   }
 }
