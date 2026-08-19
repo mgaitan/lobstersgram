@@ -1570,5 +1570,17 @@
     "article_link": "https://sumnerevans.com/posts/money/plain-text-accounting/",
     "discussion_link": "https://lobste.rs/s/i4lxyt/plain_text_accounting_is_pretty_cool",
     "title": "Plain Text Accounting is Pretty Cool"
+  },
+  "@lobstersgram:270": {
+    "telegraph_link": "https://telegra.ph/The-A-is-finally-here---The-Ploopy-Blog-08-19",
+    "article_link": "https://blog.ploopy.co/the-aplus-is-finally-here-499",
+    "discussion_link": "https://lobste.rs/s/vpmzvx/ploopy_external_trackball",
+    "title": "Ploopy A+ (external trackball)"
+  },
+  "@lobstersgram:271": {
+    "telegraph_link": "https://telegra.ph/Go-127-Release-Notes---The-Go-Programming-Language-08-19",
+    "article_link": "https://go.dev/doc/go1.27",
+    "discussion_link": "https://lobste.rs/s/q0wkpe/go_1_27_release_notes",
+    "title": "Go 1.27 Release Notes"
   }
 }
