@@ -1582,5 +1582,23 @@
     "article_link": "https://go.dev/doc/go1.27",
     "discussion_link": "https://lobste.rs/s/q0wkpe/go_1_27_release_notes",
     "title": "Go 1.27 Release Notes"
+  },
+  "@lobstersgram:272": {
+    "telegraph_link": "https://telegra.ph/etckernelkennel--Packing-malware-in-Rosetta-2-08-19",
+    "article_link": "https://kernelkennel.com/blog/summercon2026-rosetta/",
+    "discussion_link": "https://lobste.rs/s/ppvyr1/packing_malware_rosetta_2",
+    "title": "Packing Malware in Rosetta 2"
+  },
+  "@lobstersgram:273": {
+    "telegraph_link": "https://telegra.ph/Reclaim-the-terminal--Nishant-Joshi-08-19",
+    "article_link": "https://nishantjosh.dev/blogs/reclaim-the-terminal/",
+    "discussion_link": "https://lobste.rs/s/7v1wvd/reclaim_terminal",
+    "title": "Reclaim the terminal"
+  },
+  "@lobstersgram:274": {
+    "telegraph_link": "https://telegra.ph/Sing-song-a-speakable-encoding-for-long-numbers-and-keys--blogvrypannet-08-19",
+    "article_link": "https://blog.vrypan.net/2026/08/19/260819-sing-song/",
+    "discussion_link": "https://lobste.rs/s/wvwqro/sing_song_speakable_encoding_for_long",
+    "title": "Sing-song: a speakable encoding for long numbers and keys"
   }
 }
