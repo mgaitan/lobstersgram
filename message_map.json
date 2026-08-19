@@ -1504,5 +1504,17 @@
     "article_link": "https://tipiirai.com/writing/bun-rust-rewrite-worries",
     "discussion_link": "https://lobste.rs/s/caubyr/bun_1_4_rust_rewrite_is_not_looking_good",
     "title": "Bun 1.4 Rust rewrite is not looking good"
+  },
+  "@lobstersgram:259": {
+    "telegraph_link": "https://telegra.ph/pg83solo--Portable-Linux-binaries-solved-08-19",
+    "article_link": "https://github.com/pg83/solo",
+    "discussion_link": "https://lobste.rs/s/dajsxn/solo_so_loader_for_static_linux_binaries",
+    "title": "Solo: a .so loader for static Linux binaries"
+  },
+  "@lobstersgram:260": {
+    "telegraph_link": "https://telegra.ph/AeonBox-Logical-Guardrails-for-Agents-by-Alcides-Fonseca-08-19",
+    "article_link": "https://wiki.alcidesfonseca.com/blog/aeonbox-logical-guardrails-for-agents/",
+    "discussion_link": "https://lobste.rs/s/9oy4ao/liquid_types_as_behavioural_sandbox_for",
+    "title": "Liquid Types as a behavioural sandbox for agents"
   }
 }
