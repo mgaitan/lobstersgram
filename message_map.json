@@ -1462,5 +1462,11 @@
     "article_link": "https://timmarinin.net/2026/bluesky-screenshots/",
     "discussion_link": "https://lobste.rs/s/05ocit/how_bluesky_draws_its_logo_on_screenshots",
     "title": "How Bluesky draws its logo on screenshots"
+  },
+  "@lobstersgram:252": {
+    "telegraph_link": "https://telegra.ph/Alibabas-TSMC-Built-5nm-RISC-V-Chip-XuanTie-C950-Now-Runs-Qwen-38-27B-Model-Natively-Unlocking-Massive-Vertical-Integration-Tail-08-19",
+    "article_link": "https://wccftech.com/alibabas-tsmc-built-5nm-risc-v-chip-xuantie-c950-now-runs-qwen-3-8-27b-model-natively-unlocking-massive-vertical-integration-tailwinds/",
+    "discussion_link": "https://lobste.rs/s/5kw58e/alibaba_s_tsmc_built_5nm_risc_v_chip",
+    "title": "Alibaba's TSMC-Built 5nm RISC-V Chip, XuanTie C950, Now Runs Qwen-3.8 27B Model Natively, Unlocking Massive Vertical Integration Tailwinds"
   }
 }
