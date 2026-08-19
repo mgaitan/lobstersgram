@@ -1516,5 +1516,23 @@
     "article_link": "https://wiki.alcidesfonseca.com/blog/aeonbox-logical-guardrails-for-agents/",
     "discussion_link": "https://lobste.rs/s/9oy4ao/liquid_types_as_behavioural_sandbox_for",
     "title": "Liquid Types as a behavioural sandbox for agents"
+  },
+  "@lobstersgram:261": {
+    "telegraph_link": "https://telegra.ph/gralhix-004-08-19-2",
+    "article_link": "https://yassa9.github.io/osint/gralhix-004/",
+    "discussion_link": "https://lobste.rs/s/th7q3y/geolocating_random_islet_image_using",
+    "title": "Geolocating Random Islet Image Using Geometry & CUDA GPU Programming"
+  },
+  "@lobstersgram:262": {
+    "telegraph_link": "https://telegra.ph/Aiki-Alpha-2-Released---decusers-blog-08-19",
+    "article_link": "https://decuser.github.io/posts/aiki-alpha-2-release/",
+    "discussion_link": "https://lobste.rs/s/rdcyoc/aiki_alpha_2_released",
+    "title": "Aiki Alpha 2 Released"
+  },
+  "@lobstersgram:263": {
+    "telegraph_link": "https://telegra.ph/Why-I-still-hand-write-my-commit-messages--Jamie-Tanna--Software-Engineer-08-19",
+    "article_link": "https://www.jvt.me/posts/2026/08/17/hand-write-commits/",
+    "discussion_link": "https://lobste.rs/s/kj1bvt/why_i_still_hand_write_my_commit_messages",
+    "title": "Why I still hand write my commit messages"
   }
 }
