@@ -1444,5 +1444,23 @@
     "article_link": "https://blog.joinmastodon.org/2026/08/5.0-laying-the-foundation/",
     "discussion_link": "https://lobste.rs/s/m0okh1/mastodon_5_0_laying_foundation",
     "title": "Mastodon 5.0: Laying the foundation"
+  },
+  "@lobstersgram:249": {
+    "telegraph_link": "https://telegra.ph/littledivydgit--Git-forge-on-Durable-Objects-08-19",
+    "article_link": "https://github.com/littledivy/dgit",
+    "discussion_link": "https://lobste.rs/s/vbaang/dgit_git_forge_on_durable_objects",
+    "title": "dgit: Git forge on Durable Objects"
+  },
+  "@lobstersgram:250": {
+    "telegraph_link": "https://telegra.ph/Claude-and-I-built-an-app---Folkwolfnet-08-19",
+    "article_link": "https://folkwolf.net/claude-and-i-built-an-app/",
+    "discussion_link": "https://lobste.rs/s/r8x9et/claude_i_built_app",
+    "title": "Claude and I built an app"
+  },
+  "@lobstersgram:251": {
+    "telegraph_link": "https://telegra.ph/How-Bluesky-draws-its-logo-on-screenshots-08-19",
+    "article_link": "https://timmarinin.net/2026/bluesky-screenshots/",
+    "discussion_link": "https://lobste.rs/s/05ocit/how_bluesky_draws_its_logo_on_screenshots",
+    "title": "How Bluesky draws its logo on screenshots"
   }
 }
