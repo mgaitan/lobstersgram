@@ -1480,5 +1480,29 @@
     "article_link": "https://sporks.space/2026/08/19/things-i-want-in-a-modern-relational-query-language/",
     "discussion_link": "https://lobste.rs/s/p5lkok/things_i_want_modern_relational_query",
     "title": "Things I want in a modern relational query language"
+  },
+  "@lobstersgram:255": {
+    "telegraph_link": "https://telegra.ph/Fargate-Is-Not-Firecracker---Justin-Garrison-08-19",
+    "article_link": "https://justingarrison.com/blog/2024-02-08-fargate-is-not-firecracker/",
+    "discussion_link": "https://lobste.rs/s/qrbu3o/fargate_is_not_firecracker_2024",
+    "title": "Fargate Is Not Firecracker (2024)"
+  },
+  "@lobstersgram:256": {
+    "telegraph_link": "https://telegra.ph/a-filename-when-none-exists--danielhaxxse-08-19",
+    "article_link": "https://daniel.haxx.se/blog/2024/08/19/a-filename-when-none-exists/",
+    "discussion_link": "https://lobste.rs/s/xftgtd/filename_when_none_exists",
+    "title": "a filename when none exists"
+  },
+  "@lobstersgram:257": {
+    "telegraph_link": "https://telegra.ph/Palomar---a-registry-of-Lean-verified-mathematics--Whats-new-08-19-2",
+    "article_link": "https://terrytao.wordpress.com/2026/08/18/palomar-a-registry-of-lean-verified-mathematics/",
+    "discussion_link": "https://lobste.rs/s/rjxezi/palomar_registry_lean_verified",
+    "title": "Palomar – a registry of Lean verified mathematics"
+  },
+  "@lobstersgram:258": {
+    "telegraph_link": "https://telegra.ph/Bun-14-Rust-rewrite-is-not-looking-good--Tero-Piirainen-08-19-2",
+    "article_link": "https://tipiirai.com/writing/bun-rust-rewrite-worries",
+    "discussion_link": "https://lobste.rs/s/caubyr/bun_1_4_rust_rewrite_is_not_looking_good",
+    "title": "Bun 1.4 Rust rewrite is not looking good"
   }
 }
