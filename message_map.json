@@ -1420,5 +1420,29 @@
     "article_link": "https://blog.gnoack.org/post/hyper-customized-one-off-software",
     "discussion_link": "https://lobste.rs/s/tmlrxs/hyper_customized_one_off_software_for",
     "title": "Hyper-Customized One-Off Software for Cheap"
+  },
+  "@lobstersgram:245": {
+    "telegraph_link": "https://telegra.ph/GitHub-Status---Incident-with-GitHubcom-08-19",
+    "article_link": "https://www.githubstatus.com/incidents/zkxwbgr0cnmx",
+    "discussion_link": "https://lobste.rs/s/ljhgcd/incident_report_for_github_outage_on_2026",
+    "title": "Incident Report for GitHub outage on 2026-08-17"
+  },
+  "@lobstersgram:246": {
+    "telegraph_link": "https://telegra.ph/Organizing-in-Layer-8--Building-Tech-in-Democratic-Socialists-of-America-08-19",
+    "article_link": "https://www.youtube.com/watch?v=-koLM6yT5FY",
+    "discussion_link": "https://lobste.rs/s/aqwiot/organizing_layer_8_building_tech",
+    "title": "Organizing in Layer 8 – Building Tech in Democratic Socialists of America"
+  },
+  "@lobstersgram:247": {
+    "telegraph_link": "https://telegra.ph/When-strlower-is-a-security-vulnerability-in-Python---Seth-Larson-08-19",
+    "article_link": "https://sethmlarson.dev/when-str-lower-is-a-security-vulnerability",
+    "discussion_link": "https://lobste.rs/s/ap9w8i/when_str_lower_is_security_vulnerability",
+    "title": "When str.lower() is a security vulnerability in Python"
+  },
+  "@lobstersgram:248": {
+    "telegraph_link": "https://telegra.ph/50-Laying-the-foundation---Mastodon-Blog-08-19",
+    "article_link": "https://blog.joinmastodon.org/2026/08/5.0-laying-the-foundation/",
+    "discussion_link": "https://lobste.rs/s/m0okh1/mastodon_5_0_laying_foundation",
+    "title": "Mastodon 5.0: Laying the foundation"
   }
 }
