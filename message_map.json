@@ -1600,5 +1600,11 @@
     "article_link": "https://blog.vrypan.net/2026/08/19/260819-sing-song/",
     "discussion_link": "https://lobste.rs/s/wvwqro/sing_song_speakable_encoding_for_long",
     "title": "Sing-song: a speakable encoding for long numbers and keys"
+  },
+  "@lobstersgram:275": {
+    "telegraph_link": "https://telegra.ph/SQLite-for-Everything--JoeCode-08-20",
+    "article_link": "https://joecode.com/2026-08-19-sqlite3/",
+    "discussion_link": "https://lobste.rs/s/gmherj/sqlite_for_everything",
+    "title": "SQLite for Everything"
   }
 }
