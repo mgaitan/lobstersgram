@@ -1648,5 +1648,23 @@
     "article_link": "https://00f.net/2026/08/19/why-compiling-rust-to-webassembly-is-slow/",
     "discussion_link": "https://lobste.rs/s/vcqcgl/why_compiling_rust_webassembly_is_slow",
     "title": "Why compiling Rust to WebAssembly is slow"
+  },
+  "@lobstersgram:283": {
+    "telegraph_link": "https://telegra.ph/XOrg-Server-261-RC1-Prepares-For-First-Feature-Release-In-Five-Years---Phoronix-08-20",
+    "article_link": "https://www.phoronix.com/news/X.Org-Server-26.1-RC1",
+    "discussion_link": "https://lobste.rs/s/exrno8/x_org_server_26_1_rc1_prepares_for_first",
+    "title": "X.Org Server 26.1 RC1 Prepares For First Feature Release In Five Years - Phoronix"
+  },
+  "@lobstersgram:284": {
+    "telegraph_link": "https://telegra.ph/20-the-CI-traffic-without-getting-slower-How-we-rebuilt-Git-serving-at-Datadog--Datadog-08-20",
+    "article_link": "https://www.datadoghq.com/blog/engineering/gitretriever/",
+    "discussion_link": "https://lobste.rs/s/q8whub/20x_ci_traffic_without_getting_slower_how",
+    "title": "20× the CI traffic without getting slower: How we rebuilt Git serving at Datadog"
+  },
+  "@lobstersgram:285": {
+    "telegraph_link": "https://telegra.ph/laserphile-AliExpress-webpage-keeping-multipoint-Bluetooth-headphones-active-with-WebAudio-fingerprinting-08-20-2",
+    "article_link": "https://blog.laserphile.com/2026/08/aliexpress-webpage-keeping-multipoint.html",
+    "discussion_link": "https://lobste.rs/s/b0olmy/aliexpress_keeps_multipoint_bluetooth",
+    "title": "AliExpress keeps multipoint Bluetooth headphones active with WebAudio fingerprinting"
   }
 }
