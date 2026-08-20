@@ -1612,5 +1612,11 @@
     "article_link": "https://func25.dev/posts/go-goroutines-basics/",
     "discussion_link": "https://lobste.rs/s/ixxtwz/goroutines_101_basic_walkthrough",
     "title": "Goroutines 101: A basic walkthrough"
+  },
+  "@lobstersgram:277": {
+    "telegraph_link": "https://telegra.ph/Parsing-IP-addresses-in-C-at-crazy-speeds---Daniel-Lemires-blog-08-20",
+    "article_link": "https://lemire.me/blog/2026/08/19/parsing-ip-addresses-in-c-at-crazy-speeds/",
+    "discussion_link": "https://lobste.rs/s/fboohk/parsing_ip_addresses_c_at_crazy_speeds",
+    "title": "Parsing IP addresses in C# at crazy speeds"
   }
 }
