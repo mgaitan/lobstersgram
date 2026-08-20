@@ -1690,5 +1690,11 @@
     "article_link": "https://github.com/yaoshiu/opus",
     "discussion_link": "https://lobste.rs/s/0rggrb/opus_is_minimal_statically_scoped_lisp",
     "title": "Opus is a minimal, statically-scoped Lisp dialect based on the semantics of f-expressions (the Kernel language)"
+  },
+  "@lobstersgram:290": {
+    "telegraph_link": "https://telegra.ph/Everyone-Says-Assembly-Is-Untyped-Everyone-Is-Wrong---gingerBill-08-20",
+    "article_link": "https://www.gingerbill.org/article/2026/08/20/designing-odins-inline-asm/",
+    "discussion_link": "https://lobste.rs/s/wphnca/everyone_says_assembly_is_untyped",
+    "title": "Everyone Says Assembly Is Untyped—Everyone Is Wrong - gingerBill"
   }
 }
