@@ -1666,5 +1666,29 @@
     "article_link": "https://blog.laserphile.com/2026/08/aliexpress-webpage-keeping-multipoint.html",
     "discussion_link": "https://lobste.rs/s/b0olmy/aliexpress_keeps_multipoint_bluetooth",
     "title": "AliExpress keeps multipoint Bluetooth headphones active with WebAudio fingerprinting"
+  },
+  "@lobstersgram:286": {
+    "telegraph_link": "https://telegra.ph/A-Personal-Computer-For-Children-Of-All-Cultures-by-Ramsey-Nasser---Deconstruct-08-20",
+    "article_link": "https://www.deconstructconf.com/2019/ramsey-nasser-a-personal-computer-for-children-of-all-cultures",
+    "discussion_link": "https://lobste.rs/s/ikeag0/personal_computer_for_children_all",
+    "title": "A Personal Computer For Children Of All Cultures"
+  },
+  "@lobstersgram:287": {
+    "telegraph_link": "https://telegra.ph/Open-sourcing-OpenPubkey-SSH-OPKSSH-integrating-single-sign-on-with-SSH-08-20",
+    "article_link": "https://www.ethanheilman.com/x/33/index.html",
+    "discussion_link": "https://lobste.rs/s/n7kpm6/open_sourcing_openpubkey_ssh_opkssh",
+    "title": "Open-sourcing OpenPubkey SSH (OPKSSH): integrating single sign-on with SSH"
+  },
+  "@lobstersgram:288": {
+    "telegraph_link": "https://telegra.ph/Going-freestanding-08-20-2",
+    "article_link": "https://antonz.org/going-freestanding/",
+    "discussion_link": "https://lobste.rs/s/8cq6jl/going_freestanding",
+    "title": "Going freestanding"
+  },
+  "@lobstersgram:289": {
+    "telegraph_link": "https://telegra.ph/yaoshiuopus--Opus-is-a-minimal-statically-scoped-Lisp-dialect-based-on-the-semantics-of-f-expressions-the-Kernel-language-08-20",
+    "article_link": "https://github.com/yaoshiu/opus",
+    "discussion_link": "https://lobste.rs/s/0rggrb/opus_is_minimal_statically_scoped_lisp",
+    "title": "Opus is a minimal, statically-scoped Lisp dialect based on the semantics of f-expressions (the Kernel language)"
   }
 }
