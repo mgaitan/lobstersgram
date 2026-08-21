@@ -1756,5 +1756,17 @@
     "article_link": "https://lina.sh/blog/hijacking-e164-arpa",
     "discussion_link": "https://lobste.rs/s/dyswyz/i_accidentally_logged_hundreds",
     "title": "I accidentally logged hundreds of thousands of phone calls to military bases"
+  },
+  "@lobstersgram:301": {
+    "telegraph_link": "https://telegra.ph/Data-races-and-the-memory-model-in-Go-08-21-2",
+    "article_link": "https://func25.dev/posts/go-memory-visibility/",
+    "discussion_link": "https://lobste.rs/s/chhsuf/data_races_memory_model_go",
+    "title": "Data races and the memory model in Go"
+  },
+  "@lobstersgram:302": {
+    "telegraph_link": "https://telegra.ph/Japan-tried-to-build-an-operating-system-for-the-entire-world-then-the-US-government-intervened-08-21-2",
+    "article_link": "https://www.xda-developers.com/japan-tried-build-operating-system-entire-world-us-government-intervened/",
+    "discussion_link": "https://lobste.rs/s/mfo0fd/japan_tried_build_operating_system_for",
+    "title": "Japan tried to build an operating system for the entire world, then the US government intervened"
   }
 }
