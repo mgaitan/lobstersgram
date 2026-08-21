@@ -1696,5 +1696,23 @@
     "article_link": "https://www.gingerbill.org/article/2026/08/20/designing-odins-inline-asm/",
     "discussion_link": "https://lobste.rs/s/wphnca/everyone_says_assembly_is_untyped",
     "title": "Everyone Says Assembly Is Untyped—Everyone Is Wrong - gingerBill"
+  },
+  "@lobstersgram:291": {
+    "telegraph_link": "https://telegra.ph/Decoding-Magic-School-Lunars-Save-Game-Format---The-Future-Is-Now-08-21",
+    "article_link": "https://www.mistys-internet.website/blog/blog/2026/08/01/decoding-magic-school-lunars-save-game-format/",
+    "discussion_link": "https://lobste.rs/s/ygsics/decoding_magic_school_lunar_s_save_game",
+    "title": "Decoding Magic School Lunar's Save Game Format"
+  },
+  "@lobstersgram:292": {
+    "telegraph_link": "https://telegra.ph/emacsetcHISTORY-at-062dcd2aead00c3b47c14ff5b6c40313f7a775f5--emacs-mirroremacs--GitHub-08-21",
+    "article_link": "https://github.com/emacs-mirror/emacs/blob/062dcd2aead00c3b47c14ff5b6c40313f7a775f5/etc/HISTORY#L246",
+    "discussion_link": "https://lobste.rs/s/ikhwaz/emacs_31_1_will_release_on_8_24",
+    "title": "Emacs 31.1 will release on 8/24"
+  },
+  "@lobstersgram:293": {
+    "telegraph_link": "https://telegra.ph/Zero-Knowledge-Proofs-Arent-Age-Verification-Silver-Bullets--Electronic-Frontier-Foundation-08-21",
+    "article_link": "https://www.eff.org/deeplinks/2026/08/zkps-arent-age-verification-silver-bullets",
+    "discussion_link": "https://lobste.rs/s/yigyaq/zero_knowledge_proofs_aren_t_age",
+    "title": "Zero-Knowledge Proofs Aren’t Age Verification Silver Bullets"
   }
 }
