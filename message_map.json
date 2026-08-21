@@ -1768,5 +1768,11 @@
     "article_link": "https://www.xda-developers.com/japan-tried-build-operating-system-entire-world-us-government-intervened/",
     "discussion_link": "https://lobste.rs/s/mfo0fd/japan_tried_build_operating_system_for",
     "title": "Japan tried to build an operating system for the entire world, then the US government intervened"
+  },
+  "@lobstersgram:303": {
+    "telegraph_link": "https://telegra.ph/Hello-world--Rust-Glancer-08-21",
+    "article_link": "https://rust-glancer.github.io/blog/hello-world/",
+    "discussion_link": "https://lobste.rs/s/am0xtj/rust_glancer_alternative_lsp_for_rust",
+    "title": "rust-glancer: An alternative LSP for Rust with focus on low memory usage"
   }
 }
