@@ -1720,5 +1720,11 @@
     "article_link": "https://akitaonrails.com/en/2026/08/19/survival-guide-for-a-censored-internet/",
     "discussion_link": "https://lobste.rs/s/pfnai9/survival_guide_for_censored_internet",
     "title": "Survival Guide for a Censored Internet"
+  },
+  "@lobstersgram:295": {
+    "telegraph_link": "https://telegra.ph/Btrfs-Snapshot-Integration-in-KDE--bharadwaj-08-21",
+    "article_link": "https://bharadwajraju.com/posts/btrfs-snapshots-in-kde/",
+    "discussion_link": "https://lobste.rs/s/umey8v/btrfs_snapshot_integration_kde",
+    "title": "Btrfs Snapshot Integration in KDE"
   }
 }
