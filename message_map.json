@@ -1774,5 +1774,11 @@
     "article_link": "https://rust-glancer.github.io/blog/hello-world/",
     "discussion_link": "https://lobste.rs/s/am0xtj/rust_glancer_alternative_lsp_for_rust",
     "title": "rust-glancer: An alternative LSP for Rust with focus on low memory usage"
+  },
+  "@lobstersgram:304": {
+    "telegraph_link": "https://telegra.ph/Unfortunately-you-sometimes-need-to-do-the-thing--Griffin-Berlstein-08-21",
+    "article_link": "https://griffinberlste.in/blog/do-the-thing/",
+    "discussion_link": "https://lobste.rs/s/ry92nr/unfortunately_you_sometimes_need_do",
+    "title": "Unfortunately you sometimes need to do the thing"
   }
 }
