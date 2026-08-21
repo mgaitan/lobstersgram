@@ -1738,5 +1738,23 @@
     "article_link": "https://www.flourish.org/2026/08/personal-apps/",
     "discussion_link": "https://lobste.rs/s/vvdveb/vibe_coding_personal_apps_mid_2026",
     "title": "Vibe coding personal apps in mid-2026"
+  },
+  "@lobstersgram:298": {
+    "telegraph_link": "https://telegra.ph/The-road-to-ACID-transactions-in-Cassandra-6---The-Consensus-08-21",
+    "article_link": "https://theconsensus.dev/p/2026/08/16/transactions-in-cassandra.html",
+    "discussion_link": "https://lobste.rs/s/c9xng0/road_acid_transactions_cassandra_6",
+    "title": "The road to ACID transactions in Cassandra 6"
+  },
+  "@lobstersgram:299": {
+    "telegraph_link": "https://telegra.ph/What-are-you-doing-this-weekend--Lobsters-08-21",
+    "article_link": "https://lobste.rs/s/ittn74/what_are_you_doing_this_weekend",
+    "discussion_link": "https://lobste.rs/s/ittn74/what_are_you_doing_this_weekend",
+    "title": "What are you doing this weekend?"
+  },
+  "@lobstersgram:300": {
+    "telegraph_link": "https://telegra.ph/I-accidentally-logged-hundreds-of-thousands-of-phone-calls-to-military-bases---linas-blog-08-21",
+    "article_link": "https://lina.sh/blog/hijacking-e164-arpa",
+    "discussion_link": "https://lobste.rs/s/dyswyz/i_accidentally_logged_hundreds",
+    "title": "I accidentally logged hundreds of thousands of phone calls to military bases"
   }
 }
