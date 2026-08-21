@@ -1726,5 +1726,17 @@
     "article_link": "https://bharadwajraju.com/posts/btrfs-snapshots-in-kde/",
     "discussion_link": "https://lobste.rs/s/umey8v/btrfs_snapshot_integration_kde",
     "title": "Btrfs Snapshot Integration in KDE"
+  },
+  "@lobstersgram:296": {
+    "telegraph_link": "https://telegra.ph/Better-Batteries-08-21-2",
+    "article_link": "https://matklad.github.io/2026/08/20/better-batteries.html",
+    "discussion_link": "https://lobste.rs/s/qxvz7f/better_batteries",
+    "title": "Better Batteries"
+  },
+  "@lobstersgram:297": {
+    "telegraph_link": "https://telegra.ph/Vibe-coding-personal-apps-in-mid-2026---Francis-Irving-08-21",
+    "article_link": "https://www.flourish.org/2026/08/personal-apps/",
+    "discussion_link": "https://lobste.rs/s/vvdveb/vibe_coding_personal_apps_mid_2026",
+    "title": "Vibe coding personal apps in mid-2026"
   }
 }
