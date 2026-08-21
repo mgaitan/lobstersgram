@@ -1780,5 +1780,11 @@
     "article_link": "https://griffinberlste.in/blog/do-the-thing/",
     "discussion_link": "https://lobste.rs/s/ry92nr/unfortunately_you_sometimes_need_do",
     "title": "Unfortunately you sometimes need to do the thing"
+  },
+  "@lobstersgram:305": {
+    "telegraph_link": "https://telegra.ph/Homebrew-68K-Machine-Has-A-PCI-Bus--Hackaday-08-21",
+    "article_link": "https://hackaday.com/2026/08/20/homebrew-68k-machine-has-a-pci-bus/",
+    "discussion_link": "https://lobste.rs/s/zstki6/homebrew_68k_machine_has_pci_bus",
+    "title": "Homebrew 68K Machine Has A PCI Bus"
   }
 }
