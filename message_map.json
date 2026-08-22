@@ -1894,5 +1894,23 @@
     "article_link": "https://typesanitizer.com/blog/performance-issues.html",
     "discussion_link": "https://lobste.rs/s/zibquu/there_continue_be_reasons_for_software_be",
     "title": "There continue to be reasons for software to be slow"
+  },
+  "@lobstersgram:324": {
+    "telegraph_link": "https://telegra.ph/hdiutil-is-deprecated-in-macOS-27-Golden-Gate-08-22-4",
+    "article_link": "https://lapcatsoftware.com/articles/2026/8/7.html",
+    "discussion_link": "https://lobste.rs/s/xkngcm/hdiutil_is_deprecated_macos_27_golden",
+    "title": "hdiutil is deprecated in macOS 27 Golden Gate"
+  },
+  "@lobstersgram:325": {
+    "telegraph_link": "https://telegra.ph/Web-Camera-on-PiKVM-V4-and-V3---PiKVM-Handbook-08-22",
+    "article_link": "https://docs.pikvm.org/camera/",
+    "discussion_link": "https://lobste.rs/s/qpm7tl/pikvm_project_has_gained_support_for_web",
+    "title": "PiKVM project has gained support for web-camera forwarding"
+  },
+  "@lobstersgram:326": {
+    "telegraph_link": "https://telegra.ph/netbsd-advocacy-NetBSD-and-my-life-08-22-2",
+    "article_link": "https://mail-index.netbsd.org/netbsd-advocacy/2005/09/10/0000.html",
+    "discussion_link": "https://lobste.rs/s/a23bk3/netbsd_my_life_2005",
+    "title": "NetBSD and my life (2005)"
   }
 }
