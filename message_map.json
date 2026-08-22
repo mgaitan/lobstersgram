@@ -1858,5 +1858,17 @@
     "article_link": "https://entropicthoughts.com/ai-comment-classifier",
     "discussion_link": "https://lobste.rs/s/ilfiqa/robot_comment_classifier",
     "title": "Robot comment classifier"
+  },
+  "@lobstersgram:318": {
+    "telegraph_link": "https://telegra.ph/Espressif-Systems-releases-a-Linux-BSP-developer-preview-for-ESP32-S31-RISC-V-microprocessor---CNX-Software-08-22",
+    "article_link": "https://www.cnx-software.com/2026/08/22/espressif-systems-releases-a-linux-bsp-developer-preview-for-esp32-s31-risc-v-microprocessor/",
+    "discussion_link": "https://lobste.rs/s/jwzbqi/espressif_releases_linux_bsp_for_esp32",
+    "title": "Espressif releases Linux BSP for ESP32-S31 RISC-V boards"
+  },
+  "@lobstersgram:319": {
+    "telegraph_link": "https://telegra.ph/DefCon-34---Stalking-the-Wily-Hacker-40-years-later---Cliff-Stoll-08-22",
+    "article_link": "https://www.youtube.com/watch?v=656058JxTM0&feature=youtu.be",
+    "discussion_link": "https://lobste.rs/s/r77bda/stalking_wily_hacker_40_years_later",
+    "title": "Stalking the Wily Hacker: 40 years later"
   }
 }
