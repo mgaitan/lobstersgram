@@ -1816,5 +1816,23 @@
     "article_link": "https://blog.roomy.space/3mplw6vvw4s23",
     "discussion_link": "https://lobste.rs/s/zfew3n/roomy_is_generally_available",
     "title": "Roomy is generally available"
+  },
+  "@lobstersgram:311": {
+    "telegraph_link": "https://telegra.ph/download-circle-08-22-2",
+    "article_link": "https://matduggan.com/otel-isnt-going-well-and-i-made-a-spreadsheet-about-it/",
+    "discussion_link": "https://lobste.rs/s/ubeyqf/otel_isn_t_going_well_i_made_spreadsheet",
+    "title": "OTel Isn't Going Well (And I Made A Spreadsheet About It)"
+  },
+  "@lobstersgram:312": {
+    "telegraph_link": "https://telegra.ph/no-title-08-22-1015",
+    "article_link": "https://hackernoon.com/how-i-hacked-and-turned-my-casio-f-91w-into-a-contactless-payment-device",
+    "discussion_link": "https://lobste.rs/s/bhzp2z/turning_my_casio_f_91w_into_contactless",
+    "title": "Turning My CASIO F-91W Into a Contactless Payment Device"
+  },
+  "@lobstersgram:313": {
+    "telegraph_link": "https://telegra.ph/Compile-Time-Improvements-in-LLVM-23-08-22",
+    "article_link": "https://aengelke.net/llvm23-ct.html",
+    "discussion_link": "https://lobste.rs/s/ku4v3b/compile_time_improvements_llvm_23",
+    "title": "Compile-Time Improvements in LLVM 23"
   }
 }
