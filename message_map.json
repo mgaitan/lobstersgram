@@ -1912,5 +1912,11 @@
     "article_link": "https://mail-index.netbsd.org/netbsd-advocacy/2005/09/10/0000.html",
     "discussion_link": "https://lobste.rs/s/a23bk3/netbsd_my_life_2005",
     "title": "NetBSD and my life (2005)"
+  },
+  "@lobstersgram:327": {
+    "telegraph_link": "https://telegra.ph/KDE-Linux-experiences--AksDev-08-22-3",
+    "article_link": "https://akselmo.dev/posts/kde-linux-experiences/",
+    "discussion_link": "https://lobste.rs/s/ate5gb/kde_linux_experiences",
+    "title": "KDE Linux experiences"
   }
 }
