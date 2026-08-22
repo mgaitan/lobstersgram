@@ -1870,5 +1870,29 @@
     "article_link": "https://www.youtube.com/watch?v=656058JxTM0&feature=youtu.be",
     "discussion_link": "https://lobste.rs/s/r77bda/stalking_wily_hacker_40_years_later",
     "title": "Stalking the Wily Hacker: 40 years later"
+  },
+  "@lobstersgram:320": {
+    "telegraph_link": "https://telegra.ph/drmxe-Dont-hand-out-the-flat-CCS-storage-as-usable-VRAM--torvaldslinux818bebe--GitHub-08-22",
+    "article_link": "https://github.com/torvalds/linux/commit/818bebeb63dd6bf5f4e07e145f6cdbace520a34c",
+    "discussion_link": "https://lobste.rs/s/eyaz5f/linus_torvalds_uses_ai_debug_intel_gpu",
+    "title": "Linus Torvalds uses AI to debug an Intel GPU driver bug"
+  },
+  "@lobstersgram:321": {
+    "telegraph_link": "https://telegra.ph/Fwd-InjectionBunny-NTFS3-SUID-injection-leading-to-local-privilege-escalation-08-22",
+    "article_link": "https://lore.kernel.org/ntfs3/CAGBKPgPiXyKWtjgYSACnugmG1XPs=mPg-Zu-xQziUZ1k921+qA@mail.gmail.com/T/#mc251816dfcb7d4dcbf07368f0d288dbfb1b8e1c9",
+    "discussion_link": "https://lobste.rs/s/2mvgzt/injectionbunny_ntfs3_suid_injection_for",
+    "title": "InjectionBunny, a NTFS3 SUID injection for privilege escalation"
+  },
+  "@lobstersgram:322": {
+    "telegraph_link": "https://telegra.ph/felixsnss-userhosts-A-glibc-Name-Service-Switch-NSS-extension-library-to-allow-unprivileged-users-to-have-their-own-etchosts-lik-08-22",
+    "article_link": "https://codeberg.org/felixs/nss-userhosts",
+    "discussion_link": "https://lobste.rs/s/qvlroc/nss_userhosts_hosts_files_for",
+    "title": "nss-userhosts - hosts files for unprivileged users"
+  },
+  "@lobstersgram:323": {
+    "telegraph_link": "https://telegra.ph/There-continue-to-be-reasons-for-software-to-be-slow-08-22",
+    "article_link": "https://typesanitizer.com/blog/performance-issues.html",
+    "discussion_link": "https://lobste.rs/s/zibquu/there_continue_be_reasons_for_software_be",
+    "title": "There continue to be reasons for software to be slow"
   }
 }
