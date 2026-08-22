@@ -1834,5 +1834,23 @@
     "article_link": "https://aengelke.net/llvm23-ct.html",
     "discussion_link": "https://lobste.rs/s/ku4v3b/compile_time_improvements_llvm_23",
     "title": "Compile-Time Improvements in LLVM 23"
+  },
+  "@lobstersgram:314": {
+    "telegraph_link": "https://telegra.ph/Aerotwist---Guitar-Tuner-08-22",
+    "article_link": "https://aerotwist.com/blog/guitar-tuner/",
+    "discussion_link": "https://lobste.rs/s/twaqbs/guitar_tuner_2015",
+    "title": "Guitar Tuner (2015)"
+  },
+  "@lobstersgram:315": {
+    "telegraph_link": "https://telegra.ph/Stop-Making-TUIs---Quarrelsome-08-22",
+    "article_link": "https://sockpuppet.org/blog/2026/08/20/stop-making-tuis/",
+    "discussion_link": "https://lobste.rs/s/kyb21s/stop_making_tuis",
+    "title": "Stop Making TUIs"
+  },
+  "@lobstersgram:316": {
+    "telegraph_link": "https://telegra.ph/The-Schrödinger-Email-08-22",
+    "article_link": "https://yashgarg.dev/posts/the-schrodinger-email/",
+    "discussion_link": "https://lobste.rs/s/qtsnvd/schrodinger_email",
+    "title": "The Schrödinger Email"
   }
 }
