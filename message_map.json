@@ -1792,5 +1792,11 @@
     "article_link": "https://lists.exim.org/lurker/message/20260820.154633.91995f73.en.html",
     "discussion_link": "https://lobste.rs/s/pdx6jg/exim_4_100_released",
     "title": "Exim 4.100 released"
+  },
+  "@lobstersgram:307": {
+    "telegraph_link": "https://telegra.ph/Programming-Language-Semantics-and-Memory-Safety-08-22",
+    "article_link": "https://burakemir.ch/post/formal-semantics/",
+    "discussion_link": "https://lobste.rs/s/lmpkkr/programming_language_semantics_memory",
+    "title": "Programming Language Semantics and Memory Safety"
   }
 }
