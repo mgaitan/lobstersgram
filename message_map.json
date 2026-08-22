@@ -1798,5 +1798,23 @@
     "article_link": "https://burakemir.ch/post/formal-semantics/",
     "discussion_link": "https://lobste.rs/s/lmpkkr/programming_language_semantics_memory",
     "title": "Programming Language Semantics and Memory Safety"
+  },
+  "@lobstersgram:308": {
+    "telegraph_link": "https://telegra.ph/Emacs-Arbitrary-Code-Execution-Returns-08-22",
+    "article_link": "https://eshelyaron.com/posts/2026-08-06-emacs-arbitrary-code-execution-returns.html",
+    "discussion_link": "https://lobste.rs/s/jdjb2a/emacs_arbitrary_code_execution_returns",
+    "title": "Emacs Arbitrary Code Execution Returns"
+  },
+  "@lobstersgram:309": {
+    "telegraph_link": "https://telegra.ph/The-cool-things-of-Gleam---A-Bit-08-22",
+    "article_link": "https://a.baez.link/3mtdbbp2dmc27",
+    "discussion_link": "https://lobste.rs/s/lzgbrv/cool_things_gleam",
+    "title": "The cool things of Gleam"
+  },
+  "@lobstersgram:310": {
+    "telegraph_link": "https://telegra.ph/Roomy-is-generally-available---Roomy-08-22",
+    "article_link": "https://blog.roomy.space/3mplw6vvw4s23",
+    "discussion_link": "https://lobste.rs/s/zfew3n/roomy_is_generally_available",
+    "title": "Roomy is generally available"
   }
 }
