@@ -1852,5 +1852,11 @@
     "article_link": "https://yashgarg.dev/posts/the-schrodinger-email/",
     "discussion_link": "https://lobste.rs/s/qtsnvd/schrodinger_email",
     "title": "The Schrödinger Email"
+  },
+  "@lobstersgram:317": {
+    "telegraph_link": "https://telegra.ph/Robot-comment-classifier-08-22",
+    "article_link": "https://entropicthoughts.com/ai-comment-classifier",
+    "discussion_link": "https://lobste.rs/s/ilfiqa/robot_comment_classifier",
+    "title": "Robot comment classifier"
   }
 }
