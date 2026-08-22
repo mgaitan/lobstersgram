@@ -1786,5 +1786,11 @@
     "article_link": "https://hackaday.com/2026/08/20/homebrew-68k-machine-has-a-pci-bus/",
     "discussion_link": "https://lobste.rs/s/zstki6/homebrew_68k_machine_has_pci_bus",
     "title": "Homebrew 68K Machine Has A PCI Bus"
+  },
+  "@lobstersgram:306": {
+    "telegraph_link": "https://telegra.ph/exim-Exim-4100-released-08-22",
+    "article_link": "https://lists.exim.org/lurker/message/20260820.154633.91995f73.en.html",
+    "discussion_link": "https://lobste.rs/s/pdx6jg/exim_4_100_released",
+    "title": "Exim 4.100 released"
   }
 }
