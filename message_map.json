@@ -1966,5 +1966,35 @@
     "article_link": "https://shkspr.mobi/blog/2026/08/and-then-the-men-with-guns-tell-you-to-do-it-anyway/",
     "discussion_link": "https://lobste.rs/s/u7v2sn/then_men_with_guns_tell_you_do_it_anyway",
     "title": "And then the men with guns tell you to do it anyway"
+  },
+  "@lobstersgram:336": {
+    "telegraph_link": "https://telegra.ph/daniel5151clicky--A-clickwheel-iPod-emulator-WIP-08-23",
+    "article_link": "https://github.com/daniel5151/clicky",
+    "discussion_link": "https://lobste.rs/s/hdz6bx/clicky_clickwheel_ipod_emulator",
+    "title": "clicky: A clickwheel iPod emulator"
+  },
+  "@lobstersgram:337": {
+    "telegraph_link": "https://telegra.ph/How-To-Report-A-Bug-So-It-Actually-Gets-Fixed--The-Tymscar-Blog-08-23",
+    "article_link": "https://blog.tymscar.com/posts/howtoreportabug/",
+    "discussion_link": "https://lobste.rs/s/tc2em9/how_report_bug_so_it_actually_gets_fixed",
+    "title": "How To Report A Bug So It Actually Gets Fixed"
+  },
+  "@lobstersgram:338": {
+    "telegraph_link": "https://telegra.ph/Amazon-kept-shutting-down-my-tablet-so-I-spent-266-on-four-AI-models-to-own-it-08-23",
+    "article_link": "https://ericpardee.github.io/fire-hd-ownership/",
+    "discussion_link": "https://lobste.rs/s/fadbev/amazon_kept_shutting_down_my_tablet_so_i",
+    "title": "Amazon kept shutting down my tablet, so I spent $266 on four AI models to own it"
+  },
+  "@lobstersgram:339": {
+    "telegraph_link": "https://telegra.ph/SirWumpuseh-eh---Edit-Here---vi1-the-good-parts-version-is-a-minimalist-version-of-vi1-It-is-an-example-of-the-Buffer-Gap-method-08-23",
+    "article_link": "https://codeberg.org/SirWumpus/eh",
+    "discussion_link": "https://lobste.rs/s/au6oho/eh_minimalist_vi_like_editor",
+    "title": "eh: a minimalist vi-like editor"
+  },
+  "@lobstersgram:340": {
+    "telegraph_link": "https://telegra.ph/My-favorite-Computer-Science-books-and-why--Jean-Christophes-programming-corner-08-23",
+    "article_link": "https://backtracking.github.io/en/2020/02/20/cs-books.html",
+    "discussion_link": "https://lobste.rs/s/gybcec/my_favorite_computer_science_books_why",
+    "title": "My favorite Computer Science books, and why"
   }
 }
