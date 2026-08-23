@@ -1996,5 +1996,11 @@
     "article_link": "https://backtracking.github.io/en/2020/02/20/cs-books.html",
     "discussion_link": "https://lobste.rs/s/gybcec/my_favorite_computer_science_books_why",
     "title": "My favorite Computer Science books, and why"
+  },
+  "@lobstersgram:341": {
+    "telegraph_link": "https://telegra.ph/An-Introduction-to-Canvas-in-GNU-Emacs-08-23",
+    "article_link": "https://monadicsheep.org/blog/an-introduction-to-canvas-in-emacs.html",
+    "discussion_link": "https://lobste.rs/s/9xglf3/introduction_canvas_gnu_emacs",
+    "title": "An Introduction to Canvas in GNU Emacs"
   }
 }
