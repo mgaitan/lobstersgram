@@ -1942,5 +1942,29 @@
     "article_link": "https://malisper.me/jit-compiling-code-in-5-us/",
     "discussion_link": "https://lobste.rs/s/aujfn1/jit_compiling_code_5_s",
     "title": "JIT Compiling Code in 5μs"
+  },
+  "@lobstersgram:332": {
+    "telegraph_link": "https://telegra.ph/Optimizing-memory-use-in-markdown-parser-08-23",
+    "article_link": "https://blog.kowalczyk.info/a-n8wf/optimizing-memory-use-in-markdown-parser.html",
+    "discussion_link": "https://lobste.rs/s/1swh9l/optimizing_memory_usage_markdown_parser",
+    "title": "Optimizing memory usage in a markdown parser"
+  },
+  "@lobstersgram:333": {
+    "telegraph_link": "https://telegra.ph/Are-there-any-decent-programs-for-pdf-viewing-and-editing-for-Linux-that-replace-Adobe-Acrobat--Lobsters-08-23",
+    "article_link": "https://lobste.rs/s/kxualw/are_there_any_decent_programs_for_pdf",
+    "discussion_link": "https://lobste.rs/s/kxualw/are_there_any_decent_programs_for_pdf",
+    "title": "Are there any decent programs for pdf viewing and editing for Linux that replace Adobe Acrobat?"
+  },
+  "@lobstersgram:334": {
+    "telegraph_link": "https://telegra.ph/A-Friendly-Introduction-to-Racket---geometridae-08-23",
+    "article_link": "https://geometridae.bearblog.dev/a-friendly-introduction-to-racket/",
+    "discussion_link": "https://lobste.rs/s/nxeygh/friendly_introduction_racket",
+    "title": "A Friendly Introduction to Racket"
+  },
+  "@lobstersgram:335": {
+    "telegraph_link": "https://telegra.ph/And-then-the-men-with-guns-tell-you-to-do-it-anyway---Terence-Edens-Blog-08-23",
+    "article_link": "https://shkspr.mobi/blog/2026/08/and-then-the-men-with-guns-tell-you-to-do-it-anyway/",
+    "discussion_link": "https://lobste.rs/s/u7v2sn/then_men_with_guns_tell_you_do_it_anyway",
+    "title": "And then the men with guns tell you to do it anyway"
   }
 }
