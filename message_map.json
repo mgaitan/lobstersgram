@@ -1936,5 +1936,11 @@
     "article_link": "https://thejpster.org.uk/blog/blog-2026-08-22/",
     "discussion_link": "https://lobste.rs/s/vikit1/why_aren_t_my_two_cortex_a9_cores_cache",
     "title": "Why aren't my two Cortex-A9 cores cache coherent?"
+  },
+  "@lobstersgram:331": {
+    "telegraph_link": "https://telegra.ph/JIT-Compiling-Code-in-5μs---malisperme-08-23-2",
+    "article_link": "https://malisper.me/jit-compiling-code-in-5-us/",
+    "discussion_link": "https://lobste.rs/s/aujfn1/jit_compiling_code_5_s",
+    "title": "JIT Compiling Code in 5μs"
   }
 }
