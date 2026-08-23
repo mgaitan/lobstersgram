@@ -2002,5 +2002,29 @@
     "article_link": "https://monadicsheep.org/blog/an-introduction-to-canvas-in-emacs.html",
     "discussion_link": "https://lobste.rs/s/9xglf3/introduction_canvas_gnu_emacs",
     "title": "An Introduction to Canvas in GNU Emacs"
+  },
+  "@lobstersgram:342": {
+    "telegraph_link": "https://telegra.ph/RSoC-2026-EEVDF-for-Redox---Redox---Your-NextGen-OS-08-23",
+    "article_link": "https://www.redox-os.org/news/rsoc-eevdf/",
+    "discussion_link": "https://lobste.rs/s/p92osu/rsoc_2026_eevdf_for_redox",
+    "title": "RSoC 2026: EEVDF for Redox"
+  },
+  "@lobstersgram:343": {
+    "telegraph_link": "https://telegra.ph/Wild-AI-related-reliability-incidents-are-coming---Surfing-Complexity-08-23",
+    "article_link": "https://surfingcomplexity.blog/2026/08/22/wild-ai-related-reliability-incidents-are-coming/",
+    "discussion_link": "https://lobste.rs/s/jzr2ey/wild_ai_related_reliability_incidents",
+    "title": "Wild AI-related reliability incidents are coming"
+  },
+  "@lobstersgram:344": {
+    "telegraph_link": "https://telegra.ph/tmpout-v-08-23",
+    "article_link": "https://tmpout.sh/5/",
+    "discussion_link": "https://lobste.rs/s/xiwynb/tmp_0ut_volume_5",
+    "title": "tmp.0ut volume 5"
+  },
+  "@lobstersgram:345": {
+    "telegraph_link": "https://telegra.ph/Replicating-Reddits-best-feature-on-other-forums--xavdid-08-23",
+    "article_link": "https://xavd.id/blog/post/highlighting-users/",
+    "discussion_link": "https://lobste.rs/s/ll6pak/replicating_reddit_s_best_feature_on",
+    "title": "Replicating Reddit's best feature on other forums"
   }
 }
