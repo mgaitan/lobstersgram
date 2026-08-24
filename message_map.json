@@ -2152,5 +2152,17 @@
     "article_link": "https://adriansieber.com/announcing-perspec-1-0/",
     "discussion_link": "https://lobste.rs/s/plmwzl/perspec_1_0_haskell_desktop_app_for",
     "title": "Perspec 1.0: A Haskell desktop app for perspective correction of document photos"
+  },
+  "@lobstersgram:367": {
+    "telegraph_link": "https://telegra.ph/AI-Coding-will-Prevent-Expertise--Lars-Faye-08-24-2",
+    "article_link": "https://larsfaye.com/articles/ai-coding-will-prevent-expertise",
+    "discussion_link": "https://lobste.rs/s/gzddgr/ai_coding_will_prevent_expertise_lars",
+    "title": "AI Coding will Prevent Expertise | Lars Faye"
+  },
+  "@lobstersgram:368": {
+    "telegraph_link": "https://telegra.ph/Intent-to-Ship-JPEG-XL---Mozilla-Hacks---the-Web-developer-blog-08-24",
+    "article_link": "https://hacks.mozilla.org/2026/08/intent-to-ship-jpeg-xl/",
+    "discussion_link": "https://lobste.rs/s/26oj2u/intent_ship_jpeg_xl",
+    "title": "Intent to Ship: JPEG XL"
   }
 }
