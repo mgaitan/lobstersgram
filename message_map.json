@@ -2110,5 +2110,11 @@
     "article_link": "https://haveibeensquatted.com/blog/building-certgrep",
     "discussion_link": "https://lobste.rs/s/ihethb/building_certgrep_sh_free_certificate",
     "title": "Building certgrep.sh: a free certificate transparency search engine"
+  },
+  "@lobstersgram:360": {
+    "telegraph_link": "https://telegra.ph/Emacs-311-released-08-24",
+    "article_link": "https://lists.gnu.org/archive/html/info-gnu-emacs/2026-08/msg00004.html",
+    "discussion_link": "https://lobste.rs/s/rehaa3/emacs_31_1_released",
+    "title": "Emacs 31.1 released"
   }
 }
