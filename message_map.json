@@ -2116,5 +2116,11 @@
     "article_link": "https://lists.gnu.org/archive/html/info-gnu-emacs/2026-08/msg00004.html",
     "discussion_link": "https://lobste.rs/s/rehaa3/emacs_31_1_released",
     "title": "Emacs 31.1 released"
+  },
+  "@lobstersgram:361": {
+    "telegraph_link": "https://telegra.ph/Micro-language-implementation-Calcium--Ned-Batchelder-08-24",
+    "article_link": "https://nedbatchelder.com/blog/202608/micro_language_implementation_calcium",
+    "discussion_link": "https://lobste.rs/s/iii8sl/micro_language_implementation_calcium",
+    "title": "Micro language implementation: Calcium"
   }
 }
