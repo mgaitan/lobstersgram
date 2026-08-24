@@ -2086,5 +2086,29 @@
     "article_link": "https://fzakaria.com/2026/08/23/your-executable-is-a-sqlite-database",
     "discussion_link": "https://lobste.rs/s/8ttu5n/your_executable_is_sqlite_database",
     "title": "Your executable is a SQLite database"
+  },
+  "@lobstersgram:356": {
+    "telegraph_link": "https://telegra.ph/3-constraints-before-I-build-anything--Jordan-Lord-08-24",
+    "article_link": "https://jordanlord.co.uk/blog/3-constraints/",
+    "discussion_link": "https://lobste.rs/s/xlorxi/3_constraints_before_i_build_anything",
+    "title": "3 constraints before I build anything | Jordan Lord"
+  },
+  "@lobstersgram:357": {
+    "telegraph_link": "https://telegra.ph/Tiny-Untyped-Monads-08-24",
+    "article_link": "https://text.marvinborner.de/2024-11-18-00.html",
+    "discussion_link": "https://lobste.rs/s/gj556c/tiny_untyped_monads_2024",
+    "title": "Tiny, Untyped Monads (2024)"
+  },
+  "@lobstersgram:358": {
+    "telegraph_link": "https://telegra.ph/What-are-you-doing-this-week--Lobsters-08-24",
+    "article_link": "https://lobste.rs/s/lo28ad/what_are_you_doing_this_week",
+    "discussion_link": "https://lobste.rs/s/lo28ad/what_are_you_doing_this_week",
+    "title": "What are you doing this week?"
+  },
+  "@lobstersgram:359": {
+    "telegraph_link": "https://telegra.ph/Building-certgrepsh-a-free-CT-search-engine---Have-I-Been-Squatted-08-24",
+    "article_link": "https://haveibeensquatted.com/blog/building-certgrep",
+    "discussion_link": "https://lobste.rs/s/ihethb/building_certgrep_sh_free_certificate",
+    "title": "Building certgrep.sh: a free certificate transparency search engine"
   }
 }
