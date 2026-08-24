@@ -2062,5 +2062,11 @@
     "article_link": "https://joeyh.name/blog/entry/offgrid_electric_car/",
     "discussion_link": "https://lobste.rs/s/slaivx/offgrid_electric_car_2025",
     "title": "offgrid electric car (2025)"
+  },
+  "@lobstersgram:352": {
+    "telegraph_link": "https://telegra.ph/Tutorial-part-4-Adding-JIT-compilation-to-a-toy-interpreter---libgccjit-1700-experimental--documentation-08-24",
+    "article_link": "https://gcc.gnu.org/onlinedocs/jit/intro/tutorial04.html",
+    "discussion_link": "https://lobste.rs/s/pkktjt/adding_jit_compilation_toy_interpreter",
+    "title": "Adding JIT-compilation to a toy interpreter with libgccjit"
   }
 }
