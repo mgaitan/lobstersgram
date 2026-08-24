@@ -2164,5 +2164,23 @@
     "article_link": "https://hacks.mozilla.org/2026/08/intent-to-ship-jpeg-xl/",
     "discussion_link": "https://lobste.rs/s/26oj2u/intent_ship_jpeg_xl",
     "title": "Intent to Ship: JPEG XL"
+  },
+  "@lobstersgram:369": {
+    "telegraph_link": "https://telegra.ph/Atkinson-Hyperlegible-appears-a-little-smaller-than-some-other-fonts-at-the-same-font-size-so-if-youre-replacing-an-existing-fon-08-24",
+    "article_link": "https://twotwos.nekoweb.org/posts/hyperlegible.html",
+    "discussion_link": "https://lobste.rs/s/hgirjs/atkinson_hyperlegible_appears_little",
+    "title": "Atkinson Hyperlegible appears a little smaller than some other fonts at the same font size"
+  },
+  "@lobstersgram:370": {
+    "telegraph_link": "https://telegra.ph/distributed-identity-08-24-3",
+    "article_link": "https://jyn.dev/distributed-identity/",
+    "discussion_link": "https://lobste.rs/s/al6sdh/distributed_identity",
+    "title": "distributed identity"
+  },
+  "@lobstersgram:371": {
+    "telegraph_link": "https://telegra.ph/pythopskudu---Easily-manage-VMs-on-Linux-08-24",
+    "article_link": "https://github.com/pythops/kudu",
+    "discussion_link": "https://lobste.rs/s/uodrjx/kudu_easily_manage_vms_on_linux",
+    "title": "kudu - easily manage VMs on Linux"
   }
 }
