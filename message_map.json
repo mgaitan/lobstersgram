@@ -2074,5 +2074,17 @@
     "article_link": "https://schlarp.com/posts/everything-i-own-owned/",
     "discussion_link": "https://lobste.rs/s/vcdk2q/everything_i_own_owned",
     "title": "Everything I own, owned"
+  },
+  "@lobstersgram:354": {
+    "telegraph_link": "https://telegra.ph/Kodak-DC50-now-usable-on-the-Apple-II---colincolinonet-08-24",
+    "article_link": "https://www.colino.net/wordpress/archives/2026/08/23/kodak-dc50-now-usable-on-the-apple-ii/",
+    "discussion_link": "https://lobste.rs/s/tkvorw/kodak_dc50_now_usable_on_apple_ii",
+    "title": "Kodak DC50 now usable on the Apple II"
+  },
+  "@lobstersgram:355": {
+    "telegraph_link": "https://telegra.ph/Your-executable-is-a-SQLite-database--Farid-Zakarias-Blog-08-24",
+    "article_link": "https://fzakaria.com/2026/08/23/your-executable-is-a-sqlite-database",
+    "discussion_link": "https://lobste.rs/s/8ttu5n/your_executable_is_sqlite_database",
+    "title": "Your executable is a SQLite database"
   }
 }
