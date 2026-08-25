@@ -2260,5 +2260,17 @@
     "article_link": "https://blog.ihatereality.space/0C-never-type/",
     "discussion_link": "https://lobste.rs/s/gizvfn/i_stabilized_never_type",
     "title": "I stabilized never type"
+  },
+  "@lobstersgram:385": {
+    "telegraph_link": "https://telegra.ph/Run-OpenBSD-on-DigitalOcean-for-4month---Nil-08-25-2",
+    "article_link": "https://nil.wallyjones.com/run-openbsd-on-digitalocean-for-4month/",
+    "discussion_link": "https://lobste.rs/s/za8vwp/run_openbsd_on_digitalocean_for_4_month",
+    "title": "Run OpenBSD on DigitalOcean for $4/month"
+  },
+  "@lobstersgram:386": {
+    "telegraph_link": "https://telegra.ph/The-Move-to-Python-3-Begins--EVE-Online-08-25",
+    "article_link": "https://www.eveonline.com/news/view/the-move-to-python-3-begins",
+    "discussion_link": "https://lobste.rs/s/e1oalq/move_python_3_begins",
+    "title": "The Move to Python 3 Begins"
   }
 }
