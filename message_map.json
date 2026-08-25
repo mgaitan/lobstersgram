@@ -2182,5 +2182,11 @@
     "article_link": "https://github.com/pythops/kudu",
     "discussion_link": "https://lobste.rs/s/uodrjx/kudu_easily_manage_vms_on_linux",
     "title": "kudu - easily manage VMs on Linux"
+  },
+  "@lobstersgram:372": {
+    "telegraph_link": "https://telegra.ph/Hot-Chips-2026-CUDA-Targets-RISC-V---by-Chester-Lam-08-25",
+    "article_link": "https://chipsandcheese.com/p/hot-chips-2026-cuda-targets-risc",
+    "discussion_link": "https://lobste.rs/s/nfmlwp/hot_chips_2026_cuda_targets_risc_v",
+    "title": "Hot Chips 2026: CUDA targets RISC-V"
   }
 }
