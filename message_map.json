@@ -2224,5 +2224,17 @@
     "article_link": "https://sigma-star.at/blog/2026/08/go-runtime-netpoll-bug/",
     "discussion_link": "https://lobste.rs/s/apjhyj/hunting_down_go_runtime_bug_on_32_bit",
     "title": "Hunting Down a Go Runtime Bug on 32-bit Embedded Systems"
+  },
+  "@lobstersgram:379": {
+    "telegraph_link": "https://telegra.ph/Home---The-XY-Problem-08-25",
+    "article_link": "https://xyproblem.info/",
+    "discussion_link": "https://lobste.rs/s/useg7x/xy_problem",
+    "title": "The XY Problem"
+  },
+  "@lobstersgram:380": {
+    "telegraph_link": "https://telegra.ph/David-Chisnall-Now-with-50-more-sarcasm-halcyicosahedronwebsite-whitequarktreehouse---Infosec-Exchange-08-25",
+    "article_link": "https://infosec.exchange/@david_chisnall/117156204452541109",
+    "discussion_link": "https://lobste.rs/s/ozkoqo/adding_cpu_affinity_24_core_build_machine",
+    "title": "Adding CPU affinity in a 24-core build machine made builds take longer"
   }
 }
