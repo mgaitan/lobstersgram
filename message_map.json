@@ -2272,5 +2272,23 @@
     "article_link": "https://www.eveonline.com/news/view/the-move-to-python-3-begins",
     "discussion_link": "https://lobste.rs/s/e1oalq/move_python_3_begins",
     "title": "The Move to Python 3 Begins"
+  },
+  "@lobstersgram:387": {
+    "telegraph_link": "https://telegra.ph/AI-At-Home-Part-2-Multi-GPU-Drifting-08-25",
+    "article_link": "https://jdagostino.github.io/ai-pt2-multi-gpu-drifting/index.html",
+    "discussion_link": "https://lobste.rs/s/qc6pjd/ai_at_home_part_2_multi_gpu_drifting",
+    "title": "AI At Home Part 2: Multi GPU Drifting"
+  },
+  "@lobstersgram:388": {
+    "telegraph_link": "https://telegra.ph/AI-Review-Loops-Dont-Always-Stabilise-08-25",
+    "article_link": "https://kevinmahoney.co.uk/articles/ai-review-loops/",
+    "discussion_link": "https://lobste.rs/s/52povq/ai_review_loops_don_t_always_stabilise",
+    "title": "AI Review Loops Don't Always Stabilise"
+  },
+  "@lobstersgram:389": {
+    "telegraph_link": "https://telegra.ph/runetesmaiao--Seamless-GitHub-PR-management-from-the-command-line-08-25",
+    "article_link": "https://github.com/runetes/maiao",
+    "discussion_link": "https://lobste.rs/s/2hsncr/maiao_gerrit_style_stacked_diffs_for",
+    "title": "maiao: Gerrit-style stacked diffs for GitHub, Cursor Origin, GitLab, Codeberg and more"
   }
 }
