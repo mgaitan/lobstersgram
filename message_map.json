@@ -2200,5 +2200,17 @@
     "article_link": "https://gultsch.de/posts/25-years-of-digital-independence/",
     "discussion_link": "https://lobste.rs/s/ashxnz/jabber_xmpp_25_years_digital",
     "title": "Jabber/XMPP: 25 Years of Digital Independence"
+  },
+  "@lobstersgram:375": {
+    "telegraph_link": "https://telegra.ph/Haskell-diagrams-Tessellations--Marcelo-Garlet-Milani-08-25",
+    "article_link": "https://mgarletmilani.com/blog/2026-06-03-tessellations/",
+    "discussion_link": "https://lobste.rs/s/fyps8w/haskell_diagrams_tessellations",
+    "title": "Haskell diagrams: Tessellations"
+  },
+  "@lobstersgram:376": {
+    "telegraph_link": "https://telegra.ph/Solving-the-1N-Query-Problem-08-25-2",
+    "article_link": "https://acadia.engineering/blog/solving-the-1-plus-N-query-problem",
+    "discussion_link": "https://lobste.rs/s/k5feqe/solving_1_n_query_problem",
+    "title": "Solving the 1+N query problem"
   }
 }
