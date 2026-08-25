@@ -2212,5 +2212,17 @@
     "article_link": "https://acadia.engineering/blog/solving-the-1-plus-N-query-problem",
     "discussion_link": "https://lobste.rs/s/k5feqe/solving_1_n_query_problem",
     "title": "Solving the 1+N query problem"
+  },
+  "@lobstersgram:377": {
+    "telegraph_link": "https://telegra.ph/Another-look-at-SQLites-WAL-Reset-bug---The-Consensus-08-25",
+    "article_link": "https://theconsensus.dev/p/2026/08/23/another-look-at-sqlite-wal-reset.html",
+    "discussion_link": "https://lobste.rs/s/b15udy/another_look_at_sqlite_s_wal_reset_bug",
+    "title": "Another look at SQLite's WAL-Reset bug"
+  },
+  "@lobstersgram:378": {
+    "telegraph_link": "https://telegra.ph/Hunting-Down-a-Go-Runtime-Bug-on-32-bit-Embedded-Systems-08-25",
+    "article_link": "https://sigma-star.at/blog/2026/08/go-runtime-netpoll-bug/",
+    "discussion_link": "https://lobste.rs/s/apjhyj/hunting_down_go_runtime_bug_on_32_bit",
+    "title": "Hunting Down a Go Runtime Bug on 32-bit Embedded Systems"
   }
 }
