@@ -2236,5 +2236,29 @@
     "article_link": "https://infosec.exchange/@david_chisnall/117156204452541109",
     "discussion_link": "https://lobste.rs/s/ozkoqo/adding_cpu_affinity_24_core_build_machine",
     "title": "Adding CPU affinity in a 24-core build machine made builds take longer"
+  },
+  "@lobstersgram:381": {
+    "telegraph_link": "https://telegra.ph/Feature-comparison-of-ack-ag-git-grep-grep-and-ripgrep-08-25",
+    "article_link": "https://beyondgrep.com/feature-comparison/",
+    "discussion_link": "https://lobste.rs/s/vr7u5k/feature_comparison_ack_ag_git_grep_grep",
+    "title": "Feature comparison of ack, ag, git-grep, grep and ripgrep"
+  },
+  "@lobstersgram:382": {
+    "telegraph_link": "https://telegra.ph/Replacing-a-Rust-Enum-with-a-64-bit-Word-Made-My-Interpreter-17-Faster-08-25",
+    "article_link": "https://pointersgonewild.com/2026-08-25-replacing-a-rust-enum-with-a-64-bit-word/",
+    "discussion_link": "https://lobste.rs/s/gyi8v8/replacing_rust_enum_with_64_bit_word_made",
+    "title": "Replacing a Rust Enum with a 64-bit Word Made My Interpreter 17% Faster"
+  },
+  "@lobstersgram:383": {
+    "telegraph_link": "https://telegra.ph/C2PA-Cameras-Do-Not-Survive-Contact-With-Reality--Blog-08-25",
+    "article_link": "https://www.da.vidbuchanan.co.uk/blog/android-c2pa.html",
+    "discussion_link": "https://lobste.rs/s/4netv1/c2pa_cameras_do_not_survive_contact_with",
+    "title": "C2PA Cameras Do Not Survive Contact With Reality"
+  },
+  "@lobstersgram:384": {
+    "telegraph_link": "https://telegra.ph/I-stabilized-never-type--I-hate-reality-08-25",
+    "article_link": "https://blog.ihatereality.space/0C-never-type/",
+    "discussion_link": "https://lobste.rs/s/gizvfn/i_stabilized_never_type",
+    "title": "I stabilized never type"
   }
 }
