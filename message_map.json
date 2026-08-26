@@ -2392,5 +2392,17 @@
     "article_link": "https://rohanrd.mataroa.blog/blog/freedom-to-handcraft-software/",
     "discussion_link": "https://lobste.rs/s/fvvxvy/freedom_handcraft_software",
     "title": "Freedom to Handcraft Software"
+  },
+  "@lobstersgram:407": {
+    "telegraph_link": "https://telegra.ph/Building-textlog-without-JavaScript--GitHub-08-26",
+    "article_link": "https://gist.github.com/stagas/09ad937b493bf8cd3285917279de2488",
+    "discussion_link": "https://lobste.rs/s/nksuk5/building_textlog_without_javascript",
+    "title": "Building textlog without JavaScript"
+  },
+  "@lobstersgram:408": {
+    "telegraph_link": "https://telegra.ph/Getting-a-Cease-and-Desist-from-Waffle-House--Jacks-Blog-08-26",
+    "article_link": "https://www.jack.bio/blog/wafflehouse",
+    "discussion_link": "https://lobste.rs/s/erm1zp/getting_cease_desist_from_waffle_house",
+    "title": "Getting a Cease and Desist from Waffle House"
   }
 }
