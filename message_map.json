@@ -2302,5 +2302,11 @@
     "article_link": "https://w.on-t.work/dslable",
     "discussion_link": "https://lobste.rs/s/8emue2/beauty_dsl_able_languages",
     "title": "the beauty in dsl-able languages"
+  },
+  "@lobstersgram:392": {
+    "telegraph_link": "https://telegra.ph/mold-A-Massively-Parallel-Linker-08-26",
+    "article_link": "https://arxiv.org/abs/2608.23228",
+    "discussion_link": "https://lobste.rs/s/e291dc/mold_massively_parallel_linker",
+    "title": "mold: A Massively Parallel Linker"
   }
 }
