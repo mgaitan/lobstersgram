@@ -2338,5 +2338,11 @@
     "article_link": "https://jfmengels.net/concurrent-linter-fixes/",
     "discussion_link": "https://lobste.rs/s/3rtqua/problem_with_concurrent_linter_fixes",
     "title": "Problem with concurrent linter fixes"
+  },
+  "@lobstersgram:398": {
+    "telegraph_link": "https://telegra.ph/Understanding-Gos-syncMap-from-API-to-Hash-Trie-08-26-2",
+    "article_link": "https://victoriametrics.com/blog/go-sync-map-hash-trie/",
+    "discussion_link": "https://lobste.rs/s/oqno0v/understanding_go_s_sync_map_from_api_hash",
+    "title": "Understanding Go's sync.Map from API to Hash Trie"
   }
 }
