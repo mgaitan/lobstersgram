@@ -2308,5 +2308,23 @@
     "article_link": "https://arxiv.org/abs/2608.23228",
     "discussion_link": "https://lobste.rs/s/e291dc/mold_massively_parallel_linker",
     "title": "mold: A Massively Parallel Linker"
+  },
+  "@lobstersgram:393": {
+    "telegraph_link": "https://telegra.ph/Casey-Muratori--The-Root-of-The-Root-of-All-Evil--BSC-2026-08-26-3",
+    "article_link": "https://www.youtube.com/watch?v=hpj6r6CjJf8",
+    "discussion_link": "https://lobste.rs/s/p8exgy/casey_muratori_root_root_all_evil_bsc_2026",
+    "title": "Casey Muratori – The Root of The Root of All Evil – BSC 2026"
+  },
+  "@lobstersgram:394": {
+    "telegraph_link": "https://telegra.ph/Using-TypeScript-to-Obtain-One-of-the-Rarest-License-Plates--Jacks-Blog-08-26",
+    "article_link": "https://www.jack.bio/blog/licenseplate",
+    "discussion_link": "https://lobste.rs/s/jykbra/using_typescript_obtain_one_rarest",
+    "title": "Using TypeScript to Obtain One of the Rarest License Plates (2025)"
+  },
+  "@lobstersgram:395": {
+    "telegraph_link": "https://telegra.ph/Whats-in-a-tag-name-JavaScript-apparently--PortSwigger-Research-08-26",
+    "article_link": "https://portswigger.net/research/whats-in-a-tag-name-javascript-apparently",
+    "discussion_link": "https://lobste.rs/s/lbsvk7/what_s_tag_name_javascript_apparently",
+    "title": "What's in a tag name? JavaScript, apparently"
   }
 }
