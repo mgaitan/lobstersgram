@@ -2296,5 +2296,11 @@
     "article_link": "https://www.kurz.net/posts/fuzzing-gleam-compiler",
     "discussion_link": "https://lobste.rs/s/vddo8h/fuzzing_gleam_compiler",
     "title": "Fuzzing The Gleam Compiler"
+  },
+  "@lobstersgram:391": {
+    "telegraph_link": "https://telegra.ph/the-beauty-in-dsl-able-languages-08-26",
+    "article_link": "https://w.on-t.work/dslable",
+    "discussion_link": "https://lobste.rs/s/8emue2/beauty_dsl_able_languages",
+    "title": "the beauty in dsl-able languages"
   }
 }
