@@ -2344,5 +2344,23 @@
     "article_link": "https://victoriametrics.com/blog/go-sync-map-hash-trie/",
     "discussion_link": "https://lobste.rs/s/oqno0v/understanding_go_s_sync_map_from_api_hash",
     "title": "Understanding Go's sync.Map from API to Hash Trie"
+  },
+  "@lobstersgram:399": {
+    "telegraph_link": "https://telegra.ph/Lukas-Werner---Kinesis-Redux-08-26",
+    "article_link": "https://lukaswerner.com/post/2026-08-25@kinesis-advantage-build",
+    "discussion_link": "https://lobste.rs/s/ildmgi/fixing_my_kinesis_advantage",
+    "title": "Fixing my Kinesis Advantage"
+  },
+  "@lobstersgram:400": {
+    "telegraph_link": "https://telegra.ph/Merchants-of-Insecurity---One-Happy-Fellow---blog-08-26-2",
+    "article_link": "https://blog.happyfellow.dev/merchants-of-insecurity/",
+    "discussion_link": "https://lobste.rs/s/eove8s/merchants_insecurity",
+    "title": "Merchants of Insecurity"
+  },
+  "@lobstersgram:401": {
+    "telegraph_link": "https://telegra.ph/Memory-ordering-in-CPUs--The-ryg-blog-08-26",
+    "article_link": "https://fgiesen.wordpress.com/2026/08/25/memory-ordering-in-cpus/",
+    "discussion_link": "https://lobste.rs/s/idtlvo/memory_ordering_cpus",
+    "title": "Memory ordering in CPUs"
   }
 }
