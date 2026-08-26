@@ -2362,5 +2362,11 @@
     "article_link": "https://fgiesen.wordpress.com/2026/08/25/memory-ordering-in-cpus/",
     "discussion_link": "https://lobste.rs/s/idtlvo/memory_ordering_cpus",
     "title": "Memory ordering in CPUs"
+  },
+  "@lobstersgram:402": {
+    "telegraph_link": "https://telegra.ph/WebSockets-vs-SSE-should-be-about-ordering-and-correctness---Dashbit-Blog-08-26",
+    "article_link": "https://dashbit.co/blog/websockets-vs-sse",
+    "discussion_link": "https://lobste.rs/s/wski9u/websockets_vs_sse_should_be_about",
+    "title": "WebSockets vs. SSE should be about ordering and correctness"
   }
 }
