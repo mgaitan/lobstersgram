@@ -2422,5 +2422,29 @@
     "article_link": "https://asahilinux.org/2026/08/progress-report-7-2/",
     "discussion_link": "https://lobste.rs/s/6qxd8g/asahi_linux_progress_report_linux_7_2",
     "title": "Asahi Linux Progress Report: Linux 7.2"
+  },
+  "@lobstersgram:412": {
+    "telegraph_link": "https://telegra.ph/Symmetries-in-boolean-scans-08-27",
+    "article_link": "https://ap29600.github.io/boolean_scans.html",
+    "discussion_link": "https://lobste.rs/s/hzbkr2/symmetries_boolean_scans",
+    "title": "Symmetries in boolean scans"
+  },
+  "@lobstersgram:413": {
+    "telegraph_link": "https://telegra.ph/Bonsai-Blog--Fully-Managed-Elasticsearch--OpenSearch--Float-Bloat-vector-serialization-gone-wrong-08-27",
+    "article_link": "https://bonsai.io/blog/float-bloat/",
+    "discussion_link": "https://lobste.rs/s/m31l5c/float_bloat_vector_serialization_gone",
+    "title": "Float Bloat: vector serialization gone wrong"
+  },
+  "@lobstersgram:414": {
+    "telegraph_link": "https://telegra.ph/What-happens-when-a-GPU-reads-memory--Doubleword-08-27",
+    "article_link": "https://blog.doubleword.ai/what-happens-when-a-gpu-reads-memory",
+    "discussion_link": "https://lobste.rs/s/bkcjsa/what_happens_when_gpu_reads_memory",
+    "title": "What happens when a GPU reads memory"
+  },
+  "@lobstersgram:415": {
+    "telegraph_link": "https://telegra.ph/A-Million-Kakapos-08-27",
+    "article_link": "https://blog.mempko.com/a-million-kakapos/",
+    "discussion_link": "https://lobste.rs/s/ir1jkh/million_kakapos",
+    "title": "A Million Kakapos"
   }
 }
