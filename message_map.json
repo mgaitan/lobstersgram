@@ -2404,5 +2404,23 @@
     "article_link": "https://www.jack.bio/blog/wafflehouse",
     "discussion_link": "https://lobste.rs/s/erm1zp/getting_cease_desist_from_waffle_house",
     "title": "Getting a Cease and Desist from Waffle House"
+  },
+  "@lobstersgram:409": {
+    "telegraph_link": "https://telegra.ph/The-Power-of-Ten-Rules-for-Safety-Critical-Coding-by-Gerard-Holzmann-08-27",
+    "article_link": "https://www.youtube.com/watch?v=GRJtYwneG2Q",
+    "discussion_link": "https://lobste.rs/s/aecolw/power_ten_rules_for_safety_critical",
+    "title": "The Power of Ten: Rules for Safety Critical Coding"
+  },
+  "@lobstersgram:410": {
+    "telegraph_link": "https://telegra.ph/Rosenzweig---Dissecting-the-Apple-M1-GPU-the-end-08-27",
+    "article_link": "https://alyssarosenzweig.ca/blog/asahi-gpu-part-n.html",
+    "discussion_link": "https://lobste.rs/s/w2g5fx/dissectingthe_apple_m1_gpu_end",
+    "title": "Dissectingthe Apple M1 GPU, the end"
+  },
+  "@lobstersgram:411": {
+    "telegraph_link": "https://telegra.ph/Progress-Report-Linux-72---Asahi-Linux-08-27-2",
+    "article_link": "https://asahilinux.org/2026/08/progress-report-7-2/",
+    "discussion_link": "https://lobste.rs/s/6qxd8g/asahi_linux_progress_report_linux_7_2",
+    "title": "Asahi Linux Progress Report: Linux 7.2"
   }
 }
