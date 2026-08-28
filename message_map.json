@@ -2464,5 +2464,17 @@
     "article_link": "https://web.archive.org/web/20030201183139/http://mpt.phrasewise.com/discuss/msgReader$173",
     "discussion_link": "https://lobste.rs/s/a5qr8n/why_free_software_usability_tends_suck",
     "title": "Why Free Software usability tends to suck (2002)"
+  },
+  "@lobstersgram:419": {
+    "telegraph_link": "https://telegra.ph/tailscaletailcat--like-netcat-but-over-Tailscales-data-plane-without-Tailscales-control-plane-08-28",
+    "article_link": "https://github.com/tailscale/tailcat",
+    "discussion_link": "https://lobste.rs/s/pdvxvf/tailcat_like_netcat_over_tailscale_s_data",
+    "title": "tailcat: like netcat, but over Tailscale's data plane, without Tailscale's control plane"
+  },
+  "@lobstersgram:420": {
+    "telegraph_link": "https://telegra.ph/Talk-is-Cheap-Code-is-Cheap-Show-me-the-Source--Dilips-Log-08-28",
+    "article_link": "https://idlip.in/posts/show-me-source/",
+    "discussion_link": "https://lobste.rs/s/idizd1/talk_is_cheap_code_is_cheap_show_me_source",
+    "title": "Talk is Cheap. Code is Cheap. Show me the Source"
   }
 }
