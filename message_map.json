@@ -2446,5 +2446,23 @@
     "article_link": "https://blog.mempko.com/a-million-kakapos/",
     "discussion_link": "https://lobste.rs/s/ir1jkh/million_kakapos",
     "title": "A Million Kakapos"
+  },
+  "@lobstersgram:416": {
+    "telegraph_link": "https://telegra.ph/Announcing-Sovereign-Tech-Agency-Investment-in-Flatpak---Modal-Collective-08-28",
+    "article_link": "https://modal.cx/blog/announcing-flatpak-sta/",
+    "discussion_link": "https://lobste.rs/s/kvlafj/announcing_sovereign_tech_agency",
+    "title": "Announcing Sovereign Tech Agency Investment in Flatpak"
+  },
+  "@lobstersgram:417": {
+    "telegraph_link": "https://telegra.ph/Co-Creator-of-Haskell-Functional-Programming-Thinking-in-Types-Useless-Languages--Simon-Jones-08-28",
+    "article_link": "https://www.youtube.com/watch?v=xcB_LF3cdqw",
+    "discussion_link": "https://lobste.rs/s/ko74yd/simon_peyton_jones_on_functional",
+    "title": "Simon Peyton Jones on Functional Programming, Thinking in Types, Useless Languages"
+  },
+  "@lobstersgram:418": {
+    "telegraph_link": "https://telegra.ph/Why-Free-Software-usability-tends-to-suck-08-28",
+    "article_link": "https://web.archive.org/web/20030201183139/http://mpt.phrasewise.com/discuss/msgReader$173",
+    "discussion_link": "https://lobste.rs/s/a5qr8n/why_free_software_usability_tends_suck",
+    "title": "Why Free Software usability tends to suck (2002)"
   }
 }
