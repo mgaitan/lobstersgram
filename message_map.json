@@ -2542,5 +2542,35 @@
     "article_link": "https://hackaday.com/2026/08/28/reviving-an-sd-card-with-shorted-capacitors/",
     "discussion_link": "https://lobste.rs/s/s8x8xq/reviving_sd_card_with_shorted_capacitors",
     "title": "Reviving An SD Card With Shorted Capacitors"
+  },
+  "@lobstersgram:432": {
+    "telegraph_link": "https://telegra.ph/Civic-Hygiene---Terence-Edens-Blog-08-29",
+    "article_link": "https://shkspr.mobi/blog/2013/11/civic-hygiene/",
+    "discussion_link": "https://lobste.rs/s/tnmkfp/civic_hygiene_2013",
+    "title": "Civic Hygiene (2013)"
+  },
+  "@lobstersgram:433": {
+    "telegraph_link": "https://telegra.ph/Now-Hiring-Senior-Open-Source-Maintainer--Andrew-Nesbitt-08-29",
+    "article_link": "https://nesbitt.io/2026/08/28/now-hiring-senior-open-source-maintainer.html",
+    "discussion_link": "https://lobste.rs/s/p6kxjh/now_hiring_senior_open_source_maintainer",
+    "title": "Now Hiring: Senior Open Source Maintainer"
+  },
+  "@lobstersgram:434": {
+    "telegraph_link": "https://telegra.ph/Stopping-the-smart-TV-from-being-used-against-you---S-Config-08-29",
+    "article_link": "https://www.s-config.com/stopping-a-smart-tv-from-being-used-against-you/",
+    "discussion_link": "https://lobste.rs/s/nfvukc/stopping_smart_tv_from_being_used_against",
+    "title": "Stopping the smart TV from being used against you"
+  },
+  "@lobstersgram:435": {
+    "telegraph_link": "https://telegra.ph/Does-Computer-Science-Need-Computers--Quanta-Magazine-08-29",
+    "article_link": "https://www.quantamagazine.org/does-computer-science-need-computers-20260828/",
+    "discussion_link": "https://lobste.rs/s/xeedei/does_computer_science_need_computers",
+    "title": "Does Computer Science Need Computers?"
+  },
+  "@lobstersgram:436": {
+    "telegraph_link": "https://telegra.ph/How-I-made-Rustdoc-33-faster-in-one-week---Noah-Lev-Bartell-Mangel-08-29",
+    "article_link": "https://noahlev.org/blog/2026/08/27/making-rustdoc-faster/",
+    "discussion_link": "https://lobste.rs/s/ulkqhi/how_i_made_rustdoc_33_faster_one_week",
+    "title": "How I made Rustdoc 33% faster in one week"
   }
 }
