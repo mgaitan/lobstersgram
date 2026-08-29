@@ -2572,5 +2572,29 @@
     "article_link": "https://noahlev.org/blog/2026/08/27/making-rustdoc-faster/",
     "discussion_link": "https://lobste.rs/s/ulkqhi/how_i_made_rustdoc_33_faster_one_week",
     "title": "How I made Rustdoc 33% faster in one week"
+  },
+  "@lobstersgram:437": {
+    "telegraph_link": "https://telegra.ph/Quest-for-the-eternal-Dock---lambdock---jointhefreeworld-08-29",
+    "article_link": "https://jointhefreeworld.org/blog/articles/gnu-linux/quest-for-eternal-dock/index.html",
+    "discussion_link": "https://lobste.rs/s/lvspri/quest_for_eternal_dock_on_wayland",
+    "title": "Quest for eternal dock on Wayland - lambdock (C + GTK4 + Lisp GNU Guile Scheme)"
+  },
+  "@lobstersgram:438": {
+    "telegraph_link": "https://telegra.ph/todotgecanonical-basis--Canonical-basis-realignment-for-Transformer-LLMs-every-hidden-axis-becomes-independently-measurable-and--08-29",
+    "article_link": "https://github.com/todotge/canonical-basis",
+    "discussion_link": "https://lobste.rs/s/wg65qn/canonical_basis_realignment_for",
+    "title": "Canonical-basis realignment for Transformer LLMs: every hidden axis becomes independently measurable and controllable"
+  },
+  "@lobstersgram:439": {
+    "telegraph_link": "https://telegra.ph/EasyEffects-should-be-part-of-every-Linux-distribution-and-desktop-environment-to-massively-improve-laptop-speaker-sound-quality-08-29-5",
+    "article_link": "https://www.osnews.com/story/145883/easyeffects-should-be-part-of-every-linux-distribution-and-desktop-environment-to-massively-improve-laptop-speaker-sound-quality/",
+    "discussion_link": "https://lobste.rs/s/zhnpv1/easyeffects_should_be_part_every_linux",
+    "title": "EasyEffects should be part of every Linux distribution to improve laptop speaker sound quality"
+  },
+  "@lobstersgram:440": {
+    "telegraph_link": "https://telegra.ph/Debian-Votes-To-Allow-Responsible-Use-Of-Generative-AI---Phoronix-08-29",
+    "article_link": "https://www.phoronix.com/news/Debian-Votes-Responsible-AI-Use",
+    "discussion_link": "https://lobste.rs/s/34qdwx/debian_votes_allow_responsible_use",
+    "title": "Debian Votes To Allow \"Responsible Use Of Generative AI\""
   }
 }
