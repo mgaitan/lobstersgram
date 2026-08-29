@@ -2476,5 +2476,23 @@
     "article_link": "https://idlip.in/posts/show-me-source/",
     "discussion_link": "https://lobste.rs/s/idizd1/talk_is_cheap_code_is_cheap_show_me_source",
     "title": "Talk is Cheap. Code is Cheap. Show me the Source"
+  },
+  "@lobstersgram:421": {
+    "telegraph_link": "https://telegra.ph/Please-stop-flooding-our-projects-with-AI-slop-to-furnish-your-CV--neilalexanderdev-08-29",
+    "article_link": "https://neilalexander.dev/2026/06/30/flooding-contributions",
+    "discussion_link": "https://lobste.rs/s/rzvdqo/please_stop_flooding_our_projects_with_ai",
+    "title": "Please stop flooding our projects with AI slop to furnish your CV"
+  },
+  "@lobstersgram:422": {
+    "telegraph_link": "https://telegra.ph/25x-Performance-Three-Optimizations-08-29",
+    "article_link": "https://maplant.com/2025-04-20-25x-Performance,-Three-Optimizations.html",
+    "discussion_link": "https://lobste.rs/s/rhto2r/25x_performance_three_optimizations",
+    "title": "25x Performance, Three Optimizations"
+  },
+  "@lobstersgram:423": {
+    "telegraph_link": "https://telegra.ph/Rosenzweig---Hilariously-Fast-Volume-Computation-with-the-Divergence-Theorem-08-29",
+    "article_link": "https://alyssarosenzweig.ca/blog/hilariously-fast-volume-computation-with-the-divergence-theorem.html",
+    "discussion_link": "https://lobste.rs/s/dbavwl/hilariously_fast_volume_computation",
+    "title": "Hilariously Fast Volume Computation with the Divergence Theorem (2018)"
   }
 }
