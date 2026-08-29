@@ -2494,5 +2494,29 @@
     "article_link": "https://alyssarosenzweig.ca/blog/hilariously-fast-volume-computation-with-the-divergence-theorem.html",
     "discussion_link": "https://lobste.rs/s/dbavwl/hilariously_fast_volume_computation",
     "title": "Hilariously Fast Volume Computation with the Divergence Theorem (2018)"
+  },
+  "@lobstersgram:424": {
+    "telegraph_link": "https://telegra.ph/A-Perfect-SimCity--Articles-08-29-2",
+    "article_link": "https://www.jeffquast.com/post/a-perfect-simcity/",
+    "discussion_link": "https://lobste.rs/s/r4egb5/perfect_simcity",
+    "title": "A Perfect SimCity"
+  },
+  "@lobstersgram:425": {
+    "telegraph_link": "https://telegra.ph/zedeusnitter--Alternative-Twitter-front-end-08-29",
+    "article_link": "https://github.com/zedeus/nitter",
+    "discussion_link": "https://lobste.rs/s/zfhall/nitter_xcancel_shutdown_over_cease",
+    "title": "Nitter, XCancel Shutdown Over Cease-And-Desist"
+  },
+  "@lobstersgram:426": {
+    "telegraph_link": "https://telegra.ph/Changes-to-SourceHuts-terms-of-service-regarding-LLMs-08-29",
+    "article_link": "https://sourcehut.org/blog/2026-08-27-tos-changes-and-llms/",
+    "discussion_link": "https://lobste.rs/s/iqgrsx/changes_sourcehut_s_terms_service",
+    "title": "Changes to SourceHut's terms of service regarding LLMs"
+  },
+  "@lobstersgram:427": {
+    "telegraph_link": "https://telegra.ph/Nobody-Argued-For-Your-Stack---DEV-Community-08-29",
+    "article_link": "https://dev.to/playfulprogramming/nobody-argued-for-your-stack-51fj",
+    "discussion_link": "https://lobste.rs/s/hg2lbk/nobody_argued_for_your_stack",
+    "title": "Nobody Argued For Your Stack"
   }
 }
