@@ -2518,5 +2518,29 @@
     "article_link": "https://dev.to/playfulprogramming/nobody-argued-for-your-stack-51fj",
     "discussion_link": "https://lobste.rs/s/hg2lbk/nobody_argued_for_your_stack",
     "title": "Nobody Argued For Your Stack"
+  },
+  "@lobstersgram:428": {
+    "telegraph_link": "https://telegra.ph/How-we-saved-100-terabytes-of-memory-by-optimizing-1111s-DNS-cache--Cloudflare-Blog-08-29",
+    "article_link": "https://blog.cloudflare.com/dns-cache-memory-optimization-1111/",
+    "discussion_link": "https://lobste.rs/s/p7solr/how_we_saved_100_terabytes_memory_by",
+    "title": "How we saved 100 terabytes of memory by optimizing 1.1.1.1’s DNS cache"
+  },
+  "@lobstersgram:429": {
+    "telegraph_link": "https://telegra.ph/What-are-you-doing-this-weekend--Lobsters-08-29",
+    "article_link": "https://lobste.rs/s/oveaa3/what_are_you_doing_this_weekend",
+    "discussion_link": "https://lobste.rs/s/oveaa3/what_are_you_doing_this_weekend",
+    "title": "What are you doing this weekend?"
+  },
+  "@lobstersgram:430": {
+    "telegraph_link": "https://telegra.ph/Zero-Cost-Tagless-Final-in-Rust-with-GADT-style-Enums--Inferara-08-29",
+    "article_link": "https://inferara.com/blog/rust-tagless-final-gadt/",
+    "discussion_link": "https://lobste.rs/s/max8q6/zero_cost_tagless_final_rust_with_gadt",
+    "title": "Zero-Cost 'Tagless Final' in Rust with GADT-style Enums"
+  },
+  "@lobstersgram:431": {
+    "telegraph_link": "https://telegra.ph/Reviving-An-SD-Card-With-Shorted-Capacitors--Hackaday-08-29",
+    "article_link": "https://hackaday.com/2026/08/28/reviving-an-sd-card-with-shorted-capacitors/",
+    "discussion_link": "https://lobste.rs/s/s8x8xq/reviving_sd_card_with_shorted_capacitors",
+    "title": "Reviving An SD Card With Shorted Capacitors"
   }
 }
