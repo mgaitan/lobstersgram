@@ -2674,5 +2674,29 @@
     "article_link": "https://www.dampfkraft.com/posuto.html",
     "discussion_link": "https://lobste.rs/s/k9uxu5/parsing_infamous_japanese_postal_csv",
     "title": "Parsing the Infamous Japanese Postal CSV (2020)"
+  },
+  "@lobstersgram:454": {
+    "telegraph_link": "https://telegra.ph/A-SAT-Attack-on-Tarskis-High-School-Algebra-Problem-08-30",
+    "article_link": "https://arxiv.org/abs/2608.08421",
+    "discussion_link": "https://lobste.rs/s/syxqrd/sat_attack_on_tarski_s_high_school_algebra",
+    "title": "A SAT Attack on Tarski's High School Algebra Problem"
+  },
+  "@lobstersgram:455": {
+    "telegraph_link": "https://telegra.ph/HSK-Manga-Turning-Manga-into-Beginner-Level-Chinese-08-30",
+    "article_link": "https://hskmanga.com/blog/",
+    "discussion_link": "https://lobste.rs/s/fkcpnp/hsk_manga_turning_manga_into_beginner",
+    "title": "HSK Manga: Turning Manga into Beginner-Level Chinese"
+  },
+  "@lobstersgram:456": {
+    "telegraph_link": "https://telegra.ph/Debugging-Type-Based-Alias-Analysis-optimizations-in-BPF-08-30",
+    "article_link": "https://loshz.com/debugging-bpf-tbaa/",
+    "discussion_link": "https://lobste.rs/s/pkqqr5/debugging_type_based_alias_analysis",
+    "title": "Debugging Type-Based Alias Analysis optimizations in BPF"
+  },
+  "@lobstersgram:457": {
+    "telegraph_link": "https://telegra.ph/iterate-think-thoughts-Wrapping-GTK4-in-800-lines-of-Clojure-with-Jolt-08-30",
+    "article_link": "https://yogthos.net/posts/2026-08-29-glimmer-ui.html",
+    "discussion_link": "https://lobste.rs/s/svga6q/wrapping_gtk4_800_lines_clojure_with_jolt",
+    "title": "Wrapping GTK4 in 800 lines of Clojure with Jolt"
   }
 }
