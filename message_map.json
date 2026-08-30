@@ -2620,5 +2620,35 @@
     "article_link": "https://beza1e1.tuxen.de/lore/print_on_tuesday.html",
     "discussion_link": "https://lobste.rs/s/im3eeh/openoffice_does_not_print_on_tuesdays",
     "title": "OpenOffice does not print on Tuesdays (2009)"
+  },
+  "@lobstersgram:445": {
+    "telegraph_link": "https://telegra.ph/Any-true-alternatives-to-electron-JavaScript--Lobsters-08-30",
+    "article_link": "https://lobste.rs/s/vji9aj/any_true_alternatives_electron",
+    "discussion_link": "https://lobste.rs/s/vji9aj/any_true_alternatives_electron",
+    "title": "Any true alternatives to electron JavaScript?"
+  },
+  "@lobstersgram:446": {
+    "telegraph_link": "https://telegra.ph/Gram-330-released-08-30",
+    "article_link": "https://gram-editor.com/posts/release-3.3.0/",
+    "discussion_link": "https://lobste.rs/s/rr2irk/gram_editor_3_3_0_released",
+    "title": "Gram Editor 3.3.0 Released"
+  },
+  "@lobstersgram:447": {
+    "telegraph_link": "https://telegra.ph/htmx-400-has-been-released--htmx-08-30",
+    "article_link": "https://four.htmx.org/announcements/2026-08-28-htmx-4.0.0-is-released",
+    "discussion_link": "https://lobste.rs/s/77uge9/htmx_4_0_0_has_been_released",
+    "title": "htmx 4.0.0 has been released"
+  },
+  "@lobstersgram:448": {
+    "telegraph_link": "https://telegra.ph/Breaking-Claude-Code-Opus-5-Auto-Mode--Embrace-The-Red-08-30",
+    "article_link": "https://embracethered.com/blog/posts/2026/breaking-claude-code-opus-5-and-automode/",
+    "discussion_link": "https://lobste.rs/s/ktbweg/prompt_injection_claude_code_opus_5_auto",
+    "title": "Prompt Injection in Claude Code Opus 5 Auto Mode"
+  },
+  "@lobstersgram:449": {
+    "telegraph_link": "https://telegra.ph/Yap-a-particular-kind-of-slop-08-30",
+    "article_link": "https://mckayla.blog/posts/yap.html",
+    "discussion_link": "https://lobste.rs/s/xr1eor/yap_particular_kind_slop",
+    "title": "Yap: a particular kind of slop"
   }
 }
