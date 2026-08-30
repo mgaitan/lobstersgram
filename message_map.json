@@ -2596,5 +2596,29 @@
     "article_link": "https://www.phoronix.com/news/Debian-Votes-Responsible-AI-Use",
     "discussion_link": "https://lobste.rs/s/34qdwx/debian_votes_allow_responsible_use",
     "title": "Debian Votes To Allow \"Responsible Use Of Generative AI\""
+  },
+  "@lobstersgram:441": {
+    "telegraph_link": "https://telegra.ph/Omnipresent-availability-risks-in-cloud-software---Surfing-Complexity-08-30",
+    "article_link": "https://surfingcomplexity.blog/2026/08/29/omnipresent-availability-risks-in-cloud-software/",
+    "discussion_link": "https://lobste.rs/s/m3brob/omnipresent_availability_risks_cloud",
+    "title": "Omnipresent availability risks in cloud software"
+  },
+  "@lobstersgram:442": {
+    "telegraph_link": "https://telegra.ph/GUIs-should-be-fully-keyboard-driven--Charalampos-Kardaris-08-30",
+    "article_link": "https://ckardaris.com/blog/2026/08/28/keyboard-driven-guis.html",
+    "discussion_link": "https://lobste.rs/s/qlpiur/guis_should_be_fully_keyboard_driven",
+    "title": "GUIs should be fully keyboard-driven"
+  },
+  "@lobstersgram:443": {
+    "telegraph_link": "https://telegra.ph/Just-a-rumour-of-a-bug-is-enough-to-find-a-security-exploit-these-days--Anil-Madhavapeddy-08-30",
+    "article_link": "https://anil.recoil.org/notes/rumour-is-the-exploit",
+    "discussion_link": "https://lobste.rs/s/t73wqi/just_rumour_bug_is_enough_find_security",
+    "title": "Just a rumour of a bug is enough to find a security exploit these days"
+  },
+  "@lobstersgram:444": {
+    "telegraph_link": "https://telegra.ph/OpenOffice-does-not-print-on-Tuesdays--Andreas-Zwinkau-08-30",
+    "article_link": "https://beza1e1.tuxen.de/lore/print_on_tuesday.html",
+    "discussion_link": "https://lobste.rs/s/im3eeh/openoffice_does_not_print_on_tuesdays",
+    "title": "OpenOffice does not print on Tuesdays (2009)"
   }
 }
