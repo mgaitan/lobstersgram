@@ -2650,5 +2650,29 @@
     "article_link": "https://mckayla.blog/posts/yap.html",
     "discussion_link": "https://lobste.rs/s/xr1eor/yap_particular_kind_slop",
     "title": "Yap: a particular kind of slop"
+  },
+  "@lobstersgram:450": {
+    "telegraph_link": "https://telegra.ph/The-essence-of-architectural-work---Part-6-08-30",
+    "article_link": "https://www.ufried.com/blog/essence_of_architecture_6/",
+    "discussion_link": "https://lobste.rs/s/kgtvxb/essence_architectural_work_part_6",
+    "title": "The essence of architectural work - Part 6"
+  },
+  "@lobstersgram:451": {
+    "telegraph_link": "https://telegra.ph/OpenWrt-Monitor-your-IPv6-Status---Ralfs-Blog-08-30",
+    "article_link": "https://bergs.biz/blog/2026/08/30/openwrt-monitor-your-ipv6-status/",
+    "discussion_link": "https://lobste.rs/s/zaavff/openwrt_monitor_your_ipv6_status",
+    "title": "OpenWrt: Monitor your IPv6 Status"
+  },
+  "@lobstersgram:452": {
+    "telegraph_link": "https://telegra.ph/On-Taste---Matti-Ryttyläinen-08-30",
+    "article_link": "https://www.mattiryttylainen.com/posts/on-taste",
+    "discussion_link": "https://lobste.rs/s/s7ulwg/on_taste",
+    "title": "On Taste"
+  },
+  "@lobstersgram:453": {
+    "telegraph_link": "https://telegra.ph/Parsing-the-Infamous-Japanese-Postal-CSV-08-30",
+    "article_link": "https://www.dampfkraft.com/posuto.html",
+    "discussion_link": "https://lobste.rs/s/k9uxu5/parsing_infamous_japanese_postal_csv",
+    "title": "Parsing the Infamous Japanese Postal CSV (2020)"
   }
 }
