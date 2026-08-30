@@ -2698,5 +2698,35 @@
     "article_link": "https://yogthos.net/posts/2026-08-29-glimmer-ui.html",
     "discussion_link": "https://lobste.rs/s/svga6q/wrapping_gtk4_800_lines_clojure_with_jolt",
     "title": "Wrapping GTK4 in 800 lines of Clojure with Jolt"
+  },
+  "@lobstersgram:458": {
+    "telegraph_link": "https://telegra.ph/Parallel-mathcal-Osqrt-n-Overhead-LSD-Radix-Sort-08-30",
+    "article_link": "https://arxiv.org/abs/2607.05302",
+    "discussion_link": "https://lobste.rs/s/9ac8ta/parallel_o_sqrt_n_overhead_lsd_radix_sort",
+    "title": "Parallel O(sqrt n) Overhead LSD Radix Sort"
+  },
+  "@lobstersgram:459": {
+    "telegraph_link": "https://telegra.ph/What-GLM-53-Flash-running-on-Chinese-hardware-actually-means---Martin-Alderson-08-30",
+    "article_link": "https://martinalderson.com/posts/glm-5-3-flash-chinese-hardware/",
+    "discussion_link": "https://lobste.rs/s/wsbhcr/what_glm_5_3_flash_running_on_chinese",
+    "title": "What GLM-5.3 Flash running on Chinese hardware actually means"
+  },
+  "@lobstersgram:460": {
+    "telegraph_link": "https://telegra.ph/Bug-blindness-08-30-10",
+    "article_link": "https://danluu.com/bug-blind/",
+    "discussion_link": "https://lobste.rs/s/n1jlxt/bug_blindness",
+    "title": "Bug blindness"
+  },
+  "@lobstersgram:461": {
+    "telegraph_link": "https://telegra.ph/Aiki-Alpha-3-Released---decusers-blog-08-30",
+    "article_link": "https://decuser.github.io/posts/aiki-alpha-3-release/",
+    "discussion_link": "https://lobste.rs/s/hutycp/aiki_alpha_3_released_performance",
+    "title": "Aiki Alpha 3 Released - Performance Improved"
+  },
+  "@lobstersgram:462": {
+    "telegraph_link": "https://telegra.ph/Debian-and-the-sirens-08-30",
+    "article_link": "https://joeyh.name/blog/entry/Debian_and_the_sirens/",
+    "discussion_link": "https://lobste.rs/s/pxmp9r/debian_sirens",
+    "title": "Debian and the sirens"
   }
 }
