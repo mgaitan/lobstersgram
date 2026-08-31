@@ -2782,5 +2782,17 @@
     "article_link": "https://www.phoronix.com/news/California-AB-1856-Passes",
     "discussion_link": "https://lobste.rs/s/pcldcc/california_passes_ab_1856_for_open_source",
     "title": "California Passes AB-1856 For Open-Source Relief Over Age Verification"
+  },
+  "@lobstersgram:472": {
+    "telegraph_link": "https://telegra.ph/C26-Standard-Library-Hardening-Experiments---C-Stories-08-31-2",
+    "article_link": "https://www.cppstories.com/2026/hardening-experiments/",
+    "discussion_link": "https://lobste.rs/s/qtakqk/c_26_standard_library_hardening",
+    "title": "C++26: Standard Library Hardening Experiments"
+  },
+  "@lobstersgram:473": {
+    "telegraph_link": "https://telegra.ph/Bootstrappable-builds-how-and-why-LWNnet-08-31",
+    "article_link": "https://lwn.net/Articles/1088279/",
+    "discussion_link": "https://lobste.rs/s/xygw0y/bootstrappable_builds_how_why",
+    "title": "Bootstrappable builds: how and why"
   }
 }
