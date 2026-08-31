@@ -2728,5 +2728,35 @@
     "article_link": "https://joeyh.name/blog/entry/Debian_and_the_sirens/",
     "discussion_link": "https://lobste.rs/s/pxmp9r/debian_sirens",
     "title": "Debian and the sirens"
+  },
+  "@lobstersgram:463": {
+    "telegraph_link": "https://telegra.ph/RailsConf-2014---All-the-Little-Things-by-Sandi-Metz-08-31",
+    "article_link": "https://www.youtube.com/watch?v=8bZh5LMaSmE",
+    "discussion_link": "https://lobste.rs/s/gtarrm/all_little_things_2014",
+    "title": "All the Little Things (2014)"
+  },
+  "@lobstersgram:464": {
+    "telegraph_link": "https://telegra.ph/One-flake-to-rule-them-all--Farid-Zakarias-Blog-08-31",
+    "article_link": "https://fzakaria.com/2026/08/28/one-flake-to-rule-them-all",
+    "discussion_link": "https://lobste.rs/s/qjbw27/one_flake_rule_them_all",
+    "title": "One flake to rule them all"
+  },
+  "@lobstersgram:465": {
+    "telegraph_link": "https://telegra.ph/smooresdev---Automating-immersive-reading-08-31",
+    "article_link": "https://smoores.dev/post/automating_immersive_reading/",
+    "discussion_link": "https://lobste.rs/s/n1h6mh/automating_immersive_reading",
+    "title": "Automating immersive reading"
+  },
+  "@lobstersgram:466": {
+    "telegraph_link": "https://telegra.ph/sorvi-platformdekoodaaja--Providers-fast-decoders-for-various-image-formats-Currently-only-QOI-08-31",
+    "article_link": "https://github.com/sorvi-platform/dekoodaaja",
+    "discussion_link": "https://lobste.rs/s/wdke4a/small_reasonably_fast_qoi_decoder",
+    "title": "Small and reasonably fast QOI decoder written in zig"
+  },
+  "@lobstersgram:467": {
+    "telegraph_link": "https://telegra.ph/Interview-With-Oofoe-08-31",
+    "article_link": "https://alexalejandre.com/interviews/interview-with-oofoe/",
+    "discussion_link": "https://lobste.rs/s/3ccvfi/interview_with_oofoe_about_rebol_forth",
+    "title": "Interview with oofoe about REBOL, Forth, Decker, Janet and the VFx Industry"
   }
 }
