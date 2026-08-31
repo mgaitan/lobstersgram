@@ -12,10 +12,18 @@ dependencies = [
     "jinja2>=3.1.6",
     "markdown-this>=0.1.6",
     "md-to-telegraph>=0.1.6",
-    "redis>=6.4.0",
     "requests>=2.32.5",
     "uvicorn[standard]>=0.35.0",
 ]
+
+[project.optional-dependencies]
+jobs = ["redis>=6.4.0"]
+
+[dependency-groups]
+deploy = ["redis>=6.4.0"]
+
+[tool.uv]
+default-groups = ["deploy"]
 
 [project.urls]
 Homepage = "https://github.com/mgaitan/lobstersgram/tree/master/packages/markdown-web"

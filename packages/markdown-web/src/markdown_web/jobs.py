@@ -9,11 +9,10 @@ import secrets
 import time
 from contextlib import suppress
 from functools import lru_cache
-from typing import Literal
+from importlib import import_module
+from typing import Literal, Protocol
 
 from pydantic import BaseModel, Field
-from redis import Redis
-from redis.exceptions import RedisError
 
 from markdown_web.schemas import SourceMetadata, SourceRequest
 from markdown_web.service import (
@@ -56,7 +55,7 @@ class JobsUnavailableError(JobError):
     """Raised when Redis-backed jobs are not configured."""
 
     def __init__(self) -> None:
-        super().__init__("Publishing jobs require REDIS_URL")
+        super().__init__("Publishing jobs require REDIS_URL and the markdown-web[jobs] extra")
 
 
 class JobInputError(JobError):
@@ -75,6 +74,19 @@ class JobBusyError(JobError):
 
     def __init__(self, job_id: str) -> None:
         super().__init__(f"Publishing job is already running: {job_id}")
+
+
+class RedisClient(Protocol):
+    """Small redis-py surface used by the job store."""
+
+    def set(self, name: str, value: str, *, ex: int, nx: bool = False) -> object:
+        """Set a value with expiry and optional create-only behavior."""
+
+    def get(self, name: str) -> str | bytes | None:
+        """Return a stored value."""
+
+    def eval(self, script: str, numkeys: int, *keys_and_args: str) -> object:
+        """Evaluate the lock release script."""
 
 
 class StoredArticle(BaseModel):
@@ -143,11 +155,15 @@ class JobState(BaseModel):
 
 
 @lru_cache(maxsize=4)
-def _redis_client_for_url(url: str) -> Redis:
-    return Redis.from_url(url, decode_responses=True)
+def _redis_client_for_url(url: str) -> RedisClient:
+    try:
+        redis_module = import_module("redis")
+    except ModuleNotFoundError as exc:
+        raise JobsUnavailableError from exc
+    return redis_module.Redis.from_url(url, decode_responses=True)
 
 
-def _redis_client() -> Redis:
+def _redis_client() -> RedisClient:
     if not (url := os.getenv("REDIS_URL")):
         raise JobsUnavailableError
     return _redis_client_for_url(url)
@@ -166,7 +182,7 @@ def _validate_job_id(job_id: str) -> None:
         raise JobNotFoundError(job_id)
 
 
-def _save_job(client: Redis, state: JobState, *, only_if_missing: bool = False) -> bool:
+def _save_job(client: RedisClient, state: JobState, *, only_if_missing: bool = False) -> bool:
     saved = client.set(
         _job_key(state.id),
         state.model_dump_json(),
@@ -176,7 +192,7 @@ def _save_job(client: Redis, state: JobState, *, only_if_missing: bool = False) 
     return bool(saved)
 
 
-def _load_job(client: Redis, job_id: str) -> JobState:
+def _load_job(client: RedisClient, job_id: str) -> JobState:
     _validate_job_id(job_id)
     if not (raw := client.get(_job_key(job_id))):
         raise JobNotFoundError(job_id)
@@ -288,5 +304,5 @@ def run_job(job_id: str) -> JobState:
         _save_job(client, state)
         return state
     finally:
-        with suppress(RedisError):
+        with suppress(Exception):
             client.eval(RELEASE_LOCK_SCRIPT, 1, _lock_key(job_id), lock_token)
