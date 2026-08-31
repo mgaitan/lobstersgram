@@ -173,19 +173,6 @@ def test_jobs_require_markdown_and_redis(monkeypatch: pytest.MonkeyPatch) -> Non
         jobs.create_job(SourceRequest(markdown="# Page"))
 
 
-def test_jobs_extra_is_loaded_only_when_used(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setenv("REDIS_URL", "redis://example.com")
-    jobs._redis_client_for_url.cache_clear()
-
-    def missing_redis(_name: str) -> object:
-        raise ModuleNotFoundError
-
-    monkeypatch.setattr(jobs, "import_module", missing_redis)
-
-    with pytest.raises(jobs.JobsUnavailableError, match=r"markdown-web\[jobs\]"):
-        jobs.get_job("a" * 32)
-
-
 def test_get_job_rejects_unknown_identifier(monkeypatch: pytest.MonkeyPatch) -> None:
     _use_fake_redis(monkeypatch)
 

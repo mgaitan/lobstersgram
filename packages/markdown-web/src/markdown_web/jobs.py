@@ -9,9 +9,9 @@ import secrets
 import time
 from contextlib import suppress
 from functools import lru_cache
-from importlib import import_module
 from typing import Literal, Protocol
 
+import redis
 from pydantic import BaseModel, Field
 
 from markdown_web.schemas import SourceMetadata, SourceRequest
@@ -55,7 +55,7 @@ class JobsUnavailableError(JobError):
     """Raised when Redis-backed jobs are not configured."""
 
     def __init__(self) -> None:
-        super().__init__("Publishing jobs require REDIS_URL and the markdown-web[jobs] extra")
+        super().__init__("Publishing jobs require REDIS_URL")
 
 
 class JobInputError(JobError):
@@ -156,11 +156,7 @@ class JobState(BaseModel):
 
 @lru_cache(maxsize=4)
 def _redis_client_for_url(url: str) -> RedisClient:
-    try:
-        redis_module = import_module("redis")
-    except ModuleNotFoundError as exc:
-        raise JobsUnavailableError from exc
-    return redis_module.Redis.from_url(url, decode_responses=True)
+    return redis.Redis.from_url(url, decode_responses=True)
 
 
 def _redis_client() -> RedisClient:

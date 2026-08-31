@@ -12,9 +12,7 @@ uv run --package markdown-web markdown-web
 Open <http://127.0.0.1:8000/>. Set `TELEGRAPH_API_TOKEN` to use an existing
 Telegraph account. When it is absent, the service creates one lazily and keeps
 the token in memory for the lifetime of the process. Set `REDIS_URL` to enable
-optional durable publishing jobs and install them with
-`pip install "markdown-web[jobs]"`; synchronous routes and the base installation
-do not require Redis.
+durable publishing jobs; without it, synchronous publishing continues to work.
 
 ## HTTP API
 
