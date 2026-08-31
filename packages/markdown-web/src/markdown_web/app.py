@@ -14,8 +14,9 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from md_to_telegraph import TelegraphContentError
 
+from markdown_web import jobs
 from markdown_web.bookmarklet import build_bookmarklets
-from markdown_web.schemas import SourceMetadata, SourceRequest, TelegraphResponse
+from markdown_web.schemas import SourceMetadata, SourceRequest, TelegraphJobResponse, TelegraphResponse
 from markdown_web.service import (
     SourceError,
     list_published_pages,
@@ -24,7 +25,7 @@ from markdown_web.service import (
 )
 
 app = FastAPI(title="Markdown Web", description="Extract Markdown and publish it to Telegraph")
-app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["POST"], allow_headers=["*"])
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["GET", "POST"], allow_headers=["*"])
 PACKAGE_DIR = Path(__file__).resolve().parent
 templates = Jinja2Templates(directory=str(PACKAGE_DIR / "templates"))
 app.mount("/static", StaticFiles(directory=PACKAGE_DIR / "static"), name="static")
@@ -106,6 +107,40 @@ def _handle_source_error(exc: Exception) -> HTTPException:
     return HTTPException(status_code=502, detail=str(exc))
 
 
+def _handle_job_error(exc: Exception) -> HTTPException:
+    if isinstance(exc, jobs.JobsUnavailableError):
+        return HTTPException(status_code=503, detail=str(exc))
+    if isinstance(exc, jobs.JobNotFoundError):
+        return HTTPException(status_code=404, detail=str(exc))
+    if isinstance(exc, jobs.JobBusyError):
+        return HTTPException(status_code=409, detail=str(exc))
+    if isinstance(exc, jobs.JobInputError):
+        return HTTPException(status_code=422, detail=str(exc))
+    return _handle_source_error(exc)
+
+
+def _job_response(state: jobs.JobState) -> JSONResponse:
+    job_url = f"{SITE_URL}/t/jobs/{state.id}"
+    payload = TelegraphJobResponse(
+        id=state.id,
+        status=state.status,
+        completed=state.completed_steps,
+        total=state.total_steps,
+        status_url=job_url,
+        run_url=f"{job_url}/run",
+        url=state.brief_url or None,
+        error=state.error or None,
+        source_url=state.failed_source or None,
+    )
+    if state.status == "completed":
+        status_code = 200
+    elif state.status == "failed":
+        status_code = 422
+    else:
+        status_code = 202
+    return JSONResponse(payload.model_dump(mode="json"), status_code=status_code)
+
+
 def _authorization_token(request: Request) -> str:
     value = request.headers.get("authorization", "")
     scheme, _, token = value.partition(" ")
@@ -172,6 +207,52 @@ def telegraph_published(request: Request) -> HTMLResponse:
         name="log.html",
         context={"pages": pages, "total_count": total_count, "site_url": SITE_URL},
     )
+
+
+@app.post(
+    "/t/jobs",
+    response_model=TelegraphJobResponse,
+    status_code=202,
+    responses={200: {"model": TelegraphJobResponse}},
+    openapi_extra=_source_request_openapi(),
+)
+async def create_telegraph_job(request: Request) -> JSONResponse:
+    source = await _request_data(request)
+    if not source.access_token:
+        source = source.model_copy(update={"access_token": _authorization_token(request) or None})
+    try:
+        state = jobs.create_job(source)
+    except Exception as exc:
+        raise _handle_job_error(exc) from exc
+    return _job_response(state)
+
+
+@app.get(
+    "/t/jobs/{job_id}",
+    response_model=TelegraphJobResponse,
+    status_code=202,
+    responses={200: {"model": TelegraphJobResponse}},
+)
+def telegraph_job_status(job_id: str) -> JSONResponse:
+    try:
+        state = jobs.get_job(job_id)
+    except Exception as exc:
+        raise _handle_job_error(exc) from exc
+    return _job_response(state)
+
+
+@app.post(
+    "/t/jobs/{job_id}/run",
+    response_model=TelegraphJobResponse,
+    status_code=202,
+    responses={200: {"model": TelegraphJobResponse}},
+)
+def run_telegraph_job(job_id: str) -> JSONResponse:
+    try:
+        state = jobs.run_job(job_id)
+    except Exception as exc:
+        raise _handle_job_error(exc) from exc
+    return _job_response(state)
 
 
 @app.get("/t/{url:path}")

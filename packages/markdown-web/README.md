@@ -11,7 +11,8 @@ uv run --package markdown-web markdown-web
 
 Open <http://127.0.0.1:8000/>. Set `TELEGRAPH_API_TOKEN` to use an existing
 Telegraph account. When it is absent, the service creates one lazily and keeps
-the token in memory for the lifetime of the process.
+the token in memory for the lifetime of the process. Set `REDIS_URL` to enable
+optional durable publishing jobs; synchronous routes do not require Redis.
 
 ## HTTP API
 
@@ -61,6 +62,27 @@ Editorial context.
 linked image, title, introduction, and Telegraph link, and adds navigation back
 to the brief plus the previous and next curated articles. Marker order controls
 navigation, and a repeated URL is published once within the brief.
+
+### Optional jobs
+
+For a long brief, `POST /t/jobs` accepts the same Markdown JSON body and returns
+HTTP `202` with a job `id`, `status_url`, and `run_url`. Call `POST <run_url>`
+until it returns HTTP `200` with `status: completed` and the final Telegraph
+`url`. Each call advances one bounded publishing stage. `GET <status_url>` reads
+progress without changing it.
+
+Job state and locks are stored in Redis for 48 hours. Sending the same Markdown
+and metadata during that period returns the same job. A failed stage returns
+HTTP `422` with its error and source URL and can be retried by posting to the
+same `run_url`. Jobs use the service's configured Telegraph account and reject
+client access tokens. When `REDIS_URL` is absent, only the job endpoints return
+HTTP `503`; `POST /t` continues to work synchronously.
+
+```bash
+curl -X POST http://127.0.0.1:8000/t/jobs \
+  -H 'content-type: application/json' \
+  -d '{"markdown":"# Weekend brief\n\n![card](https://example.com/article)"}'
+```
 
 Agents can read `/llms.txt` for the endpoint contract, accepted YAML front
 matter, and examples. The machine-readable contract is FastAPI's existing

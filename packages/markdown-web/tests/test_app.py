@@ -6,8 +6,11 @@ from markdown_web.service import PreparedContent
 from md_to_telegraph import TelegraphContentError
 from starlette.status import (
     HTTP_200_OK,
+    HTTP_202_ACCEPTED,
     HTTP_303_SEE_OTHER,
+    HTTP_404_NOT_FOUND,
     HTTP_422_UNPROCESSABLE_CONTENT,
+    HTTP_503_SERVICE_UNAVAILABLE,
 )
 
 client = TestClient(app_module.app)
@@ -15,6 +18,22 @@ client = TestClient(app_module.app)
 
 def _prepared(markdown: str = "# Title\n\nBody") -> PreparedContent:
     return PreparedContent("Title", markdown, "Fallback", SourceMetadata())
+
+
+def _job_state(status: app_module.jobs.JobStatus = "queued") -> app_module.jobs.JobState:
+    state = app_module.jobs.JobState(
+        id="a" * 32,
+        status=status,
+        request=SourceRequest(markdown="# Brief"),
+        created_at=1,
+        updated_at=1,
+    )
+    if status == "completed":
+        state.brief_url = "https://telegra.ph/brief"
+    if status == "failed":
+        state.error = "source failed"
+        state.failed_source = "https://example.com/article"
+    return state
 
 
 def test_home_and_static_assets() -> None:
@@ -50,6 +69,8 @@ def test_llms_describes_agent_contract() -> None:
     assert "POST /t" in response.text
     assert "`title`, `author`, `url`, `date`, `image`, and `type`" in response.text
     assert "![card](https://example.com/article)" in response.text
+    assert "POST /t/jobs" in response.text
+    assert "POST <run_url>" in response.text
     assert "https://markdown.fastapicloud.dev/openapi.json" in response.text
 
 
@@ -64,6 +85,10 @@ def test_openapi_describes_post_bodies_and_publish_response() -> None:
     publish_post = schema["paths"]["/t"]["post"]
     assert publish_post["responses"]["200"]["content"]["application/json"]["schema"]["$ref"] == (
         "#/components/schemas/TelegraphResponse"
+    )
+    assert (
+        schema["paths"]["/t/jobs"]["post"]["responses"]["202"]["content"]["application/json"]["schema"]["$ref"]
+        == "#/components/schemas/TelegraphJobResponse"
     )
 
 
@@ -149,6 +174,67 @@ def test_post_telegraph_returns_json_and_accepts_bearer_token(monkeypatch: pytes
     assert response.status_code == HTTP_200_OK
     assert response.json() == {"url": "https://telegra.ph/page"}
     assert seen["source"].access_token == "request-token"
+
+
+def test_create_telegraph_job_returns_polling_urls(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(app_module.jobs, "create_job", lambda _source: _job_state())
+
+    response = client.post("/t/jobs", json={"markdown": "# Brief"})
+
+    assert response.status_code == HTTP_202_ACCEPTED
+    assert response.json() == {
+        "id": "a" * 32,
+        "status": "queued",
+        "completed": 0,
+        "total": 1,
+        "status_url": f"https://markdown.fastapicloud.dev/t/jobs/{'a' * 32}",
+        "run_url": f"https://markdown.fastapicloud.dev/t/jobs/{'a' * 32}/run",
+        "url": None,
+        "error": None,
+        "source_url": None,
+    }
+
+
+def test_job_status_returns_completed_url_before_catch_all_route(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(app_module.jobs, "get_job", lambda _job_id: _job_state("completed"))
+
+    response = client.get(f"/t/jobs/{'a' * 32}")
+
+    assert response.status_code == HTTP_200_OK
+    assert response.json()["status"] == "completed"
+    assert response.json()["url"] == "https://telegra.ph/brief"
+
+
+def test_run_job_reports_failure_and_source(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(app_module.jobs, "run_job", lambda _job_id: _job_state("failed"))
+
+    response = client.post(f"/t/jobs/{'a' * 32}/run")
+
+    assert response.status_code == HTTP_422_UNPROCESSABLE_CONTENT
+    assert response.json()["error"] == "source failed"
+    assert response.json()["source_url"] == "https://example.com/article"
+
+
+@pytest.mark.parametrize(
+    ("error", "status_code"),
+    [
+        (app_module.jobs.JobsUnavailableError(), HTTP_503_SERVICE_UNAVAILABLE),
+        (app_module.jobs.JobNotFoundError("missing"), HTTP_404_NOT_FOUND),
+    ],
+)
+def test_job_routes_map_storage_errors(
+    monkeypatch: pytest.MonkeyPatch,
+    error: Exception,
+    status_code: int,
+) -> None:
+    def fail(_job_id: str) -> app_module.jobs.JobState:
+        raise error
+
+    monkeypatch.setattr(app_module.jobs, "get_job", fail)
+
+    response = client.get(f"/t/jobs/{'a' * 32}")
+
+    assert response.status_code == status_code
 
 
 def test_bookmarklet_post_redirects_without_fetch_or_cors(monkeypatch: pytest.MonkeyPatch) -> None:

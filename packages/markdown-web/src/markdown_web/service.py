@@ -197,7 +197,7 @@ def prepare_content(request: SourceRequest) -> PreparedContent:
     )
 
 
-def _publish_prepared(prepared: PreparedContent, token: str) -> str:
+def _publish_prepared(prepared: PreparedContent, token: str, *, warm_cache: bool = True) -> str:
     return create_page(
         title=prepared.title or None,
         content_markdown=prepared.markdown,
@@ -205,6 +205,7 @@ def _publish_prepared(prepared: PreparedContent, token: str) -> str:
         source_url=prepared.metadata.url,
         author_name=prepared.metadata.author,
         access_token=token,
+        warm_cache=warm_cache,
     )
 
 
@@ -246,39 +247,69 @@ def _navigation_markdown(
     return "\n\n---\n\n" + " | ".join(links)
 
 
-def _publish_brief(request: SourceRequest) -> str:
-    brief = prepare_content(request)
-    source_urls = list(dict.fromkeys(CARD_DIRECTIVE_RE.findall(brief.markdown)))
-    token = telegraph_tokens.resolve(request.access_token)
+def card_source_urls(markdown: str) -> list[str]:
+    """Return unique card source URLs in their first-seen order."""
+    return list(dict.fromkeys(CARD_DIRECTIVE_RE.findall(markdown)))
 
-    extracted = [(source_url, prepare_content(SourceRequest(url=source_url))) for source_url in source_urls]
-    articles = [
-        PublishedBriefArticle(
-            source_url=source_url,
-            content=content,
-            telegraph_url=_publish_prepared(content, token),
-        )
-        for source_url, content in extracted
-    ]
+
+def publish_brief_article(source_url: str, token: str, *, warm_cache: bool = True) -> PublishedBriefArticle:
+    """Extract and publish one article referenced by a brief."""
+    content = prepare_content(SourceRequest(url=source_url))
+    return PublishedBriefArticle(
+        source_url=source_url,
+        content=content,
+        telegraph_url=_publish_prepared(content, token, warm_cache=warm_cache),
+    )
+
+
+def publish_brief_page(
+    brief: PreparedContent,
+    articles: list[PublishedBriefArticle],
+    token: str,
+    *,
+    warm_cache: bool = True,
+) -> str:
+    """Expand article cards and publish the parent brief."""
     articles_by_source = {article.source_url: article for article in articles}
     expanded_markdown = CARD_DIRECTIVE_RE.sub(
         lambda match: _card_markdown(articles_by_source[match.group(1)]),
         brief.markdown,
     )
-    brief_url = _publish_prepared(replace(brief, markdown=expanded_markdown), token)
+    return _publish_prepared(replace(brief, markdown=expanded_markdown), token, warm_cache=warm_cache)
+
+
+def add_brief_navigation(  # noqa: PLR0913
+    article: PublishedBriefArticle,
+    index: int,
+    articles: list[PublishedBriefArticle],
+    brief_url: str,
+    token: str,
+    *,
+    warm_cache: bool = True,
+) -> str:
+    """Add parent, previous, and next links to one published article."""
+    previous_url = articles[index - 1].telegraph_url if index else None
+    next_url = articles[index + 1].telegraph_url if index + 1 < len(articles) else None
+    return edit_page(
+        path=urlparse(article.telegraph_url).path.lstrip("/"),
+        title=article.content.title or None,
+        content_markdown=(article.content.markdown + _navigation_markdown(brief_url, previous_url, next_url)),
+        fallback_text=article.content.fallback_text,
+        source_url=article.content.metadata.url or article.source_url,
+        author_name=article.content.metadata.author,
+        access_token=token,
+        warm_cache=warm_cache,
+    )
+
+
+def _publish_brief(request: SourceRequest) -> str:
+    brief = prepare_content(request)
+    token = telegraph_tokens.resolve(request.access_token)
+    articles = [publish_brief_article(source_url, token) for source_url in card_source_urls(brief.markdown)]
+    brief_url = publish_brief_page(brief, articles, token)
 
     for index, article in enumerate(articles):
-        previous_url = articles[index - 1].telegraph_url if index else None
-        next_url = articles[index + 1].telegraph_url if index + 1 < len(articles) else None
-        edit_page(
-            path=urlparse(article.telegraph_url).path.lstrip("/"),
-            title=article.content.title or None,
-            content_markdown=(article.content.markdown + _navigation_markdown(brief_url, previous_url, next_url)),
-            fallback_text=article.content.fallback_text,
-            source_url=article.content.metadata.url or article.source_url,
-            author_name=article.content.metadata.author,
-            access_token=token,
-        )
+        add_brief_navigation(article, index, articles, brief_url, token)
     return brief_url
 
 

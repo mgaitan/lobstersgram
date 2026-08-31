@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Literal
+
 from pydantic import BaseModel, Field
 
 
@@ -33,3 +35,24 @@ class TelegraphResponse(BaseModel):
     """Response returned after a page is published."""
 
     url: str
+
+
+class TelegraphJobResponse(BaseModel):
+    """Public progress returned by optional Redis-backed publishing jobs."""
+
+    id: str
+    status: Literal[
+        "queued",
+        "publishing_articles",
+        "publishing_brief",
+        "adding_navigation",
+        "completed",
+        "failed",
+    ]
+    completed: int
+    total: int
+    status_url: str
+    run_url: str
+    url: str | None = None
+    error: str | None = None
+    source_url: str | None = None

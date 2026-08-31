@@ -8,6 +8,7 @@ Base URL: {{ site_url }}
 
 - Use `POST /md` when you need Markdown back.
 - Use `POST /t` when you want a public Telegraph URL.
+- For a long Markdown brief, optionally use `POST /t/jobs` and advance the returned job with `POST <run_url>`.
 - Use `GET /md/<url>` or `GET /t/<url>` for a URL, with the complete source URL URL-encoded as one path segment.
 - Prefer JSON for agents. The server accepts one of `url`, `html`, or `markdown` in the request body.
 - `POST /t` returns JSON in the form `{"url":"https://telegra.ph/..."}`.
@@ -52,6 +53,41 @@ image, title, introduction, and Telegraph link, then adds previous, brief, and
 next navigation to the published articles. Marker order determines navigation.
 Repeated source URLs reuse one article page within that brief.
 
+## Optional durable jobs
+
+`POST /t` remains synchronous. When a brief may take too long for one request,
+send the same Markdown JSON body to `POST /t/jobs`. Jobs require Markdown input,
+use the service's configured Telegraph account, and never accept an access token.
+They are available only when the server has `REDIS_URL` configured.
+
+The initial response is HTTP `202`:
+
+```json
+{
+  "id": "...",
+  "status": "queued",
+  "completed": 0,
+  "total": 17,
+  "status_url": "{{ site_url }}/t/jobs/...",
+  "run_url": "{{ site_url }}/t/jobs/.../run",
+  "url": null,
+  "error": null,
+  "source_url": null
+}
+```
+
+Call `POST <run_url>` repeatedly. Each request advances one article, brief, or
+navigation stage. HTTP `202` means more stages remain. HTTP `200` with
+`status: completed` includes the final Telegraph `url`. `GET <status_url>` reads
+progress without advancing it. HTTP `409` means another caller holds the job
+lock. HTTP `422` with `status: failed` includes `error` and, when applicable,
+`source_url`; calling `POST <run_url>` retries that failed stage.
+
+Submitting the same Markdown and metadata returns the same job for 48 hours, so
+a client can recover after losing a response without starting duplicate work.
+Do not fall back to synchronous `POST /t` after a job has started. If jobs return
+HTTP `404` or `503` before creation, the client may use `POST /t` instead.
+
 ## Examples
 
 ```bash
@@ -60,6 +96,10 @@ curl -X POST {{ site_url }}/t \
   -d '{"markdown":"---\ntitle: Hello\n---\n\n# Hello\n\nBody"}'
 
 curl -X POST {{ site_url }}/t \
+  -H 'content-type: application/json' \
+  -d '{"markdown":"# Weekend brief\n\n![card](https://example.com/article)"}'
+
+curl -X POST {{ site_url }}/t/jobs \
   -H 'content-type: application/json' \
   -d '{"markdown":"# Weekend brief\n\n![card](https://example.com/article)"}'
 
