@@ -15,7 +15,7 @@ from fastapi.templating import Jinja2Templates
 from md_to_telegraph import TelegraphContentError
 
 from markdown_web.bookmarklet import build_bookmarklets
-from markdown_web.schemas import SourceMetadata, SourceRequest
+from markdown_web.schemas import SourceMetadata, SourceRequest, TelegraphResponse
 from markdown_web.service import (
     SourceError,
     list_published_pages,
@@ -29,6 +29,35 @@ PACKAGE_DIR = Path(__file__).resolve().parent
 templates = Jinja2Templates(directory=str(PACKAGE_DIR / "templates"))
 app.mount("/static", StaticFiles(directory=PACKAGE_DIR / "static"), name="static")
 SITE_URL = os.getenv("SITE_URL", "https://markdown.fastapicloud.dev").rstrip("/")
+LLMS_PATH = PACKAGE_DIR / "templates" / "llms.txt"
+
+
+def _source_request_openapi() -> dict[str, object]:
+    """Describe the manually parsed request formats in FastAPI's schema."""
+    schema = SourceRequest.model_json_schema()
+    definitions = schema.pop("$defs", {})
+    if metadata_schema := definitions.get("SourceMetadata"):
+        schema["properties"]["metadata"] = metadata_schema
+    return {
+        "requestBody": {
+            "required": True,
+            "content": {
+                "application/json": {
+                    "schema": schema,
+                    "examples": {
+                        "url": {"summary": "Extract a URL", "value": {"url": "https://example.com/article"}},
+                        "markdown": {
+                            "summary": "Publish Markdown",
+                            "value": {"markdown": "# Hello\\n\\nBody"},
+                        },
+                    },
+                },
+                "text/html": {"schema": {"type": "string"}},
+                "text/plain": {"schema": {"type": "string"}},
+                "application/x-www-form-urlencoded": {"schema": {"type": "object"}},
+            },
+        }
+    }
 
 
 def _path_source(url: str, request: Request) -> str:
@@ -97,7 +126,7 @@ def markdown_from_url(url: str, request: Request) -> PlainTextResponse:
     return PlainTextResponse(prepared.markdown, media_type="text/markdown")
 
 
-@app.post("/md", response_class=PlainTextResponse)
+@app.post("/md", response_class=PlainTextResponse, openapi_extra=_source_request_openapi())
 async def markdown_from_post(request: Request) -> PlainTextResponse:
     source = await _request_data(request)
     try:
@@ -110,6 +139,12 @@ async def markdown_from_post(request: Request) -> PlainTextResponse:
 @app.get("/about", response_class=HTMLResponse)
 def about(request: Request) -> HTMLResponse:
     return templates.TemplateResponse(request=request, name="about.html", context={"site_url": SITE_URL})
+
+
+@app.get("/llms.txt", response_class=PlainTextResponse, include_in_schema=False)
+def llms() -> PlainTextResponse:
+    body = LLMS_PATH.read_text(encoding="utf-8").replace("{{ site_url }}", SITE_URL)
+    return PlainTextResponse(body)
 
 
 @app.get("/robots.txt", response_class=PlainTextResponse, include_in_schema=False)
@@ -153,7 +188,7 @@ def telegraph_from_url(url: str, request: Request) -> RedirectResponse:
     )
 
 
-@app.post("/t")
+@app.post("/t", response_model=TelegraphResponse, openapi_extra=_source_request_openapi())
 async def telegraph_from_post(request: Request) -> JSONResponse:
     source = await _request_data(request)
     if not source.access_token:

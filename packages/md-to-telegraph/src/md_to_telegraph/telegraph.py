@@ -40,6 +40,7 @@ NON_DOCUMENT_TYPES = frozenset(
     }
 )
 TELEGRAPH_CREATE_PAGE_URL = "https://api.telegra.ph/createPage"
+TELEGRAPH_EDIT_PAGE_URL = "https://api.telegra.ph/editPage"
 TELEGRAPH_CREATE_ACCOUNT_URL = "https://api.telegra.ph/createAccount"
 
 
@@ -142,23 +143,15 @@ def warm_telegraph_cache(url: str, request_timeout: int = DEFAULT_REQUEST_TIMEOU
         logger.warning("Failed to warm Telegraph cache error=%s", exc)
 
 
-def create_page(  # noqa: PLR0913
+def _page_payload(  # noqa: PLR0913
     title: str | None = None,
     content_markdown: Path | str = "",
     fallback_text: str = "",
     source_url: str = "",
     author_name: str = "",
     access_token: str | None = None,
-    *,
-    request_timeout: int = DEFAULT_REQUEST_TIMEOUT,
-    retry_attempts: int | None = None,
-    warm_cache: bool = True,
-) -> str:
-    """Create a Telegraph page from Markdown and return its URL.
-
-    ``retry_attempts=None`` performs one request. Set it to a larger value to
-    retry transient server responses and unsuccessful Telegraph API responses.
-    """
+) -> dict[str, object]:
+    """Build the common API payload for creating or editing a page."""
     token = access_token or os.getenv("TELEGRAPH_API_TOKEN")
     if not token:
         raise TelegraphTokenError
@@ -188,9 +181,69 @@ def create_page(  # noqa: PLR0913
         payload["author_name"] = author_name
     if source_url:
         payload["author_url"] = source_url
+    return payload
 
-    logger.debug("Create Telegraph page title=%r url=%s", page_title[:80], source_url)
+
+def create_page(  # noqa: PLR0913
+    title: str | None = None,
+    content_markdown: Path | str = "",
+    fallback_text: str = "",
+    source_url: str = "",
+    author_name: str = "",
+    access_token: str | None = None,
+    *,
+    request_timeout: int = DEFAULT_REQUEST_TIMEOUT,
+    retry_attempts: int | None = None,
+    warm_cache: bool = True,
+) -> str:
+    """Create a Telegraph page from Markdown and return its URL.
+
+    ``retry_attempts=None`` performs one request. Set it to a larger value to
+    retry transient server responses and unsuccessful Telegraph API responses.
+    """
+    payload = _page_payload(
+        title=title,
+        content_markdown=content_markdown,
+        fallback_text=fallback_text,
+        source_url=source_url,
+        author_name=author_name,
+        access_token=access_token,
+    )
+
+    logger.debug("Create Telegraph page title=%r url=%s", str(payload["title"])[:80], source_url)
     data = _post_with_retry(TELEGRAPH_CREATE_PAGE_URL, payload, request_timeout, retry_attempts)
+    telegraph_url = str(data["result"]["url"])
+    if warm_cache:
+        warm_telegraph_cache(telegraph_url, request_timeout)
+    return telegraph_url
+
+
+def edit_page(  # noqa: PLR0913
+    path: str,
+    title: str | None = None,
+    content_markdown: Path | str = "",
+    fallback_text: str = "",
+    source_url: str = "",
+    author_name: str = "",
+    access_token: str | None = None,
+    *,
+    request_timeout: int = DEFAULT_REQUEST_TIMEOUT,
+    retry_attempts: int | None = None,
+    warm_cache: bool = True,
+) -> str:
+    """Replace a Telegraph page's content and return its public URL."""
+    payload = _page_payload(
+        title=title,
+        content_markdown=content_markdown,
+        fallback_text=fallback_text,
+        source_url=source_url,
+        author_name=author_name,
+        access_token=access_token,
+    )
+    payload["path"] = path
+
+    logger.debug("Edit Telegraph page path=%s title=%r", path, str(payload["title"])[:80])
+    data = _post_with_retry(TELEGRAPH_EDIT_PAGE_URL, payload, request_timeout, retry_attempts)
     telegraph_url = str(data["result"]["url"])
     if warm_cache:
         warm_telegraph_cache(telegraph_url, request_timeout)

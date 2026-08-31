@@ -15,6 +15,7 @@ from md_to_telegraph import (
     TelegraphTokenError,
     create_account,
     create_page,
+    edit_page,
     warm_telegraph_cache,
 )
 from md_to_telegraph import telegraph as telegraph_module
@@ -95,6 +96,30 @@ def test_create_page_without_retry_or_cache() -> None:
 
     assert result == "https://telegra.ph/page"
     post.assert_called_once()
+
+
+def test_edit_page_posts_path_and_replacement_content() -> None:
+    with (
+        unittest.mock.patch.object(telegraph_module.requests, "post", return_value=_success_response()) as post,
+        unittest.mock.patch.object(telegraph_module, "warm_telegraph_cache") as warm_cache,
+    ):
+        result = edit_page(
+            path="Article-08-30",
+            title="Article",
+            content_markdown="Updated body",
+            access_token="token",
+        )
+
+    assert result == "https://telegra.ph/page"
+    payload = post.call_args.kwargs["data"]
+    assert payload["path"] == "Article-08-30"
+    assert json.loads(payload["content"]) == [{"tag": "p", "children": ["Updated body"]}]
+    post.assert_called_once_with(
+        "https://api.telegra.ph/editPage",
+        data=payload,
+        timeout=20,
+    )
+    warm_cache.assert_called_once_with("https://telegra.ph/page", 20)
 
 
 def test_create_page_reads_token_from_environment(monkeypatch: pytest.MonkeyPatch) -> None:

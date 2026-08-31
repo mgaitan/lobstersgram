@@ -43,6 +43,30 @@ def test_about_describes_routes_and_cli() -> None:
     assert 'href="https://cafecito.app/tin_nqn_">cafecito</a>' in response.text
 
 
+def test_llms_describes_agent_contract() -> None:
+    response = client.get("/llms.txt")
+
+    assert response.status_code == HTTP_200_OK
+    assert "POST /t" in response.text
+    assert "`title`, `author`, `url`, `date`, `image`, and `type`" in response.text
+    assert "![card](https://example.com/article)" in response.text
+    assert "https://markdown.fastapicloud.dev/openapi.json" in response.text
+
+
+def test_openapi_describes_post_bodies_and_publish_response() -> None:
+    schema = client.get("/openapi.json").json()
+
+    markdown_post = schema["paths"]["/md"]["post"]
+    assert "application/json" in markdown_post["requestBody"]["content"]
+    assert "markdown" in markdown_post["requestBody"]["content"]["application/json"]["schema"]["properties"]
+    assert "$defs" not in markdown_post["requestBody"]["content"]["application/json"]["schema"]
+
+    publish_post = schema["paths"]["/t"]["post"]
+    assert publish_post["responses"]["200"]["content"]["application/json"]["schema"]["$ref"] == (
+        "#/components/schemas/TelegraphResponse"
+    )
+
+
 def test_search_engine_discovery_metadata() -> None:
     about_response = client.get("/about")
     bookmarklet_response = client.get("/bookmarklets/")

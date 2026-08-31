@@ -3,13 +3,14 @@
 from __future__ import annotations
 
 import os
+import re
 import threading
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from urllib.parse import urlparse
 
 import requests
 from markdown_this import add_front_matter, extract_main_content, markdown_to_text, split_front_matter
-from md_to_telegraph import create_account, create_page
+from md_to_telegraph import create_account, create_page, edit_page
 
 from markdown_web.schemas import SourceMetadata, SourceRequest
 
@@ -18,6 +19,7 @@ DEFAULT_AUTHOR_NAME = "page-to-telegraph"
 TELEGRAPH_API_URL = "https://api.telegra.ph"
 TELEGRAPH_PAGE_LIST_LIMIT = 200
 TELEGRAPH_REQUEST_TIMEOUT = 20
+CARD_DIRECTIVE_RE = re.compile(r"!\[card\]\(\s*(https?://[^)\s]+)\s*\)")
 
 
 class SourceError(ValueError):
@@ -38,6 +40,17 @@ class InvalidURLSourceError(SourceError):
         super().__init__("URL sources must use http or https")
 
 
+class SourceHTTPError(SourceError):
+    """Raised when a source responds with an HTTP error."""
+
+    def __init__(self, status: int) -> None:
+        if status in {401, 403}:
+            message = f"Source denied server access (HTTP {status}). Send the page HTML through /bookmarklet/ instead."
+        else:
+            message = f"Source returned HTTP {status}"
+        super().__init__(message)
+
+
 class TelegraphAPIError(RuntimeError):
     """Raised when Telegraph cannot return a valid API response."""
 
@@ -53,6 +66,16 @@ class PreparedContent:
     markdown: str
     fallback_text: str
     metadata: SourceMetadata
+    intro: str = ""
+
+
+@dataclass(frozen=True)
+class PublishedBriefArticle:
+    """An extracted article and the Telegraph page created for this brief."""
+
+    source_url: str
+    content: PreparedContent
+    telegraph_url: str
 
 
 def list_published_pages() -> tuple[int, list[dict[str, object]]]:
@@ -149,25 +172,32 @@ def prepare_content(request: SourceRequest) -> PreparedContent:
     """Extract and normalize a request into Markdown with YAML front matter."""
     source = _require_source(request)
     if request.url:
-        title, markdown, fallback_text, _intro = extract_main_content(request.url)
+        try:
+            title, markdown, fallback_text, intro = extract_main_content(request.url)
+        except requests.HTTPError as exc:
+            status = exc.response.status_code if exc.response is not None else 0
+            raise SourceHTTPError(status) from exc
     elif request.html is not None:
-        title, markdown, fallback_text, _intro = extract_main_content(request.html)
+        title, markdown, fallback_text, intro = extract_main_content(request.html)
     else:
         front_matter, body = split_front_matter(source.strip())
         title = front_matter.get("title", "")
         markdown = source
         fallback_text = markdown_to_text(body)
+        intro = ""
 
     markdown, metadata = _merge_metadata(markdown, request.metadata)
     title = metadata.title or title
-    return PreparedContent(title=title, markdown=markdown, fallback_text=fallback_text, metadata=metadata)
+    return PreparedContent(
+        title=title,
+        markdown=markdown,
+        fallback_text=fallback_text,
+        metadata=metadata,
+        intro=intro,
+    )
 
 
-def _publish_content(request: SourceRequest) -> str:
-    """Publish request content to Telegraph and return its public URL."""
-    prepared = prepare_content(request)
-    token = request.access_token
-    token = telegraph_tokens.resolve(token)
+def _publish_prepared(prepared: PreparedContent, token: str) -> str:
     return create_page(
         title=prepared.title or None,
         content_markdown=prepared.markdown,
@@ -178,11 +208,87 @@ def _publish_content(request: SourceRequest) -> str:
     )
 
 
+def _publish_content(request: SourceRequest) -> str:
+    """Publish request content to Telegraph and return its public URL."""
+    prepared = prepare_content(request)
+    token = telegraph_tokens.resolve(request.access_token)
+    return _publish_prepared(prepared, token)
+
+
+def _escape_markdown_text(value: str) -> str:
+    return value.replace("\\", "\\\\").replace("[", "\\[").replace("]", "\\]")
+
+
+def _card_markdown(article: PublishedBriefArticle) -> str:
+    title = _escape_markdown_text(article.content.title or article.source_url)
+    parts = ["---"]
+    if image_url := article.content.metadata.image:
+        parts.append(f"[![{title}]({image_url})]({article.telegraph_url})")
+    parts.append(f"**[{title}]({article.telegraph_url})**")
+    if article.content.intro:
+        parts.append(article.content.intro)
+    parts.append(f"[Leer en Telegraph]({article.telegraph_url})")
+    parts.append("---")
+    return "\n\n".join(parts)
+
+
+def _navigation_markdown(
+    brief_url: str,
+    previous_url: str | None,
+    next_url: str | None,
+) -> str:
+    links: list[str] = []
+    if previous_url:
+        links.append(f"[Artículo anterior]({previous_url})")
+    links.append(f"[Volver al boletín]({brief_url})")
+    if next_url:
+        links.append(f"[Artículo siguiente]({next_url})")
+    return "\n\n---\n\n" + " | ".join(links)
+
+
+def _publish_brief(request: SourceRequest) -> str:
+    brief = prepare_content(request)
+    source_urls = list(dict.fromkeys(CARD_DIRECTIVE_RE.findall(brief.markdown)))
+    token = telegraph_tokens.resolve(request.access_token)
+
+    extracted = [(source_url, prepare_content(SourceRequest(url=source_url))) for source_url in source_urls]
+    articles = [
+        PublishedBriefArticle(
+            source_url=source_url,
+            content=content,
+            telegraph_url=_publish_prepared(content, token),
+        )
+        for source_url, content in extracted
+    ]
+    articles_by_source = {article.source_url: article for article in articles}
+    expanded_markdown = CARD_DIRECTIVE_RE.sub(
+        lambda match: _card_markdown(articles_by_source[match.group(1)]),
+        brief.markdown,
+    )
+    brief_url = _publish_prepared(replace(brief, markdown=expanded_markdown), token)
+
+    for index, article in enumerate(articles):
+        previous_url = articles[index - 1].telegraph_url if index else None
+        next_url = articles[index + 1].telegraph_url if index + 1 < len(articles) else None
+        edit_page(
+            path=urlparse(article.telegraph_url).path.lstrip("/"),
+            title=article.content.title or None,
+            content_markdown=(article.content.markdown + _navigation_markdown(brief_url, previous_url, next_url)),
+            fallback_text=article.content.fallback_text,
+            source_url=article.content.metadata.url or article.source_url,
+            author_name=article.content.metadata.author,
+            access_token=token,
+        )
+    return brief_url
+
+
 def publish_content(
     request: SourceRequest,
     cache_key: str | None = None,
 ) -> str:
     """Publish content, optionally reusing the Telegraph page for a source URL."""
+    if request.markdown and CARD_DIRECTIVE_RE.search(request.markdown):
+        return _publish_brief(request)
     if not cache_key:
         return _publish_content(request)
 

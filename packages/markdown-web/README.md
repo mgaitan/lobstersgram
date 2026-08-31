@@ -46,6 +46,26 @@ Raw HTML can also be posted as `text/html`. Optional metadata is supplied with
 An `access_token` JSON field or `Authorization` header can select a Telegraph
 account; otherwise the server token is used.
 
+To publish a brief with linked article pages, place exact lowercase card markers
+in the Markdown:
+
+```markdown
+# Weekend brief
+
+Editorial context.
+
+![card](https://example.com/article)
+```
+
+`POST /t` publishes each marked source to Telegraph, replaces the marker with a
+linked image, title, introduction, and Telegraph link, and adds navigation back
+to the brief plus the previous and next curated articles. Marker order controls
+navigation, and a repeated URL is published once within the brief.
+
+Agents can read `/llms.txt` for the endpoint contract, accepted YAML front
+matter, and examples. The machine-readable contract is FastAPI's existing
+OpenAPI document at `/openapi.json`; there is no separate `openschema.json`.
+
 ## Bookmarklets
 
 Visit `/bookmarklet/` to get two permanent bookmarklets. Drag either link to

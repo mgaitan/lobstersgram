@@ -27,3 +27,9 @@ class SourceRequest(BaseModel):
     markdown: str | None = None
     metadata: SourceMetadata = Field(default_factory=SourceMetadata)
     access_token: str | None = None
+
+
+class TelegraphResponse(BaseModel):
+    """Response returned after a page is published."""
+
+    url: str

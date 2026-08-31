@@ -67,6 +67,14 @@
         status.classList.toggle("error", error);
       }
 
+      async function responseError(response, fallback) {
+        if (response.headers.get("content-type")?.includes("application/json")) {
+          const data = await response.json();
+          return data.detail || fallback;
+        }
+        return (await response.text()) || fallback;
+      }
+
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
         if (mode === "publish") {
@@ -80,7 +88,7 @@
             const data = response.headers.get("content-type")?.includes("application/json")
               ? await response.json()
               : {detail: await response.text()};
-            if (!response.ok) throw new Error(data.detail || "Publish failed");
+            if (!response.ok) throw new Error(data.detail || await responseError(response, "Publish failed"));
             window.location.href = data.url;
           } catch (error) {
             setStatus(error.message, true);
@@ -92,7 +100,7 @@
         setStatus("Processing…");
         try {
           const response = await fetch("/md/" + encodeURIComponent(currentUrl));
-          if (!response.ok) throw new Error(await response.text());
+          if (!response.ok) throw new Error(await responseError(response, "Processing failed"));
           output.value = await response.text();
           sourceLabel.textContent = currentUrl;
           sourceEntry.hidden = true;
