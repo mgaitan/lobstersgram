@@ -770,7 +770,7 @@ wheels = [
 
 [[package]]
 name = "markdown-this"
-version = "0.1.7"
+version = "0.1.8"
 source = { editable = "packages/markdown-this" }
 dependencies = [
     { name = "beautifulsoup4" },

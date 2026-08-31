@@ -54,6 +54,11 @@ def fetch_html(url: str, timeout: int = DEFAULT_REQUEST_TIMEOUT) -> str | None:
     """Fetch HTML and decode UTF-8, falling back to BeautifulSoup detection."""
     response = requests.get(url, timeout=timeout, headers={"User-Agent": "lobsters-telegraph-bot"})
     response.raise_for_status()
+    decoded_utf8 = response.content.decode("utf-8", errors="replace")
+    # Some pages contain isolated invalid bytes alongside otherwise valid UTF-8.
+    # Prefer preserving the document's real text over a wrong single-byte guess.
+    if "<html" in decoded_utf8.lower() or "<title" in decoded_utf8.lower():
+        return decoded_utf8
     try:
         return response.content.decode("utf-8")
     except UnicodeDecodeError:

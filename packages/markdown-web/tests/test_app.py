@@ -56,6 +56,8 @@ def test_about_describes_routes_and_cli() -> None:
     assert response.status_code == HTTP_200_OK
     assert "/md/&lt;url&gt;" in response.text
     assert "/t/published/" in response.text
+    assert "/t/jobs" in response.text
+    assert 'href="/llms.txt">llms.txt</a>' in response.text
     assert "uvx markdown-this" in response.text
     assert "github.com/mgaitan" in response.text
     assert "Is this site useful to you?" in response.text
