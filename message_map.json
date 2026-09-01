@@ -2884,5 +2884,29 @@
     "article_link": "https://css-tricks.com/css-random-function-polyfill/",
     "discussion_link": "https://lobste.rs/s/edj52m/let_s_use_emergent_css_random_function_all",
     "title": "Let’s Use the Emergent CSS random() Function in all the Browsers"
+  },
+  "@lobstersgram:489": {
+    "telegraph_link": "https://telegra.ph/Are-We-Legacy-Computing-Yet-09-01",
+    "article_link": "https://arewelegacycomputingyet.com/",
+    "discussion_link": "https://lobste.rs/s/x1b4va/are_we_legacy_computing_yet",
+    "title": "Are We Legacy Computing Yet?"
+  },
+  "@lobstersgram:490": {
+    "telegraph_link": "https://telegra.ph/44-on-ARC-AGI-1-in-67-cents---Mithil-Vakdes-Homepage-09-01-2",
+    "article_link": "https://mvakde.github.io/blog/44-on-arc-1/",
+    "discussion_link": "https://lobste.rs/s/2rrgyh/44_on_arc_agi_1_67_cents",
+    "title": "44% on ARC-AGI-1 in 67 cents"
+  },
+  "@lobstersgram:491": {
+    "telegraph_link": "https://telegra.ph/On-not-becoming-a-cyborg--Read-the-Tea-Leaves-09-01",
+    "article_link": "https://nolanlawson.com/2026/08/31/on-not-becoming-a-cyborg/",
+    "discussion_link": "https://lobste.rs/s/uxqdfr/on_not_becoming_cyborg",
+    "title": "On not becoming a cyborg"
+  },
+  "@lobstersgram:492": {
+    "telegraph_link": "https://telegra.ph/I-attended-a-conference-recently-and-AI-use-by-academics-was-absurd--Lobsters-09-01",
+    "article_link": "https://lobste.rs/s/qn7jtv/i_attended_conference_recently_ai_use_by",
+    "discussion_link": "https://lobste.rs/s/qn7jtv/i_attended_conference_recently_ai_use_by",
+    "title": "I attended a conference recently and AI use by academics was absurd"
   }
 }
