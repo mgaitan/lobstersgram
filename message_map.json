@@ -2854,5 +2854,35 @@
     "article_link": "https://docs.robotframework.org/docs/getting_started/how_to_write_rf",
     "discussion_link": "https://lobste.rs/s/e1pwba/robot_framework_language",
     "title": "The Robot Framework language"
+  },
+  "@lobstersgram:484": {
+    "telegraph_link": "https://telegra.ph/A-bicycle-for-the-mind-09-01",
+    "article_link": "https://pulkomandy.tk/_/_Life/_A%20bicycle%20for%20the%20mind",
+    "discussion_link": "https://lobste.rs/s/y58e86/bicycle_for_mind",
+    "title": "A bicycle for the mind"
+  },
+  "@lobstersgram:485": {
+    "telegraph_link": "https://telegra.ph/Omarchy-Any-User-Process-Can-Escalate-to-Root-09-01",
+    "article_link": "https://0xcc.io/posts/omarchy-root-creds/",
+    "discussion_link": "https://lobste.rs/s/bxihn3/omarchy_any_user_process_can_escalate",
+    "title": "Omarchy: Any User Process Can Escalate to Root"
+  },
+  "@lobstersgram:486": {
+    "telegraph_link": "https://telegra.ph/osa1---Coherence-and-orphan-instance-rules-09-01",
+    "article_link": "https://osa1.net/posts/2026-08-29-coherence-and-orphans.html",
+    "discussion_link": "https://lobste.rs/s/vbu5ay/coherence_orphan_instance_rules",
+    "title": "Coherence and orphan instance rules"
+  },
+  "@lobstersgram:487": {
+    "telegraph_link": "https://telegra.ph/trevmexs-tumblings---The-US-is-more-than-just-the-US-according-to-the-ISO-09-01",
+    "article_link": "https://trevmex.com/post/826439929093636096/the-us-is-more-than-just-the-us-according-to",
+    "discussion_link": "https://lobste.rs/s/ngqpa1/u_s_is_more_than_just_us_according_iso",
+    "title": "The U.S. is more than just the US (according to the ISO)"
+  },
+  "@lobstersgram:488": {
+    "telegraph_link": "https://telegra.ph/Lets-Use-the-Emergent-CSS-random-Function-in-all-the-Browsers--CSS-Tricks-09-01-2",
+    "article_link": "https://css-tricks.com/css-random-function-polyfill/",
+    "discussion_link": "https://lobste.rs/s/edj52m/let_s_use_emergent_css_random_function_all",
+    "title": "Let’s Use the Emergent CSS random() Function in all the Browsers"
   }
 }
