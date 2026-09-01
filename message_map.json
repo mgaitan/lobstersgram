@@ -2812,5 +2812,29 @@
     "article_link": "https://devblogs.microsoft.com/oldnewthing/20120412-00/?p=7873",
     "discussion_link": "https://lobste.rs/s/51zi5s/what_is_real_maximum_length_dns_name_2012",
     "title": "What is the real maximum length of a DNS name? (2012)"
+  },
+  "@lobstersgram:477": {
+    "telegraph_link": "https://telegra.ph/Any-user-process-can-escalate-to-root--vesto-09-01",
+    "article_link": "https://www.vesto.me/2026/08/31/any-process-escalate-root.html",
+    "discussion_link": "https://lobste.rs/s/q2zziq/any_user_process_can_escalate_root",
+    "title": "Any user process can escalate to root"
+  },
+  "@lobstersgram:478": {
+    "telegraph_link": "https://telegra.ph/But-where-does-taste-come-from----Dustycloud-Brainstorms-09-01",
+    "article_link": "https://dustycloud.org/blog/but-where-does-taste-come-from/",
+    "discussion_link": "https://lobste.rs/s/9naffr/where_does_taste_come_from",
+    "title": "But where does taste come from?"
+  },
+  "@lobstersgram:479": {
+    "telegraph_link": "https://telegra.ph/What-are-you-doing-this-week--Lobsters-09-01",
+    "article_link": "https://lobste.rs/s/vb1jgu/what_are_you_doing_this_week",
+    "discussion_link": "https://lobste.rs/s/vb1jgu/what_are_you_doing_this_week",
+    "title": "What are you doing this week?"
+  },
+  "@lobstersgram:480": {
+    "telegraph_link": "https://telegra.ph/Adas-Blog-09-01",
+    "article_link": "https://spirali.github.io/blog/cargo-scheduler/",
+    "discussion_link": "https://lobste.rs/s/by7xg6/could_cargo_s_scheduler_be_better",
+    "title": "Could Cargo's scheduler be better?"
   }
 }
