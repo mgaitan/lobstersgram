@@ -2908,5 +2908,23 @@
     "article_link": "https://lobste.rs/s/qn7jtv/i_attended_conference_recently_ai_use_by",
     "discussion_link": "https://lobste.rs/s/qn7jtv/i_attended_conference_recently_ai_use_by",
     "title": "I attended a conference recently and AI use by academics was absurd"
+  },
+  "@lobstersgram:493": {
+    "telegraph_link": "https://telegra.ph/Agent-Grit-Is-a-Double-Edged-Sword---exedev-blog-09-01",
+    "article_link": "https://blog.exe.dev/sol-cheats",
+    "discussion_link": "https://lobste.rs/s/z4uu9y/agent_grit_is_double_edged_sword",
+    "title": "Agent Grit Is a Double-Edged Sword"
+  },
+  "@lobstersgram:494": {
+    "telegraph_link": "https://telegra.ph/A-community-that-works-together-builds-together--AerynOS-09-01",
+    "article_link": "https://aerynos.com/blog/2026/08/31/a-community-that-works-together-builds-together/",
+    "discussion_link": "https://lobste.rs/s/hiry5f/community_works_together_builds",
+    "title": "A community that works together, builds together"
+  },
+  "@lobstersgram:495": {
+    "telegraph_link": "https://telegra.ph/RangeFrom-Part-2-What-I-think-is-wrong-about-the-design-09-01",
+    "article_link": "https://erk.dev/2026/08/30/rangefrom-part-2",
+    "discussion_link": "https://lobste.rs/s/hyn2bt/rangefrom_part_2_what_i_think_is_wrong",
+    "title": "RangeFrom, Part 2..: What I think is wrong about the design"
   }
 }
