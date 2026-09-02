@@ -3016,5 +3016,35 @@
     "article_link": "https://wasmi-labs.github.io/blog/posts/wasmi-v2.0/",
     "discussion_link": "https://lobste.rs/s/sccfuu/wasmi_2_0_engineering_fastest_wasm",
     "title": "Wasmi 2.0 - Engineering of the Fastest Wasm Interpreters"
+  },
+  "@lobstersgram:511": {
+    "telegraph_link": "https://telegra.ph/iT-woRKs-BeTter-in-THe-aPp---Terence-Edens-Blog-09-02",
+    "article_link": "https://shkspr.mobi/blog/2026/08/it-works-better-in-the-app/",
+    "discussion_link": "https://lobste.rs/s/fjpexo/it_works_better_app",
+    "title": "\"iT woRKs BeTter in THe aPp!!\""
+  },
+  "@lobstersgram:512": {
+    "telegraph_link": "https://telegra.ph/Zuzai-a-new-word-indicates-the-absence-of-AI-09-02-2",
+    "article_link": "https://zuzai.org/",
+    "discussion_link": "https://lobste.rs/s/6ejigt/zuzai_new_word_indicates_absence_ai",
+    "title": "Zuzai, a new word, indicates the absence of AI"
+  },
+  "@lobstersgram:513": {
+    "telegraph_link": "https://telegra.ph/Firefoxs-AI-Switch-Is-Off-Telemetry-Isnt-09-02-4",
+    "article_link": "https://marius.blog/firefox-155-ai-kill-switch-retest/",
+    "discussion_link": "https://lobste.rs/s/7s8fuv/firefox_s_ai_switch_is_off_telemetry_isn_t",
+    "title": "Firefox’s AI Switch Is Off. Telemetry Isn’t"
+  },
+  "@lobstersgram:514": {
+    "telegraph_link": "https://telegra.ph/Implementing-FMA-and-finding-bugs-in-C-and-Rust-standard-libraries--Sergey-Shnatsel-Davidoff-09-02",
+    "article_link": "https://shnatsel.github.io/implementing-fma-finding-bugs-in-std/",
+    "discussion_link": "https://lobste.rs/s/qq9jpo/implementing_fma_finding_bugs_c_rust",
+    "title": "Implementing FMA and finding bugs in C and Rust standard libraries"
+  },
+  "@lobstersgram:515": {
+    "telegraph_link": "https://telegra.ph/Revisiting-Joels-Test---exedev-blog-09-02",
+    "article_link": "https://blog.exe.dev/revisiting-joel",
+    "discussion_link": "https://lobste.rs/s/jyrcwk/revisiting_joel_s_test_exe_dev_blog",
+    "title": "Revisiting Joel's Test - exe.dev blog"
   }
 }
