@@ -2986,5 +2986,35 @@
     "article_link": "https://www.v01.io/posts/2026/08/texttile/",
     "discussion_link": "https://lobste.rs/s/logpfy/texttile_multiplayer_blog_engine_for",
     "title": "Texttile, a multiplayer blog engine for people who write together"
+  },
+  "@lobstersgram:506": {
+    "telegraph_link": "https://telegra.ph/Bye-Bye-Perspective-API-Lessons-for-Building-and-Governing-Measurement-Infrastructure-09-02",
+    "article_link": "https://arxiv.org/abs/2604.25580",
+    "discussion_link": "https://lobste.rs/s/us078z/bye_bye_perspective_api_lessons_for",
+    "title": "Bye Bye Perspective API: Lessons for Measurement Infrastructure in NLP, CSS and LLM Evaluation"
+  },
+  "@lobstersgram:507": {
+    "telegraph_link": "https://telegra.ph/Release-Janet-1420--janet-langjanet--GitHub-09-02",
+    "article_link": "https://github.com/janet-lang/janet/releases/tag/v1.42.0",
+    "discussion_link": "https://lobste.rs/s/jbgnwk/janet_1_42_0",
+    "title": "Janet 1.42.0"
+  },
+  "@lobstersgram:508": {
+    "telegraph_link": "https://telegra.ph/Solving-the-Flat-Cube-09-02-2",
+    "article_link": "https://mathenchant.wordpress.com/2026/08/19/solving-the-flat-cube/",
+    "discussion_link": "https://lobste.rs/s/dtllfk/solving_flat_cube",
+    "title": "Solving the Flat Cube"
+  },
+  "@lobstersgram:509": {
+    "telegraph_link": "https://telegra.ph/New-things-for-regular-expressions-in-PostgreSQL-pg-tre-and-pg-re2---select--from-depesz-09-02",
+    "article_link": "https://www.depesz.com/2026/08/25/new-things-for-regular-expressions-in-postgresql-pg_tre-and-pg_re2/",
+    "discussion_link": "https://lobste.rs/s/b53fwj/new_things_for_regular_expressions",
+    "title": "New things for regular expressions in PostgreSQL (pg_tre and pg_re2)"
+  },
+  "@lobstersgram:510": {
+    "telegraph_link": "https://telegra.ph/Wasmi-20---Engineering-of-the-Fastest-Wasm-Interpreters--Wasmi-Labs-09-02",
+    "article_link": "https://wasmi-labs.github.io/blog/posts/wasmi-v2.0/",
+    "discussion_link": "https://lobste.rs/s/sccfuu/wasmi_2_0_engineering_fastest_wasm",
+    "title": "Wasmi 2.0 - Engineering of the Fastest Wasm Interpreters"
   }
 }
