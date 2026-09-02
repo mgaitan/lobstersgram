@@ -2956,5 +2956,35 @@
     "article_link": "https://www.humprog.org/~stephen/blog/2026/08/25/#flat-vs-segmented",
     "discussion_link": "https://lobste.rs/s/tvoo4x/flat_vs_segmented_memory_it_s_recursive",
     "title": "Flat vs segmented memory -- it's recursive"
+  },
+  "@lobstersgram:501": {
+    "telegraph_link": "https://telegra.ph/humanity-has-built-the-records-of-FATE-by-accident--Ariadnes-Space-09-02",
+    "article_link": "https://ariadne.space/2026/09/01/humanity-has-built-the-records.html",
+    "discussion_link": "https://lobste.rs/s/wyyzab/humanity_has_built_records_fate_by",
+    "title": "humanity has built the records of FATE by accident"
+  },
+  "@lobstersgram:502": {
+    "telegraph_link": "https://telegra.ph/Bluefin-is-a-capability-system-09-02",
+    "article_link": "https://h2.jaguarpaw.co.uk/posts/bluefin-capability-system/",
+    "discussion_link": "https://lobste.rs/s/v1wxh0/bluefin_is_capability_system",
+    "title": "Bluefin is a capability system"
+  },
+  "@lobstersgram:503": {
+    "telegraph_link": "https://telegra.ph/osa1---Why-Im-excited-about-effect-systems-09-02",
+    "article_link": "https://osa1.net/posts/2025-06-28-why-effects.html",
+    "discussion_link": "https://lobste.rs/s/abkikp/why_i_m_excited_about_effect_systems_2025",
+    "title": "Why I'm excited about effect systems (2025)"
+  },
+  "@lobstersgram:504": {
+    "telegraph_link": "https://telegra.ph/This-Month-in-KDE-Linux-August-2026---KDE-Blogs-09-02",
+    "article_link": "https://blogs.kde.org/2026/08/31/this-month-in-kde-linux-august-2026/",
+    "discussion_link": "https://lobste.rs/s/zx92fc/this_month_kde_linux_august_2026",
+    "title": "This Month in KDE Linux: August 2026"
+  },
+  "@lobstersgram:505": {
+    "telegraph_link": "https://telegra.ph/Texttile-a-multiplayer-blog-engine-for-people-who-write-together---Klaus-Breyer-09-02",
+    "article_link": "https://www.v01.io/posts/2026/08/texttile/",
+    "discussion_link": "https://lobste.rs/s/logpfy/texttile_multiplayer_blog_engine_for",
+    "title": "Texttile, a multiplayer blog engine for people who write together"
   }
 }
