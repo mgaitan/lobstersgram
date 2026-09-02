@@ -3046,5 +3046,29 @@
     "article_link": "https://blog.exe.dev/revisiting-joel",
     "discussion_link": "https://lobste.rs/s/jyrcwk/revisiting_joel_s_test_exe_dev_blog",
     "title": "Revisiting Joel's Test - exe.dev blog"
+  },
+  "@lobstersgram:516": {
+    "telegraph_link": "https://telegra.ph/Check-if-files-were-made-with-Claude--Claude-09-02",
+    "article_link": "https://claude.com/check-files",
+    "discussion_link": "https://lobste.rs/s/ayatfy/check_if_file_was_made_with_claude",
+    "title": "Check if a file was made with Claude"
+  },
+  "@lobstersgram:517": {
+    "telegraph_link": "https://telegra.ph/CTTI-is-Exponential-RTTI-is-Linear---gingerBill-09-02",
+    "article_link": "https://www.gingerbill.org/article/2026/09/02/ctti-is-exponential-rtti-is-linear/",
+    "discussion_link": "https://lobste.rs/s/mj9qti/ctti_is_exponential_rtti_is_linear",
+    "title": "CTTI is Exponential, RTTI is Linear"
+  },
+  "@lobstersgram:518": {
+    "telegraph_link": "https://telegra.ph/Read-your-own-writes-off-the-primary--boringSQL-09-02",
+    "article_link": "https://boringsql.com/posts/read-your-own-writes/",
+    "discussion_link": "https://lobste.rs/s/vq68cd/read_your_own_writes_off_primary",
+    "title": "Read your own writes, off the primary"
+  },
+  "@lobstersgram:519": {
+    "telegraph_link": "https://telegra.ph/Goroutine-Leak-Profiles---The-Go-Programming-Language-09-02",
+    "article_link": "https://go.dev/blog/goroutine-leak-profiles",
+    "discussion_link": "https://lobste.rs/s/dpfpr3/goroutine_leak_profiles",
+    "title": "Goroutine Leak Profiles"
   }
 }
