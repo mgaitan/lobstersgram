@@ -3166,5 +3166,35 @@
     "article_link": "https://ploum.net/2026-09-02-i_dont_have_a_smartphone.html",
     "discussion_link": "https://lobste.rs/s/nh1uij/i_don_t_have_smartphone",
     "title": "I Don’t Have a Smartphone…"
+  },
+  "@lobstersgram:536": {
+    "telegraph_link": "https://telegra.ph/Haskell-for-all-Dependent-if-expressions-without-dependent-types-09-03",
+    "article_link": "https://haskellforall.com/2026/09/dependent-if-expressions",
+    "discussion_link": "https://lobste.rs/s/yomxcl/dependent_if_expressions_without",
+    "title": "Dependent if expressions without dependent types"
+  },
+  "@lobstersgram:537": {
+    "telegraph_link": "https://telegra.ph/Can-We-Stop-With-the-Uptime-Percentages---Jim-Nielsens-Blog-09-03-2",
+    "article_link": "https://blog.jim-nielsen.com/2026/stop-with-the-uptime-percentage/",
+    "discussion_link": "https://lobste.rs/s/uyc8ai/can_we_stop_with_uptime_percentages",
+    "title": "Can We Stop With the Uptime Percentages?"
+  },
+  "@lobstersgram:538": {
+    "telegraph_link": "https://telegra.ph/Normalized-Fascism-in-Open-Source-12-Million-Given-to-DHH--brennanday-09-03",
+    "article_link": "https://brennan.day/normalized-fascism-in-open-source-12-million-given-to-dhh/",
+    "discussion_link": "https://lobste.rs/s/ipy9xw/normalized_fascism_open_source_12",
+    "title": "Normalized Fascism in Open Source: $12 Million Given to DHH"
+  },
+  "@lobstersgram:539": {
+    "telegraph_link": "https://telegra.ph/simple-is-not-small-09-03-3",
+    "article_link": "https://jyn.dev/simple-is-not-the-same-as-small/",
+    "discussion_link": "https://lobste.rs/s/entcaa/simple_is_not_small",
+    "title": "simple is not small"
+  },
+  "@lobstersgram:540": {
+    "telegraph_link": "https://telegra.ph/Static-Allocation-Constant-Work-09-03-4",
+    "article_link": "https://matklad.github.io/2026/09/02/static-allocation-constant-work.html",
+    "discussion_link": "https://lobste.rs/s/m4iwq4/static_allocation_constant_work",
+    "title": "Static Allocation, Constant Work"
   }
 }
