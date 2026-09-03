@@ -3118,5 +3118,29 @@
     "article_link": "https://louisabraham.github.io/load-bearing/",
     "discussion_link": "https://lobste.rs/s/4gzijx/load_bearing_vocabulary_claude",
     "title": "The load-bearing vocabulary of Claude"
+  },
+  "@lobstersgram:528": {
+    "telegraph_link": "https://telegra.ph/iczeliabalrogg--demonically-compacting-up-to-15-lossless-VorbisOpus-recompressor-09-03",
+    "article_link": "https://github.com/iczelia/balrogg",
+    "discussion_link": "https://lobste.rs/s/gebudu/balrogg_demonically_compacting_up_15",
+    "title": "balrogg: demonically compacting (up to 15%) lossless Vorbis/Opus recompressor"
+  },
+  "@lobstersgram:529": {
+    "telegraph_link": "https://telegra.ph/TinyGo-042---Recover-Is-Real--TinyGo-09-03",
+    "article_link": "https://tinygo.org/blog/2026/tinygo-0.42-recover-is-real/",
+    "discussion_link": "https://lobste.rs/s/qi1bxu/tinygo_0_42_recover_is_real",
+    "title": "TinyGo 0.42 - Recover Is Real"
+  },
+  "@lobstersgram:530": {
+    "telegraph_link": "https://telegra.ph/revo-09-03",
+    "article_link": "https://revo.lung.fyi/",
+    "discussion_link": "https://lobste.rs/s/towfrz/revo_programming_language",
+    "title": "Révo Programming language"
+  },
+  "@lobstersgram:531": {
+    "telegraph_link": "https://telegra.ph/Souping-up-my-blog--tea-09-03",
+    "article_link": "https://qtea.me/posts/souping-up-my-blog/",
+    "discussion_link": "https://lobste.rs/s/bgswli/souping_up_my_blog",
+    "title": "Souping up my blog"
   }
 }
