@@ -3070,5 +3070,35 @@
     "article_link": "https://go.dev/blog/goroutine-leak-profiles",
     "discussion_link": "https://lobste.rs/s/dpfpr3/goroutine_leak_profiles",
     "title": "Goroutine Leak Profiles"
+  },
+  "@lobstersgram:520": {
+    "telegraph_link": "https://telegra.ph/What-Happened-to-Borland-09-03",
+    "article_link": "https://www.youtube.com/watch?v=HwkoaPl31Dw",
+    "discussion_link": "https://lobste.rs/s/zzt49w/what_happened_borland",
+    "title": "What Happened to Borland?"
+  },
+  "@lobstersgram:521": {
+    "telegraph_link": "https://telegra.ph/Security-Incident---BGP-Hijacking---Virtualizor-09-03",
+    "article_link": "https://www.virtualizor.com/blog/security-incident-bgp-hijacking/",
+    "discussion_link": "https://lobste.rs/s/6e1y6s/security_incident_bgp_hijacking",
+    "title": "Security Incident – BGP Hijacking – Virtualizor"
+  },
+  "@lobstersgram:522": {
+    "telegraph_link": "https://telegra.ph/Fine-Ill-build-my-own-text-editor---David-Bushell---Web-Dev-UK-09-03",
+    "article_link": "https://dbushell.com/2026/09/01/text-editor/",
+    "discussion_link": "https://lobste.rs/s/1malyo/fine_i_ll_build_my_own_text_editor",
+    "title": "Fine, I’ll build my own text editor"
+  },
+  "@lobstersgram:523": {
+    "telegraph_link": "https://telegra.ph/DEF-CON-34---ESP32-as-counter-surveillance-platform---Cybertiger-Colonel-Panic-The-Wrew-09-03",
+    "article_link": "https://www.youtube.com/watch?v=PcK-TDmzshc",
+    "discussion_link": "https://lobste.rs/s/k86iql/esp32_as_counter_surveillance_platform",
+    "title": "ESP32 as counter-surveillance platform"
+  },
+  "@lobstersgram:524": {
+    "telegraph_link": "https://telegra.ph/What-will-you-do-after-tech--Lobsters-09-03",
+    "article_link": "https://lobste.rs/s/oieyk7/what_will_you_do_after_tech",
+    "discussion_link": "https://lobste.rs/s/oieyk7/what_will_you_do_after_tech",
+    "title": "What will you do after tech?"
   }
 }
