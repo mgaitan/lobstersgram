@@ -3100,5 +3100,23 @@
     "article_link": "https://lobste.rs/s/oieyk7/what_will_you_do_after_tech",
     "discussion_link": "https://lobste.rs/s/oieyk7/what_will_you_do_after_tech",
     "title": "What will you do after tech?"
+  },
+  "@lobstersgram:525": {
+    "telegraph_link": "https://telegra.ph/Is-Minifying-CSS-Necessary--A-Place-For-My-Head-09-03",
+    "article_link": "https://shivjm.blog/is-minifying-css-necessary/",
+    "discussion_link": "https://lobste.rs/s/gbucyj/is_minifying_css_necessary_2023",
+    "title": "Is Minifying CSS Necessary? (2023)"
+  },
+  "@lobstersgram:526": {
+    "telegraph_link": "https://telegra.ph/A-Crash-Course-in-Predicate-Logic-09-03",
+    "article_link": "https://www.hillelwayne.com/post/predicate-logic/",
+    "discussion_link": "https://lobste.rs/s/rwqtzs/crash_course_predicate_logic",
+    "title": "A Crash Course in Predicate Logic"
+  },
+  "@lobstersgram:527": {
+    "telegraph_link": "https://telegra.ph/The-load-bearing-vocabulary-of-Claude-09-03",
+    "article_link": "https://louisabraham.github.io/load-bearing/",
+    "discussion_link": "https://lobste.rs/s/4gzijx/load_bearing_vocabulary_claude",
+    "title": "The load-bearing vocabulary of Claude"
   }
 }
