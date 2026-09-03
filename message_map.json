@@ -3142,5 +3142,29 @@
     "article_link": "https://qtea.me/posts/souping-up-my-blog/",
     "discussion_link": "https://lobste.rs/s/bgswli/souping_up_my_blog",
     "title": "Souping up my blog"
+  },
+  "@lobstersgram:532": {
+    "telegraph_link": "https://telegra.ph/How-to-Guarantee-You-Never-Ship-09-03-2",
+    "article_link": "https://kore-nordmann.de/blog/how_to_guarantee_you_never_ship.html",
+    "discussion_link": "https://lobste.rs/s/izlxli/how_guarantee_you_never_ship",
+    "title": "How to Guarantee You Never Ship"
+  },
+  "@lobstersgram:533": {
+    "telegraph_link": "https://telegra.ph/Lets-build-a-compressor-from-scratch--Adolfo-Ochagavía-09-03",
+    "article_link": "https://ochagavia.nl/blog/lets-build-a-compressor-from-scratch/",
+    "discussion_link": "https://lobste.rs/s/3y9lbw/let_s_build_compressor_from_scratch",
+    "title": "Let's build a compressor from scratch"
+  },
+  "@lobstersgram:534": {
+    "telegraph_link": "https://telegra.ph/The-holy-grail-of-nixpkgs-version-ranges--Farid-Zakarias-Blog-09-03",
+    "article_link": "https://fzakaria.com/2026/09/01/the-holy-grail-of-nixpkgs-version-ranges",
+    "discussion_link": "https://lobste.rs/s/echox4/holy_grail_nixpkgs_version_ranges",
+    "title": "The holy grail of nixpkgs: version ranges"
+  },
+  "@lobstersgram:535": {
+    "telegraph_link": "https://telegra.ph/I-Dont-Have-a-Smartphone-09-03-5",
+    "article_link": "https://ploum.net/2026-09-02-i_dont_have_a_smartphone.html",
+    "discussion_link": "https://lobste.rs/s/nh1uij/i_don_t_have_smartphone",
+    "title": "I Don’t Have a Smartphone…"
   }
 }
