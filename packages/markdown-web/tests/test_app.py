@@ -52,6 +52,13 @@ def test_home_and_static_assets() -> None:
     assert client.get("/static/styles.css").status_code == HTTP_200_OK
 
 
+def test_health_returns_application_version() -> None:
+    response = client.get("/health/")
+
+    assert response.status_code == HTTP_200_OK
+    assert response.json() == {"status": "ok", "version": app_module.APP_VERSION}
+
+
 def test_about_describes_routes_and_cli() -> None:
     response = client.get("/about")
 
