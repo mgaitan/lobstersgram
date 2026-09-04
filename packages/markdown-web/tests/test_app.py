@@ -70,6 +70,7 @@ def test_health_returns_application_version() -> None:
         "commit": app_module.APP_COMMIT,
         "version": app_module.APP_VERSION,
     }
+    assert response.headers["cache-control"] == "no-store"
 
 
 def test_about_describes_routes_and_cli() -> None:

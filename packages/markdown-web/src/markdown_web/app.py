@@ -9,7 +9,7 @@ from pathlib import Path
 from urllib.parse import parse_qs
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
@@ -184,7 +184,8 @@ def home(request: Request) -> HTMLResponse:
 
 
 @app.get("/health/")
-def health() -> dict[str, str]:
+def health(response: Response) -> dict[str, str]:
+    response.headers["Cache-Control"] = "no-store"
     return {"status": "ok", "commit": APP_COMMIT, "version": APP_VERSION}
 
 
