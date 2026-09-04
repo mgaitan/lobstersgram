@@ -49,6 +49,11 @@ DOCUMENT_EXTENSIONS = frozenset(
 )
 CARD_DIRECTIVE_RE = re.compile(r"!\[card\]\(\s*(https?://[^)\s]+)\s*\)")
 OCR_ERROR_RE = re.compile(r"pages?\s+(.+?)\s+of\s+\d+\s+need OCR", re.IGNORECASE)
+OCR_ERROR_TYPES = tuple(
+    error_type
+    for error_type in (anydoc.UnsupportedError, getattr(anydoc, "NeedsOcrError", None))
+    if error_type is not None
+)
 
 
 def _front_matter_notify_telegram(markdown: str) -> str:
@@ -251,7 +256,7 @@ def _convert_document(data: bytes, filename: str) -> str:
     try:
         markdown = anydoc.to_markdown_bytes(data, document_format)
     except (anydoc.ConvertError, OSError, ValueError) as exc:
-        if document_format == "pdf" and isinstance(exc, anydoc.UnsupportedError) and OCR_ERROR_RE.search(str(exc)):
+        if document_format == "pdf" and _is_ocr_error(exc):
             return _convert_pdf_pages(data, exc)
         raise DocumentConversionError(exc) from exc
     if not markdown.strip():
@@ -272,8 +277,8 @@ def _convert_pdf_pages(data: bytes, original_error: Exception) -> str:
             writer.write(page_data)
             try:
                 page_markdown = anydoc.to_markdown_bytes(page_data.getvalue(), "pdf")
-            except anydoc.UnsupportedError as exc:
-                if OCR_ERROR_RE.search(str(exc)) or "ocr" in str(exc).lower():
+            except OCR_ERROR_TYPES as exc:
+                if _is_ocr_error(exc):
                     skipped.append(page_number)
                     continue
                 raise
@@ -295,6 +300,17 @@ def _convert_pdf_pages(data: bytes, original_error: Exception) -> str:
         warning = f"<!-- markdown-web: Pages {pages} were omitted because they require OCR. -->"
         parts.insert(0, warning)
     return "\n\n---\n\n".join(parts)
+
+
+def _is_ocr_error(exc: Exception) -> bool:
+    message = str(exc).lower()
+    return isinstance(exc, OCR_ERROR_TYPES) and (
+        OCR_ERROR_RE.search(message)
+        or "ocr" in message
+        or "scanned" in message
+        or "imagebased" in message
+        or "no extractable text" in message
+    )
 
 
 def _download_document(url: str) -> tuple[bytes, str]:
