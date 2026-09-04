@@ -47,6 +47,18 @@ def test_home_and_static_assets() -> None:
     assert "Edit source" not in response.text
     assert 'id="new-button"' in response.text
     assert 'id="new-button" class="button button-secondary" type="button" hidden' in response.text
+    assert 'id="publish-status" class="status publish-status"' in response.text
+    assert "publishButton.disabled = true" in response.text
+    assert 'id="markdown-toolbar" class="markdown-toolbar"' in response.text
+    assert 'data-markdown-action="bold"' in response.text
+    assert 'data-markdown-action="image"' in response.text
+    assert 'data-markdown-action="code-block"' in response.text
+    assert 'id="metadata-button"' in response.text
+    assert 'id="metadata-dialog"' in response.text
+    assert '<select id="metadata-type" name="type">' in response.text
+    assert 'id="metadata-telegram"' in response.text
+    assert 'id="expand-editor"' in response.text
+    assert "editor-fullscreen" in response.text
     assert 'id="new-dialog"' in response.text
     assert "localStorage" in response.text
     assert 'placeholder="Paste a URL, drop a file or insert markdown content"' in response.text
