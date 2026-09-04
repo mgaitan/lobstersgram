@@ -297,7 +297,7 @@ def _convert_pdf_pages(data: bytes, original_error: Exception) -> str:
     parts = [f"<!-- Page {page_number} -->\n\n{page_markdown}" for page_number, page_markdown in converted]
     if skipped:
         pages = ", ".join(str(page_number) for page_number in skipped)
-        warning = f"<!-- markdown-web: Pages {pages} were omitted because they require OCR. -->"
+        warning = f"> **Contenido incompleto:** se omitieron las páginas {pages} porque requieren OCR."
         parts.insert(0, warning)
     return "\n\n---\n\n".join(parts)
 

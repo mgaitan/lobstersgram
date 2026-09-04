@@ -105,7 +105,7 @@ def test_prepare_content_keeps_readable_pdf_pages_when_some_need_ocr(monkeypatch
 
     result = service.prepare_content(SourceRequest(document=b"document", filename="report.pdf"))
 
-    assert f"Pages {ocr_page} were omitted because they require OCR" in result.markdown
+    assert f"se omitieron las páginas {ocr_page} porque requieren OCR" in result.markdown
     assert result.markdown.count("Readable page") == readable_pages
 
 

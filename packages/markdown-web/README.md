@@ -35,8 +35,9 @@ are limited to 50 MB. URLs ending in one of those document extensions are
 converted through the same path.
 
 When a PDF contains a mixture of readable and scanned pages, the service
-keeps the pages AnyDoc can convert and adds an HTML comment listing the pages
-omitted because they require OCR.
+keeps the pages AnyDoc can convert and adds a visible Markdown warning listing
+the pages omitted because they require OCR. The warning is visible in the resulting
+Markdown and in the published Telegraph page.
 
 The target URL should be URL-encoded when it contains characters that have a
 meaning to the web server. POST endpoints accept JSON with a URL, raw HTML, or
