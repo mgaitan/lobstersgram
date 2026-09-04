@@ -56,7 +56,11 @@ def test_health_returns_application_version() -> None:
     response = client.get("/health/")
 
     assert response.status_code == HTTP_200_OK
-    assert response.json() == {"status": "ok", "version": app_module.APP_VERSION}
+    assert response.json() == {
+        "status": "ok",
+        "commit": app_module.APP_COMMIT,
+        "version": app_module.APP_VERSION,
+    }
 
 
 def test_about_describes_routes_and_cli() -> None:

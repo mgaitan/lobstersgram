@@ -39,6 +39,7 @@ try:
     APP_VERSION = version("markdown-web")
 except PackageNotFoundError:  # pragma: no cover - the package is installed in supported environments
     APP_VERSION = "unknown"
+APP_COMMIT = os.getenv("APP_COMMIT", "unknown")
 
 
 def _source_request_openapi() -> dict[str, object]:
@@ -184,7 +185,7 @@ def home(request: Request) -> HTMLResponse:
 
 @app.get("/health/")
 def health() -> dict[str, str]:
-    return {"status": "ok", "version": APP_VERSION}
+    return {"status": "ok", "commit": APP_COMMIT, "version": APP_VERSION}
 
 
 @app.get("/md/{url:path}", response_class=PlainTextResponse)
