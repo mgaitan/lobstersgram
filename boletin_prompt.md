@@ -51,7 +51,6 @@ notify_telegram: 390225349
 - Después del frontmatter, dejá una línea en blanco y escribí el título H1 correspondiente.
 - Para una edición diaria, comenzá con `# Resumen diario — [día y fecha en Argentina]`.
 - Para una edición de fin de semana, comenzá con `# Edición de fin de semana — [día y fecha en Argentina]`.
-- Agregá la sección `## Lectura de conjunto`. Construí allí un hilo narrativo entre las noticias; no te limites a enumerarlas. Hacela breve y precisa durante la semana, y más desarrollada los sábados y domingos.
 - Presentá exactamente `N` piezas, ordenadas por relevancia editorial, sin numerarlas.
 - Para cada pieza usá un encabezado H2 con el título, sin prefijos como `1.`, `2.` o similares.
 - Debajo del título escribí una sola línea con el formato `**Autor o autora** | **Medio**`. No incluyas fecha ni género: la fecha de la edición alcanza.

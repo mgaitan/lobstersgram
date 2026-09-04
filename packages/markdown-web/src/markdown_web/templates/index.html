@@ -14,7 +14,7 @@
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Markdown and Telegraph">
     <meta name="twitter:description" content="Turn any page into Markdown or publish it to Telegraph.">
-    <link rel="stylesheet" href="/static/styles.css?v=9">
+    <link rel="stylesheet" href="/static/styles.css?v=12">
   </head>
   <body>
     <main class="page">
@@ -35,13 +35,44 @@
             <div class="result-toolbar">
               <span id="result-source" class="source-label"></span>
               <div class="result-actions">
+                <span id="publish-status" class="status publish-status" role="status" aria-live="polite"></span>
                 <button id="new-button" class="button button-secondary" type="button" hidden>New</button>
                 <button id="copy-button" class="button button-secondary" type="button">Copy</button>
+                <button id="preview-button" class="button button-secondary" type="button">Preview</button>
                 <button id="submit-publish" class="button button-primary" type="submit">Publish</button>
               </div>
             </div>
             <label class="sr-only" for="markdown-output">Markdown</label>
-            <textarea id="markdown-output" spellcheck="false"></textarea>
+            <div class="markdown-editor">
+              <div id="markdown-toolbar" class="markdown-toolbar" role="toolbar" aria-label="Markdown formatting">
+                <select id="heading-action" aria-label="Heading" title="Heading">
+                  <option value="">H</option>
+                  <option value="1">H1</option>
+                  <option value="2">H2</option>
+                  <option value="3">H3</option>
+                </select>
+                <button type="button" data-markdown-action="bold" aria-label="Bold" title="Bold"><strong>B</strong></button>
+                <button type="button" data-markdown-action="italic" aria-label="Italic" title="Italic"><em>I</em></button>
+                <button type="button" data-markdown-action="strike" aria-label="Strikethrough" title="Strikethrough"><s>S</s></button>
+                <span class="toolbar-divider" aria-hidden="true"></span>
+                <button type="button" data-markdown-action="quote" aria-label="Quote" title="Quote">&gt;</button>
+                <button type="button" data-markdown-action="unordered-list" aria-label="Bullet list" title="Bullet list">&#8226;</button>
+                <button type="button" data-markdown-action="ordered-list" aria-label="Numbered list" title="Numbered list">&#9776;</button>
+                <span class="toolbar-divider" aria-hidden="true"></span>
+                <button type="button" data-markdown-action="link" aria-label="Link" title="Link">&#8599;</button>
+                <button type="button" data-markdown-action="image" aria-label="Image" title="Image">&#9639;</button>
+                <button type="button" data-markdown-action="code" aria-label="Inline code" title="Inline code">&lt;/&gt;</button>
+                <button type="button" data-markdown-action="code-block" aria-label="Code block" title="Code block">&#123;&#125;</button>
+                <button type="button" data-markdown-action="horizontal-rule" aria-label="Horizontal rule" title="Horizontal rule">&#8212;</button>
+                <span class="toolbar-divider" aria-hidden="true"></span>
+                <button id="metadata-button" type="button" aria-label="Publication metadata" title="Publication metadata">Meta</button>
+              </div>
+              <textarea id="markdown-output" spellcheck="false"></textarea>
+              <button id="expand-editor" class="editor-expand-button" type="button" aria-label="Maximize editor" title="Maximize editor">&#x2922;</button>
+            </div>
+            <div id="preview-pane" class="preview-pane" hidden>
+              <iframe id="preview-frame" class="preview-frame" title="Telegraph preview" loading="eager"></iframe>
+            </div>
           </section>
           <p id="status" class="status" role="status"></p>
         </form>
@@ -55,6 +86,33 @@
         <div class="dialog-actions">
           <button class="button button-secondary" value="cancel">Cancel</button>
           <button id="confirm-new" class="button button-primary" value="confirm">New</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="metadata-dialog" aria-labelledby="metadata-dialog-title">
+      <form id="metadata-form" method="dialog">
+        <h2 id="metadata-dialog-title">Publication metadata</h2>
+        <div class="metadata-grid">
+          <label class="metadata-field">Title<input id="metadata-title" name="title" type="text" autocomplete="off"></label>
+          <label class="metadata-field">Author<input id="metadata-author" name="author" type="text" autocomplete="off"></label>
+          <label class="metadata-field metadata-wide">Source URL<input id="metadata-url" name="url" type="url" autocomplete="off"></label>
+          <label class="metadata-field">Date<input id="metadata-date" name="date" type="date"></label>
+          <label class="metadata-field">Type<select id="metadata-type" name="type">
+            <option value="">Automatic</option>
+            <option value="document">Document</option>
+            <option value="article">Article</option>
+            <option value="report">Report</option>
+            <option value="brief">Brief</option>
+            <option value="note">Note</option>
+          </select></label>
+          <label class="metadata-field metadata-wide">Image URL<input id="metadata-image" name="image" type="url" autocomplete="off"></label>
+          <label class="metadata-field metadata-wide">Telegram recipients<input id="metadata-telegram" name="notify_telegram" type="text" placeholder="390225349, -1001234567890" autocomplete="off"></label>
+        </div>
+        <p class="metadata-note">Separate multiple Telegram recipients with commas.</p>
+        <div class="dialog-actions">
+          <button class="button button-secondary" value="cancel">Cancel</button>
+          <button id="save-metadata" class="button button-primary" value="save">Apply</button>
         </div>
       </form>
     </dialog>
@@ -73,16 +131,29 @@
       const sourceEntry = document.querySelector("#source-entry");
       const result = document.querySelector("#result");
       const output = document.querySelector("#markdown-output");
+      const markdownEditor = document.querySelector(".markdown-editor");
+      const previewPane = document.querySelector("#preview-pane");
+      const previewFrame = document.querySelector("#preview-frame");
       const dropZone = document.querySelector("#drop-zone");
       const sourceInput = document.querySelector("#source-url");
       const sourceFile = document.querySelector("#source-file");
       const fileButton = document.querySelector("#file-button");
       const sourceLabel = document.querySelector("#result-source");
       const status = document.querySelector("#status");
+      const publishStatus = document.querySelector("#publish-status");
+      const publishButton = document.querySelector("#submit-publish");
+      const previewButton = document.querySelector("#preview-button");
       const newButton = document.querySelector("#new-button");
       const newDialog = document.querySelector("#new-dialog");
       const confirmNew = document.querySelector("#confirm-new");
+      const metadataButton = document.querySelector("#metadata-button");
+      const metadataDialog = document.querySelector("#metadata-dialog");
+      const metadataForm = document.querySelector("#metadata-form");
+      const expandEditorButton = document.querySelector("#expand-editor");
+      const metadataFields = ["title", "author", "url", "date", "type", "image", "notify_telegram"];
       let currentUrl = "";
+      let previewId = "";
+      let previewing = false;
       let mode = "process";
       const DRAFT_KEY = "markdown-web-draft";
       const SOURCE_PLACEHOLDER = "Paste a URL, drop a file or insert markdown content";
@@ -93,9 +164,189 @@
         status.classList.toggle("error", error);
       }
 
+      function setPublishStatus(message, error = false) {
+        publishStatus.textContent = message;
+        publishStatus.classList.toggle("error", error);
+      }
+
+      function setPreviewMode(enabled, url = "") {
+        previewing = enabled;
+        markdownEditor.hidden = enabled;
+        previewPane.hidden = !enabled;
+        previewButton.textContent = enabled ? "Back to edit" : "Preview";
+        previewButton.setAttribute("aria-pressed", String(enabled));
+        if (url) previewFrame.src = url;
+      }
+
+      function updateMarkdown(value, start, end) {
+        output.setRangeText(value, start, end, "end");
+        output.dispatchEvent(new Event("input", {bubbles: true}));
+        output.focus();
+      }
+
+      function parseFrontmatter(markdown) {
+        const match = markdown.match(/^\uFEFF?---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/);
+        if (!match) return {fields: {}, lines: [], body: markdown, hasFrontmatter: false};
+        const fields = {};
+        const lines = match[1].split(/\r?\n/);
+        for (const line of lines) {
+          const field = line.match(/^([A-Za-z_][\w-]*):\s*(.*)$/);
+          if (!field) continue;
+          let value = field[2].trim();
+          if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+            value = value.slice(1, -1);
+          }
+          fields[field[1]] = value;
+        }
+        return {fields, lines, body: markdown.slice(match[0].length), hasFrontmatter: true};
+      }
+
+      function yamlValue(value) {
+        return JSON.stringify(value);
+      }
+
+      function updateFrontmatter(values) {
+        const parsed = parseFrontmatter(output.value);
+        const lines = [...parsed.lines];
+        for (const field of metadataFields) {
+          const value = values[field].trim();
+          const index = lines.findIndex((line) => line.match(new RegExp(`^${field}:\\s*`)));
+          if (index >= 0) {
+            if (value) lines[index] = `${field}: ${yamlValue(value)}`;
+            else lines.splice(index, 1);
+          } else if (value) {
+            lines.push(`${field}: ${yamlValue(value)}`);
+          }
+        }
+        const body = parsed.body.replace(/^\r?\n/, "");
+        if (!lines.length) {
+          output.value = body;
+        } else {
+          output.value = `---\n${lines.join("\n")}\n---${body ? `\n${body}` : "\n"}`;
+        }
+        output.dispatchEvent(new Event("input", {bubbles: true}));
+        output.focus();
+      }
+
+      function openMetadataDialog() {
+        const parsed = parseFrontmatter(output.value);
+        for (const field of metadataFields) {
+          const control = metadataForm.elements[field];
+          const value = parsed.fields[field] || "";
+          if (field === "type" && value && ![...control.options].some((option) => option.value === value)) {
+            control.add(new Option(value, value));
+          }
+          control.value = value;
+        }
+        metadataDialog.showModal();
+        metadataForm.elements.title.focus();
+      }
+
+      function setEditorFullscreen(expanded) {
+        document.body.classList.toggle("editor-fullscreen", expanded);
+        expandEditorButton.textContent = expanded ? "×" : "⤢";
+        expandEditorButton.setAttribute("aria-label", expanded ? "Exit full-screen editor" : "Maximize editor");
+        expandEditorButton.title = expanded ? "Exit full-screen editor" : "Maximize editor";
+        if (expanded) output.focus();
+      }
+
+      function wrapSelection(before, after, placeholder) {
+        const start = output.selectionStart;
+        const end = output.selectionEnd;
+        const selected = output.value.slice(start, end) || placeholder;
+        updateMarkdown(before + selected + after, start, end);
+        output.setSelectionRange(start + before.length, start + before.length + selected.length);
+      }
+
+      function prefixLines(prefix, numbered = false) {
+        const start = output.selectionStart;
+        const end = output.selectionEnd;
+        const selected = output.value.slice(start, end) || "list item";
+        const lines = selected.split("\n").map((line, index) => {
+          const marker = numbered ? `${index + 1}. ` : prefix;
+          return `${marker}${line.replace(/^\s*(?:[-*+] |\d+\. |> )/, "")}`;
+        });
+        updateMarkdown(lines.join("\n"), start, end);
+        output.setSelectionRange(start, start + lines.join("\n").length);
+      }
+
+      function applyHeading(level) {
+        if (!level) return;
+        const start = output.selectionStart;
+        const end = output.selectionEnd;
+        const selected = output.value.slice(start, end) || "Heading";
+        const heading = `${"#".repeat(Number(level))} `;
+        const lines = selected.split("\n").map((line) => `${heading}${line.replace(/^\s*#{1,6}\s*/, "")}`);
+        const replacement = lines.join("\n");
+        updateMarkdown(replacement, start, end);
+        output.setSelectionRange(start + heading.length, start + replacement.length);
+      }
+
+      function addLink() {
+        const url = window.prompt("URL", "https://");
+        if (!url) return;
+        const start = output.selectionStart;
+        const end = output.selectionEnd;
+        const selected = output.value.slice(start, end) || "link text";
+        const replacement = `[${selected}](${url})`;
+        updateMarkdown(replacement, start, end);
+        output.setSelectionRange(start + 1, start + 1 + selected.length);
+      }
+
+      function addImage() {
+        const url = window.prompt("Image URL", "https://");
+        if (!url) return;
+        const alt = window.prompt("Alt text", "image") || "image";
+        const start = output.selectionStart;
+        const end = output.selectionEnd;
+        const replacement = `![${alt}](${url})`;
+        updateMarkdown(replacement, start, end);
+      }
+
+      document.querySelector("#markdown-toolbar").addEventListener("click", (event) => {
+        const button = event.target.closest("button[data-markdown-action]");
+        if (!button) return;
+        const action = button.dataset.markdownAction;
+        if (action === "bold") wrapSelection("**", "**", "bold text");
+        if (action === "italic") wrapSelection("*", "*", "italic text");
+        if (action === "strike") wrapSelection("~~", "~~", "strikethrough");
+        if (action === "quote") prefixLines("> ");
+        if (action === "unordered-list") prefixLines("- ");
+        if (action === "ordered-list") prefixLines("", true);
+        if (action === "link") addLink();
+        if (action === "image") addImage();
+        if (action === "code") wrapSelection("`", "`", "code");
+        if (action === "code-block") wrapSelection("```\n", "\n```", "code");
+        if (action === "horizontal-rule") updateMarkdown("\n\n---\n\n", output.selectionStart, output.selectionEnd);
+      });
+
+      document.querySelector("#heading-action").addEventListener("change", (event) => {
+        applyHeading(event.target.value);
+        event.target.value = "";
+      });
+
+      metadataButton.addEventListener("click", openMetadataDialog);
+      metadataForm.addEventListener("submit", (event) => {
+        if (event.submitter?.value !== "save") return;
+        event.preventDefault();
+        const values = Object.fromEntries(metadataFields.map((field) => [field, metadataForm.elements[field].value]));
+        updateFrontmatter(values);
+        currentUrl = values.url.trim();
+        metadataDialog.close();
+      });
+
+      expandEditorButton.addEventListener("click", () => {
+        setEditorFullscreen(!document.body.classList.contains("editor-fullscreen"));
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && document.body.classList.contains("editor-fullscreen") && !metadataDialog.open) {
+          setEditorFullscreen(false);
+        }
+      });
+
       function saveDraft() {
         const draft = mode === "publish"
-          ? {mode, markdown: output.value, url: currentUrl, label: sourceLabel.textContent}
+          ? {mode, markdown: output.value, url: currentUrl, label: sourceLabel.textContent, preview_id: previewId}
           : {mode, value: sourceInput.value};
         try {
           localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
@@ -122,6 +373,7 @@
         if (!draft || typeof draft !== "object") return;
         if (draft.mode === "publish" && typeof draft.markdown === "string" && draft.markdown) {
           currentUrl = typeof draft.url === "string" ? draft.url : "";
+          previewId = typeof draft.preview_id === "string" ? draft.preview_id : "";
           output.value = draft.markdown;
           sourceLabel.textContent = typeof draft.label === "string" && draft.label
             ? draft.label
@@ -129,6 +381,7 @@
           sourceEntry.hidden = true;
           result.hidden = false;
           newButton.hidden = false;
+          setPublishStatus("");
           mode = "publish";
           return;
         }
@@ -178,12 +431,15 @@
       }
 
       function showMarkdownEditor(markdown) {
+        setPreviewMode(false);
         currentUrl = "";
+        previewId = "";
         output.value = markdown;
         sourceLabel.textContent = "Markdown";
         sourceEntry.hidden = true;
         result.hidden = false;
         newButton.hidden = false;
+        setPublishStatus("");
         mode = "publish";
         setStatus("");
         saveDraft();
@@ -201,6 +457,7 @@
           return;
         }
         if (file) currentUrl = "";
+        setPreviewMode(false);
         setStatus("Processing…");
         try {
           let response;
@@ -213,10 +470,12 @@
           }
           if (!response.ok) throw new Error(await responseError(response, "Processing failed"));
           output.value = await response.text();
+          previewId = "";
           sourceLabel.textContent = url || file.name;
           sourceEntry.hidden = true;
           result.hidden = false;
           newButton.hidden = false;
+          setPublishStatus("");
           mode = "publish";
           setStatus("");
           saveDraft();
@@ -268,10 +527,14 @@
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
         if (mode === "publish") {
-          setStatus("Publishing…");
+          if (publishButton.disabled) return;
+          publishButton.disabled = true;
+          previewButton.disabled = true;
+          setPublishStatus("Publishing…");
           try {
             const payload = {markdown: output.value};
             if (currentUrl) payload.metadata = {url: currentUrl};
+            if (previewId) payload.preview_id = previewId;
             const response = await fetch("/t", {
               method: "POST",
               headers: {"Content-Type": "application/json"},
@@ -284,7 +547,10 @@
             clearDraft();
             window.location.href = data.url;
           } catch (error) {
-            setStatus(error.message, true);
+            setPublishStatus(error.message, true);
+          } finally {
+            publishButton.disabled = false;
+            previewButton.disabled = false;
           }
           return;
         }
@@ -299,11 +565,49 @@
         setStatus("Copied");
       });
 
+      previewButton.addEventListener("click", async () => {
+        if (previewing) {
+          setPreviewMode(false);
+          setPublishStatus("");
+          return;
+        }
+        if (previewButton.disabled || publishButton.disabled) return;
+        previewButton.disabled = true;
+        publishButton.disabled = true;
+        setPublishStatus("Previewing…");
+        try {
+          const payload = {markdown: output.value};
+          if (currentUrl) payload.metadata = {url: currentUrl};
+          if (previewId) payload.preview_id = previewId;
+          const response = await fetch("/t/preview", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(payload)
+          });
+          const data = response.headers.get("content-type")?.includes("application/json")
+            ? await response.json()
+            : {detail: await response.text()};
+          if (!response.ok) throw new Error(data.detail || await responseError(response, "Preview failed"));
+          previewId = data.preview_id;
+          saveDraft();
+          setEditorFullscreen(false);
+          setPreviewMode(true, data.url);
+          setPublishStatus("Preview ready");
+        } catch (error) {
+          setPublishStatus(error.message, true);
+        } finally {
+          previewButton.disabled = false;
+          publishButton.disabled = false;
+        }
+      });
+
       output.addEventListener("input", saveDraft);
       newButton.addEventListener("click", () => newDialog.showModal());
       confirmNew.addEventListener("click", () => {
         clearDraft();
+        setPreviewMode(false);
         currentUrl = "";
+        previewId = "";
         mode = "process";
         sourceInput.value = "";
         output.value = "";
@@ -312,6 +616,8 @@
         result.hidden = true;
         sourceEntry.hidden = false;
         newButton.hidden = true;
+        setEditorFullscreen(false);
+        setPublishStatus("");
         setStatus("");
         sourceInput.focus();
       });

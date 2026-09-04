@@ -47,6 +47,25 @@ def test_home_and_static_assets() -> None:
     assert "Edit source" not in response.text
     assert 'id="new-button"' in response.text
     assert 'id="new-button" class="button button-secondary" type="button" hidden' in response.text
+    assert 'id="publish-status" class="status publish-status"' in response.text
+    assert "publishButton.disabled = true" in response.text
+    assert 'id="preview-button"' in response.text
+    assert 'id="preview-pane" class="preview-pane" hidden' in response.text
+    assert 'id="preview-frame" class="preview-frame"' in response.text
+    assert "Back to edit" in response.text
+    assert 'fetch("/t/preview"' in response.text
+    assert "window.open" not in response.text
+    assert "payload.preview_id = previewId" in response.text
+    assert 'id="markdown-toolbar" class="markdown-toolbar"' in response.text
+    assert 'data-markdown-action="bold"' in response.text
+    assert 'data-markdown-action="image"' in response.text
+    assert 'data-markdown-action="code-block"' in response.text
+    assert 'id="metadata-button"' in response.text
+    assert 'id="metadata-dialog"' in response.text
+    assert '<select id="metadata-type" name="type">' in response.text
+    assert 'id="metadata-telegram"' in response.text
+    assert 'id="expand-editor"' in response.text
+    assert "editor-fullscreen" in response.text
     assert 'id="new-dialog"' in response.text
     assert "localStorage" in response.text
     assert 'placeholder="Paste a URL, drop a file or insert markdown content"' in response.text
@@ -121,6 +140,10 @@ def test_openapi_describes_post_bodies_and_publish_response() -> None:
     publish_post = schema["paths"]["/t"]["post"]
     assert publish_post["responses"]["200"]["content"]["application/json"]["schema"]["$ref"] == (
         "#/components/schemas/TelegraphResponse"
+    )
+    preview_post = schema["paths"]["/t/preview"]["post"]
+    assert preview_post["responses"]["200"]["content"]["application/json"]["schema"]["$ref"] == (
+        "#/components/schemas/TelegraphPreviewResponse"
     )
     assert (
         schema["paths"]["/t/jobs"]["post"]["responses"]["202"]["content"]["application/json"]["schema"]["$ref"]
@@ -226,6 +249,30 @@ def test_post_telegraph_returns_json_and_accepts_bearer_token(monkeypatch: pytes
 
     assert response.status_code == HTTP_200_OK
     assert response.json() == {"url": "https://telegra.ph/page"}
+    assert seen["source"].access_token == "request-token"
+
+
+def test_post_preview_returns_json_and_accepts_preview_id(monkeypatch: pytest.MonkeyPatch) -> None:
+    seen: dict[str, SourceRequest] = {}
+
+    def fake_preview(source: SourceRequest) -> tuple[str, str]:
+        seen["source"] = source
+        return "signed-preview-id", "https://telegra.ph/preview"
+
+    monkeypatch.setattr(app_module, "preview_content", fake_preview)
+
+    response = client.post(
+        "/t/preview",
+        json={"markdown": "# Title", "preview_id": "old-preview-id"},
+        headers={"authorization": "Bearer request-token"},
+    )
+
+    assert response.status_code == HTTP_200_OK
+    assert response.json() == {
+        "preview_id": "signed-preview-id",
+        "url": "https://telegra.ph/preview",
+    }
+    assert seen["source"].preview_id == "old-preview-id"
     assert seen["source"].access_token == "request-token"
 
 

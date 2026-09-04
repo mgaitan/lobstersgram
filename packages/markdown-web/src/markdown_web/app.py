@@ -19,11 +19,18 @@ from starlette.datastructures import UploadFile
 
 from markdown_web import jobs
 from markdown_web.bookmarklet import build_bookmarklets
-from markdown_web.schemas import SourceMetadata, SourceRequest, TelegraphJobResponse, TelegraphResponse
+from markdown_web.schemas import (
+    SourceMetadata,
+    SourceRequest,
+    TelegraphJobResponse,
+    TelegraphPreviewResponse,
+    TelegraphResponse,
+)
 from markdown_web.service import (
     SourceError,
     list_published_pages,
     prepare_content,
+    preview_content,
     publish_content,
 )
 
@@ -304,6 +311,18 @@ def telegraph_from_url(url: str, request: Request) -> RedirectResponse:
         status_code=303,
         headers={"Cache-Control": "public, max-age=86400"},
     )
+
+
+@app.post("/t/preview", response_model=TelegraphPreviewResponse, openapi_extra=_source_request_openapi())
+async def telegraph_preview(request: Request) -> JSONResponse:
+    source = await _request_data(request)
+    if not source.access_token:
+        source = source.model_copy(update={"access_token": _authorization_token(request) or None})
+    try:
+        preview_id, target = preview_content(source)
+    except Exception as exc:
+        raise _handle_source_error(exc) from exc
+    return JSONResponse({"preview_id": preview_id, "url": target})
 
 
 @app.post("/t", response_model=TelegraphResponse, openapi_extra=_source_request_openapi())
