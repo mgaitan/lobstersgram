@@ -3220,5 +3220,23 @@
     "article_link": "https://lwn.net/Articles/1090585/",
     "discussion_link": "https://lobste.rs/s/krcehd/note_on_subscription_prices_from_lwn",
     "title": "A note on subscription prices from LWN"
+  },
+  "@lobstersgram:545": {
+    "telegraph_link": "https://telegra.ph/No-more-issues--stitcherio-09-04",
+    "article_link": "https://stitcher.io/blog/no-more-issues",
+    "discussion_link": "https://lobste.rs/s/qgxznz/no_more_issues",
+    "title": "No more issues"
+  },
+  "@lobstersgram:546": {
+    "telegraph_link": "https://telegra.ph/Lua-async---Neovim-docs-09-04",
+    "article_link": "https://neovim.io/doc/user/lua-async/",
+    "discussion_link": "https://lobste.rs/s/r58i7h/lua_async",
+    "title": "Lua-async"
+  },
+  "@lobstersgram:547": {
+    "telegraph_link": "https://telegra.ph/The-NX-bit-is-not-just-about-security--purplesyringas-blog-09-04",
+    "article_link": "https://purplesyringa.moe/blog/guest/the-nx-bit-is-not-just-about-security/",
+    "discussion_link": "https://lobste.rs/s/eokmrg/nx_bit_is_not_just_about_security",
+    "title": "The NX bit is not just about security"
   }
 }
