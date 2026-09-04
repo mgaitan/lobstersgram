@@ -3298,5 +3298,35 @@
     "article_link": "https://www.phoronix.com/news/CERN-Goes-Debian-Leaving-RHEL",
     "discussion_link": "https://lobste.rs/s/fxk56i/cern_transitioning_industrial",
     "title": "CERN transitioning industrial computers to Debian after being a longtime RHEL institution"
+  },
+  "@lobstersgram:558": {
+    "telegraph_link": "https://telegra.ph/FORCE-COLOR-Keep-Your-Command-Line-Colorful-Even-when-Piping---Retain-Text-Colors-in-Logs-Output-Streams-and-More-09-04-2",
+    "article_link": "https://force-color.org/",
+    "discussion_link": "https://lobste.rs/s/qnjllv/force_color_keep_your_command_line",
+    "title": "FORCE_COLOR: Keep Your Command Line Colorful, Even when Piping - Retain Text Colors in Logs, Output Streams, and More"
+  },
+  "@lobstersgram:559": {
+    "telegraph_link": "https://telegra.ph/crumblesblog-WTF-is-going-on-with-R7RS-Large-2026-edition-09-04",
+    "article_link": "https://crumbles.blog/posts/2026-09-04-r7rs-wtf.html",
+    "discussion_link": "https://lobste.rs/s/4vsl2j/wtf_is_going_on_with_r7rs_large_2026",
+    "title": "WTF is going on with R7RS Large? 2026 edition"
+  },
+  "@lobstersgram:560": {
+    "telegraph_link": "https://telegra.ph/Release-v0450--jj-vcsjj--GitHub-09-04",
+    "article_link": "https://github.com/jj-vcs/jj/releases/tag/v0.45.0",
+    "discussion_link": "https://lobste.rs/s/zudpcb/jujutsu_0_45_0",
+    "title": "jujutsu 0.45.0"
+  },
+  "@lobstersgram:561": {
+    "telegraph_link": "https://telegra.ph/zzktdeft-A-Gradual-type-system-for-Janet-with-bidirectional-inference-static-analysis-and-runtime-type-checking---Codebergorg-09-04",
+    "article_link": "https://codeberg.org/zzkt/deft",
+    "discussion_link": "https://lobste.rs/s/bqfbqk/deft_gradual_type_system_for_janet",
+    "title": "deft: A gradual type system for Janet"
+  },
+  "@lobstersgram:562": {
+    "telegraph_link": "https://telegra.ph/Bug-triaging-help-needed---Adventures-in-Linux-and-KDE-09-04",
+    "article_link": "https://pointieststick.com/2026/09/03/bug-triaging-help-needed/",
+    "discussion_link": "https://lobste.rs/s/sunmyh/bug_triaging_help_needed",
+    "title": "Bug triaging help needed"
   }
 }
