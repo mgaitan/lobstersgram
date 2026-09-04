@@ -929,7 +929,7 @@ wheels = [
 
 [[package]]
 name = "md-to-telegraph"
-version = "0.1.6"
+version = "0.1.7"
 source = { editable = "packages/md-to-telegraph" }
 dependencies = [
     { name = "mistletoe" },

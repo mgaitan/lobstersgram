@@ -5,6 +5,8 @@ import requests
 from markdown_web import service
 from markdown_web.schemas import SourceMetadata, SourceRequest
 
+TEST_PAGE_LIMIT = 80
+
 
 def test_prepare_content_extracts_url_and_merges_metadata(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(
@@ -178,21 +180,18 @@ def test_publish_content_passes_source_metadata_to_telegraph(monkeypatch: pytest
 
 
 def test_publish_content_splits_long_markdown_into_linked_pages(monkeypatch: pytest.MonkeyPatch) -> None:
-    create_calls: list[dict[str, object]] = []
-    edit_calls: list[dict[str, object]] = []
+    calls: list[dict[str, object]] = []
 
-    def fake_create_page(**kwargs: object) -> str:
-        create_calls.append(kwargs)
-        return f"https://telegra.ph/page-{len(create_calls)}"
-
-    def fake_edit_page(**kwargs: object) -> str:
-        edit_calls.append(kwargs)
-        return f"https://telegra.ph/page-{kwargs['path']}"
+    def fake_create_pages(**kwargs: object) -> service.TelegraphPages:
+        calls.append(kwargs)
+        return service.TelegraphPages(
+            ("https://telegra.ph/page-1", "https://telegra.ph/page-2"),
+            ("first", "second"),
+        )
 
     monkeypatch.setenv("TELEGRAPH_API_TOKEN", "environment-token")
-    monkeypatch.setattr(service, "TELEGRAPH_PAGE_MAX_CHARS", 80)
-    monkeypatch.setattr(service, "create_page", fake_create_page)
-    monkeypatch.setattr(service, "edit_page", fake_edit_page)
+    monkeypatch.setattr(service, "TELEGRAPH_PAGE_MAX_CHARS", TEST_PAGE_LIMIT)
+    monkeypatch.setattr(service, "create_pages", fake_create_pages)
 
     markdown = "# Long document\n\n" + "\n\n".join(
         f"Paragraph {index}: " + "readable content " * 8 for index in range(1, 4)
@@ -200,12 +199,7 @@ def test_publish_content_splits_long_markdown_into_linked_pages(monkeypatch: pyt
     result = service.publish_content(SourceRequest(markdown=markdown))
 
     assert result == "https://telegra.ph/page-1"
-    assert len(create_calls) > 1
-    assert len(edit_calls) == len(create_calls)
-    assert all(call["warm_cache"] is False for call in create_calls)
-    assert "Página siguiente" in str(edit_calls[0]["content_markdown"])
-    assert "Página anterior" in str(edit_calls[-1]["content_markdown"])
-    assert "(2/" in str(create_calls[1]["title"])
+    assert calls[0]["max_chars"] == TEST_PAGE_LIMIT
 
 
 def test_publish_content_notifies_telegram_recipients_with_only_the_url(monkeypatch: pytest.MonkeyPatch) -> None:

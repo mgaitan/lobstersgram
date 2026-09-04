@@ -7,10 +7,12 @@ import logging
 import os
 import re
 import time
+from dataclasses import dataclass
 from pathlib import Path
 from urllib.parse import urlparse
 
 import requests
+import yaml
 
 from md_to_telegraph.markdown import extract_leading_title, strip_leading_title_heading
 from md_to_telegraph.md_to_dom import content_to_telegraph, prepend_image
@@ -42,6 +44,16 @@ NON_DOCUMENT_TYPES = frozenset(
 TELEGRAPH_CREATE_PAGE_URL = "https://api.telegra.ph/createPage"
 TELEGRAPH_EDIT_PAGE_URL = "https://api.telegra.ph/editPage"
 TELEGRAPH_CREATE_ACCOUNT_URL = "https://api.telegra.ph/createAccount"
+TELEGRAPH_PAGE_MAX_CHARS = 40_000
+MARKDOWN_FENCE_RE = re.compile(r"^\s{0,3}(`{3,}|~{3,})")
+
+
+@dataclass(frozen=True)
+class TelegraphPages:
+    """Telegraph URLs and Markdown chunks created for one publication."""
+
+    urls: tuple[str, ...]
+    markdowns: tuple[str, ...]
 
 
 class TelegraphAPIError(RuntimeError):
@@ -248,6 +260,131 @@ def edit_page(  # noqa: PLR0913
     if warm_cache:
         warm_telegraph_cache(telegraph_url, request_timeout)
     return telegraph_url
+
+
+def _markdown_blocks(body: str) -> list[str]:
+    blocks: list[str] = []
+    current: list[str] = []
+    fence_char = ""
+    fence_length = 0
+    for line in body.splitlines():
+        if fence_char:
+            current.append(line)
+            if re.match(rf"^\s{{0,3}}{re.escape(fence_char)}{{{fence_length},}}\s*$", line):
+                fence_char = ""
+            continue
+        if match := MARKDOWN_FENCE_RE.match(line):
+            fence_char = match.group(1)[0]
+            fence_length = len(match.group(1))
+            current.append(line)
+        elif line.strip():
+            current.append(line)
+        elif current:
+            blocks.append("\n".join(current).strip())
+            current = []
+    if current:
+        blocks.append("\n".join(current).strip())
+    return blocks
+
+
+def split_markdown_pages(markdown: str, max_chars: int = TELEGRAPH_PAGE_MAX_CHARS) -> list[str]:
+    """Split Markdown between blocks without cutting a paragraph or Markdown construct."""
+    _metadata, body = split_front_matter(markdown.strip())
+    blocks = _markdown_blocks(body)
+    chunks: list[str] = []
+    current: list[str] = []
+    current_size = 0
+    for block in blocks:
+        block_size = len(block) + (2 if current else 0)
+        if current and current_size + block_size > max_chars:
+            chunks.append("\n\n".join(current))
+            current = []
+            current_size = 0
+        current.append(block)
+        current_size += len(block) + (2 if len(current) > 1 else 0)
+    if current:
+        chunks.append("\n\n".join(current))
+    return chunks or [body.strip()]
+
+
+def page_navigation(urls: tuple[str, ...], index: int) -> str:
+    """Return previous/next links for one page in a Telegraph page set."""
+    links: list[str] = []
+    if index:
+        links.append(f"[Página anterior]({urls[index - 1]})")
+    if index + 1 < len(urls):
+        links.append(f"[Página siguiente]({urls[index + 1]})")
+    return "\n\n---\n\n" + " | ".join(links) if links else ""
+
+
+def _prepend_metadata(markdown: str, metadata: dict[str, str]) -> str:
+    if not metadata:
+        return markdown
+    front_matter = yaml.safe_dump(metadata, allow_unicode=True, sort_keys=False).strip()
+    return f"---\n{front_matter}\n---\n\n{markdown}"
+
+
+def create_pages(  # noqa: PLR0913
+    title: str | None = None,
+    content_markdown: Path | str = "",
+    fallback_text: str = "",
+    source_url: str = "",
+    author_name: str = "",
+    access_token: str | None = None,
+    *,
+    max_chars: int = TELEGRAPH_PAGE_MAX_CHARS,
+    request_timeout: int = DEFAULT_REQUEST_TIMEOUT,
+    retry_attempts: int | None = None,
+    warm_cache: bool = True,
+) -> TelegraphPages:
+    """Create one or more linked Telegraph pages for Markdown content."""
+    markdown = content_markdown.read_text(encoding="utf-8") if isinstance(content_markdown, Path) else content_markdown
+    metadata, body = split_front_matter(markdown.strip())
+    chunks = split_markdown_pages(markdown, max_chars=max_chars)
+    if len(chunks) == 1:
+        url = create_page(
+            title=title,
+            content_markdown=markdown,
+            fallback_text=fallback_text,
+            source_url=source_url,
+            author_name=author_name,
+            access_token=access_token,
+            request_timeout=request_timeout,
+            retry_attempts=retry_attempts,
+            warm_cache=warm_cache,
+        )
+        return TelegraphPages((url,), (markdown,))
+
+    page_markdowns = tuple(_prepend_metadata(chunk, metadata) for chunk in chunks)
+    base_title = title or metadata.get("title") or extract_leading_title(body) or "Document"
+    urls = tuple(
+        create_page(
+            title=base_title if index == 0 else f"{base_title} ({index + 1}/{len(chunks)})",
+            content_markdown=page_markdown,
+            fallback_text=fallback_text if index == 0 else "",
+            source_url=source_url,
+            author_name=author_name,
+            access_token=access_token,
+            request_timeout=request_timeout,
+            retry_attempts=retry_attempts,
+            warm_cache=False,
+        )
+        for index, (chunk, page_markdown) in enumerate(zip(chunks, page_markdowns, strict=True))
+    )
+    for index, (url, page_markdown) in enumerate(zip(urls, page_markdowns, strict=True)):
+        edit_page(
+            path=urlparse(url).path.lstrip("/"),
+            title=base_title if index == 0 else f"{base_title} ({index + 1}/{len(chunks)})",
+            content_markdown=page_markdown + page_navigation(urls, index),
+            fallback_text=fallback_text if index == 0 else "",
+            source_url=source_url,
+            author_name=author_name,
+            access_token=access_token,
+            request_timeout=request_timeout,
+            retry_attempts=retry_attempts,
+            warm_cache=warm_cache,
+        )
+    return TelegraphPages(urls, page_markdowns)
 
 
 def _source_domain(source_url: str) -> str:

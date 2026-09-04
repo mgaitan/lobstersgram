@@ -15,7 +15,16 @@ import anydoc
 import requests
 import yaml
 from markdown_this import add_front_matter, extract_main_content, markdown_to_text, split_front_matter
-from md_to_telegraph import create_account, create_page, edit_page
+from md_to_telegraph import (
+    TELEGRAPH_PAGE_MAX_CHARS,
+    TelegraphPages,
+    create_account,
+    create_page,
+    create_pages,
+    edit_page,
+    page_navigation,
+    split_markdown_pages,
+)
 from pypdf import PdfReader, PdfWriter
 
 from markdown_web.schemas import SourceMetadata, SourceRequest
@@ -26,7 +35,6 @@ DEFAULT_AUTHOR_NAME = "page-to-telegraph"
 TELEGRAPH_API_URL = "https://api.telegra.ph"
 TELEGRAPH_PAGE_LIST_LIMIT = 200
 TELEGRAPH_REQUEST_TIMEOUT = 20
-TELEGRAPH_PAGE_MAX_CHARS = 40_000
 MAX_DOCUMENT_BYTES = 50 * 1024 * 1024
 DOCUMENT_EXTENSIONS = frozenset(
     {
@@ -158,14 +166,6 @@ class PublishedBriefArticle:
     telegraph_url: str
     telegraph_urls: tuple[str, ...] = ()
     page_markdowns: tuple[str, ...] = ()
-
-
-@dataclass(frozen=True)
-class PublishedPages:
-    """Telegraph URLs and source chunks created for one publication."""
-
-    urls: tuple[str, ...]
-    markdowns: tuple[str, ...]
 
 
 def list_published_pages() -> tuple[int, list[dict[str, object]]]:
@@ -392,55 +392,8 @@ def prepare_content(request: SourceRequest) -> PreparedContent:
     )
 
 
-def _split_long_block(block: str, max_chars: int) -> list[str]:
-    parts: list[str] = []
-    remaining = block.strip()
-    while len(remaining) > max_chars:
-        cut = remaining.rfind("\n", 0, max_chars + 1)
-        if cut < max_chars // 2:
-            cut = remaining.rfind(" ", 0, max_chars + 1)
-        if cut < 1:
-            cut = max_chars
-        parts.append(remaining[:cut].rstrip())
-        remaining = remaining[cut:].lstrip()
-    if remaining:
-        parts.append(remaining)
-    return parts
-
-
-def _split_long_markdown(markdown: str, max_chars: int | None = None) -> list[str]:
-    """Split Markdown at block boundaries while keeping oversized blocks bounded."""
-    max_chars = max_chars or TELEGRAPH_PAGE_MAX_CHARS
-    _metadata, body = split_front_matter(markdown.strip())
-    blocks = [block.strip() for block in re.split(r"\n{2,}", body.strip()) if block.strip()]
-    chunks: list[str] = []
-    current: list[str] = []
-    current_size = 0
-    for block in blocks:
-        for piece in _split_long_block(block, max_chars):
-            piece_size = len(piece) + (2 if current else 0)
-            if current and current_size + piece_size > max_chars:
-                chunks.append("\n\n".join(current))
-                current = []
-                current_size = 0
-            current.append(piece)
-            current_size += len(piece) + (2 if len(current) > 1 else 0)
-    if current:
-        chunks.append("\n\n".join(current))
-    return chunks or [body.strip()]
-
-
-def _page_navigation(urls: tuple[str, ...], index: int) -> str:
-    links: list[str] = []
-    if index:
-        links.append(f"[Página anterior]({urls[index - 1]})")
-    if index + 1 < len(urls):
-        links.append(f"[Página siguiente]({urls[index + 1]})")
-    return "\n\n---\n\n" + " | ".join(links) if links else ""
-
-
-def _publish_prepared_pages(prepared: PreparedContent, token: str, *, warm_cache: bool = True) -> PublishedPages:
-    chunks = _split_long_markdown(prepared.markdown)
+def _publish_prepared_pages(prepared: PreparedContent, token: str, *, warm_cache: bool = True) -> TelegraphPages:
+    chunks = split_markdown_pages(prepared.markdown, max_chars=TELEGRAPH_PAGE_MAX_CHARS)
     if len(chunks) == 1:
         url = create_page(
             title=prepared.title or None,
@@ -451,34 +404,17 @@ def _publish_prepared_pages(prepared: PreparedContent, token: str, *, warm_cache
             access_token=token,
             warm_cache=warm_cache,
         )
-        return PublishedPages((url,), (prepared.markdown,))
-
-    page_markdowns = tuple(add_front_matter(chunk, prepared.metadata.values()) for chunk in chunks)
-    base_title = prepared.title or "Document"
-    urls = tuple(
-        create_page(
-            title=base_title if index == 0 else f"{base_title} ({index + 1}/{len(chunks)})",
-            content_markdown=page_markdown,
-            fallback_text=markdown_to_text(chunk),
-            source_url=prepared.metadata.url,
-            author_name=prepared.metadata.author,
-            access_token=token,
-            warm_cache=False,
-        )
-        for index, (chunk, page_markdown) in enumerate(zip(chunks, page_markdowns, strict=True))
+        return TelegraphPages((url,), (prepared.markdown,))
+    return create_pages(
+        title=prepared.title or None,
+        content_markdown=prepared.markdown,
+        fallback_text=prepared.fallback_text,
+        source_url=prepared.metadata.url,
+        author_name=prepared.metadata.author,
+        access_token=token,
+        max_chars=TELEGRAPH_PAGE_MAX_CHARS,
+        warm_cache=warm_cache,
     )
-    for index, (url, page_markdown) in enumerate(zip(urls, page_markdowns, strict=True)):
-        edit_page(
-            path=urlparse(url).path.lstrip("/"),
-            title=base_title if index == 0 else f"{base_title} ({index + 1}/{len(chunks)})",
-            content_markdown=page_markdown + _page_navigation(urls, index),
-            fallback_text=markdown_to_text(chunks[index]),
-            source_url=prepared.metadata.url,
-            author_name=prepared.metadata.author,
-            access_token=token,
-            warm_cache=warm_cache,
-        )
-    return PublishedPages(urls, page_markdowns)
 
 
 def _publish_prepared(prepared: PreparedContent, token: str, *, warm_cache: bool = True) -> str:
@@ -597,7 +533,7 @@ def add_brief_navigation(  # noqa: PLR0913
         path=urlparse(article.telegraph_url).path.lstrip("/"),
         title=article.content.title or None,
         content_markdown=(
-            page_markdown + _page_navigation(page_urls, 0) + _navigation_markdown(brief_url, previous_url, next_url)
+            page_markdown + page_navigation(page_urls, 0) + _navigation_markdown(brief_url, previous_url, next_url)
         ),
         fallback_text=markdown_to_text(page_markdown),
         source_url=article.content.metadata.url or article.source_url,
