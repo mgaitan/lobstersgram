@@ -57,6 +57,7 @@ DOCUMENT_EXTENSIONS = frozenset(
     }
 )
 CARD_DIRECTIVE_RE = re.compile(r"!\[card\]\(\s*(https?://[^)\s]+)\s*\)")
+CONTINUATION_PAGE_RE = re.compile(r"\s+\((\d+)/(\d+)\)$")
 OCR_ERROR_RE = re.compile(r"pages?\s+(.+?)\s+of\s+\d+\s+need OCR", re.IGNORECASE)
 OCR_ERROR_TYPES = tuple(
     error_type
@@ -205,8 +206,17 @@ def list_published_pages() -> tuple[int, list[dict[str, object]]]:
         pages.extend(page for page in raw_pages if isinstance(page, dict))
 
         if not raw_pages or len(pages) >= total_count:
-            return total_count, pages
+            visible_pages = [page for page in pages if not _is_continuation_page(page)]
+            return len(visible_pages), visible_pages
         offset += len(raw_pages)
+
+
+def _is_continuation_page(page: dict[str, object]) -> bool:
+    title = page.get("title")
+    if not isinstance(title, str):
+        return False
+    match = CONTINUATION_PAGE_RE.search(title)
+    return bool(match and int(match.group(1)) > 1 and int(match.group(2)) >= int(match.group(1)))
 
 
 class TelegraphTokenStore:

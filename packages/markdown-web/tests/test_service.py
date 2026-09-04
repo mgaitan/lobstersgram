@@ -6,6 +6,7 @@ from markdown_web import service
 from markdown_web.schemas import SourceMetadata, SourceRequest
 
 TEST_PAGE_LIMIT = 80
+VISIBLE_PAGE_COUNT = 2
 
 
 def test_prepare_content_extracts_url_and_merges_metadata(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -399,3 +400,31 @@ def test_list_published_pages_paginates(monkeypatch: pytest.MonkeyPatch) -> None
         {"access_token": "environment-token", "offset": 0, "limit": 200},
         {"access_token": "environment-token", "offset": 1, "limit": 200},
     ]
+
+
+def test_list_published_pages_hides_telegraph_continuations(monkeypatch: pytest.MonkeyPatch) -> None:
+    class FakeResponse:
+        def raise_for_status(self) -> None:
+            return None
+
+        def json(self) -> dict[str, object]:
+            return {
+                "ok": True,
+                "result": {
+                    "total_count": 3,
+                    "pages": [
+                        {"url": "https://telegra.ph/article", "title": "Article"},
+                        {"url": "https://telegra.ph/article-2", "title": "Article (2/3)"},
+                        {"url": "https://telegra.ph/other", "title": "Other"},
+                    ],
+                },
+            }
+
+    monkeypatch.setenv("TELEGRAPH_API_TOKEN", "environment-token")
+    monkeypatch.setattr(service.requests, "get", lambda *args, **kwargs: FakeResponse())
+
+    total, pages = service.list_published_pages()
+
+    assert total == VISIBLE_PAGE_COUNT
+    assert [page["title"] for page in pages] == ["Article", "Other"]
+    assert service._is_continuation_page({}) is False
