@@ -77,6 +77,11 @@ def test_home_and_static_assets() -> None:
         'property="og:description" content="Turn any page into Markdown or publish it to Telegraph."' in response.text
     )
     assert 'name="twitter:card" content="summary"' in response.text
+    assert 'property="og:image" content="https://markdown.fastapicloud.dev/static/logo.png"' in response.text
+    assert 'name="twitter:image" content="https://markdown.fastapicloud.dev/static/logo.png"' in response.text
+    assert 'rel="icon" href="/static/favicon.svg" type="image/svg+xml"' in response.text
+    assert client.get("/static/favicon.svg").status_code == HTTP_200_OK
+    assert client.get("/static/logo.png").status_code == HTTP_200_OK
     assert client.get("/static/styles.css").status_code == HTTP_200_OK
 
 
@@ -108,6 +113,7 @@ def test_about_describes_routes_and_cli() -> None:
     assert "github.com/mgaitan" in response.text
     assert "Is this site useful to you?" in response.text
     assert 'href="https://cafecito.app/tin_nqn_">cafecito</a>' in response.text
+    assert 'property="og:image" content="https://markdown.fastapicloud.dev/static/logo.png"' in response.text
 
 
 def test_llms_describes_agent_contract() -> None:
