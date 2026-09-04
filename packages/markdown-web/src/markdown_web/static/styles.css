@@ -110,14 +110,21 @@ input:focus, textarea:focus { border-bottom-color: #333; }
 .text-button { border: 0; padding: 0; background: none; cursor: pointer; }
 
 textarea {
-  min-height: 420px;
+  min-height: 460px;
   resize: vertical;
-  border: 1px solid #eee;
-  padding: 16px;
+  border: 1px solid #dedede;
+  border-radius: 6px;
+  padding: 20px;
+  color: #252525;
+  background: #fcfcfc;
   font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: 15px;
+  line-height: 1.7;
+  tab-size: 2;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 4%);
 }
+
+textarea:focus { border-color: #999; box-shadow: 0 2px 8px rgb(0 0 0 / 6%); }
 
 .result-actions { display: flex; align-items: center; gap: 12px; }
 .status { min-height: 1.5em; color: #777; font-size: 14px; }

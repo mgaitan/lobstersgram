@@ -42,7 +42,9 @@ def test_home_and_static_assets() -> None:
     assert "Convert to Markdown and publish it to Telegraph" in response.text
     assert ">markdown-web<" not in response.text
     assert 'href="/bookmarklets/">Bookmarklets</a>' in response.text
-    assert 'placeholder="Paste a URL or drop a file."' in response.text
+    assert 'placeholder="Paste a URL, drop a file or insert markdown content"' in response.text
+    assert 'processSource("", file)' in response.text
+    assert "showMarkdownEditor(value)" in response.text
     assert 'aria-label="Choose a file"' in response.text
     assert 'property="og:title" content="Markdown and Telegraph"' in response.text
     assert (

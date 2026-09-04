@@ -14,7 +14,7 @@
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Markdown and Telegraph">
     <meta name="twitter:description" content="Turn any page into Markdown or publish it to Telegraph.">
-    <link rel="stylesheet" href="/static/styles.css?v=7">
+    <link rel="stylesheet" href="/static/styles.css?v=8">
   </head>
   <body>
     <main class="page">
@@ -23,8 +23,8 @@
         <form id="process-form" class="source-form">
           <div id="source-entry" class="source-entry">
             <div id="drop-zone" class="source-dropzone">
-              <label class="sr-only" for="source-url">URL or document</label>
-              <input id="source-url" name="url" type="url" placeholder="Paste a URL or drop a file." autofocus>
+              <label class="sr-only" for="source-url">URL, file, or Markdown</label>
+              <input id="source-url" name="url" type="text" placeholder="Paste a URL, drop a file or insert markdown content" autofocus autocomplete="off" spellcheck="false">
               <button id="file-button" class="file-button" type="button" aria-label="Choose a file" title="Choose a file">&#8593;</button>
               <input id="source-file" class="file-input" type="file" accept=".pdf,.doc,.docx,.epub,.ppt,.pptx,.xls,.xlsx,.odt,.ods,.odp,.rtf,.csv">
             </div>
@@ -41,7 +41,7 @@
             </div>
             <label class="sr-only" for="markdown-output">Markdown</label>
             <textarea id="markdown-output" spellcheck="false"></textarea>
-            <button id="edit-button" class="text-button" type="button">Edit URL</button>
+            <button id="edit-button" class="text-button" type="button">Edit source</button>
           </section>
           <p id="status" class="status" role="status"></p>
         </form>
@@ -68,6 +68,8 @@
       const status = document.querySelector("#status");
       let currentUrl = "";
       let mode = "process";
+      const SOURCE_PLACEHOLDER = "Paste a URL, drop a file or insert markdown content";
+      const MARKDOWN_START_RE = /(^\s*(?:#{1,6}\s|>\s|[-*+]\s|\d+\.\s|```|~~~|!\[|\[|\*\*|__))/;
 
       function setStatus(message, error = false) {
         status.textContent = message;
@@ -93,16 +95,85 @@
 
       function clearSelectedFile() {
         sourceFile.value = "";
-        sourceInput.placeholder = "Paste a URL or drop a file.";
+        sourceInput.placeholder = SOURCE_PLACEHOLDER;
         dropZone.classList.remove("has-file");
+      }
+
+      function isHttpUrl(value) {
+        try {
+          const url = new URL(value);
+          return url.protocol === "http:" || url.protocol === "https:";
+        } catch {
+          return false;
+        }
+      }
+
+      function isUrlPrefix(value) {
+        const lower = value.toLowerCase();
+        return ["http://", "https://"].some((prefix) => prefix.startsWith(lower) || lower.startsWith(prefix));
+      }
+
+      function showMarkdownEditor(markdown) {
+        currentUrl = "";
+        output.value = markdown;
+        sourceLabel.textContent = "Markdown";
+        sourceEntry.hidden = true;
+        result.hidden = false;
+        mode = "publish";
+        setStatus("");
+        output.focus();
+      }
+
+      async function processSource(url, file) {
+        if (!url && !file) {
+          setStatus("Paste a URL, choose a document, or insert Markdown", true);
+          sourceInput.focus();
+          return;
+        }
+        if (url && file) {
+          setStatus("Choose a URL or a document, not both", true);
+          return;
+        }
+        setStatus("Processing…");
+        try {
+          let response;
+          if (file) {
+            const data = new FormData();
+            data.append("file", file);
+            response = await fetch("/md", {method: "POST", body: data});
+          } else {
+            response = await fetch("/md/" + encodeURIComponent(url));
+          }
+          if (!response.ok) throw new Error(await responseError(response, "Processing failed"));
+          output.value = await response.text();
+          sourceLabel.textContent = url || file.name;
+          sourceEntry.hidden = true;
+          result.hidden = false;
+          mode = "publish";
+          setStatus("");
+        } catch (error) {
+          setStatus(error.message, true);
+        }
       }
 
       fileButton.addEventListener("click", () => sourceFile.click());
       sourceFile.addEventListener("change", () => {
-        if (sourceFile.files[0]) setSelectedFile(sourceFile.files[0]);
+        const file = sourceFile.files[0];
+        if (file) {
+          setSelectedFile(file);
+          processSource("", file);
+        }
       });
       sourceInput.addEventListener("input", () => {
-        if (sourceInput.value) clearSelectedFile();
+        const value = sourceInput.value;
+        if (!value) return;
+        clearSelectedFile();
+        if (
+          !isHttpUrl(value.trim()) &&
+          (MARKDOWN_START_RE.test(value) || (value.trim().length > 1 && !isUrlPrefix(value.trim())))
+        ) {
+          showMarkdownEditor(value);
+        }
       });
       dropZone.addEventListener("dragover", (event) => {
         event.preventDefault();
@@ -121,10 +192,12 @@
         if (mode === "publish") {
           setStatus("Publishing…");
           try {
+            const payload = {markdown: output.value};
+            if (currentUrl) payload.metadata = {url: currentUrl};
             const response = await fetch("/t", {
               method: "POST",
               headers: {"Content-Type": "application/json"},
-              body: JSON.stringify({markdown: output.value, metadata: {url: currentUrl}})
+              body: JSON.stringify(payload)
             });
             const data = response.headers.get("content-type")?.includes("application/json")
               ? await response.json()
@@ -139,41 +212,17 @@
 
         currentUrl = sourceInput.value.trim();
         const file = sourceFile.files[0];
-        if (!currentUrl && !file) {
-          setStatus("Paste a URL or choose a document", true);
-          sourceInput.focus();
-          return;
-        }
-        if (currentUrl && file) {
-          setStatus("Choose a URL or a document, not both", true);
-          return;
-        }
-        setStatus("Processing…");
-        try {
-          let response;
-          if (file) {
-            const data = new FormData();
-            data.append("file", file);
-            response = await fetch("/md", {method: "POST", body: data});
-          } else {
-            response = await fetch("/md/" + encodeURIComponent(currentUrl));
-          }
-          if (!response.ok) throw new Error(await responseError(response, "Processing failed"));
-          output.value = await response.text();
-          sourceLabel.textContent = currentUrl || file.name;
-          sourceEntry.hidden = true;
-          result.hidden = false;
-          mode = "publish";
-          setStatus("");
-        } catch (error) {
-          setStatus(error.message, true);
-        }
+        await processSource(currentUrl, file);
       });
 
       document.querySelector("#edit-button").addEventListener("click", () => {
         result.hidden = true;
         sourceEntry.hidden = false;
         mode = "process";
+        if (!currentUrl) {
+          sourceInput.value = "";
+          clearSelectedFile();
+        }
         sourceInput.focus();
       });
 
