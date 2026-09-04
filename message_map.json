@@ -3328,5 +3328,29 @@
     "article_link": "https://pointieststick.com/2026/09/03/bug-triaging-help-needed/",
     "discussion_link": "https://lobste.rs/s/sunmyh/bug_triaging_help_needed",
     "title": "Bug triaging help needed"
+  },
+  "@lobstersgram:563": {
+    "telegraph_link": "https://telegra.ph/sebastiancarlosmongotar---mongotar-files-to-prompt-and-back-09-04",
+    "article_link": "https://github.com/sebastiancarlos/mongotar",
+    "discussion_link": "https://lobste.rs/s/ibn0da/mongotar_files_prompt_back",
+    "title": "Mongotar: Files to prompt, and back"
+  },
+  "@lobstersgram:564": {
+    "telegraph_link": "https://telegra.ph/Stop-Thinking-of-LLMs-as-Next-Token-Predictors--gmcgoldrs-blog-09-04-2",
+    "article_link": "https://gmcgoldr.github.io/2026/09/04/llm-next-token-predictors.html",
+    "discussion_link": "https://lobste.rs/s/fiirrs/stop_thinking_llms_as_next_token",
+    "title": "Stop Thinking of LLMs as Next-Token Predictors"
+  },
+  "@lobstersgram:565": {
+    "telegraph_link": "https://telegra.ph/Release-Audacity-400--audacityaudacity--GitHub-09-04",
+    "article_link": "https://github.com/audacity/audacity/releases/tag/Audacity-4.0.0",
+    "discussion_link": "https://lobste.rs/s/j03x8u/audacity_4_0_0_released",
+    "title": "Audacity 4.0.0 Released"
+  },
+  "@lobstersgram:566": {
+    "telegraph_link": "https://telegra.ph/The-new-Go-JSON-API-twice-as-fast-or-15x-slower---Daniel-Lemires-blog-09-04",
+    "article_link": "https://lemire.me/blog/2026/08/29/the-new-go-json-api-twice-as-fast-or-1-5x-slower/",
+    "discussion_link": "https://lobste.rs/s/67ygvv/new_go_json_api_twice_as_fast_1_5x_slower",
+    "title": "The new Go JSON API: twice as fast, or 1.5x slower?"
   }
 }
