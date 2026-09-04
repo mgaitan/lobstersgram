@@ -50,7 +50,11 @@ def test_home_and_static_assets() -> None:
     assert 'id="publish-status" class="status publish-status"' in response.text
     assert "publishButton.disabled = true" in response.text
     assert 'id="preview-button"' in response.text
+    assert 'id="preview-pane" class="preview-pane" hidden' in response.text
+    assert 'id="preview-frame" class="preview-frame"' in response.text
+    assert "Back to edit" in response.text
     assert 'fetch("/t/preview"' in response.text
+    assert "window.open" not in response.text
     assert "payload.preview_id = previewId" in response.text
     assert 'id="markdown-toolbar" class="markdown-toolbar"' in response.text
     assert 'data-markdown-action="bold"' in response.text

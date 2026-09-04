@@ -14,7 +14,7 @@
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Markdown and Telegraph">
     <meta name="twitter:description" content="Turn any page into Markdown or publish it to Telegraph.">
-    <link rel="stylesheet" href="/static/styles.css?v=11">
+    <link rel="stylesheet" href="/static/styles.css?v=12">
   </head>
   <body>
     <main class="page">
@@ -69,6 +69,9 @@
               </div>
               <textarea id="markdown-output" spellcheck="false"></textarea>
               <button id="expand-editor" class="editor-expand-button" type="button" aria-label="Maximize editor" title="Maximize editor">&#x2922;</button>
+            </div>
+            <div id="preview-pane" class="preview-pane" hidden>
+              <iframe id="preview-frame" class="preview-frame" title="Telegraph preview" loading="eager"></iframe>
             </div>
           </section>
           <p id="status" class="status" role="status"></p>
@@ -128,6 +131,9 @@
       const sourceEntry = document.querySelector("#source-entry");
       const result = document.querySelector("#result");
       const output = document.querySelector("#markdown-output");
+      const markdownEditor = document.querySelector(".markdown-editor");
+      const previewPane = document.querySelector("#preview-pane");
+      const previewFrame = document.querySelector("#preview-frame");
       const dropZone = document.querySelector("#drop-zone");
       const sourceInput = document.querySelector("#source-url");
       const sourceFile = document.querySelector("#source-file");
@@ -147,6 +153,7 @@
       const metadataFields = ["title", "author", "url", "date", "type", "image", "notify_telegram"];
       let currentUrl = "";
       let previewId = "";
+      let previewing = false;
       let mode = "process";
       const DRAFT_KEY = "markdown-web-draft";
       const SOURCE_PLACEHOLDER = "Paste a URL, drop a file or insert markdown content";
@@ -160,6 +167,15 @@
       function setPublishStatus(message, error = false) {
         publishStatus.textContent = message;
         publishStatus.classList.toggle("error", error);
+      }
+
+      function setPreviewMode(enabled, url = "") {
+        previewing = enabled;
+        markdownEditor.hidden = enabled;
+        previewPane.hidden = !enabled;
+        previewButton.textContent = enabled ? "Back to edit" : "Preview";
+        previewButton.setAttribute("aria-pressed", String(enabled));
+        if (url) previewFrame.src = url;
       }
 
       function updateMarkdown(value, start, end) {
@@ -415,6 +431,7 @@
       }
 
       function showMarkdownEditor(markdown) {
+        setPreviewMode(false);
         currentUrl = "";
         previewId = "";
         output.value = markdown;
@@ -440,6 +457,7 @@
           return;
         }
         if (file) currentUrl = "";
+        setPreviewMode(false);
         setStatus("Processing…");
         try {
           let response;
@@ -548,8 +566,12 @@
       });
 
       previewButton.addEventListener("click", async () => {
+        if (previewing) {
+          setPreviewMode(false);
+          setPublishStatus("");
+          return;
+        }
         if (previewButton.disabled || publishButton.disabled) return;
-        const previewWindow = window.open("", "_blank");
         previewButton.disabled = true;
         publishButton.disabled = true;
         setPublishStatus("Previewing…");
@@ -568,14 +590,10 @@
           if (!response.ok) throw new Error(data.detail || await responseError(response, "Preview failed"));
           previewId = data.preview_id;
           saveDraft();
-          if (previewWindow) {
-            previewWindow.location = data.url;
-            setPublishStatus("Preview opened");
-          } else {
-            setPublishStatus("Preview ready. Allow popups to open it.", true);
-          }
+          setEditorFullscreen(false);
+          setPreviewMode(true, data.url);
+          setPublishStatus("Preview ready");
         } catch (error) {
-          if (previewWindow) previewWindow.close();
           setPublishStatus(error.message, true);
         } finally {
           previewButton.disabled = false;
@@ -587,6 +605,7 @@
       newButton.addEventListener("click", () => newDialog.showModal());
       confirmNew.addEventListener("click", () => {
         clearDraft();
+        setPreviewMode(false);
         currentUrl = "";
         previewId = "";
         mode = "process";
