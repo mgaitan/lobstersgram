@@ -3238,5 +3238,35 @@
     "article_link": "https://purplesyringa.moe/blog/guest/the-nx-bit-is-not-just-about-security/",
     "discussion_link": "https://lobste.rs/s/eokmrg/nx_bit_is_not_just_about_security",
     "title": "The NX bit is not just about security"
+  },
+  "@lobstersgram:548": {
+    "telegraph_link": "https://telegra.ph/Code-and-Cake---A-defense-of-object-orientated-programming-09-04",
+    "article_link": "https://codeandcake.dev/posts/2025-05-28-a-defense-of-oop",
+    "discussion_link": "https://lobste.rs/s/krtqbk/defense_object_orientated_programming",
+    "title": "A defense of object-orientated programming"
+  },
+  "@lobstersgram:549": {
+    "telegraph_link": "https://telegra.ph/Nozistancecollider--An-experimental-Minecraft-Server-09-04",
+    "article_link": "https://github.com/Nozistance/collider",
+    "discussion_link": "https://lobste.rs/s/fdbblk/collider_experimental_minecraft_server",
+    "title": "Collider: An experimental Minecraft server"
+  },
+  "@lobstersgram:550": {
+    "telegraph_link": "https://telegra.ph/Whats-in-the-Emacs-newcomers-presets-theme--Sacha-Chua-09-04",
+    "article_link": "https://sachachua.com/blog/2026/04/what-s-in-the-emacs-newcomers-presets-theme/",
+    "discussion_link": "https://lobste.rs/s/307nji/what_s_emacs_newcomers_presets_theme",
+    "title": "What's in the Emacs newcomers-presets theme?"
+  },
+  "@lobstersgram:551": {
+    "telegraph_link": "https://telegra.ph/apfelmus---The-Incomplete-Guide-to-Lazy-Evaluation-in-Haskell-09-04",
+    "article_link": "https://apfelmus.nfshost.com/articles/lazy-eval.html",
+    "discussion_link": "https://lobste.rs/s/ybk8hr/incomplete_guide_lazy_evaluation",
+    "title": "The Incomplete Guide to Lazy Evaluation in Haskell (2015)"
+  },
+  "@lobstersgram:552": {
+    "telegraph_link": "https://telegra.ph/Dynamic-linking-best-practices--begriffscom-09-04",
+    "article_link": "https://begriffs.com/posts/2021-07-04-shared-libraries.html",
+    "discussion_link": "https://lobste.rs/s/nkzapz/dynamic_linking_best_practices_2021",
+    "title": "Dynamic linking best practices (2021)"
   }
 }
