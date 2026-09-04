@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 from urllib.parse import parse_qs
 
+from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse, RedirectResponse
@@ -24,6 +25,7 @@ from markdown_web.service import (
     publish_content,
 )
 
+load_dotenv()
 app = FastAPI(title="Markdown Web", description="Extract Markdown and publish it to Telegraph")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["GET", "POST"], allow_headers=["*"])
 PACKAGE_DIR = Path(__file__).resolve().parent

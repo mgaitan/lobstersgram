@@ -5,14 +5,17 @@ from __future__ import annotations
 import os
 import re
 import threading
+from collections.abc import Mapping
 from dataclasses import dataclass, replace
 from urllib.parse import urlparse
 
 import requests
+import yaml
 from markdown_this import add_front_matter, extract_main_content, markdown_to_text, split_front_matter
 from md_to_telegraph import create_account, create_page, edit_page
 
 from markdown_web.schemas import SourceMetadata, SourceRequest
+from markdown_web.telegram import send_telegram_notifications
 
 DEFAULT_ACCOUNT_NAME = "page-to-telegraph"
 DEFAULT_AUTHOR_NAME = "page-to-telegraph"
@@ -20,6 +23,22 @@ TELEGRAPH_API_URL = "https://api.telegra.ph"
 TELEGRAPH_PAGE_LIST_LIMIT = 200
 TELEGRAPH_REQUEST_TIMEOUT = 20
 CARD_DIRECTIVE_RE = re.compile(r"!\[card\]\(\s*(https?://[^)\s]+)\s*\)")
+
+
+def _front_matter_notify_telegram(markdown: str) -> str:
+    """Read the app-specific notification setting from Markdown front matter."""
+    lines = markdown.splitlines()
+    if not lines or lines[0].strip() != "---":
+        return ""
+    try:
+        end = lines.index("---", 1)
+        loaded = yaml.safe_load("\n".join(lines[1:end])) or {}
+    except (ValueError, yaml.YAMLError):
+        return ""
+    if not isinstance(loaded, Mapping):
+        return ""
+    value = loaded.get("notify_telegram")
+    return str(value).strip() if value is not None and not isinstance(value, (dict, list)) else ""
 
 
 class SourceError(ValueError):
@@ -165,6 +184,8 @@ def _require_source(request: SourceRequest) -> str:
 def _merge_metadata(markdown: str, supplied: SourceMetadata) -> tuple[str, SourceMetadata]:
     existing, body = split_front_matter(markdown.strip())
     merged = {**existing, **supplied.values()}
+    if notify_telegram := _front_matter_notify_telegram(markdown):
+        merged.setdefault("notify_telegram", notify_telegram)
     return add_front_matter(body, merged), SourceMetadata.model_validate(merged)
 
 
@@ -213,24 +234,37 @@ def _publish_content(request: SourceRequest) -> str:
     """Publish request content to Telegraph and return its public URL."""
     prepared = prepare_content(request)
     token = telegraph_tokens.resolve(request.access_token)
-    return _publish_prepared(prepared, token)
+    target = _publish_prepared(prepared, token)
+    send_telegram_notifications(target, prepared.metadata.notify_telegram)
+    return target
 
 
 def _escape_markdown_text(value: str) -> str:
     return value.replace("\\", "\\\\").replace("[", "\\[").replace("]", "\\]")
 
 
-def _card_markdown(article: PublishedBriefArticle) -> str:
+def _card_markdown(article: PublishedBriefArticle, link_marker: str) -> str:
+    """Render a card image and leave its Telegraph link for the note's end."""
     title = _escape_markdown_text(article.content.title or article.source_url)
-    parts = ["---"]
+    parts: list[str] = []
     if image_url := article.content.metadata.image:
         parts.append(f"[![{title}]({image_url})]({article.telegraph_url})")
-    parts.append(f"**[{title}]({article.telegraph_url})**")
-    if article.content.intro:
-        parts.append(article.content.intro)
-    parts.append(f"[Leer en Telegraph]({article.telegraph_url})")
-    parts.append("---")
+    parts.append(link_marker)
     return "\n\n".join(parts)
+
+
+def _add_card_links_at_note_end(markdown: str, links: list[tuple[str, str]]) -> str:
+    """Move generated Telegraph links below each note's editorial paragraphs."""
+    for marker, url in links:
+        before, found, after = markdown.partition(marker)
+        if not found:
+            continue
+        boundary = re.search(r"\n\n---\n|\n## |\Z", after)
+        end = boundary.start() if boundary else len(after)
+        note = after[:end].strip()
+        suffix = after[end:]
+        markdown = f"{before.rstrip()}\n\n{note}\n\n[Leer en Telegraph]({url}){suffix}"
+    return markdown
 
 
 def _navigation_markdown(
@@ -271,10 +305,19 @@ def publish_brief_page(
 ) -> str:
     """Expand article cards and publish the parent brief."""
     articles_by_source = {article.source_url: article for article in articles}
+    links: list[tuple[str, str]] = []
+
+    def expand_card(match: re.Match[str]) -> str:
+        article = articles_by_source[match.group(1)]
+        link_marker = f"<!-- telegraph-link-{len(links)} -->"
+        links.append((link_marker, article.telegraph_url))
+        return _card_markdown(article, link_marker)
+
     expanded_markdown = CARD_DIRECTIVE_RE.sub(
-        lambda match: _card_markdown(articles_by_source[match.group(1)]),
+        expand_card,
         brief.markdown,
     )
+    expanded_markdown = _add_card_links_at_note_end(expanded_markdown, links)
     return _publish_prepared(replace(brief, markdown=expanded_markdown), token, warm_cache=warm_cache)
 
 
@@ -310,6 +353,7 @@ def _publish_brief(request: SourceRequest) -> str:
 
     for index, article in enumerate(articles):
         add_brief_navigation(article, index, articles, brief_url, token)
+    send_telegram_notifications(brief_url, brief.metadata.notify_telegram)
     return brief_url
 
 

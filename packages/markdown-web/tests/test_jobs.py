@@ -128,6 +128,27 @@ def test_run_job_completes_markdown_without_cards(monkeypatch: pytest.MonkeyPatc
     assert result.brief_url == "https://telegra.ph/page"
 
 
+def test_run_job_notifies_once_after_final_publication(monkeypatch: pytest.MonkeyPatch) -> None:
+    _use_fake_redis(monkeypatch)
+    monkeypatch.setattr(jobs.telegraph_tokens, "resolve", lambda: "token")
+    monkeypatch.setattr(jobs, "publish_brief_page", lambda _brief, _articles, _token: "https://telegra.ph/page")
+    notifications: list[tuple[str, str]] = []
+    monkeypatch.setattr(
+        jobs,
+        "send_telegram_notifications",
+        lambda url, recipients: notifications.append((url, recipients)),
+    )
+
+    state = jobs.create_job(SourceRequest(markdown="---\nnotify_telegram: 123, -100456\n---\n\n# Page\n\nBody"))
+    result = jobs.run_job(state.id)
+    repeated = jobs.run_job(state.id)
+
+    assert result.status == repeated.status == "completed"
+    assert result.notify_telegram == "123, -100456"
+    assert result.telegram_notified is True
+    assert notifications == [("https://telegra.ph/page", "123, -100456")]
+
+
 def test_run_job_persists_source_failure(monkeypatch: pytest.MonkeyPatch) -> None:
     _use_fake_redis(monkeypatch)
     monkeypatch.setattr(jobs.telegraph_tokens, "resolve", lambda: "token")

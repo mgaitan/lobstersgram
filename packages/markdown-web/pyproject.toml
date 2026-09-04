@@ -1,6 +1,6 @@
 [project]
 name = "markdown-web"
-version = "0.1.7"
+version = "0.1.8"
 description = "Minimal web service for extracting Markdown and publishing it to Telegraph"
 readme = "README.md"
 authors = [{ name = "Martín Gaitán", email = "gaitan@gmail.com" }]
@@ -12,6 +12,8 @@ dependencies = [
     "jinja2>=3.1.6",
     "markdown-this>=0.1.8",
     "md-to-telegraph>=0.1.6",
+    "python-dotenv>=1.2.1",
+    "pyyaml>=6.0.3",
     "redis>=6.4.0",
     "requests>=2.32.5",
     "uvicorn[standard]>=0.35.0",

@@ -47,6 +47,14 @@ Raw HTML can also be posted as `text/html`. Optional metadata is supplied with
 An `access_token` JSON field or `Authorization` header can select a Telegraph
 account; otherwise the server token is used.
 
+Markdown front matter can also set `notify_telegram` to a comma-separated list
+of Telegram user or channel IDs. After the Telegraph URL is created, the web
+bot sends only that URL to each recipient. Notifications are best effort and
+use the `TELEGRAM_WEB_BOT_TOKEN` environment variable. A private user must
+start a conversation with [@MarkdownTelegraphBot](https://t.me/MarkdownTelegraphBot)
+first; in a group the bot must be added with permission to send messages, and
+in a channel it must be an administrator allowed to post messages.
+
 To publish a brief with linked article pages, place exact lowercase card markers
 in the Markdown:
 

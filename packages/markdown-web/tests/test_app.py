@@ -58,6 +58,9 @@ def test_about_describes_routes_and_cli() -> None:
     assert "/t/published/" in response.text
     assert "/t/jobs" in response.text
     assert 'href="/llms.txt">llms.txt</a>' in response.text
+    assert 'href="/docs">API documentation</a>' in response.text
+    assert "notify_telegram" in response.text
+    assert "t.me/MarkdownTelegraphBot" in response.text
     assert "uvx markdown-this" in response.text
     assert "github.com/mgaitan" in response.text
     assert "Is this site useful to you?" in response.text
@@ -69,11 +72,13 @@ def test_llms_describes_agent_contract() -> None:
 
     assert response.status_code == HTTP_200_OK
     assert "POST /t" in response.text
-    assert "`title`, `author`, `url`, `date`, `image`, and `type`" in response.text
+    assert "`title`, `author`, `url`, `date`, `image`, `type`, and `notify_telegram`" in response.text
     assert "![card](https://example.com/article)" in response.text
     assert "POST /t/jobs" in response.text
     assert "POST <run_url>" in response.text
     assert "https://markdown.fastapicloud.dev/openapi.json" in response.text
+    assert "notify_telegram" in response.text
+    assert "MarkdownTelegraphBot" in response.text
 
 
 def test_openapi_describes_post_bodies_and_publish_response() -> None:
@@ -83,6 +88,10 @@ def test_openapi_describes_post_bodies_and_publish_response() -> None:
     assert "application/json" in markdown_post["requestBody"]["content"]
     assert "markdown" in markdown_post["requestBody"]["content"]["application/json"]["schema"]["properties"]
     assert "$defs" not in markdown_post["requestBody"]["content"]["application/json"]["schema"]
+    metadata_properties = markdown_post["requestBody"]["content"]["application/json"]["schema"]["properties"][
+        "metadata"
+    ]["properties"]
+    assert "notify_telegram" in metadata_properties
 
     publish_post = schema["paths"]["/t"]["post"]
     assert publish_post["responses"]["200"]["content"]["application/json"]["schema"]["$ref"] == (

@@ -48,6 +48,14 @@ def test_prepare_content_keeps_markdown_front_matter() -> None:
     assert result.fallback_text == "Existing\n\nBody"
 
 
+def test_prepare_content_reads_telegram_recipients_from_front_matter() -> None:
+    result = service.prepare_content(
+        SourceRequest(markdown="---\ntitle: Existing\nnotify_telegram: 123, -100456\n---\n\nBody")
+    )
+
+    assert result.metadata.notify_telegram == "123, -100456"
+
+
 def test_prepare_content_requires_a_source() -> None:
     with pytest.raises(service.SourceError, match="Provide one of"):
         service.prepare_content(SourceRequest())
@@ -101,9 +109,52 @@ def test_publish_content_passes_source_metadata_to_telegraph(monkeypatch: pytest
     assert published["source_url"] == "https://www.pagina12.com.ar/article"
 
 
+def test_publish_content_notifies_telegram_recipients_with_only_the_url(monkeypatch: pytest.MonkeyPatch) -> None:
+    calls: list[dict[str, object]] = []
+
+    class Response:
+        def raise_for_status(self) -> None:
+            return None
+
+        def json(self) -> dict[str, bool]:
+            return {"ok": True}
+
+    def fake_post(url: str, **kwargs: object) -> Response:
+        calls.append({"url": url, **kwargs})
+        return Response()
+
+    monkeypatch.setenv("TELEGRAPH_API_TOKEN", "environment-token")
+    monkeypatch.setenv("TELEGRAM_WEB_BOT_TOKEN", "bot-token")
+    monkeypatch.setattr(service, "create_page", lambda **_kwargs: "https://telegra.ph/page")
+    monkeypatch.setattr(service.requests, "post", fake_post)
+
+    result = service.publish_content(
+        SourceRequest(markdown="---\nnotify_telegram: 123, -100456, 123\n---\n\n# Title\n\nBody")
+    )
+
+    assert result == "https://telegra.ph/page"
+    assert calls == [
+        {
+            "url": "https://api.telegram.org/botbot-token/sendMessage",
+            "json": {"chat_id": "123", "text": "https://telegra.ph/page"},
+            "timeout": 20,
+        },
+        {
+            "url": "https://api.telegram.org/botbot-token/sendMessage",
+            "json": {"chat_id": "-100456", "text": "https://telegra.ph/page"},
+            "timeout": 20,
+        },
+    ]
+
+
 def test_publish_content_expands_cards_and_adds_article_navigation(monkeypatch: pytest.MonkeyPatch) -> None:
     brief_markdown = (
-        "# Weekend brief\n\nContext\n\n![card](https://example.com/one)\n\n![card](https://example.com/two)"
+        "# Weekend brief\n\n"
+        "## First article\n\n**Author** | **First medium**\n\n"
+        "![card](https://example.com/one)\n\nFirst editorial paragraph.\n\n"
+        "Second editorial paragraph.\n\n---\n\n"
+        "## Second article\n\n**Author** | **Second medium**\n\n"
+        "![card](https://example.com/two)\n\nAnother editorial paragraph."
     )
     brief = service.PreparedContent(
         "Weekend brief",
@@ -163,7 +214,10 @@ def test_publish_content_expands_cards_and_adds_article_navigation(monkeypatch: 
     assert "![card]" not in published_brief
     assert "https://telegra.ph/First-article-08-30" in published_brief
     assert "https://example.com/one.jpg" in published_brief
-    assert "Why the first article matters." in published_brief
+    assert "Why the first article matters." not in published_brief
+    assert published_brief.index("https://example.com/one.jpg") < published_brief.index("First editorial paragraph.")
+    assert published_brief.index("First editorial paragraph.") < published_brief.index("Leer en Telegraph")
+    assert published_brief.count("Leer en Telegraph") == len(articles)
     assert len(edit_calls) == len(articles)
     first_navigation = str(edit_calls[0]["content_markdown"])
     second_navigation = str(edit_calls[1]["content_markdown"])
@@ -193,7 +247,7 @@ def test_publish_content_reuses_a_repeated_card_within_brief(monkeypatch: pytest
     assert service.publish_content(SourceRequest(markdown=brief_markdown)) == "https://telegra.ph/Brief-08-30"
     assert create.call_count == len({source_url}) + 1
     published_brief = str(create.call_args_list[-1].kwargs["content_markdown"])
-    assert published_brief.count("https://telegra.ph/Article-08-30") == brief_markdown.count("![card]") * 2
+    assert published_brief.count("https://telegra.ph/Article-08-30") == brief_markdown.count("![card]")
 
 
 def test_publish_content_reuses_cached_source_url(monkeypatch: pytest.MonkeyPatch) -> None:

@@ -25,6 +25,7 @@ from markdown_web.service import (
     publish_brief_page,
     telegraph_tokens,
 )
+from markdown_web.telegram import send_telegram_notifications
 
 JOB_KEY_PREFIX = "markdown-web:telegraph-job"
 JOB_TTL_SECONDS = 48 * 60 * 60
@@ -140,6 +141,8 @@ class JobState(BaseModel):
     next_navigation: int = 0
     error: str = ""
     failed_source: str = ""
+    notify_telegram: str = ""
+    telegram_notified: bool = False
     created_at: int
     updated_at: int
 
@@ -216,6 +219,7 @@ def create_job(request: SourceRequest) -> JobState:
         id=_job_id(clean_request),
         request=clean_request,
         source_urls=card_source_urls(brief.markdown),
+        notify_telegram=brief.metadata.notify_telegram,
         created_at=now,
         updated_at=now,
     )
@@ -293,6 +297,9 @@ def run_job(job_id: str) -> JobState:
         state.error = ""
         try:
             _advance_job(state)
+            if state.status == "completed" and not state.telegram_notified:
+                send_telegram_notifications(state.brief_url, state.notify_telegram)
+                state.telegram_notified = True
         except Exception as exc:  # noqa: BLE001
             state.status = "failed"
             state.error = str(exc) or type(exc).__name__

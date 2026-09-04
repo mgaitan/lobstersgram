@@ -16,6 +16,7 @@ class SourceMetadata(BaseModel):
     date: str = ""
     image: str = ""
     type: str = ""
+    notify_telegram: str = ""
 
     def values(self) -> dict[str, str]:
         return {key: value for key, value in self.model_dump().items() if value}

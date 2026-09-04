@@ -793,13 +793,15 @@ requires-dist = [
 
 [[package]]
 name = "markdown-web"
-version = "0.1.7"
+version = "0.1.8"
 source = { editable = "packages/markdown-web" }
 dependencies = [
     { name = "fastapi", extra = ["standard"] },
     { name = "jinja2" },
     { name = "markdown-this" },
     { name = "md-to-telegraph" },
+    { name = "python-dotenv" },
+    { name = "pyyaml" },
     { name = "redis" },
     { name = "requests" },
     { name = "uvicorn", extra = ["standard"] },
@@ -811,6 +813,8 @@ requires-dist = [
     { name = "jinja2", specifier = ">=3.1.6" },
     { name = "markdown-this", editable = "packages/markdown-this" },
     { name = "md-to-telegraph", editable = "packages/md-to-telegraph" },
+    { name = "python-dotenv", specifier = ">=1.2.1" },
+    { name = "pyyaml", specifier = ">=6.0.3" },
     { name = "redis", specifier = ">=6.4.0" },
     { name = "requests", specifier = ">=2.32.5" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.35.0" },

@@ -44,6 +44,7 @@ Entregá un único documento Markdown, sin texto introductorio ni explicaciones 
 ---
 author: ChatGPT
 url: https://github.com/mgaitan/lobstersgram/blob/master/boletin_prompt.md
+notify_telegram: 390225349
 ---
 ```
 
@@ -51,11 +52,14 @@ url: https://github.com/mgaitan/lobstersgram/blob/master/boletin_prompt.md
 - Para una edición diaria, comenzá con `# Resumen diario — [día y fecha en Argentina]`.
 - Para una edición de fin de semana, comenzá con `# Edición de fin de semana — [día y fecha en Argentina]`.
 - Agregá la sección `## Lectura de conjunto`. Construí allí un hilo narrativo entre las noticias; no te limites a enumerarlas. Hacela breve y precisa durante la semana, y más desarrollada los sábados y domingos.
-- Presentá exactamente `N` piezas, numeradas y ordenadas por relevancia editorial.
-- Para cada pieza indicá título, autor, medio, fecha y género. Explicá de qué trata, por qué merece tiempo y qué contexto aporta.
-- Separá con claridad la información publicada por la fuente, tu análisis editorial y, cuando corresponda, la opinión del autor.
+- Presentá exactamente `N` piezas, ordenadas por relevancia editorial, sin numerarlas.
+- Para cada pieza usá un encabezado H2 con el título, sin prefijos como `1.`, `2.` o similares.
+- Debajo del título escribí una sola línea con el formato `**Autor o autora** | **Medio**`. No incluyas fecha ni género: la fecha de la edición alcanza.
+- Inmediatamente después de esa línea agregá el marcador de imagen de la pieza.
+- Después del marcador escribí exactamente dos párrafos: el primero debe sintetizar los hechos y el contenido de la fuente; el segundo debe aportar el análisis editorial y, cuando corresponda, integrar la opinión de la autora o el autor. No antepongas etiquetas como `Información publicada.`, `Opinión de la autora.` o `Lectura editorial.`.
+- No repitas una descripción extraída de la fuente: el boletín ya resume la pieza. El enlace `Leer en Telegraph` se agregará al final de cada nota durante la publicación.
 
-Después del comentario editorial de cada pieza agregá, en una línea independiente, exactamente este marcador con la URL canónica y completa del artículo original:
+Después de la línea de autoría y medio de cada pieza agregá, en una línea independiente, exactamente este marcador con la URL canónica y completa del artículo original:
 
 ```markdown
 ![card](https://URL-ORIGINAL-DEL-ARTICULO)
@@ -67,6 +71,9 @@ Reglas obligatorias para los marcadores:
 - Cada marcador debe contener una URL original única, válida y accesible mediante HTTPS.
 - No reemplaces el marcador por un enlace Markdown común ni agregues otro enlace de lectura para la misma pieza.
 - No uses el marcador `![card](...)` para ninguna otra finalidad.
+- No agregues manualmente un enlace `Leer en Telegraph`: el servicio lo inserta al final de la nota.
+- El servicio convierte el marcador en la foto disponible de la nota, enlazada a su página de Telegraph. Si la fuente no tiene una imagen válida, no inventes una.
+- Usá una barra separadora `---` únicamente entre una nota y la siguiente; no la uses antes de la primera ni después de la última.
 
 Antes de publicar, comprobá que la cantidad de piezas coincida con el modo elegido, que haya exactamente `N` URLs únicas y que todos los marcadores respeten el formato indicado.
 
@@ -113,6 +120,13 @@ No simules la publicación ni inventes una URL de Telegraph. El job está comple
 ```json
 {"status":"completed","url":"https://telegra.ph/..."}
 ```
+
+Como el frontmatter incluye `notify_telegram: 390225349`, al completar la
+publicación el servicio enviará automáticamente esa URL a Telegram. Para que
+llegue el aviso, el usuario debe iniciar antes una conversación privada con
+[@MarkdownTelegraphBot](https://t.me/MarkdownTelegraphBot) —por ejemplo, con
+`/start`—. Para un grupo, agregá el bot; para un canal, agregalo como
+administrador con permiso para publicar mensajes.
 
 Si el job devuelve HTTP 422 con `status` igual a `failed`, usá `source_url` y `error` para identificar la pieza problemática. Si el error parece transitorio, volvé a llamar una vez al mismo `run_url`: un job fallido puede reintentar la etapa pendiente sin perder su progreso. Si la fuente no puede extraerse o su URL no es válida, reemplazala por una fuente accesible de calidad editorial equivalente, volvé a validar el documento completo y creá un job para el documento corregido.
 

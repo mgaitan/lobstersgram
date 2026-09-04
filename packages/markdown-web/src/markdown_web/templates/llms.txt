@@ -15,6 +15,7 @@ Base URL: {{ site_url }}
 - `GET /t/<url>` returns a `303` redirect to the Telegraph page and caches that URL during the running process.
 - A source that blocks server-side fetches should be sent as browser HTML to `POST /t/bookmarklet`; see `/bookmarklet/`.
 - Do not send the service's Telegraph token. It uses its configured account unless an explicit bearer token is provided for `POST /t`.
+- Telegram notifications use [@MarkdownTelegraphBot](https://t.me/MarkdownTelegraphBot). A private user must open the bot and send `/start` first. In a group, add the bot and allow it to send messages; in a channel, add it as an administrator with permission to post messages.
 
 ## Markdown input
 
@@ -28,12 +29,13 @@ url: https://example.com/article
 date: 2026-08-10
 image: https://example.com/cover.jpg
 type: article
+notify_telegram: 123456789, -1001234567890
 ---
 
 Article body in Markdown.
 ```
 
-`title`, `author`, `url`, `date`, `image`, and `type` are the only recognized keys; nested values and unknown keys are ignored. A `title` or first Markdown heading is required to publish. Non-document types such as `website`, `home`, `collection`, `search`, and `landingpage` are rejected.
+`title`, `author`, `url`, `date`, `image`, `type`, and `notify_telegram` are recognized keys; nested values and unknown keys are ignored. `notify_telegram` accepts one or more comma-separated Telegram user or channel IDs. After publication, the configured `TELEGRAM_WEB_BOT_TOKEN` bot sends only the Telegraph URL to those recipients. A `title` or first Markdown heading is required to publish. Non-document types such as `website`, `home`, `collection`, `search`, and `landingpage` are rejected.
 
 ## Briefs with article cards
 
