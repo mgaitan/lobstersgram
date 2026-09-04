@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import io
 import os
 import re
 import threading
@@ -15,6 +16,7 @@ import requests
 import yaml
 from markdown_this import add_front_matter, extract_main_content, markdown_to_text, split_front_matter
 from md_to_telegraph import create_account, create_page, edit_page
+from pypdf import PdfReader, PdfWriter
 
 from markdown_web.schemas import SourceMetadata, SourceRequest
 from markdown_web.telegram import send_telegram_notifications
@@ -46,6 +48,7 @@ DOCUMENT_EXTENSIONS = frozenset(
     }
 )
 CARD_DIRECTIVE_RE = re.compile(r"!\[card\]\(\s*(https?://[^)\s]+)\s*\)")
+OCR_ERROR_RE = re.compile(r"pages?\s+(.+?)\s+of\s+\d+\s+need OCR", re.IGNORECASE)
 
 
 def _front_matter_notify_telegram(markdown: str) -> str:
@@ -248,10 +251,50 @@ def _convert_document(data: bytes, filename: str) -> str:
     try:
         markdown = anydoc.to_markdown_bytes(data, document_format)
     except (anydoc.ConvertError, OSError, ValueError) as exc:
+        if document_format == "pdf" and isinstance(exc, anydoc.UnsupportedError) and OCR_ERROR_RE.search(str(exc)):
+            return _convert_pdf_pages(data, exc)
         raise DocumentConversionError(exc) from exc
     if not markdown.strip():
         raise EmptyDocumentContentError
     return markdown
+
+
+def _convert_pdf_pages(data: bytes, original_error: Exception) -> str:
+    """Keep readable PDF pages when AnyDoc rejects scanned pages that need OCR."""
+    try:
+        reader = PdfReader(io.BytesIO(data))
+        converted: list[tuple[int, str]] = []
+        skipped: list[int] = []
+        for page_number, page in enumerate(reader.pages, 1):
+            writer = PdfWriter()
+            writer.add_page(page)
+            page_data = io.BytesIO()
+            writer.write(page_data)
+            try:
+                page_markdown = anydoc.to_markdown_bytes(page_data.getvalue(), "pdf")
+            except anydoc.UnsupportedError as exc:
+                if OCR_ERROR_RE.search(str(exc)) or "ocr" in str(exc).lower():
+                    skipped.append(page_number)
+                    continue
+                raise
+            if page_markdown.strip():
+                converted.append((page_number, page_markdown.strip()))
+            else:
+                skipped.append(page_number)
+    except (anydoc.ConvertError, OSError, ValueError) as exc:
+        raise DocumentConversionError(exc) from exc
+    except Exception as exc:
+        raise DocumentConversionError(exc) from exc
+
+    if not converted:
+        raise DocumentConversionError(original_error) from original_error
+
+    parts = [f"<!-- Page {page_number} -->\n\n{page_markdown}" for page_number, page_markdown in converted]
+    if skipped:
+        pages = ", ".join(str(page_number) for page_number in skipped)
+        warning = f"<!-- markdown-web: Pages {pages} were omitted because they require OCR. -->"
+        parts.insert(0, warning)
+    return "\n\n---\n\n".join(parts)
 
 
 def _download_document(url: str) -> tuple[bytes, str]:
