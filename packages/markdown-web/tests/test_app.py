@@ -39,7 +39,7 @@ def _job_state(status: app_module.jobs.JobStatus = "queued") -> app_module.jobs.
 def test_home_and_static_assets() -> None:
     response = client.get("/")
     assert response.status_code == HTTP_200_OK
-    assert "Turn any page into Markdown or publish it to Telegraph" in response.text
+    assert "Convert to Markdown and publish it to Telegraph" in response.text
     assert ">markdown-web<" not in response.text
     assert 'href="/bookmarklets/">Bookmarklets</a>' in response.text
     assert 'placeholder="Paste a URL or drop a file."' in response.text

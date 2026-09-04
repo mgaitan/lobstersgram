@@ -72,7 +72,7 @@ h1 {
   cursor: pointer;
 }
 .file-button:hover { color: #111; background: #e7e7e7; }
-.file-input { display: none; }
+.file-input { display: none !important; }
 
 input, textarea {
   width: 100%;
