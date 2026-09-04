@@ -1,3 +1,5 @@
+import re
+
 from mistletoe import Document, block_token, span_token
 from mistletoe.base_renderer import BaseRenderer
 
@@ -6,6 +8,7 @@ type NodeList = list[Node]
 
 HEADING_LEVEL_PRIMARY = 1
 HEADING_LEVEL_SECONDARY = 2
+HTML_COMMENT_RE = re.compile(r"<!--.*?-->", re.DOTALL)
 
 
 class TelegraphDomRenderer(BaseRenderer):
@@ -133,7 +136,7 @@ class TelegraphDomRenderer(BaseRenderer):
 
 def md_to_telegraph(markdown_text: str) -> NodeList:
     with TelegraphDomRenderer() as renderer:
-        return renderer.render(Document(markdown_text))
+        return renderer.render(Document(HTML_COMMENT_RE.sub("", markdown_text)))
 
 
 def content_to_telegraph(markdown_text: str, fallback_text: str = "") -> NodeList:

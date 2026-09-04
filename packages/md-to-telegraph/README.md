@@ -62,6 +62,18 @@ url = create_page(
 )
 ```
 
+For content that may exceed Telegraph's page size, use `create_pages`. It
+splits Markdown between complete blocks (without cutting paragraphs, fenced
+code, or other Markdown constructs), creates linked pages with previous/next
+navigation, and returns all URLs plus their Markdown chunks:
+
+```python
+from md_to_telegraph import create_pages
+
+pages = create_pages(access_token="telegraph-token", title="A long article", content_markdown=content_markdown)
+first_url = pages.urls[0]
+```
+
 `create_page` reads YAML front matter from `content_markdown`. When these
 arguments are omitted, it uses `title`, `author`, and `url` from the header;
 explicit arguments always take precedence. The `date` field is preserved as

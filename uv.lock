@@ -808,7 +808,7 @@ requires-dist = [
 
 [[package]]
 name = "markdown-web"
-version = "0.1.8"
+version = "0.1.10"
 source = { editable = "packages/markdown-web" }
 dependencies = [
     { name = "fastapi", extra = ["standard"] },
@@ -929,7 +929,7 @@ wheels = [
 
 [[package]]
 name = "md-to-telegraph"
-version = "0.1.6"
+version = "0.1.8"
 source = { editable = "packages/md-to-telegraph" }
 dependencies = [
     { name = "mistletoe" },

@@ -11,17 +11,24 @@ import requests
 from md_to_telegraph import (
     TelegraphAPIError,
     TelegraphContentError,
+    TelegraphPages,
     TelegraphTitleError,
     TelegraphTokenError,
     create_account,
     create_page,
+    create_pages,
     edit_page,
+    page_navigation,
+    split_markdown_pages,
     warm_telegraph_cache,
 )
 from md_to_telegraph import telegraph as telegraph_module
 
 HTTP_CLIENT_ERROR_MIN = 400
 MAX_TITLE_LENGTH = 256
+PAGE_LIMIT = 30
+MIN_PAGE_COUNT = 2
+EXPECTED_SHORT_PAGE_COUNT = 2
 
 
 class FakeResponse:
@@ -252,6 +259,109 @@ def test_create_page_requires_a_title_for_raw_markdown() -> None:
         pytest.raises(TelegraphTitleError),
     ):
         create_page(content_markdown="Body", access_token="token", warm_cache=False)
+
+
+def test_split_markdown_pages_preserves_complete_blocks() -> None:
+    markdown = "First paragraph\n\nSecond paragraph\n\nLast paragraph"
+
+    pages = split_markdown_pages(markdown, max_chars=len("First paragraph\n\nSecond paragraph"))
+
+    assert len(pages) == MIN_PAGE_COUNT
+    assert pages[0] == "First paragraph\n\nSecond paragraph"
+    assert "Last paragraph" in pages[-1]
+
+
+def test_split_markdown_pages_keeps_oversized_blocks_intact() -> None:
+    block = "x" * (PAGE_LIMIT + 1)
+
+    assert split_markdown_pages(block, max_chars=PAGE_LIMIT) == [block]
+
+
+def test_split_markdown_pages_keeps_fenced_code_with_internal_blank_lines() -> None:
+    code_block = "```python\nfirst\n\nsecond\n```"
+    markdown = f"Intro\n\n{code_block}\n\nEnd"
+
+    pages = split_markdown_pages(markdown, max_chars=len("Intro"))
+
+    assert code_block in pages
+
+
+def test_split_markdown_pages_returns_empty_body_when_markdown_is_empty() -> None:
+    assert split_markdown_pages("---\ntitle: Empty\n---\n", max_chars=30) == [""]
+
+
+def test_page_navigation_links_adjacent_pages() -> None:
+    urls = ("https://telegra.ph/one", "https://telegra.ph/two", "https://telegra.ph/three")
+
+    assert page_navigation(urls, 0) == "\n\n---\n\n[Página siguiente](https://telegra.ph/two)"
+    assert "Página anterior" in page_navigation(urls, 1)
+    assert page_navigation(urls, 2).endswith("[Página anterior](https://telegra.ph/two)")
+    assert page_navigation((urls[0],), 0) == ""
+
+
+def test_create_pages_creates_and_links_long_markdown(monkeypatch: pytest.MonkeyPatch) -> None:
+    created: list[dict[str, object]] = []
+    edited: list[dict[str, object]] = []
+
+    def fake_create_page(**kwargs: object) -> str:
+        created.append(kwargs)
+        return f"https://telegra.ph/page-{len(created)}"
+
+    def fake_edit_page(**kwargs: object) -> str:
+        edited.append(kwargs)
+        return str(kwargs["path"])
+
+    monkeypatch.setattr(telegraph_module, "create_page", fake_create_page)
+    monkeypatch.setattr(telegraph_module, "edit_page", fake_edit_page)
+    markdown = "---\ntitle: Long title\nauthor: Author\n---\n\n" + "\n\n".join(
+        f"Paragraph {index}: " + "readable content " * 8 for index in range(1, 4)
+    )
+
+    pages = create_pages(
+        content_markdown=markdown,
+        access_token="token",
+        max_chars=30,
+        warm_cache=False,
+    )
+
+    assert isinstance(pages, TelegraphPages)
+    assert len(pages.urls) > 1
+    assert len(created) == len(edited) == len(pages.urls)
+    assert created[0]["title"] == "Long title"
+    assert created[0]["warm_cache"] is False
+    assert "Página siguiente" in str(edited[0]["content_markdown"])
+    assert "Página anterior" in str(edited[-1]["content_markdown"])
+    assert all("author: Author" in page for page in pages.markdowns)
+
+
+def test_create_pages_handles_long_markdown_without_metadata(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(telegraph_module, "create_page", lambda **kwargs: "https://telegra.ph/page")
+    monkeypatch.setattr(telegraph_module, "edit_page", lambda **kwargs: "https://telegra.ph/page")
+
+    pages = create_pages(
+        title="Long title",
+        content_markdown="\n\n".join("paragraph " + ("x" * 20) for _ in range(2)),
+        access_token="token",
+        max_chars=PAGE_LIMIT,
+        warm_cache=False,
+    )
+
+    assert len(pages.urls) == EXPECTED_SHORT_PAGE_COUNT
+
+
+def test_create_pages_uses_create_page_for_short_markdown(monkeypatch: pytest.MonkeyPatch) -> None:
+    calls: list[dict[str, object]] = []
+
+    def fake_create_page(**kwargs: object) -> str:
+        calls.append(kwargs)
+        return "https://telegra.ph/short"
+
+    monkeypatch.setattr(telegraph_module, "create_page", fake_create_page)
+
+    pages = create_pages(title="Short", content_markdown="Body", access_token="token", warm_cache=False)
+
+    assert pages == TelegraphPages(("https://telegra.ph/short",), ("Body",))
+    assert calls[0]["warm_cache"] is False
 
 
 def test_create_account_posts_account_details() -> None:

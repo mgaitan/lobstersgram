@@ -360,6 +360,10 @@ def test_content_to_telegraph_uses_empty_content_placeholder() -> None:
     assert content_to_telegraph("", "   \n  ") == [{"tag": "p", "children": ["(No content extracted)"]}]
 
 
+def test_html_comments_are_not_published() -> None:
+    assert content_to_telegraph("<!-- Page 50 -->\n\nVisible text") == [{"tag": "p", "children": ["Visible text"]}]
+
+
 def test_prepend_image_adds_metadata_image() -> None:
     assert prepend_image([{"tag": "p", "children": ["Body"]}], "https://example.com/hero.jpg") == [
         {"tag": "img", "attrs": {"src": "https://example.com/hero.jpg"}},

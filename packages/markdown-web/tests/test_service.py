@@ -5,6 +5,8 @@ import requests
 from markdown_web import service
 from markdown_web.schemas import SourceMetadata, SourceRequest
 
+TEST_PAGE_LIMIT = 80
+
 
 def test_prepare_content_extracts_url_and_merges_metadata(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(
@@ -175,6 +177,29 @@ def test_publish_content_passes_source_metadata_to_telegraph(monkeypatch: pytest
     )
 
     assert published["source_url"] == "https://www.pagina12.com.ar/article"
+
+
+def test_publish_content_splits_long_markdown_into_linked_pages(monkeypatch: pytest.MonkeyPatch) -> None:
+    calls: list[dict[str, object]] = []
+
+    def fake_create_pages(**kwargs: object) -> service.TelegraphPages:
+        calls.append(kwargs)
+        return service.TelegraphPages(
+            ("https://telegra.ph/page-1", "https://telegra.ph/page-2"),
+            ("first", "second"),
+        )
+
+    monkeypatch.setenv("TELEGRAPH_API_TOKEN", "environment-token")
+    monkeypatch.setattr(service, "TELEGRAPH_PAGE_MAX_CHARS", TEST_PAGE_LIMIT)
+    monkeypatch.setattr(service, "create_pages", fake_create_pages)
+
+    markdown = "# Long document\n\n" + "\n\n".join(
+        f"Paragraph {index}: " + "readable content " * 8 for index in range(1, 4)
+    )
+    result = service.publish_content(SourceRequest(markdown=markdown))
+
+    assert result == "https://telegra.ph/page-1"
+    assert calls[0]["max_chars"] == TEST_PAGE_LIMIT
 
 
 def test_publish_content_notifies_telegram_recipients_with_only_the_url(monkeypatch: pytest.MonkeyPatch) -> None:

@@ -114,6 +114,11 @@ Agents can read `/llms.txt` for the endpoint contract, accepted YAML front
 matter, and examples. The machine-readable contract is FastAPI's existing
 OpenAPI document at `/openapi.json`; there is no separate `openschema.json`.
 
+Long Markdown is split into Telegraph pages at paragraph or line boundaries
+before publication. The first page URL is returned, and continuation pages
+include links to the previous and next page. This also applies to article
+pages created inside a brief.
+
 ## Bookmarklets
 
 Visit `/bookmarklet/` to get two permanent bookmarklets. Drag either link to

@@ -100,6 +100,8 @@ class StoredArticle(BaseModel):
     metadata: SourceMetadata
     intro: str = ""
     telegraph_url: str
+    telegraph_urls: list[str] = Field(default_factory=list)
+    page_markdowns: list[str] = Field(default_factory=list)
 
     @classmethod
     def from_published(cls, article: PublishedBriefArticle) -> StoredArticle:
@@ -112,6 +114,8 @@ class StoredArticle(BaseModel):
             metadata=article.content.metadata,
             intro=article.content.intro,
             telegraph_url=article.telegraph_url,
+            telegraph_urls=list(article.telegraph_urls),
+            page_markdowns=list(article.page_markdowns),
         )
 
     def published(self) -> PublishedBriefArticle:
@@ -126,6 +130,8 @@ class StoredArticle(BaseModel):
                 intro=self.intro,
             ),
             telegraph_url=self.telegraph_url,
+            telegraph_urls=tuple(self.telegraph_urls),
+            page_markdowns=tuple(self.page_markdowns),
         )
 
 

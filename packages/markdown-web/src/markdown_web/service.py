@@ -15,7 +15,16 @@ import anydoc
 import requests
 import yaml
 from markdown_this import add_front_matter, extract_main_content, markdown_to_text, split_front_matter
-from md_to_telegraph import create_account, create_page, edit_page
+from md_to_telegraph import (
+    TELEGRAPH_PAGE_MAX_CHARS,
+    TelegraphPages,
+    create_account,
+    create_page,
+    create_pages,
+    edit_page,
+    page_navigation,
+    split_markdown_pages,
+)
 from pypdf import PdfReader, PdfWriter
 
 from markdown_web.schemas import SourceMetadata, SourceRequest
@@ -155,6 +164,8 @@ class PublishedBriefArticle:
     source_url: str
     content: PreparedContent
     telegraph_url: str
+    telegraph_urls: tuple[str, ...] = ()
+    page_markdowns: tuple[str, ...] = ()
 
 
 def list_published_pages() -> tuple[int, list[dict[str, object]]]:
@@ -381,16 +392,33 @@ def prepare_content(request: SourceRequest) -> PreparedContent:
     )
 
 
-def _publish_prepared(prepared: PreparedContent, token: str, *, warm_cache: bool = True) -> str:
-    return create_page(
+def _publish_prepared_pages(prepared: PreparedContent, token: str, *, warm_cache: bool = True) -> TelegraphPages:
+    chunks = split_markdown_pages(prepared.markdown, max_chars=TELEGRAPH_PAGE_MAX_CHARS)
+    if len(chunks) == 1:
+        url = create_page(
+            title=prepared.title or None,
+            content_markdown=prepared.markdown,
+            fallback_text=prepared.fallback_text,
+            source_url=prepared.metadata.url,
+            author_name=prepared.metadata.author,
+            access_token=token,
+            warm_cache=warm_cache,
+        )
+        return TelegraphPages((url,), (prepared.markdown,))
+    return create_pages(
         title=prepared.title or None,
         content_markdown=prepared.markdown,
         fallback_text=prepared.fallback_text,
         source_url=prepared.metadata.url,
         author_name=prepared.metadata.author,
         access_token=token,
+        max_chars=TELEGRAPH_PAGE_MAX_CHARS,
         warm_cache=warm_cache,
     )
+
+
+def _publish_prepared(prepared: PreparedContent, token: str, *, warm_cache: bool = True) -> str:
+    return _publish_prepared_pages(prepared, token, warm_cache=warm_cache).urls[0]
 
 
 def _publish_content(request: SourceRequest) -> str:
@@ -452,10 +480,13 @@ def card_source_urls(markdown: str) -> list[str]:
 def publish_brief_article(source_url: str, token: str, *, warm_cache: bool = True) -> PublishedBriefArticle:
     """Extract and publish one article referenced by a brief."""
     content = prepare_content(SourceRequest(url=source_url))
+    pages = _publish_prepared_pages(content, token, warm_cache=warm_cache)
     return PublishedBriefArticle(
         source_url=source_url,
         content=content,
-        telegraph_url=_publish_prepared(content, token, warm_cache=warm_cache),
+        telegraph_url=pages.urls[0],
+        telegraph_urls=pages.urls,
+        page_markdowns=pages.markdowns,
     )
 
 
@@ -496,11 +527,15 @@ def add_brief_navigation(  # noqa: PLR0913
     """Add parent, previous, and next links to one published article."""
     previous_url = articles[index - 1].telegraph_url if index else None
     next_url = articles[index + 1].telegraph_url if index + 1 < len(articles) else None
+    page_markdown = article.page_markdowns[0] if article.page_markdowns else article.content.markdown
+    page_urls = article.telegraph_urls or (article.telegraph_url,)
     return edit_page(
         path=urlparse(article.telegraph_url).path.lstrip("/"),
         title=article.content.title or None,
-        content_markdown=(article.content.markdown + _navigation_markdown(brief_url, previous_url, next_url)),
-        fallback_text=article.content.fallback_text,
+        content_markdown=(
+            page_markdown + page_navigation(page_urls, 0) + _navigation_markdown(brief_url, previous_url, next_url)
+        ),
+        fallback_text=markdown_to_text(page_markdown),
         source_url=article.content.metadata.url or article.source_url,
         author_name=article.content.metadata.author,
         access_token=token,
