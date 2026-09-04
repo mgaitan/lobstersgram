@@ -87,16 +87,20 @@ def test_home_and_static_assets() -> None:
     )
     assert 'id="editor-image-file"' in response.text
     assert 'fetch("/images"' in response.text
-    assert 'property="og:title" content="Markdown and Telegraph"' in response.text
+    assert 'property="og:title" content="Write, convert, and publish Markdown"' in response.text
     assert (
-        'property="og:description" content="Turn any page into Markdown or publish it to Telegraph."' in response.text
+        'property="og:description" content="Write Markdown, convert web pages and documents, and publish to Telegraph."'
+        in response.text
     )
-    assert 'name="twitter:card" content="summary"' in response.text
-    assert 'property="og:image" content="https://markdown.fastapicloud.dev/static/logo.png"' in response.text
-    assert 'name="twitter:image" content="https://markdown.fastapicloud.dev/static/logo.png"' in response.text
+    assert 'name="twitter:card" content="summary_large_image"' in response.text
+    assert 'property="og:image" content="https://markdown.fastapicloud.dev/static/social-card.png?v=2"' in response.text
+    assert (
+        'name="twitter:image" content="https://markdown.fastapicloud.dev/static/social-card.png?v=2"' in response.text
+    )
     assert 'rel="icon" href="/static/favicon.svg" type="image/svg+xml"' in response.text
     assert client.get("/static/favicon.svg").status_code == HTTP_200_OK
     assert client.get("/static/logo.png").status_code == HTTP_200_OK
+    assert client.get("/static/social-card.png").status_code == HTTP_200_OK
     assert client.get("/static/styles.css").status_code == HTTP_200_OK
 
 
