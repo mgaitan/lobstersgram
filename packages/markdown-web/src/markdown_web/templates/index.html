@@ -14,17 +14,17 @@
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Markdown and Telegraph">
     <meta name="twitter:description" content="Turn any page into Markdown or publish it to Telegraph.">
-    <link rel="stylesheet" href="/static/styles.css?v=7">
+    <link rel="stylesheet" href="/static/styles.css?v=9">
   </head>
   <body>
     <main class="page">
       <section class="workspace" aria-labelledby="page-title">
-        <h1 id="page-title">Convert to Markdown and publish it to Telegraph</h1>
+        <h1 id="page-title">Write, convert, and publish Markdown</h1>
         <form id="process-form" class="source-form">
           <div id="source-entry" class="source-entry">
             <div id="drop-zone" class="source-dropzone">
-              <label class="sr-only" for="source-url">URL or document</label>
-              <input id="source-url" name="url" type="url" placeholder="Paste a URL or drop a file." autofocus>
+              <label class="sr-only" for="source-url">URL, file, or Markdown</label>
+              <input id="source-url" name="url" type="text" placeholder="Paste a URL, drop a file or insert markdown content" autofocus autocomplete="off" spellcheck="false">
               <button id="file-button" class="file-button" type="button" aria-label="Choose a file" title="Choose a file">&#8593;</button>
               <input id="source-file" class="file-input" type="file" accept=".pdf,.doc,.docx,.epub,.ppt,.pptx,.xls,.xlsx,.odt,.ods,.odp,.rtf,.csv">
             </div>
@@ -35,23 +35,36 @@
             <div class="result-toolbar">
               <span id="result-source" class="source-label"></span>
               <div class="result-actions">
+                <button id="new-button" class="button button-secondary" type="button" hidden>New</button>
                 <button id="copy-button" class="button button-secondary" type="button">Copy</button>
                 <button id="submit-publish" class="button button-primary" type="submit">Publish</button>
               </div>
             </div>
             <label class="sr-only" for="markdown-output">Markdown</label>
             <textarea id="markdown-output" spellcheck="false"></textarea>
-            <button id="edit-button" class="text-button" type="button">Edit URL</button>
           </section>
           <p id="status" class="status" role="status"></p>
         </form>
       </section>
     </main>
 
+    <dialog id="new-dialog" aria-labelledby="new-dialog-title">
+      <form method="dialog">
+        <h2 id="new-dialog-title">Start a new document?</h2>
+        <p>This will discard the current content.</p>
+        <div class="dialog-actions">
+          <button class="button button-secondary" value="cancel">Cancel</button>
+          <button id="confirm-new" class="button button-primary" value="confirm">New</button>
+        </div>
+      </form>
+    </dialog>
+
     <footer class="footer">
       <a href="/">Home</a>
       <a href="/about">About</a>
       <a href="/bookmarklets/">Bookmarklets</a>
+      <a href="/t/published/">Published</a>
+      <a href="/docs">API</a>
       <a href="https://github.com/mgaitan/lobstersgram/tree/master/packages/markdown-web">GitHub</a>
     </footer>
 
@@ -66,12 +79,63 @@
       const fileButton = document.querySelector("#file-button");
       const sourceLabel = document.querySelector("#result-source");
       const status = document.querySelector("#status");
+      const newButton = document.querySelector("#new-button");
+      const newDialog = document.querySelector("#new-dialog");
+      const confirmNew = document.querySelector("#confirm-new");
       let currentUrl = "";
       let mode = "process";
+      const DRAFT_KEY = "markdown-web-draft";
+      const SOURCE_PLACEHOLDER = "Paste a URL, drop a file or insert markdown content";
+      const MARKDOWN_START_RE = /(^\s*(?:#{1,6}\s|>\s|[-*+]\s|\d+\.\s|```|~~~|!\[|\[|\*\*|__))/;
 
       function setStatus(message, error = false) {
         status.textContent = message;
         status.classList.toggle("error", error);
+      }
+
+      function saveDraft() {
+        const draft = mode === "publish"
+          ? {mode, markdown: output.value, url: currentUrl, label: sourceLabel.textContent}
+          : {mode, value: sourceInput.value};
+        try {
+          localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+        } catch {
+          // Draft persistence is best effort when storage is unavailable.
+        }
+      }
+
+      function clearDraft() {
+        try {
+          localStorage.removeItem(DRAFT_KEY);
+        } catch {
+          // Draft persistence is best effort when storage is unavailable.
+        }
+      }
+
+      function restoreDraft() {
+        let draft;
+        try {
+          draft = JSON.parse(localStorage.getItem(DRAFT_KEY) || "null");
+        } catch {
+          return;
+        }
+        if (!draft || typeof draft !== "object") return;
+        if (draft.mode === "publish" && typeof draft.markdown === "string" && draft.markdown) {
+          currentUrl = typeof draft.url === "string" ? draft.url : "";
+          output.value = draft.markdown;
+          sourceLabel.textContent = typeof draft.label === "string" && draft.label
+            ? draft.label
+            : currentUrl || "Markdown";
+          sourceEntry.hidden = true;
+          result.hidden = false;
+          newButton.hidden = false;
+          mode = "publish";
+          return;
+        }
+        if (draft.mode === "process" && typeof draft.value === "string" && draft.value) {
+          sourceInput.value = draft.value;
+          sourceInput.focus();
+        }
       }
 
       async function responseError(response, fallback) {
@@ -87,22 +151,104 @@
         transfer.items.add(file);
         sourceFile.files = transfer.files;
         sourceInput.value = "";
+        currentUrl = "";
         sourceInput.placeholder = file.name;
         dropZone.classList.add("has-file");
+        saveDraft();
       }
 
       function clearSelectedFile() {
         sourceFile.value = "";
-        sourceInput.placeholder = "Paste a URL or drop a file.";
+        sourceInput.placeholder = SOURCE_PLACEHOLDER;
         dropZone.classList.remove("has-file");
+      }
+
+      function isHttpUrl(value) {
+        try {
+          const url = new URL(value);
+          return url.protocol === "http:" || url.protocol === "https:";
+        } catch {
+          return false;
+        }
+      }
+
+      function isUrlPrefix(value) {
+        const lower = value.toLowerCase();
+        return ["http://", "https://"].some((prefix) => prefix.startsWith(lower) || lower.startsWith(prefix));
+      }
+
+      function showMarkdownEditor(markdown) {
+        currentUrl = "";
+        output.value = markdown;
+        sourceLabel.textContent = "Markdown";
+        sourceEntry.hidden = true;
+        result.hidden = false;
+        newButton.hidden = false;
+        mode = "publish";
+        setStatus("");
+        saveDraft();
+        output.focus();
+      }
+
+      async function processSource(url, file) {
+        if (!url && !file) {
+          setStatus("Paste a URL, choose a document, or insert Markdown", true);
+          sourceInput.focus();
+          return;
+        }
+        if (url && file) {
+          setStatus("Choose a URL or a document, not both", true);
+          return;
+        }
+        if (file) currentUrl = "";
+        setStatus("Processing…");
+        try {
+          let response;
+          if (file) {
+            const data = new FormData();
+            data.append("file", file);
+            response = await fetch("/md", {method: "POST", body: data});
+          } else {
+            response = await fetch("/md/" + encodeURIComponent(url));
+          }
+          if (!response.ok) throw new Error(await responseError(response, "Processing failed"));
+          output.value = await response.text();
+          sourceLabel.textContent = url || file.name;
+          sourceEntry.hidden = true;
+          result.hidden = false;
+          newButton.hidden = false;
+          mode = "publish";
+          setStatus("");
+          saveDraft();
+        } catch (error) {
+          setStatus(error.message, true);
+        }
       }
 
       fileButton.addEventListener("click", () => sourceFile.click());
       sourceFile.addEventListener("change", () => {
-        if (sourceFile.files[0]) setSelectedFile(sourceFile.files[0]);
+        const file = sourceFile.files[0];
+        if (file) {
+          setSelectedFile(file);
+          processSource("", file);
+        }
       });
       sourceInput.addEventListener("input", () => {
-        if (sourceInput.value) clearSelectedFile();
+        const value = sourceInput.value;
+        if (!value) {
+          clearSelectedFile();
+          saveDraft();
+          return;
+        }
+        clearSelectedFile();
+        if (
+          !isHttpUrl(value.trim()) &&
+          (MARKDOWN_START_RE.test(value) || (value.trim().length > 1 && !isUrlPrefix(value.trim())))
+        ) {
+          showMarkdownEditor(value);
+          return;
+        }
+        saveDraft();
       });
       dropZone.addEventListener("dragover", (event) => {
         event.preventDefault();
@@ -113,7 +259,10 @@
         event.preventDefault();
         dropZone.classList.remove("is-dragging");
         const file = event.dataTransfer.files[0];
-        if (file) setSelectedFile(file);
+        if (file) {
+          setSelectedFile(file);
+          processSource("", file);
+        }
       });
 
       form.addEventListener("submit", async (event) => {
@@ -121,15 +270,18 @@
         if (mode === "publish") {
           setStatus("Publishing…");
           try {
+            const payload = {markdown: output.value};
+            if (currentUrl) payload.metadata = {url: currentUrl};
             const response = await fetch("/t", {
               method: "POST",
               headers: {"Content-Type": "application/json"},
-              body: JSON.stringify({markdown: output.value, metadata: {url: currentUrl}})
+              body: JSON.stringify(payload)
             });
             const data = response.headers.get("content-type")?.includes("application/json")
               ? await response.json()
               : {detail: await response.text()};
             if (!response.ok) throw new Error(data.detail || await responseError(response, "Publish failed"));
+            clearDraft();
             window.location.href = data.url;
           } catch (error) {
             setStatus(error.message, true);
@@ -139,48 +291,32 @@
 
         currentUrl = sourceInput.value.trim();
         const file = sourceFile.files[0];
-        if (!currentUrl && !file) {
-          setStatus("Paste a URL or choose a document", true);
-          sourceInput.focus();
-          return;
-        }
-        if (currentUrl && file) {
-          setStatus("Choose a URL or a document, not both", true);
-          return;
-        }
-        setStatus("Processing…");
-        try {
-          let response;
-          if (file) {
-            const data = new FormData();
-            data.append("file", file);
-            response = await fetch("/md", {method: "POST", body: data});
-          } else {
-            response = await fetch("/md/" + encodeURIComponent(currentUrl));
-          }
-          if (!response.ok) throw new Error(await responseError(response, "Processing failed"));
-          output.value = await response.text();
-          sourceLabel.textContent = currentUrl || file.name;
-          sourceEntry.hidden = true;
-          result.hidden = false;
-          mode = "publish";
-          setStatus("");
-        } catch (error) {
-          setStatus(error.message, true);
-        }
-      });
-
-      document.querySelector("#edit-button").addEventListener("click", () => {
-        result.hidden = true;
-        sourceEntry.hidden = false;
-        mode = "process";
-        sourceInput.focus();
+        await processSource(currentUrl, file);
       });
 
       document.querySelector("#copy-button").addEventListener("click", async () => {
         await navigator.clipboard.writeText(output.value);
         setStatus("Copied");
       });
+
+      output.addEventListener("input", saveDraft);
+      newButton.addEventListener("click", () => newDialog.showModal());
+      confirmNew.addEventListener("click", () => {
+        clearDraft();
+        currentUrl = "";
+        mode = "process";
+        sourceInput.value = "";
+        output.value = "";
+        sourceLabel.textContent = "";
+        clearSelectedFile();
+        result.hidden = true;
+        sourceEntry.hidden = false;
+        newButton.hidden = true;
+        setStatus("");
+        sourceInput.focus();
+      });
+
+      restoreDraft();
 
     </script>
   </body>

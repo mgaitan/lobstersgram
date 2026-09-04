@@ -110,14 +110,21 @@ input:focus, textarea:focus { border-bottom-color: #333; }
 .text-button { border: 0; padding: 0; background: none; cursor: pointer; }
 
 textarea {
-  min-height: 420px;
+  min-height: 460px;
   resize: vertical;
-  border: 1px solid #eee;
-  padding: 16px;
+  border: 1px solid #dedede;
+  border-radius: 6px;
+  padding: 20px;
+  color: #252525;
+  background: #fcfcfc;
   font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: 15px;
+  line-height: 1.7;
+  tab-size: 2;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 4%);
 }
+
+textarea:focus { border-color: #999; box-shadow: 0 2px 8px rgb(0 0 0 / 6%); }
 
 .result-actions { display: flex; align-items: center; gap: 12px; }
 .status { min-height: 1.5em; color: #777; font-size: 14px; }
@@ -126,6 +133,12 @@ textarea {
 .footer { max-width: 820px; margin: 0 auto; padding: 0 28px 28px; }
 .footer a { margin: 0 4px; }
 .result .text-button { margin-top: 12px; }
+
+dialog { width: min(400px, calc(100% - 40px)); border: 1px solid #ddd; border-radius: 6px; padding: 24px; color: #333; background: #fff; font: 16px/1.5 Georgia, "Times New Roman", serif; }
+dialog::backdrop { background: rgb(0 0 0 / 18%); }
+dialog h2 { margin: 0 0 8px; font-size: 21px; font-weight: 400; }
+dialog p { margin: 0 0 22px; color: #666; }
+.dialog-actions { display: flex; justify-content: flex-end; gap: 12px; }
 
 .lede { color: #666; font-size: 18px; }
 .bookmarklet-form { display: grid; gap: 14px; max-width: 460px; margin-top: 36px; }

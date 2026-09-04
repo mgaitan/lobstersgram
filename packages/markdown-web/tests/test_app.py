@@ -39,10 +39,19 @@ def _job_state(status: app_module.jobs.JobStatus = "queued") -> app_module.jobs.
 def test_home_and_static_assets() -> None:
     response = client.get("/")
     assert response.status_code == HTTP_200_OK
-    assert "Convert to Markdown and publish it to Telegraph" in response.text
+    assert "Write, convert, and publish Markdown" in response.text
     assert ">markdown-web<" not in response.text
     assert 'href="/bookmarklets/">Bookmarklets</a>' in response.text
-    assert 'placeholder="Paste a URL or drop a file."' in response.text
+    assert 'href="/t/published/">Published</a>' in response.text
+    assert 'href="/docs">API</a>' in response.text
+    assert "Edit source" not in response.text
+    assert 'id="new-button"' in response.text
+    assert 'id="new-button" class="button button-secondary" type="button" hidden' in response.text
+    assert 'id="new-dialog"' in response.text
+    assert "localStorage" in response.text
+    assert 'placeholder="Paste a URL, drop a file or insert markdown content"' in response.text
+    assert 'processSource("", file)' in response.text
+    assert "showMarkdownEditor(value)" in response.text
     assert 'aria-label="Choose a file"' in response.text
     assert 'property="og:title" content="Markdown and Telegraph"' in response.text
     assert (
@@ -61,6 +70,7 @@ def test_health_returns_application_version() -> None:
         "commit": app_module.APP_COMMIT,
         "version": app_module.APP_VERSION,
     }
+    assert response.headers["cache-control"] == "no-store"
 
 
 def test_about_describes_routes_and_cli() -> None:
@@ -70,6 +80,7 @@ def test_about_describes_routes_and_cli() -> None:
     assert "/md/&lt;url&gt;" in response.text
     assert "/t/published/" in response.text
     assert "/t/jobs" in response.text
+    assert "Write Markdown, convert web pages and documents, or publish to Telegraph." in response.text
     assert 'href="/llms.txt">llms.txt</a>' in response.text
     assert 'href="/docs">API documentation</a>' in response.text
     assert "notify_telegram" in response.text
