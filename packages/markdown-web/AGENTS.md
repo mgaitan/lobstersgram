@@ -39,6 +39,16 @@ https://t.me/MarkdownTelegraphBot and send `/start`. In a group, add the bot and
 give it permission to send messages. In a channel, add it as an administrator
 with the `can_post_messages` right.
 
+## Image uploads
+
+`POST /images` accepts only PNG, JPEG, and WebP files up to 20 MB. Pillow
+transposes EXIF orientation, limits the longest side to 1280 pixels, and stores
+the result as WebP in R2. Redis enforces a limit of 10 uploads per IP per UTC
+hour and 50 MB of input per UTC day. The endpoint requires
+`R2_ACCOUNT_ID`, `R2_BUCKET_NAME`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`,
+`R2_PUBLIC_BASE_URL`, and `REDIS_URL`. The public R2 URL must serve the stored
+objects so they can be embedded by Telegraph. Never commit those credentials.
+
 ## Local checks
 
 Run from the repository root:

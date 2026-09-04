@@ -17,9 +17,10 @@ from fastapi.templating import Jinja2Templates
 from md_to_telegraph import TelegraphContentError
 from starlette.datastructures import UploadFile
 
-from markdown_web import jobs
+from markdown_web import assets, jobs
 from markdown_web.bookmarklet import build_bookmarklets
 from markdown_web.schemas import (
+    ImageUploadResponse,
     SourceMetadata,
     SourceRequest,
     TelegraphJobResponse,
@@ -86,6 +87,30 @@ def _source_request_openapi() -> dict[str, object]:
     }
 
 
+def _image_upload_openapi() -> dict[str, object]:
+    """Describe the image upload request parsed manually by the route."""
+    return {
+        "requestBody": {
+            "required": True,
+            "content": {
+                "multipart/form-data": {
+                    "schema": {
+                        "type": "object",
+                        "required": ["file"],
+                        "properties": {
+                            "file": {
+                                "type": "string",
+                                "format": "binary",
+                                "description": "PNG, JPEG, or WebP image up to 20 MB",
+                            }
+                        },
+                    }
+                }
+            },
+        }
+    }
+
+
 def _path_source(url: str, request: Request) -> str:
     if request.url.query:
         return f"{url}?{request.url.query}"
@@ -142,6 +167,16 @@ def _source_request_from_path(url: str, request: Request) -> SourceRequest:
 def _handle_source_error(exc: Exception) -> HTTPException:
     if isinstance(exc, (SourceError, TelegraphContentError)):
         return HTTPException(status_code=422, detail=str(exc))
+    return HTTPException(status_code=502, detail=str(exc))
+
+
+def _handle_image_error(exc: Exception) -> HTTPException:
+    if isinstance(exc, assets.ImageUploadUnavailableError):
+        return HTTPException(status_code=503, detail=str(exc))
+    if isinstance(exc, assets.ImageUploadError):
+        return HTTPException(status_code=422, detail=str(exc))
+    if isinstance(exc, assets.ImageStorageError):
+        return HTTPException(status_code=502, detail=str(exc))
     return HTTPException(status_code=502, detail=str(exc))
 
 
@@ -213,6 +248,23 @@ async def markdown_from_post(request: Request) -> PlainTextResponse:
     except Exception as exc:
         raise _handle_source_error(exc) from exc
     return PlainTextResponse(prepared.markdown, media_type="text/markdown")
+
+
+@app.post("/images", response_model=ImageUploadResponse, openapi_extra=_image_upload_openapi())
+async def image_upload(request: Request) -> JSONResponse:
+    content_type = request.headers.get("content-type", "").split(";", 1)[0]
+    if content_type != "multipart/form-data":
+        raise HTTPException(status_code=415, detail="Upload an image as multipart form data")
+    form = await request.form()
+    upload = form.get("file")
+    if not isinstance(upload, UploadFile):
+        raise HTTPException(status_code=400, detail="Include an image in the file field")
+    data = await upload.read(assets.MAX_IMAGE_UPLOAD_BYTES + 1)
+    try:
+        target = assets.upload_image(data, request.client.host if request.client else "unknown")
+    except Exception as exc:
+        raise _handle_image_error(exc) from exc
+    return JSONResponse({"url": target})
 
 
 @app.get("/about", response_class=HTMLResponse)

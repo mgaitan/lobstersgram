@@ -65,6 +65,14 @@ curl -X POST http://127.0.0.1:8000/md \
   -F 'file=@report.epub'
 ```
 
+PNG, JPEG, and WebP images use `POST /images` instead of AnyDoc. The service
+validates them, resizes the longest side to 1280 pixels, converts them to WebP,
+and returns a public URL suitable for `![](url)` in Markdown. Input images are
+limited to 20 MB; Redis-backed quotas allow up to 10 uploads per IP per hour
+and 50 MB globally per UTC day. Image uploads also require the R2 settings
+`R2_ACCOUNT_ID`, `R2_BUCKET_NAME`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`,
+and `R2_PUBLIC_BASE_URL`.
+
 Markdown front matter can also set `notify_telegram` to a comma-separated list
 of Telegram user or channel IDs. After the Telegraph URL is created, the web
 bot sends only that URL to each recipient. Notifications are best effort and

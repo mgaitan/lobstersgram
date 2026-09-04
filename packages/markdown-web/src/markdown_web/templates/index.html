@@ -14,7 +14,17 @@
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Markdown and Telegraph">
     <meta name="twitter:description" content="Turn any page into Markdown or publish it to Telegraph.">
-    <link rel="stylesheet" href="/static/styles.css?v=12">
+    <meta property="og:image" content="{{ site_url }}/static/logo.png">
+    <meta property="og:image:alt" content="M logo for Markdown and Telegraph">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta name="twitter:image" content="{{ site_url }}/static/logo.png">
+    <meta name="twitter:image:alt" content="M logo for Markdown and Telegraph">
+    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+    <link rel="alternate icon" href="/static/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="/static/logo.png">
+    <link rel="stylesheet" href="/static/styles.css?v=13">
   </head>
   <body>
     <main class="page">
@@ -26,7 +36,7 @@
               <label class="sr-only" for="source-url">URL, file, or Markdown</label>
               <input id="source-url" name="url" type="text" placeholder="Paste a URL, drop a file or insert markdown content" autofocus autocomplete="off" spellcheck="false">
               <button id="file-button" class="file-button" type="button" aria-label="Choose a file" title="Choose a file">&#8593;</button>
-              <input id="source-file" class="file-input" type="file" accept=".pdf,.doc,.docx,.epub,.ppt,.pptx,.xls,.xlsx,.odt,.ods,.odp,.rtf,.csv">
+              <input id="source-file" class="file-input" type="file" accept=".pdf,.doc,.docx,.epub,.ppt,.pptx,.xls,.xlsx,.odt,.ods,.odp,.rtf,.csv,image/png,image/jpeg,image/webp">
             </div>
             <button id="submit-button" class="button button-primary" type="submit">Process</button>
           </div>
@@ -60,7 +70,7 @@
                 <button type="button" data-markdown-action="ordered-list" aria-label="Numbered list" title="Numbered list">&#9776;</button>
                 <span class="toolbar-divider" aria-hidden="true"></span>
                 <button type="button" data-markdown-action="link" aria-label="Link" title="Link">&#8599;</button>
-                <button type="button" data-markdown-action="image" aria-label="Image" title="Image">&#9639;</button>
+                <button type="button" data-markdown-action="image" aria-label="Upload image" title="Upload image">&#9639;</button>
                 <button type="button" data-markdown-action="code" aria-label="Inline code" title="Inline code">&lt;/&gt;</button>
                 <button type="button" data-markdown-action="code-block" aria-label="Code block" title="Code block">&#123;&#125;</button>
                 <button type="button" data-markdown-action="horizontal-rule" aria-label="Horizontal rule" title="Horizontal rule">&#8212;</button>
@@ -70,6 +80,7 @@
               <textarea id="markdown-output" spellcheck="false"></textarea>
               <button id="expand-editor" class="editor-expand-button" type="button" aria-label="Maximize editor" title="Maximize editor">&#x2922;</button>
             </div>
+            <input id="editor-image-file" class="file-input" type="file" accept="image/png,image/jpeg,image/webp">
             <div id="preview-pane" class="preview-pane" hidden>
               <iframe id="preview-frame" class="preview-frame" title="Telegraph preview" loading="eager"></iframe>
             </div>
@@ -137,6 +148,7 @@
       const dropZone = document.querySelector("#drop-zone");
       const sourceInput = document.querySelector("#source-url");
       const sourceFile = document.querySelector("#source-file");
+      const editorImageFile = document.querySelector("#editor-image-file");
       const fileButton = document.querySelector("#file-button");
       const sourceLabel = document.querySelector("#result-source");
       const status = document.querySelector("#status");
@@ -154,6 +166,7 @@
       let currentUrl = "";
       let previewId = "";
       let previewing = false;
+      let imageUploading = false;
       let mode = "process";
       const DRAFT_KEY = "markdown-web-draft";
       const SOURCE_PLACEHOLDER = "Paste a URL, drop a file or insert markdown content";
@@ -294,13 +307,52 @@
       }
 
       function addImage() {
-        const url = window.prompt("Image URL", "https://");
-        if (!url) return;
-        const alt = window.prompt("Alt text", "image") || "image";
+        editorImageFile.click();
+      }
+
+      function insertImage(url) {
         const start = output.selectionStart;
         const end = output.selectionEnd;
-        const replacement = `![${alt}](${url})`;
-        updateMarkdown(replacement, start, end);
+        const before = output.value.slice(0, start);
+        const after = output.value.slice(end);
+        const prefix = before && !before.endsWith("\n") ? "\n\n" : "";
+        const suffix = after && !after.startsWith("\n") ? "\n\n" : "";
+        updateMarkdown(`${prefix}![](${url})${suffix}`, start, end);
+      }
+
+      function isImageFile(file) {
+        return Boolean(file) && (
+          ["image/png", "image/jpeg", "image/webp"].includes(file.type) ||
+          /\.(?:png|jpe?g|webp)$/i.test(file.name)
+        );
+      }
+
+      async function uploadImage(file, insertAtCursor = false) {
+        if (imageUploading) return;
+        imageUploading = true;
+        previewButton.disabled = true;
+        publishButton.disabled = true;
+        setStatus("Uploading image…");
+        try {
+          const data = new FormData();
+          data.append("file", file);
+          const response = await fetch("/images", {method: "POST", body: data});
+          if (!response.ok) throw new Error(await responseError(response, "Image upload failed"));
+          const result = await response.json();
+          if (insertAtCursor) {
+            if (previewing) setPreviewMode(false);
+            insertImage(result.url);
+          } else {
+            showMarkdownEditor(`![](${result.url})`, file.name || "Pasted image");
+          }
+          setStatus("");
+        } catch (error) {
+          setStatus(error.message, true);
+        } finally {
+          imageUploading = false;
+          previewButton.disabled = false;
+          publishButton.disabled = false;
+        }
       }
 
       document.querySelector("#markdown-toolbar").addEventListener("click", (event) => {
@@ -430,12 +482,12 @@
         return ["http://", "https://"].some((prefix) => prefix.startsWith(lower) || lower.startsWith(prefix));
       }
 
-      function showMarkdownEditor(markdown) {
+      function showMarkdownEditor(markdown, label = "Markdown") {
         setPreviewMode(false);
         currentUrl = "";
         previewId = "";
         output.value = markdown;
-        sourceLabel.textContent = "Markdown";
+        sourceLabel.textContent = label;
         sourceEntry.hidden = true;
         result.hidden = false;
         newButton.hidden = false;
@@ -454,6 +506,10 @@
         }
         if (url && file) {
           setStatus("Choose a URL or a document, not both", true);
+          return;
+        }
+        if (file && isImageFile(file)) {
+          await uploadImage(file);
           return;
         }
         if (file) currentUrl = "";
@@ -492,6 +548,11 @@
           processSource("", file);
         }
       });
+      editorImageFile.addEventListener("change", () => {
+        const file = editorImageFile.files[0];
+        editorImageFile.value = "";
+        if (file) uploadImage(file, true);
+      });
       sourceInput.addEventListener("input", () => {
         const value = sourceInput.value;
         if (!value) {
@@ -509,6 +570,28 @@
         }
         saveDraft();
       });
+      document.addEventListener("paste", (event) => {
+        if (event.target.closest?.("dialog")) return;
+        const file = [...(event.clipboardData?.items || [])]
+          .filter((item) => item.kind === "file")
+          .map((item) => item.getAsFile())
+          .find(Boolean);
+        if (file) {
+          event.preventDefault();
+          if (isImageFile(file)) {
+            uploadImage(file, mode === "publish");
+          } else {
+            setSelectedFile(file);
+            processSource("", file);
+          }
+          return;
+        }
+        const text = event.clipboardData?.getData("text/plain") || "";
+        if (!text || isHttpUrl(text.trim())) return;
+        if (event.target === output || event.target === sourceInput || event.target.isContentEditable) return;
+        event.preventDefault();
+        showMarkdownEditor(text, "Pasted Markdown");
+      });
       dropZone.addEventListener("dragover", (event) => {
         event.preventDefault();
         dropZone.classList.add("is-dragging");
@@ -522,6 +605,20 @@
           setSelectedFile(file);
           processSource("", file);
         }
+      });
+      markdownEditor.addEventListener("dragover", (event) => {
+        if (!isImageFile(event.dataTransfer.files[0])) return;
+        event.preventDefault();
+        markdownEditor.classList.add("is-image-dragging");
+      });
+      markdownEditor.addEventListener("dragleave", () => markdownEditor.classList.remove("is-image-dragging"));
+      markdownEditor.addEventListener("drop", (event) => {
+        const file = event.dataTransfer.files[0];
+        markdownEditor.classList.remove("is-image-dragging");
+        if (!isImageFile(file)) return;
+        event.preventDefault();
+        event.stopPropagation();
+        uploadImage(file, true);
       });
 
       form.addEventListener("submit", async (event) => {
