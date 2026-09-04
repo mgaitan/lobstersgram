@@ -39,9 +39,11 @@ def _job_state(status: app_module.jobs.JobStatus = "queued") -> app_module.jobs.
 def test_home_and_static_assets() -> None:
     response = client.get("/")
     assert response.status_code == HTTP_200_OK
-    assert "Turn any page into Markdown or publish it to Telegraph" in response.text
+    assert "Convert to Markdown and publish it to Telegraph" in response.text
     assert ">markdown-web<" not in response.text
     assert 'href="/bookmarklets/">Bookmarklets</a>' in response.text
+    assert 'placeholder="Paste a URL or drop a file."' in response.text
+    assert 'aria-label="Choose a file"' in response.text
     assert 'property="og:title" content="Markdown and Telegraph"' in response.text
     assert (
         'property="og:description" content="Turn any page into Markdown or publish it to Telegraph."' in response.text
@@ -86,6 +88,7 @@ def test_openapi_describes_post_bodies_and_publish_response() -> None:
 
     markdown_post = schema["paths"]["/md"]["post"]
     assert "application/json" in markdown_post["requestBody"]["content"]
+    assert "multipart/form-data" in markdown_post["requestBody"]["content"]
     assert "markdown" in markdown_post["requestBody"]["content"]["application/json"]["schema"]["properties"]
     assert "$defs" not in markdown_post["requestBody"]["content"]["application/json"]["schema"]
     metadata_properties = markdown_post["requestBody"]["content"]["application/json"]["schema"]["properties"][
@@ -161,6 +164,23 @@ def test_post_markdown_accepts_raw_html_metadata(monkeypatch: pytest.MonkeyPatch
     assert response.status_code == HTTP_200_OK
     assert seen["source"].html == "<h1>From HTML</h1>"
     assert seen["source"].metadata.url == "https://example.com"
+
+
+def test_post_markdown_accepts_document_upload(monkeypatch: pytest.MonkeyPatch) -> None:
+    seen: dict[str, SourceRequest] = {}
+
+    def fake_prepare(source: SourceRequest) -> PreparedContent:
+        seen["source"] = source
+        return _prepared("# From document")
+
+    monkeypatch.setattr(app_module, "prepare_content", fake_prepare)
+
+    response = client.post("/md", files={"file": ("report.epub", b"document", "application/epub+zip")})
+
+    assert response.status_code == HTTP_200_OK
+    assert response.text == "# From document"
+    assert seen["source"].document == b"document"
+    assert seen["source"].filename == "report.epub"
 
 
 def test_post_telegraph_returns_json_and_accepts_bearer_token(monkeypatch: pytest.MonkeyPatch) -> None:

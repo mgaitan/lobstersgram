@@ -14,6 +14,7 @@ from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse, Red
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from md_to_telegraph import TelegraphContentError
+from starlette.datastructures import UploadFile
 
 from markdown_web import jobs
 from markdown_web.bookmarklet import build_bookmarklets
@@ -58,6 +59,15 @@ def _source_request_openapi() -> dict[str, object]:
                 "text/html": {"schema": {"type": "string"}},
                 "text/plain": {"schema": {"type": "string"}},
                 "application/x-www-form-urlencoded": {"schema": {"type": "object"}},
+                "multipart/form-data": {
+                    "schema": {
+                        "type": "object",
+                        "required": ["file"],
+                        "properties": {
+                            "file": {"type": "string", "format": "binary"},
+                        },
+                    }
+                },
             },
         }
     }
@@ -96,7 +106,20 @@ async def _request_data(request: Request) -> SourceRequest:
             image=values.pop("image", ""),
         )
         return SourceRequest(**values, metadata=metadata)
-    raise HTTPException(status_code=415, detail="Use application/json, text/html, or form-urlencoded")
+    if content_type == "multipart/form-data":
+        form = await request.form()
+        upload = form.get("file") or form.get("document")
+        if not isinstance(upload, UploadFile):
+            raise HTTPException(status_code=400, detail="Include a document in the file field")
+        metadata = SourceMetadata(
+            title=str(form.get("title", "")),
+            author=str(form.get("author", "")),
+            url=str(form.get("source_url", "")),
+            date=str(form.get("date", "")),
+            image=str(form.get("image", "")),
+        )
+        return SourceRequest(document=await upload.read(), filename=upload.filename or "", metadata=metadata)
+    raise HTTPException(status_code=415, detail="Use JSON, HTML, form-urlencoded, or multipart form data")
 
 
 def _source_request_from_path(url: str, request: Request) -> SourceRequest:

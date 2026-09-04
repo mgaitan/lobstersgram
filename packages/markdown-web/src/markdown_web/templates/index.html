@@ -14,16 +14,20 @@
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Markdown and Telegraph">
     <meta name="twitter:description" content="Turn any page into Markdown or publish it to Telegraph.">
-    <link rel="stylesheet" href="/static/styles.css?v=6">
+    <link rel="stylesheet" href="/static/styles.css?v=7">
   </head>
   <body>
     <main class="page">
       <section class="workspace" aria-labelledby="page-title">
-        <h1 id="page-title">Turn any page into Markdown or publish it to Telegraph</h1>
+        <h1 id="page-title">Convert to Markdown and publish it to Telegraph</h1>
         <form id="process-form" class="source-form">
           <div id="source-entry" class="source-entry">
-            <label class="sr-only" for="source-url">URL</label>
-            <input id="source-url" name="url" type="url" placeholder="Paste a URL" required autofocus>
+            <div id="drop-zone" class="source-dropzone">
+              <label class="sr-only" for="source-url">URL or document</label>
+              <input id="source-url" name="url" type="url" placeholder="Paste a URL or drop a file." autofocus>
+              <button id="file-button" class="file-button" type="button" aria-label="Choose a file" title="Choose a file">&#8593;</button>
+              <input id="source-file" class="file-input" type="file" accept=".pdf,.doc,.docx,.epub,.ppt,.pptx,.xls,.xlsx,.odt,.ods,.odp,.rtf,.csv">
+            </div>
             <button id="submit-button" class="button button-primary" type="submit">Process</button>
           </div>
 
@@ -56,7 +60,10 @@
       const sourceEntry = document.querySelector("#source-entry");
       const result = document.querySelector("#result");
       const output = document.querySelector("#markdown-output");
+      const dropZone = document.querySelector("#drop-zone");
       const sourceInput = document.querySelector("#source-url");
+      const sourceFile = document.querySelector("#source-file");
+      const fileButton = document.querySelector("#file-button");
       const sourceLabel = document.querySelector("#result-source");
       const status = document.querySelector("#status");
       let currentUrl = "";
@@ -74,6 +81,40 @@
         }
         return (await response.text()) || fallback;
       }
+
+      function setSelectedFile(file) {
+        const transfer = new DataTransfer();
+        transfer.items.add(file);
+        sourceFile.files = transfer.files;
+        sourceInput.value = "";
+        sourceInput.placeholder = file.name;
+        dropZone.classList.add("has-file");
+      }
+
+      function clearSelectedFile() {
+        sourceFile.value = "";
+        sourceInput.placeholder = "Paste a URL or drop a file.";
+        dropZone.classList.remove("has-file");
+      }
+
+      fileButton.addEventListener("click", () => sourceFile.click());
+      sourceFile.addEventListener("change", () => {
+        if (sourceFile.files[0]) setSelectedFile(sourceFile.files[0]);
+      });
+      sourceInput.addEventListener("input", () => {
+        if (sourceInput.value) clearSelectedFile();
+      });
+      dropZone.addEventListener("dragover", (event) => {
+        event.preventDefault();
+        dropZone.classList.add("is-dragging");
+      });
+      dropZone.addEventListener("dragleave", () => dropZone.classList.remove("is-dragging"));
+      dropZone.addEventListener("drop", (event) => {
+        event.preventDefault();
+        dropZone.classList.remove("is-dragging");
+        const file = event.dataTransfer.files[0];
+        if (file) setSelectedFile(file);
+      });
 
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
@@ -97,12 +138,29 @@
         }
 
         currentUrl = sourceInput.value.trim();
+        const file = sourceFile.files[0];
+        if (!currentUrl && !file) {
+          setStatus("Paste a URL or choose a document", true);
+          sourceInput.focus();
+          return;
+        }
+        if (currentUrl && file) {
+          setStatus("Choose a URL or a document, not both", true);
+          return;
+        }
         setStatus("Processing…");
         try {
-          const response = await fetch("/md/" + encodeURIComponent(currentUrl));
+          let response;
+          if (file) {
+            const data = new FormData();
+            data.append("file", file);
+            response = await fetch("/md", {method: "POST", body: data});
+          } else {
+            response = await fetch("/md/" + encodeURIComponent(currentUrl));
+          }
           if (!response.ok) throw new Error(await responseError(response, "Processing failed"));
           output.value = await response.text();
-          sourceLabel.textContent = currentUrl;
+          sourceLabel.textContent = currentUrl || file.name;
           sourceEntry.hidden = true;
           result.hidden = false;
           mode = "publish";

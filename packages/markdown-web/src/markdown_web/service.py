@@ -2,17 +2,21 @@
 
 from __future__ import annotations
 
+import io
 import os
 import re
 import threading
 from collections.abc import Mapping
 from dataclasses import dataclass, replace
+from pathlib import Path
 from urllib.parse import urlparse
 
+import anydoc
 import requests
 import yaml
 from markdown_this import add_front_matter, extract_main_content, markdown_to_text, split_front_matter
 from md_to_telegraph import create_account, create_page, edit_page
+from pypdf import PdfReader, PdfWriter
 
 from markdown_web.schemas import SourceMetadata, SourceRequest
 from markdown_web.telegram import send_telegram_notifications
@@ -22,7 +26,34 @@ DEFAULT_AUTHOR_NAME = "page-to-telegraph"
 TELEGRAPH_API_URL = "https://api.telegra.ph"
 TELEGRAPH_PAGE_LIST_LIMIT = 200
 TELEGRAPH_REQUEST_TIMEOUT = 20
+MAX_DOCUMENT_BYTES = 50 * 1024 * 1024
+DOCUMENT_EXTENSIONS = frozenset(
+    {
+        "doc",
+        "docx",
+        "docm",
+        "ppt",
+        "pptx",
+        "pptm",
+        "xls",
+        "xlsx",
+        "xlsm",
+        "odt",
+        "ods",
+        "odp",
+        "rtf",
+        "epub",
+        "csv",
+        "pdf",
+    }
+)
 CARD_DIRECTIVE_RE = re.compile(r"!\[card\]\(\s*(https?://[^)\s]+)\s*\)")
+OCR_ERROR_RE = re.compile(r"pages?\s+(.+?)\s+of\s+\d+\s+need OCR", re.IGNORECASE)
+OCR_ERROR_TYPES = tuple(
+    error_type
+    for error_type in (anydoc.UnsupportedError, getattr(anydoc, "NeedsOcrError", None))
+    if error_type is not None
+)
 
 
 def _front_matter_notify_telegram(markdown: str) -> str:
@@ -57,6 +88,35 @@ class InvalidURLSourceError(SourceError):
 
     def __init__(self) -> None:
         super().__init__("URL sources must use http or https")
+
+
+class DocumentSourceError(SourceError):
+    """Raised when a document cannot be converted to Markdown."""
+
+
+class EmptyDocumentError(DocumentSourceError):
+    def __init__(self) -> None:
+        super().__init__("Uploaded document is empty")
+
+
+class DocumentTooLargeError(DocumentSourceError):
+    def __init__(self) -> None:
+        super().__init__("Documents must be 50 MB or smaller")
+
+
+class DocumentConversionError(DocumentSourceError):
+    def __init__(self, detail: Exception) -> None:
+        super().__init__(f"Could not convert document: {detail}")
+
+
+class EmptyDocumentContentError(DocumentSourceError):
+    def __init__(self) -> None:
+        super().__init__("Document did not contain readable content")
+
+
+class DocumentDownloadError(DocumentSourceError):
+    def __init__(self) -> None:
+        super().__init__("Could not download document")
 
 
 class SourceHTTPError(SourceError):
@@ -181,6 +241,88 @@ def _require_source(request: SourceRequest) -> str:
     raise MissingSourceError
 
 
+def _is_document_url(url: str) -> bool:
+    suffix = Path(urlparse(url).path).suffix.lower().lstrip(".")
+    return suffix in DOCUMENT_EXTENSIONS
+
+
+def _convert_document(data: bytes, filename: str) -> str:
+    if not data:
+        raise EmptyDocumentError
+    if len(data) > MAX_DOCUMENT_BYTES:
+        raise DocumentTooLargeError
+    extension = Path(filename).suffix.lower().lstrip(".")
+    document_format = anydoc.format_from_extension(extension) if extension else None
+    try:
+        markdown = anydoc.to_markdown_bytes(data, document_format)
+    except (anydoc.ConvertError, OSError, ValueError) as exc:
+        if document_format == "pdf" and _is_ocr_error(exc):
+            return _convert_pdf_pages(data, exc)
+        raise DocumentConversionError(exc) from exc
+    if not markdown.strip():
+        raise EmptyDocumentContentError
+    return markdown
+
+
+def _convert_pdf_pages(data: bytes, original_error: Exception) -> str:
+    """Keep readable PDF pages when AnyDoc rejects scanned pages that need OCR."""
+    try:
+        reader = PdfReader(io.BytesIO(data))
+        converted: list[tuple[int, str]] = []
+        skipped: list[int] = []
+        for page_number, page in enumerate(reader.pages, 1):
+            writer = PdfWriter()
+            writer.add_page(page)
+            page_data = io.BytesIO()
+            writer.write(page_data)
+            try:
+                page_markdown = anydoc.to_markdown_bytes(page_data.getvalue(), "pdf")
+            except OCR_ERROR_TYPES as exc:
+                if _is_ocr_error(exc):
+                    skipped.append(page_number)
+                    continue
+                raise
+            if page_markdown.strip():
+                converted.append((page_number, page_markdown.strip()))
+            else:
+                skipped.append(page_number)
+    except (anydoc.ConvertError, OSError, ValueError) as exc:
+        raise DocumentConversionError(exc) from exc
+    except Exception as exc:
+        raise DocumentConversionError(exc) from exc
+
+    if not converted:
+        raise DocumentConversionError(original_error) from original_error
+
+    parts = [f"<!-- Page {page_number} -->\n\n{page_markdown}" for page_number, page_markdown in converted]
+    if skipped:
+        pages = ", ".join(str(page_number) for page_number in skipped)
+        warning = f"> **Contenido incompleto:** se omitieron las páginas {pages} porque requieren OCR."
+        parts.insert(0, warning)
+    return "\n\n---\n\n".join(parts)
+
+
+def _is_ocr_error(exc: Exception) -> bool:
+    message = str(exc).lower()
+    return isinstance(exc, OCR_ERROR_TYPES) and (
+        OCR_ERROR_RE.search(message)
+        or "ocr" in message
+        or "scanned" in message
+        or "imagebased" in message
+        or "no extractable text" in message
+    )
+
+
+def _download_document(url: str) -> tuple[bytes, str]:
+    try:
+        response = requests.get(url, timeout=TELEGRAPH_REQUEST_TIMEOUT, headers={"User-Agent": "markdown-web"})
+        response.raise_for_status()
+    except requests.RequestException as exc:
+        raise DocumentDownloadError from exc
+    filename = Path(urlparse(url).path).name or "document"
+    return response.content, filename
+
+
 def _merge_metadata(markdown: str, supplied: SourceMetadata) -> tuple[str, SourceMetadata]:
     existing, body = split_front_matter(markdown.strip())
     merged = {**existing, **supplied.values()}
@@ -191,23 +333,44 @@ def _merge_metadata(markdown: str, supplied: SourceMetadata) -> tuple[str, Sourc
 
 def prepare_content(request: SourceRequest) -> PreparedContent:
     """Extract and normalize a request into Markdown with YAML front matter."""
-    source = _require_source(request)
     if request.url:
+        _require_source(request)
+    if request.document is not None or (request.url and _is_document_url(request.url)):
+        document, filename = (
+            (request.document, request.filename)
+            if request.document is not None
+            else _download_document(request.url or "")
+        )
+        markdown = _convert_document(document or b"", filename)
+        metadata = request.metadata
+        if request.url and not metadata.url:
+            metadata = metadata.model_copy(update={"url": request.url})
+        if not metadata.title and filename:
+            metadata = metadata.model_copy(update={"title": Path(filename).stem})
+        front_matter, body = split_front_matter(markdown.strip())
+        title = metadata.title or front_matter.get("title", "") or Path(filename).stem or "Document"
+        fallback_text = markdown_to_text(body)
+        intro = ""
+    elif request.url:
         try:
             title, markdown, fallback_text, intro = extract_main_content(request.url)
         except requests.HTTPError as exc:
             status = exc.response.status_code if exc.response is not None else 0
             raise SourceHTTPError(status) from exc
+        metadata = request.metadata
     elif request.html is not None:
         title, markdown, fallback_text, intro = extract_main_content(request.html)
+        metadata = request.metadata
     else:
+        source = _require_source(request)
         front_matter, body = split_front_matter(source.strip())
         title = front_matter.get("title", "")
         markdown = source
         fallback_text = markdown_to_text(body)
+        metadata = request.metadata
         intro = ""
 
-    markdown, metadata = _merge_metadata(markdown, request.metadata)
+    markdown, metadata = _merge_metadata(markdown, metadata)
     title = metadata.title or title
     return PreparedContent(
         title=title,

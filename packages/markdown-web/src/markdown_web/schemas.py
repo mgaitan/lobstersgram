@@ -28,6 +28,8 @@ class SourceRequest(BaseModel):
     url: str | None = None
     html: str | None = None
     markdown: str | None = None
+    document: bytes | None = None
+    filename: str = ""
     metadata: SourceMetadata = Field(default_factory=SourceMetadata)
     access_token: str | None = None
 

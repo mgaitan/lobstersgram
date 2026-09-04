@@ -41,6 +41,74 @@ def test_prepare_content_accepts_raw_html(monkeypatch: pytest.MonkeyPatch) -> No
     assert "url: https://example.com" in result.markdown
 
 
+def test_prepare_content_converts_uploaded_document(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(service.anydoc, "to_markdown_bytes", lambda data, document_format: "# Report\n\nBody")
+
+    result = service.prepare_content(SourceRequest(document=b"document", filename="report.epub"))
+
+    assert result.title == "report"
+    assert "title: report" in result.markdown
+    assert result.fallback_text == "Report\n\nBody"
+
+
+def test_prepare_content_downloads_document_url(monkeypatch: pytest.MonkeyPatch) -> None:
+    class FakeResponse:
+        content = b"document"
+
+        def raise_for_status(self) -> None:
+            return None
+
+    monkeypatch.setattr(service.requests, "get", lambda *args, **kwargs: FakeResponse())
+    monkeypatch.setattr(service.anydoc, "to_markdown_bytes", lambda data, document_format: "# Report\n\nBody")
+
+    result = service.prepare_content(SourceRequest(url="https://example.com/report.epub"))
+
+    assert result.title == "report"
+    assert "url: https://example.com/report.epub" in result.markdown
+
+
+def test_prepare_content_keeps_readable_pdf_pages_when_some_need_ocr(monkeypatch: pytest.MonkeyPatch) -> None:
+    class FakePage:
+        pass
+
+    class FakeReader:
+        def __init__(self) -> None:
+            self.pages = [FakePage(), FakePage(), FakePage()]
+
+    class FakeWriter:
+        def add_page(self, _page: FakePage) -> None:
+            return None
+
+        def write(self, output: object) -> None:
+            output.write(b"page")
+
+    calls = 0
+    ocr_page = 2
+    readable_pages = 2
+    full_document_call = 1
+    last_page_call = 3
+    full_document_error = "pages 2 of 3 need OCR"
+    page_error = "page needs OCR"
+
+    def fake_convert(_data: bytes, _document_format: str | None) -> str:
+        nonlocal calls
+        calls += 1
+        if calls == full_document_call:
+            raise service.anydoc.UnsupportedError(full_document_error)
+        if calls == last_page_call:
+            raise service.anydoc.UnsupportedError(page_error)
+        return "Readable page"
+
+    monkeypatch.setattr(service, "PdfReader", lambda _data: FakeReader())
+    monkeypatch.setattr(service, "PdfWriter", FakeWriter)
+    monkeypatch.setattr(service.anydoc, "to_markdown_bytes", fake_convert)
+
+    result = service.prepare_content(SourceRequest(document=b"document", filename="report.pdf"))
+
+    assert f"se omitieron las páginas {ocr_page} porque requieren OCR" in result.markdown
+    assert result.markdown.count("Readable page") == readable_pages
+
+
 def test_prepare_content_keeps_markdown_front_matter() -> None:
     result = service.prepare_content(SourceRequest(markdown="---\ntitle: Existing\n---\n\n# Existing\n\nBody"))
 
