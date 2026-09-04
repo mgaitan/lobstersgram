@@ -89,6 +89,7 @@
         transfer.items.add(file);
         sourceFile.files = transfer.files;
         sourceInput.value = "";
+        currentUrl = "";
         sourceInput.placeholder = file.name;
         dropZone.classList.add("has-file");
       }
@@ -134,6 +135,7 @@
           setStatus("Choose a URL or a document, not both", true);
           return;
         }
+        if (file) currentUrl = "";
         setStatus("Processing…");
         try {
           let response;
@@ -184,7 +186,10 @@
         event.preventDefault();
         dropZone.classList.remove("is-dragging");
         const file = event.dataTransfer.files[0];
-        if (file) setSelectedFile(file);
+        if (file) {
+          setSelectedFile(file);
+          processSource("", file);
+        }
       });
 
       form.addEventListener("submit", async (event) => {
