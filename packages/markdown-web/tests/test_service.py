@@ -364,6 +364,52 @@ def test_publish_content_reuses_cached_source_url(monkeypatch: pytest.MonkeyPatc
     assert calls == 1
 
 
+def test_preview_updates_the_same_page_and_final_publish_removes_preview_title(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    create_calls: list[dict[str, object]] = []
+    edit_calls: list[dict[str, object]] = []
+    notifications: list[tuple[str, str]] = []
+
+    def fake_create_page(**kwargs: object) -> str:
+        create_calls.append(kwargs)
+        return "https://telegra.ph/preview-page"
+
+    def fake_edit_page(**kwargs: object) -> str:
+        edit_calls.append(kwargs)
+        return "https://telegra.ph/preview-page"
+
+    monkeypatch.setenv("TELEGRAPH_API_TOKEN", "environment-token")
+    monkeypatch.setattr(service, "create_page", fake_create_page)
+    monkeypatch.setattr(service, "edit_page", fake_edit_page)
+    monkeypatch.setattr(
+        service,
+        "send_telegram_notifications",
+        lambda url, recipients: notifications.append((url, recipients)),
+    )
+
+    first_id, first_url = service.preview_content(SourceRequest(markdown="# Draft\n\nFirst version"))
+    second_id, second_url = service.preview_content(
+        SourceRequest(markdown="# Draft\n\nUpdated version", preview_id=first_id)
+    )
+    final_url = service.publish_content(
+        SourceRequest(
+            markdown="---\ntitle: Draft\nnotify_telegram: 123\n---\n\n# Draft\n\nFinal version",
+            preview_id=second_id,
+        )
+    )
+
+    assert first_url == second_url == final_url == "https://telegra.ph/preview-page"
+    assert first_id != second_id
+    assert len(create_calls) == 1
+    preview_update_count = 2
+    assert len(edit_calls) == preview_update_count
+    assert str(create_calls[0]["title"]) == "[Preview] Draft"
+    assert str(edit_calls[0]["title"]) == "[Preview] Draft"
+    assert str(edit_calls[1]["title"]) == "Draft"
+    assert notifications == [("https://telegra.ph/preview-page", "123")]
+
+
 def test_list_published_pages_paginates(monkeypatch: pytest.MonkeyPatch) -> None:
     class FakeResponse:
         def __init__(self, pages: list[dict[str, object]]) -> None:
@@ -411,10 +457,11 @@ def test_list_published_pages_hides_telegraph_continuations(monkeypatch: pytest.
             return {
                 "ok": True,
                 "result": {
-                    "total_count": 3,
+                    "total_count": 4,
                     "pages": [
                         {"url": "https://telegra.ph/article", "title": "Article"},
                         {"url": "https://telegra.ph/article-2", "title": "Article (2/3)"},
+                        {"url": "https://telegra.ph/preview", "title": "[Preview] Article"},
                         {"url": "https://telegra.ph/other", "title": "Other"},
                     ],
                 },

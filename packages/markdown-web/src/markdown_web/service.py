@@ -2,10 +2,17 @@
 
 from __future__ import annotations
 
+import base64
+import binascii
+import hashlib
+import hmac
 import io
+import json
 import os
 import re
+import secrets
 import threading
+import time
 from collections.abc import Mapping
 from dataclasses import dataclass, replace
 from pathlib import Path
@@ -25,6 +32,7 @@ from md_to_telegraph import (
     page_navigation,
     split_markdown_pages,
 )
+from md_to_telegraph.markdown import extract_leading_title
 from pypdf import PdfReader, PdfWriter
 
 from markdown_web.schemas import SourceMetadata, SourceRequest
@@ -35,6 +43,8 @@ DEFAULT_AUTHOR_NAME = "page-to-telegraph"
 TELEGRAPH_API_URL = "https://api.telegra.ph"
 TELEGRAPH_PAGE_LIST_LIMIT = 200
 TELEGRAPH_REQUEST_TIMEOUT = 20
+PREVIEW_TITLE_PREFIX = "[Preview] "
+PREVIEW_TTL_SECONDS = 7 * 24 * 60 * 60
 MAX_DOCUMENT_BYTES = 50 * 1024 * 1024
 DOCUMENT_EXTENSIONS = frozenset(
     {
@@ -98,6 +108,27 @@ class InvalidURLSourceError(SourceError):
 
     def __init__(self) -> None:
         super().__init__("URL sources must use http or https")
+
+
+class InvalidPreviewError(SourceError):
+    """Raised when a preview identifier is expired or not signed by this service."""
+
+    def __init__(self) -> None:
+        super().__init__("Preview expired or invalid")
+
+
+class PreviewIdRequiredError(SourceError):
+    """Raised when final publication is requested without a preview identifier."""
+
+    def __init__(self) -> None:
+        super().__init__("Preview id is required")
+
+
+class PreviewUnsupportedError(SourceError):
+    """Raised when preview is requested for a bulletin with article cards."""
+
+    def __init__(self) -> None:
+        super().__init__("Previews for bulletins are not supported yet")
 
 
 class DocumentSourceError(SourceError):
@@ -169,6 +200,11 @@ class PublishedBriefArticle:
     page_markdowns: tuple[str, ...] = ()
 
 
+def _is_preview_page(page: dict[str, object]) -> bool:
+    title = page.get("title")
+    return isinstance(title, str) and title.startswith(PREVIEW_TITLE_PREFIX)
+
+
 def list_published_pages() -> tuple[int, list[dict[str, object]]]:
     """Return all pages published by the configured Telegraph account."""
     token = telegraph_tokens.resolve()
@@ -206,7 +242,7 @@ def list_published_pages() -> tuple[int, list[dict[str, object]]]:
         pages.extend(page for page in raw_pages if isinstance(page, dict))
 
         if not raw_pages or len(pages) >= total_count:
-            visible_pages = [page for page in pages if not _is_continuation_page(page)]
+            visible_pages = [page for page in pages if not _is_continuation_page(page) and not _is_preview_page(page)]
             return len(visible_pages), visible_pages
         offset += len(raw_pages)
 
@@ -427,6 +463,144 @@ def _publish_prepared_pages(prepared: PreparedContent, token: str, *, warm_cache
     )
 
 
+def _preview_secret(token: str) -> bytes:
+    return token.encode("utf-8")
+
+
+def _encode_preview_id(urls: tuple[str, ...], token: str) -> str:
+    payload = {
+        "expires_at": int(time.time()) + PREVIEW_TTL_SECONDS,
+        "nonce": secrets.token_urlsafe(12),
+        "urls": urls,
+    }
+    encoded = base64.urlsafe_b64encode(json.dumps(payload, separators=(",", ":")).encode()).decode().rstrip("=")
+    signature = hmac.new(_preview_secret(token), encoded.encode(), hashlib.sha256).hexdigest()
+    return f"{encoded}.{signature}"
+
+
+def _decode_preview_id(preview_id: str, token: str) -> tuple[str, ...]:
+    try:
+        encoded, signature = preview_id.rsplit(".", 1)
+    except ValueError as exc:
+        raise InvalidPreviewError from exc
+    expected = hmac.new(_preview_secret(token), encoded.encode(), hashlib.sha256).hexdigest()
+    if not hmac.compare_digest(signature, expected):
+        raise InvalidPreviewError
+
+    padding = "=" * (-len(encoded) % 4)
+    try:
+        payload = json.loads(base64.urlsafe_b64decode(encoded + padding))
+    except (binascii.Error, TypeError, ValueError) as exc:
+        raise InvalidPreviewError from exc
+    if not isinstance(payload, dict):
+        raise InvalidPreviewError
+    try:
+        expires_at = int(payload["expires_at"])
+        urls = tuple(payload["urls"])
+    except (KeyError, TypeError, ValueError) as exc:
+        raise InvalidPreviewError from exc
+    if expires_at < int(time.time()) or not urls or any(urlparse(url).netloc != "telegra.ph" for url in urls):
+        raise InvalidPreviewError
+    return urls
+
+
+def _preview_page_markdowns(prepared: PreparedContent) -> tuple[str, ...]:
+    metadata, _body = split_front_matter(prepared.markdown.strip())
+    chunks = split_markdown_pages(prepared.markdown, max_chars=TELEGRAPH_PAGE_MAX_CHARS)
+    if len(chunks) == 1:
+        return (prepared.markdown,)
+    if not metadata:
+        return tuple(chunks)
+    front_matter = yaml.safe_dump(metadata, allow_unicode=True, sort_keys=False).strip()
+    return tuple(f"---\n{front_matter}\n---\n\n{chunk}" for chunk in chunks)
+
+
+def _prepared_page_title(prepared: PreparedContent) -> str:
+    _metadata, body = split_front_matter(prepared.markdown.strip())
+    return prepared.title or extract_leading_title(body) or "Document"
+
+
+def _preview_page_title(title: str, *, preview: bool, index: int, total: int) -> str:
+    base_title = f"{PREVIEW_TITLE_PREFIX}{title}" if preview else title
+    return base_title if index == 0 else f"{base_title} ({index + 1}/{total})"
+
+
+def _edit_preview_pages(
+    prepared: PreparedContent,
+    token: str,
+    existing_urls: tuple[str, ...],
+    *,
+    preview: bool,
+) -> TelegraphPages:
+    page_markdowns = _preview_page_markdowns(prepared)
+    page_title = _prepared_page_title(prepared)
+    if not existing_urls and len(page_markdowns) == 1:
+        url = create_page(
+            title=_preview_page_title(page_title, preview=preview, index=0, total=1),
+            content_markdown=page_markdowns[0],
+            fallback_text=prepared.fallback_text,
+            source_url=prepared.metadata.url,
+            author_name=prepared.metadata.author,
+            access_token=token,
+        )
+        return TelegraphPages((url,), page_markdowns)
+
+    urls = list(existing_urls)
+    total = len(page_markdowns)
+    while len(urls) < total:
+        index = len(urls)
+        urls.append(
+            create_page(
+                title=_preview_page_title(page_title, preview=preview, index=index, total=total),
+                content_markdown=page_markdowns[index],
+                fallback_text=prepared.fallback_text if index == 0 else "",
+                source_url=prepared.metadata.url,
+                author_name=prepared.metadata.author,
+                access_token=token,
+                warm_cache=False,
+            )
+        )
+
+    active_urls = tuple(urls[:total])
+    for index, (url, page_markdown) in enumerate(zip(active_urls, page_markdowns, strict=True)):
+        content = page_markdown
+        if total > 1:
+            content += page_navigation(active_urls, index)
+        edit_page(
+            path=urlparse(url).path.lstrip("/"),
+            title=_preview_page_title(page_title, preview=preview, index=index, total=total),
+            content_markdown=content,
+            fallback_text=prepared.fallback_text if index == 0 else "",
+            source_url=prepared.metadata.url,
+            author_name=prepared.metadata.author,
+            access_token=token,
+        )
+    return TelegraphPages(active_urls, page_markdowns)
+
+
+def preview_content(request: SourceRequest) -> tuple[str, str]:
+    """Create or update a public Telegraph preview and return its id and URL."""
+    if request.markdown and CARD_DIRECTIVE_RE.search(request.markdown):
+        raise PreviewUnsupportedError
+    prepared = prepare_content(request)
+    token = telegraph_tokens.resolve(request.access_token)
+    existing_urls = _decode_preview_id(request.preview_id, token) if request.preview_id else ()
+    pages = _edit_preview_pages(prepared, token, existing_urls, preview=True)
+    return _encode_preview_id(pages.urls, token), pages.urls[0]
+
+
+def _publish_preview(request: SourceRequest) -> str:
+    if not request.preview_id:
+        raise PreviewIdRequiredError
+    if request.markdown and CARD_DIRECTIVE_RE.search(request.markdown):
+        raise PreviewUnsupportedError
+    prepared = prepare_content(request)
+    token = telegraph_tokens.resolve(request.access_token)
+    pages = _edit_preview_pages(prepared, token, _decode_preview_id(request.preview_id, token), preview=False)
+    send_telegram_notifications(pages.urls[0], prepared.metadata.notify_telegram)
+    return pages.urls[0]
+
+
 def _publish_prepared(prepared: PreparedContent, token: str, *, warm_cache: bool = True) -> str:
     return _publish_prepared_pages(prepared, token, warm_cache=warm_cache).urls[0]
 
@@ -570,6 +744,8 @@ def publish_content(
     cache_key: str | None = None,
 ) -> str:
     """Publish content, optionally reusing the Telegraph page for a source URL."""
+    if request.preview_id:
+        return _publish_preview(request)
     if request.markdown and CARD_DIRECTIVE_RE.search(request.markdown):
         return _publish_brief(request)
     if not cache_key:

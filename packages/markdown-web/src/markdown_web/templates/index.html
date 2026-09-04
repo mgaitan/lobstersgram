@@ -38,6 +38,7 @@
                 <span id="publish-status" class="status publish-status" role="status" aria-live="polite"></span>
                 <button id="new-button" class="button button-secondary" type="button" hidden>New</button>
                 <button id="copy-button" class="button button-secondary" type="button">Copy</button>
+                <button id="preview-button" class="button button-secondary" type="button">Preview</button>
                 <button id="submit-publish" class="button button-primary" type="submit">Publish</button>
               </div>
             </div>
@@ -135,6 +136,7 @@
       const status = document.querySelector("#status");
       const publishStatus = document.querySelector("#publish-status");
       const publishButton = document.querySelector("#submit-publish");
+      const previewButton = document.querySelector("#preview-button");
       const newButton = document.querySelector("#new-button");
       const newDialog = document.querySelector("#new-dialog");
       const confirmNew = document.querySelector("#confirm-new");
@@ -144,6 +146,7 @@
       const expandEditorButton = document.querySelector("#expand-editor");
       const metadataFields = ["title", "author", "url", "date", "type", "image", "notify_telegram"];
       let currentUrl = "";
+      let previewId = "";
       let mode = "process";
       const DRAFT_KEY = "markdown-web-draft";
       const SOURCE_PLACEHOLDER = "Paste a URL, drop a file or insert markdown content";
@@ -327,7 +330,7 @@
 
       function saveDraft() {
         const draft = mode === "publish"
-          ? {mode, markdown: output.value, url: currentUrl, label: sourceLabel.textContent}
+          ? {mode, markdown: output.value, url: currentUrl, label: sourceLabel.textContent, preview_id: previewId}
           : {mode, value: sourceInput.value};
         try {
           localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
@@ -354,6 +357,7 @@
         if (!draft || typeof draft !== "object") return;
         if (draft.mode === "publish" && typeof draft.markdown === "string" && draft.markdown) {
           currentUrl = typeof draft.url === "string" ? draft.url : "";
+          previewId = typeof draft.preview_id === "string" ? draft.preview_id : "";
           output.value = draft.markdown;
           sourceLabel.textContent = typeof draft.label === "string" && draft.label
             ? draft.label
@@ -412,6 +416,7 @@
 
       function showMarkdownEditor(markdown) {
         currentUrl = "";
+        previewId = "";
         output.value = markdown;
         sourceLabel.textContent = "Markdown";
         sourceEntry.hidden = true;
@@ -447,6 +452,7 @@
           }
           if (!response.ok) throw new Error(await responseError(response, "Processing failed"));
           output.value = await response.text();
+          previewId = "";
           sourceLabel.textContent = url || file.name;
           sourceEntry.hidden = true;
           result.hidden = false;
@@ -505,10 +511,12 @@
         if (mode === "publish") {
           if (publishButton.disabled) return;
           publishButton.disabled = true;
+          previewButton.disabled = true;
           setPublishStatus("Publishing…");
           try {
             const payload = {markdown: output.value};
             if (currentUrl) payload.metadata = {url: currentUrl};
+            if (previewId) payload.preview_id = previewId;
             const response = await fetch("/t", {
               method: "POST",
               headers: {"Content-Type": "application/json"},
@@ -524,6 +532,7 @@
             setPublishStatus(error.message, true);
           } finally {
             publishButton.disabled = false;
+            previewButton.disabled = false;
           }
           return;
         }
@@ -538,11 +547,48 @@
         setStatus("Copied");
       });
 
+      previewButton.addEventListener("click", async () => {
+        if (previewButton.disabled || publishButton.disabled) return;
+        const previewWindow = window.open("", "_blank");
+        previewButton.disabled = true;
+        publishButton.disabled = true;
+        setPublishStatus("Previewing…");
+        try {
+          const payload = {markdown: output.value};
+          if (currentUrl) payload.metadata = {url: currentUrl};
+          if (previewId) payload.preview_id = previewId;
+          const response = await fetch("/t/preview", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(payload)
+          });
+          const data = response.headers.get("content-type")?.includes("application/json")
+            ? await response.json()
+            : {detail: await response.text()};
+          if (!response.ok) throw new Error(data.detail || await responseError(response, "Preview failed"));
+          previewId = data.preview_id;
+          saveDraft();
+          if (previewWindow) {
+            previewWindow.location = data.url;
+            setPublishStatus("Preview opened");
+          } else {
+            setPublishStatus("Preview ready. Allow popups to open it.", true);
+          }
+        } catch (error) {
+          if (previewWindow) previewWindow.close();
+          setPublishStatus(error.message, true);
+        } finally {
+          previewButton.disabled = false;
+          publishButton.disabled = false;
+        }
+      });
+
       output.addEventListener("input", saveDraft);
       newButton.addEventListener("click", () => newDialog.showModal());
       confirmNew.addEventListener("click", () => {
         clearDraft();
         currentUrl = "";
+        previewId = "";
         mode = "process";
         sourceInput.value = "";
         output.value = "";

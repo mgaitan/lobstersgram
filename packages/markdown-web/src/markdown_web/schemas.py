@@ -32,11 +32,19 @@ class SourceRequest(BaseModel):
     filename: str = ""
     metadata: SourceMetadata = Field(default_factory=SourceMetadata)
     access_token: str | None = None
+    preview_id: str | None = None
 
 
 class TelegraphResponse(BaseModel):
     """Response returned after a page is published."""
 
+    url: str
+
+
+class TelegraphPreviewResponse(BaseModel):
+    """Response returned after creating or updating a Telegraph preview."""
+
+    preview_id: str
     url: str
 
 

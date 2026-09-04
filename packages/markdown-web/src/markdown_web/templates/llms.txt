@@ -8,10 +8,12 @@ Base URL: {{ site_url }}
 
 - Use `POST /md` when you need Markdown back.
 - Use `POST /t` when you want a public Telegraph URL.
+- Use `POST /t/preview` to create or update a public preview without adding it to `/t/published/`; send the returned `preview_id` with later previews or final `POST /t`.
 - For a long Markdown brief, optionally use `POST /t/jobs` and advance the returned job with `POST <run_url>`.
 - Use `GET /md/<url>` or `GET /t/<url>` for a URL, with the complete source URL URL-encoded as one path segment.
 - Prefer JSON for agents. The server accepts one of `url`, `html`, or `markdown` in the request body.
 - `POST /t` returns JSON in the form `{"url":"https://telegra.ph/..."}`.
+- `POST /t/preview` returns `{"preview_id":"...","url":"https://telegra.ph/..."}`. A preview is public on Telegraph, expires after seven days of inactivity, and is identified by a `[Preview]` title until final publication.
 - `GET /t/<url>` returns a `303` redirect to the Telegraph page and caches that URL during the running process.
 - A source that blocks server-side fetches should be sent as browser HTML to `POST /t/bookmarklet`; see `/bookmarklet/`.
 - Do not send the service's Telegraph token. It uses its configured account unless an explicit bearer token is provided for `POST /t`.
@@ -96,6 +98,10 @@ HTTP `404` or `503` before creation, the client may use `POST /t` instead.
 curl -X POST {{ site_url }}/t \
   -H 'content-type: application/json' \
   -d '{"markdown":"---\ntitle: Hello\n---\n\n# Hello\n\nBody"}'
+
+curl -X POST {{ site_url }}/t/preview \
+  -H 'content-type: application/json' \
+  -d '{"markdown":"---\ntitle: Hello\n---\n\n# Hello\n\nDraft"}'
 
 curl -X POST {{ site_url }}/t \
   -H 'content-type: application/json' \
