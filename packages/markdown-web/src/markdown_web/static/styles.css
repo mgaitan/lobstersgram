@@ -134,6 +134,7 @@ textarea:focus { border-color: #999; box-shadow: 0 2px 8px rgb(0 0 0 / 6%); }
 
 .markdown-editor { position: relative; overflow: hidden; border: 1px solid #d0d7de; border-radius: 6px; background: #fff; }
 .markdown-editor:focus-within { border-color: #999; }
+.markdown-editor.is-image-dragging { border-color: #333; background: #f6f8fa; }
 .markdown-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 2px; border-bottom: 1px solid #d8dee4; padding: 6px; background: #f6f8fa; }
 .markdown-toolbar button, .markdown-toolbar select {
   min-width: 30px;

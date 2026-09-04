@@ -72,6 +72,12 @@ def test_home_and_static_assets() -> None:
     assert 'processSource("", file)' in response.text
     assert "showMarkdownEditor(value)" in response.text
     assert 'aria-label="Choose a file"' in response.text
+    assert (
+        'accept=".pdf,.doc,.docx,.epub,.ppt,.pptx,.xls,.xlsx,.odt,.ods,.odp,.rtf,.csv,image/png,image/jpeg,image/webp"'
+        in response.text
+    )
+    assert 'id="editor-image-file"' in response.text
+    assert 'fetch("/images"' in response.text
     assert 'property="og:title" content="Markdown and Telegraph"' in response.text
     assert (
         'property="og:description" content="Turn any page into Markdown or publish it to Telegraph."' in response.text
@@ -108,6 +114,7 @@ def test_about_describes_routes_and_cli() -> None:
     assert 'href="/llms.txt">llms.txt</a>' in response.text
     assert 'href="/docs">API documentation</a>' in response.text
     assert "notify_telegram" in response.text
+    assert "POST /images" in response.text
     assert "t.me/MarkdownTelegraphBot" in response.text
     assert "uvx markdown-this" in response.text
     assert "github.com/mgaitan" in response.text
@@ -121,6 +128,7 @@ def test_llms_describes_agent_contract() -> None:
 
     assert response.status_code == HTTP_200_OK
     assert "POST /t" in response.text
+    assert "POST /images" in response.text
     assert "`title`, `author`, `url`, `date`, `image`, `type`, and `notify_telegram`" in response.text
     assert "![card](https://example.com/article)" in response.text
     assert "POST /t/jobs" in response.text
@@ -142,6 +150,11 @@ def test_openapi_describes_post_bodies_and_publish_response() -> None:
         "metadata"
     ]["properties"]
     assert "notify_telegram" in metadata_properties
+
+    image_post = schema["paths"]["/images"]["post"]
+    assert image_post["responses"]["200"]["content"]["application/json"]["schema"]["$ref"] == (
+        "#/components/schemas/ImageUploadResponse"
+    )
 
     publish_post = schema["paths"]["/t"]["post"]
     assert publish_post["responses"]["200"]["content"]["application/json"]["schema"]["$ref"] == (
@@ -232,6 +245,24 @@ def test_post_markdown_accepts_document_upload(monkeypatch: pytest.MonkeyPatch) 
     assert response.text == "# From document"
     assert seen["source"].document == b"document"
     assert seen["source"].filename == "report.epub"
+
+
+def test_post_image_upload_returns_public_url(monkeypatch: pytest.MonkeyPatch) -> None:
+    seen: dict[str, object] = {}
+
+    def fake_upload(data: bytes, client_ip: str) -> str:
+        seen["data"] = data
+        seen["client_ip"] = client_ip
+        return "https://media.example/images/photo.webp"
+
+    monkeypatch.setattr(app_module.assets, "upload_image", fake_upload)
+
+    response = client.post("/images", files={"file": ("photo.jpg", b"image-bytes", "image/jpeg")})
+
+    assert response.status_code == HTTP_200_OK
+    assert response.json() == {"url": "https://media.example/images/photo.webp"}
+    assert seen["data"] == b"image-bytes"
+    assert isinstance(seen["client_ip"], str)
 
 
 def test_post_telegraph_returns_json_and_accepts_bearer_token(monkeypatch: pytest.MonkeyPatch) -> None:

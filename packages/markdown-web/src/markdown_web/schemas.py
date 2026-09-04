@@ -41,6 +41,12 @@ class TelegraphResponse(BaseModel):
     url: str
 
 
+class ImageUploadResponse(BaseModel):
+    """Response returned after an image is optimized and stored."""
+
+    url: str
+
+
 class TelegraphPreviewResponse(BaseModel):
     """Response returned after creating or updating a Telegraph preview."""
 

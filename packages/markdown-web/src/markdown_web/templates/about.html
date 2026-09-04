@@ -30,6 +30,7 @@
       <ul class="about-list">
         <li><a href="/md/https://example.com">/md/&lt;url&gt;</a> returns raw Markdown.</li>
         <li><a href="/t/https://example.com">/t/&lt;url&gt;</a> extracts and publishes a page to Telegraph.</li>
+        <li><code>POST /images</code> accepts PNG, JPEG, and WebP uploads, optimizes them to WebP, and returns a public image URL for Markdown.</li>
         <li><code>POST /t/preview</code> creates or updates a Telegraph preview; send its <code>preview_id</code> to publish the same page later.</li>
         <li><a href="/t/published/">/t/published/</a> lists the pages published on <a href="https://telegra.ph">Telegraph</a> by this service.</li>
         <li><a href="/t/jobs">/t/jobs</a> publishes a long Markdown brief in stages; poll its <code>run_url</code> until the job is complete.</li>
