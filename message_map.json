@@ -3268,5 +3268,35 @@
     "article_link": "https://begriffs.com/posts/2021-07-04-shared-libraries.html",
     "discussion_link": "https://lobste.rs/s/nkzapz/dynamic_linking_best_practices_2021",
     "title": "Dynamic linking best practices (2021)"
+  },
+  "@lobstersgram:553": {
+    "telegraph_link": "https://telegra.ph/You-Dont-Need-Initial-Scale-In-Your-HTML---2-Sept-2026-1350-UTC--ValeRocks-09-04",
+    "article_link": "https://vale.rocks/micros/20260902-1350",
+    "discussion_link": "https://lobste.rs/s/if60bl/you_don_t_need_initial_scale_your_html",
+    "title": "You Don't Need Initial-Scale In Your HTML"
+  },
+  "@lobstersgram:554": {
+    "telegraph_link": "https://telegra.ph/Imperial-Colors-Manifesto-09-04",
+    "article_link": "https://qum.cz/imperial_colors/",
+    "discussion_link": "https://lobste.rs/s/5y7ije/imperial_colors_manifesto",
+    "title": "Imperial Colors Manifesto"
+  },
+  "@lobstersgram:555": {
+    "telegraph_link": "https://telegra.ph/JordiGH-I-need-to-write-a-blog-post-or-a-talk-or-somethin---Mathstodon-09-04",
+    "article_link": "https://mathstodon.xyz/@JordiGH/117209252363385093",
+    "discussion_link": "https://lobste.rs/s/rlswbt/nes_dumping_over_audio",
+    "title": "NES dumping over audio"
+  },
+  "@lobstersgram:556": {
+    "telegraph_link": "https://telegra.ph/Inserting-State-Transitions-in-Postgres-09-04",
+    "article_link": "https://thoughtbot.com/blog/inserting-state-transitions-in-postgres",
+    "discussion_link": "https://lobste.rs/s/asjmva/inserting_state_transitions_postgres",
+    "title": "Inserting State Transitions in Postgres"
+  },
+  "@lobstersgram:557": {
+    "telegraph_link": "https://telegra.ph/CERN-Transitioning-Industrial-Computers-To-Debian-After-Being-A-Longtime-RHEL-Institution---Phoronix-09-04-2",
+    "article_link": "https://www.phoronix.com/news/CERN-Goes-Debian-Leaving-RHEL",
+    "discussion_link": "https://lobste.rs/s/fxk56i/cern_transitioning_industrial",
+    "title": "CERN transitioning industrial computers to Debian after being a longtime RHEL institution"
   }
 }
