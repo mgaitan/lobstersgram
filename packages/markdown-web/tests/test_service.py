@@ -177,6 +177,37 @@ def test_publish_content_passes_source_metadata_to_telegraph(monkeypatch: pytest
     assert published["source_url"] == "https://www.pagina12.com.ar/article"
 
 
+def test_publish_content_splits_long_markdown_into_linked_pages(monkeypatch: pytest.MonkeyPatch) -> None:
+    create_calls: list[dict[str, object]] = []
+    edit_calls: list[dict[str, object]] = []
+
+    def fake_create_page(**kwargs: object) -> str:
+        create_calls.append(kwargs)
+        return f"https://telegra.ph/page-{len(create_calls)}"
+
+    def fake_edit_page(**kwargs: object) -> str:
+        edit_calls.append(kwargs)
+        return f"https://telegra.ph/page-{kwargs['path']}"
+
+    monkeypatch.setenv("TELEGRAPH_API_TOKEN", "environment-token")
+    monkeypatch.setattr(service, "TELEGRAPH_PAGE_MAX_CHARS", 80)
+    monkeypatch.setattr(service, "create_page", fake_create_page)
+    monkeypatch.setattr(service, "edit_page", fake_edit_page)
+
+    markdown = "# Long document\n\n" + "\n\n".join(
+        f"Paragraph {index}: " + "readable content " * 8 for index in range(1, 4)
+    )
+    result = service.publish_content(SourceRequest(markdown=markdown))
+
+    assert result == "https://telegra.ph/page-1"
+    assert len(create_calls) > 1
+    assert len(edit_calls) == len(create_calls)
+    assert all(call["warm_cache"] is False for call in create_calls)
+    assert "Página siguiente" in str(edit_calls[0]["content_markdown"])
+    assert "Página anterior" in str(edit_calls[-1]["content_markdown"])
+    assert "(2/" in str(create_calls[1]["title"])
+
+
 def test_publish_content_notifies_telegram_recipients_with_only_the_url(monkeypatch: pytest.MonkeyPatch) -> None:
     calls: list[dict[str, object]] = []
 
