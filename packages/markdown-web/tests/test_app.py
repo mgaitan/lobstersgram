@@ -71,6 +71,15 @@ def test_home_and_static_assets() -> None:
     assert 'placeholder="Paste a URL, drop a file or insert markdown content"' in response.text
     assert 'processSource("", file)' in response.text
     assert "showMarkdownEditor(value)" in response.text
+    assert all(
+        value in response.text
+        for value in (
+            'document.addEventListener("paste"',
+            "getAsFile()",
+            "setSelectedFile(file)",
+            'showMarkdownEditor(text, "Pasted Markdown")',
+        )
+    )
     assert 'aria-label="Choose a file"' in response.text
     assert (
         'accept=".pdf,.doc,.docx,.epub,.ppt,.pptx,.xls,.xlsx,.odt,.ods,.odp,.rtf,.csv,image/png,image/jpeg,image/webp"'

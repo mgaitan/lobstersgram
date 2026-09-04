@@ -340,9 +340,10 @@
           if (!response.ok) throw new Error(await responseError(response, "Image upload failed"));
           const result = await response.json();
           if (insertAtCursor) {
+            if (previewing) setPreviewMode(false);
             insertImage(result.url);
           } else {
-            showMarkdownEditor(`![](${result.url})`, file.name);
+            showMarkdownEditor(`![](${result.url})`, file.name || "Pasted image");
           }
           setStatus("");
         } catch (error) {
@@ -568,6 +569,28 @@
           return;
         }
         saveDraft();
+      });
+      document.addEventListener("paste", (event) => {
+        if (event.target.closest?.("dialog")) return;
+        const file = [...(event.clipboardData?.items || [])]
+          .filter((item) => item.kind === "file")
+          .map((item) => item.getAsFile())
+          .find(Boolean);
+        if (file) {
+          event.preventDefault();
+          if (isImageFile(file)) {
+            uploadImage(file, mode === "publish");
+          } else {
+            setSelectedFile(file);
+            processSource("", file);
+          }
+          return;
+        }
+        const text = event.clipboardData?.getData("text/plain") || "";
+        if (!text || isHttpUrl(text.trim())) return;
+        if (event.target === output || event.target === sourceInput || event.target.isContentEditable) return;
+        event.preventDefault();
+        showMarkdownEditor(text, "Pasted Markdown");
       });
       dropZone.addEventListener("dragover", (event) => {
         event.preventDefault();
