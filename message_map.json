@@ -1,0 +1,3224 @@
+{
+  "@lobstersgram:8": {
+    "telegraph_link": "https://telegra.ph/PhobosLab-08-07",
+    "article_link": "https://phoboslab.org/log/2026/08/xibalba64-making-of",
+    "discussion_link": "https://lobste.rs/s/j8ytwa/how_make_nintendo_64_game_2026",
+    "title": "How to Make a Nintendo 64 Game in 2026"
+  },
+  "@lobstersgram:9": {
+    "telegraph_link": "https://telegra.ph/python-string-literals-are-kinda-funny-08-07-2",
+    "article_link": "https://sebsite.pw/w/20260806-pystrings.html",
+    "discussion_link": "https://lobste.rs/s/mxdfdv/python_string_literals_are_kinda_funny",
+    "title": "python string literals are kinda funny"
+  },
+  "@lobstersgram:10": {
+    "telegraph_link": "https://telegra.ph/Nix-Evaluation-Is-a-Scheduling-Problem--Blog-08-07",
+    "article_link": "https://notashelf.dev/posts/evix",
+    "discussion_link": "https://lobste.rs/s/z0rmil/nix_evaluation_is_scheduling_problem",
+    "title": "Nix Evaluation Is a Scheduling Problem"
+  },
+  "@lobstersgram:11": {
+    "telegraph_link": "https://telegra.ph/What-is-a-product---One-more-thing-08-07-2",
+    "article_link": "https://roge.onwrite.app/what-is-a-product",
+    "discussion_link": "https://lobste.rs/s/3tlse7/what_is_product",
+    "title": "What is a product?"
+  },
+  "@lobstersgram:12": {
+    "telegraph_link": "https://telegra.ph/bozohttpd-rocks---Setup-a-simple-web-server-with-bozohttpd-on-NetBSD-08-07",
+    "article_link": "https://bozo.httpd.rocks/",
+    "discussion_link": "https://lobste.rs/s/titphm/setup_simple_web_server_with_bozohttpd_on",
+    "title": "Setup a simple web server with bozohttpd on NetBSD"
+  },
+  "@lobstersgram:13": {
+    "telegraph_link": "https://telegra.ph/Introducing-Kitesurf-The-agent-first-browser-that-runs-in-V8-isolates-on-Cloudflare-Workers--Cloudflare-Blog-08-07-2",
+    "article_link": "https://blog.cloudflare.com/kitesurf/",
+    "discussion_link": "https://lobste.rs/s/9bxkgi/introducing_kitesurf_agent_first",
+    "title": "Introducing Kitesurf: The agent-first browser that runs in V8 isolates on Cloudflare Workers"
+  },
+  "@lobstersgram:14": {
+    "telegraph_link": "https://telegra.ph/Taste-Is-All-Thats-Left--Blog-08-07",
+    "article_link": "https://notashelf.dev/posts/taste-is-all-thats-left",
+    "discussion_link": "https://lobste.rs/s/4qfkrz/taste_is_all_s_left",
+    "title": "Taste Is All That's Left"
+  },
+  "@lobstersgram:15": {
+    "telegraph_link": "https://telegra.ph/How-a-device-finds-encrypted-DNS-by-itself--dúndns-08-07",
+    "article_link": "https://blog.dundns.eu/posts/ddr-encrypted-dns-discovery/",
+    "discussion_link": "https://lobste.rs/s/gycikc/how_device_finds_encrypted_dns_by_itself",
+    "title": "How a device finds encrypted DNS by itself"
+  },
+  "@lobstersgram:16": {
+    "telegraph_link": "https://telegra.ph/Release-v0440--jj-vcsjj--GitHub-08-07",
+    "article_link": "https://github.com/jj-vcs/jj/releases/tag/v0.44.0",
+    "discussion_link": "https://lobste.rs/s/xx83dr/jujutsu_0_44_0",
+    "title": "jujutsu 0.44.0"
+  },
+  "@lobstersgram:17": {
+    "telegraph_link": "https://telegra.ph/gloriouscow-i-wonder-if-you-could-make-a-useful-DOS-executabl---OldBytes-Space---Mastodon-08-07",
+    "article_link": "https://oldbytes.space/@gloriouscow/117044736309312697",
+    "discussion_link": "https://lobste.rs/s/0cdps4/i_wonder_if_you_could_make_useful_dos",
+    "title": "i wonder if you could make a useful DOS executable with just emoji"
+  },
+  "@lobstersgram:18": {
+    "telegraph_link": "https://telegra.ph/Super-Mario-Derivations--Farid-Zakarias-Blog-08-07",
+    "article_link": "https://fzakaria.com/2026/08/05/super-mario-derivations",
+    "discussion_link": "https://lobste.rs/s/psnmvz/super_mario_derivations",
+    "title": "Super Mario Derivations"
+  },
+  "@lobstersgram:19": {
+    "telegraph_link": "https://telegra.ph/trevmexs-tumblings---My-Son-Found-a-World-Atlas-in-a-Thrift-Store-So-I-Had-to-Make-It-Work-08-07",
+    "article_link": "https://trevmex.com/post/824245295374303232/my-son-found-a-world-atlas-in-a-thrift-store-so-i",
+    "discussion_link": "https://lobste.rs/s/6i4a3w/i_got_1998_cd_rom_world_atlas_running_on",
+    "title": "I got a 1998 CD-ROM world atlas running on Windows 11"
+  },
+  "@lobstersgram:20": {
+    "telegraph_link": "https://telegra.ph/the-web-server-deployment-model-breaks-at-hobby-scale-08-07-5",
+    "article_link": "https://w.on-t.work/web-deployment-model",
+    "discussion_link": "https://lobste.rs/s/rn4inr/web_server_deployment_model_breaks_at",
+    "title": "the web server deployment model breaks at hobby scale"
+  },
+  "@lobstersgram:21": {
+    "telegraph_link": "https://telegra.ph/Software-Understanding-in-the-Sciences-is-Really-Uneven--Lobsters-08-07",
+    "article_link": "https://lobste.rs/s/rn8uva/software_understanding_sciences_is",
+    "discussion_link": "https://lobste.rs/s/rn8uva/software_understanding_sciences_is",
+    "title": "Software Understanding in the Sciences is Really Uneven"
+  },
+  "@lobstersgram:22": {
+    "telegraph_link": "https://telegra.ph/AI--The-University---Carson-Gross--SSW-2026-08-07",
+    "article_link": "https://www.youtube.com/watch?v=ZUk2TKZIo7s",
+    "discussion_link": "https://lobste.rs/s/9jwbty/ai_university",
+    "title": "AI & The University"
+  },
+  "@lobstersgram:23": {
+    "telegraph_link": "https://telegra.ph/From-constraint-models-to-playable-puzzle-games---zayenzse-08-07",
+    "article_link": "https://zayenz.se/blog/post/constraint-generated-puzzle-games/",
+    "discussion_link": "https://lobste.rs/s/mqzspg/from_constraint_models_playable_puzzle",
+    "title": "From constraint models to playable puzzle games"
+  },
+  "@lobstersgram:24": {
+    "telegraph_link": "https://telegra.ph/Zigs-IoThreaded-is-Neat-08-07-2",
+    "article_link": "https://matklad.github.io/2026/08/06/neat-io-threaded.html",
+    "discussion_link": "https://lobste.rs/s/aegq82/zig_s_io_threaded_is_neat",
+    "title": "Zig's Io.Threaded is Neat"
+  },
+  "@lobstersgram:25": {
+    "telegraph_link": "https://telegra.ph/Thoroughly-Understanding-C-ABI--ykikos-blog-08-07",
+    "article_link": "https://ykiko.me/en/articles/692886292/",
+    "discussion_link": "https://lobste.rs/s/puodea/thoroughly_understanding_c_abi",
+    "title": "Thoroughly Understanding C++ ABI"
+  },
+  "@lobstersgram:26": {
+    "telegraph_link": "https://telegra.ph/xoreaxeaxeaxasm-hall-of-shame--Racing-to-the-bottom-of-CPU-performance-08-07",
+    "article_link": "https://github.com/xoreaxeaxeax/asm-hall-of-shame",
+    "discussion_link": "https://lobste.rs/s/hw1y12/assembly_hall_shame_racing_bottom_cpu",
+    "title": "Assembly Hall of Shame: Racing to the bottom of CPU performance"
+  },
+  "@lobstersgram:27": {
+    "telegraph_link": "https://telegra.ph/PS3-emulation-is-fast-on-ARM-now-08-07",
+    "article_link": "https://www.youtube.com/watch?v=-aI_XEwmKFk",
+    "discussion_link": "https://lobste.rs/s/ykzv1a/ps3_emulation_is_fast_on_arm_now",
+    "title": "PS3 emulation is fast on ARM now"
+  },
+  "@lobstersgram:28": {
+    "telegraph_link": "https://telegra.ph/Am-I-the-problem-Interviewing-another-team-to-find-out-08-07-2",
+    "article_link": "https://www.macchaffee.com/blog/2026/am-i-the-problem/",
+    "discussion_link": "https://lobste.rs/s/c30jsd/am_i_problem_interviewing_another_team",
+    "title": "Am I the problem? Interviewing another team to find out"
+  },
+  "@lobstersgram:29": {
+    "telegraph_link": "https://telegra.ph/chenxiaolongBasicSync--A-simple-app-for-running-Syncthing-on-Android-08-08",
+    "article_link": "https://github.com/chenxiaolong/BasicSync",
+    "discussion_link": "https://lobste.rs/s/ekxllh/basicsync_simple_app_for_running",
+    "title": "BasicSync: A simple app for running Syncthing on Android"
+  },
+  "@lobstersgram:30": {
+    "telegraph_link": "https://telegra.ph/Domain-specific-hyperspecialization-for-SAT--cmov-08-08",
+    "article_link": "https://c.mov/lymphosat/",
+    "discussion_link": "https://lobste.rs/s/cccby7/domain_specific_hyperspecialization",
+    "title": "Domain-specific hyperspecialization (for SAT)"
+  },
+  "@lobstersgram:31": {
+    "telegraph_link": "https://telegra.ph/xoreaxeaxeaxREpsych--Psychological-warfare-in-reverse-engineering-08-08",
+    "article_link": "https://github.com/xoreaxeaxeax/repsych",
+    "discussion_link": "https://lobste.rs/s/ufvii3/repsych_psychological_warfare_reverse",
+    "title": "REpsych: Psychological warfare in reverse engineering"
+  },
+  "@lobstersgram:32": {
+    "telegraph_link": "https://telegra.ph/Twitter-isnt-a-town-square-its-a-high-school-cafeteria--notes-08-08",
+    "article_link": "https://notes.hella.cheap/twitter-isnt-a-town-square-its-a-high-school-cafeteria.html",
+    "discussion_link": "https://lobste.rs/s/hmi3v1/social_media_rabbit_holes_clusters",
+    "title": "social media rabbit holes, clusters, and the relative mixing times of random walks"
+  },
+  "@lobstersgram:33": {
+    "telegraph_link": "https://telegra.ph/tldv-Too-Lazy-Didnt-Validate-181874-Meetings-Left-Wide-Open--bobdahacker-08-08",
+    "article_link": "https://bobdahacker.com/blog/tldv-hack",
+    "discussion_link": "https://lobste.rs/s/97laur/tl_dv_too_lazy_didn_t_validate_181_874",
+    "title": "tl;dv (Too Lazy; Didn't Validate): 181,874 Meetings Left Wide Open"
+  },
+  "@lobstersgram:34": {
+    "telegraph_link": "https://telegra.ph/Im-leaving-OpenAI-to-build-Jurassic-Park-08-08",
+    "article_link": "https://taylor.town/leaving-openai",
+    "discussion_link": "https://lobste.rs/s/ch83co/i_m_leaving_openai_build_jurassic_park",
+    "title": "I'm leaving OpenAI to build Jurassic Park"
+  },
+  "@lobstersgram:35": {
+    "telegraph_link": "https://telegra.ph/What-are-you-doing-this-weekend--Lobsters-08-08",
+    "article_link": "https://lobste.rs/s/ucaatd/what_are_you_doing_this_weekend",
+    "discussion_link": "https://lobste.rs/s/ucaatd/what_are_you_doing_this_weekend",
+    "title": "What are you doing this weekend?"
+  },
+  "@lobstersgram:36": {
+    "telegraph_link": "https://telegra.ph/A-shell-exclamation-mark-is-not-for-yelling-Be-lazy--Filip-Roséen---refpse-08-08",
+    "article_link": "https://refp.se/articles/your-shell-and-the-lazy-exclamation-mark",
+    "discussion_link": "https://lobste.rs/s/0mjyep/shell_exclamation_mark_is_not_for_yelling",
+    "title": "A shell exclamation mark is not for yelling. Be lazy"
+  },
+  "@lobstersgram:37": {
+    "telegraph_link": "https://telegra.ph/Farewell-Etaoin-Shrdlu--David-Loeb-Weiss--Free-Download-Borrow-and-Streaming--Internet-Archive-08-08",
+    "article_link": "https://archive.org/details/FarewellEtaoinShrdlu",
+    "discussion_link": "https://lobste.rs/s/robrw0/farewell_etaoin_shrdlu",
+    "title": "‘Farewell, Etaoin Shrdlu’"
+  },
+  "@lobstersgram:38": {
+    "telegraph_link": "https://telegra.ph/Building-Groovie-an-Advanced-Web-Based-Drum-Machine--Beat-Sequencer-08-08",
+    "article_link": "https://pointersgonewild.com/2026-08-06-building-groovie-an-advanced-web-based-drum-beat-sequencer/",
+    "discussion_link": "https://lobste.rs/s/ejx00p/building_groovie_advanced_web_based_drum",
+    "title": "Building Groovie, an Advanced Web-Based Drum Machine / Beat Sequencer"
+  },
+  "@lobstersgram:39": {
+    "telegraph_link": "https://telegra.ph/They-dont-make-em-like-Sublime-Text-anymore---David-Bushell---Web-Dev-UK-08-08",
+    "article_link": "https://dbushell.com/2026/08/07/sublime-text/",
+    "discussion_link": "https://lobste.rs/s/uny1fo/they_don_t_make_em_like_sublime_text",
+    "title": "They don’t make ’em like Sublime Text anymore"
+  },
+  "@lobstersgram:40": {
+    "telegraph_link": "https://telegra.ph/Skred-self-created-sound-engine-as-an-effects-box--Lobsters-08-08",
+    "article_link": "https://lobste.rs/s/dfkuly/skred_self_created_sound_engine_as",
+    "discussion_link": "https://lobste.rs/s/dfkuly/skred_self_created_sound_engine_as",
+    "title": "Skred (self-created sound engine) as an effects box"
+  },
+  "@lobstersgram:41": {
+    "telegraph_link": "https://telegra.ph/Amiga-August-2026-Update-08-08-2",
+    "article_link": "https://amiga.com/news/20260804-amiga-update",
+    "discussion_link": "https://lobste.rs/s/lmnmwg/amiga_august_2026_update",
+    "title": "Amiga August 2026 Update"
+  },
+  "@lobstersgram:42": {
+    "telegraph_link": "https://telegra.ph/iterate-think-thoughts-Program-images-and-portable-Scheme-backends-for-Jolt-08-08",
+    "article_link": "https://yogthos.net/posts/2026-08-07-portable-jolt.html",
+    "discussion_link": "https://lobste.rs/s/2b5zzw/program_images_portable_scheme_backends",
+    "title": "Program images and portable Scheme backends for Jolt"
+  },
+  "@lobstersgram:43": {
+    "telegraph_link": "https://telegra.ph/some-software-talks-i-like---charlotte-08-08-2",
+    "article_link": "https://char.lt/blog/2026/08/talks-i-like/",
+    "discussion_link": "https://lobste.rs/s/cmrfrj/some_software_talks_i_like",
+    "title": "some software talks i like"
+  },
+  "@lobstersgram:44": {
+    "telegraph_link": "https://telegra.ph/experiments-with-isolation-on-blue-pill---lopuhvoid-08-08",
+    "article_link": "https://l0puh.github.io/log/2026/08/04/experiments_with_isolation/",
+    "discussion_link": "https://lobste.rs/s/bbkpzc/experiments_with_isolation_on_blue_pill",
+    "title": "experiments with isolation on blue pill"
+  },
+  "@lobstersgram:45": {
+    "telegraph_link": "https://telegra.ph/OpenSSH-Key-Structure-Guide-08-08",
+    "article_link": "https://sshref.dev/",
+    "discussion_link": "https://lobste.rs/s/lnxdje/openssh_key_structure_guide",
+    "title": "OpenSSH Key Structure Guide"
+  },
+  "@lobstersgram:46": {
+    "telegraph_link": "https://telegra.ph/robotvillas---RSS-to-Mastodon-Bridge-08-08",
+    "article_link": "https://robot.villas/",
+    "discussion_link": "https://lobste.rs/s/zubijk/robot_villas_rss_mastodon_bridge",
+    "title": "robot.villas – RSS-to-Mastodon Bridge"
+  },
+  "@lobstersgram:47": {
+    "telegraph_link": "https://telegra.ph/Turning-molecules-into-reliable-electronic-devices--MIT-News--Massachusetts-Institute-of-Technology-08-08",
+    "article_link": "https://news.mit.edu/2026/turning-molecules-into-reliable-electronic-devices-0803",
+    "discussion_link": "https://lobste.rs/s/gurxoe/turning_molecules_into_reliable",
+    "title": "Turning molecules into reliable electronic devices"
+  },
+  "@lobstersgram:48": {
+    "telegraph_link": "https://telegra.ph/systemd-Dynamic-Users-08-08",
+    "article_link": "https://ethulhu.co.uk/systemd-dynamicuser",
+    "discussion_link": "https://lobste.rs/s/kjuxof/systemd_dynamic_users_2020",
+    "title": "Systemd Dynamic Users (2020)"
+  },
+  "@lobstersgram:49": {
+    "telegraph_link": "https://telegra.ph/Revision-Prompting-08-08",
+    "article_link": "https://revisionprompting.info/",
+    "discussion_link": "https://lobste.rs/s/wkx6jf/revision_prompting_improves_industrial",
+    "title": "Revision Prompting improves industrial LLM processes"
+  },
+  "@lobstersgram:50": {
+    "telegraph_link": "https://telegra.ph/Understanding-stdcounting-semaphore-and-stdbinary-semaphore-from-C20---C-Stories-08-08",
+    "article_link": "https://www.cppstories.com/2026/semaphore/",
+    "discussion_link": "https://lobste.rs/s/safj18/understanding_std_counting_semaphore",
+    "title": "Understanding std::counting_semaphore and std::binary_semaphore from C++20"
+  },
+  "@lobstersgram:51": {
+    "telegraph_link": "https://telegra.ph/Multistack-Concatenative-Programming-Languages-08-08",
+    "article_link": "https://www.sheeeeeeeep.art/multistack-catlangs.html",
+    "discussion_link": "https://lobste.rs/s/lv7kzs/multistack_concatenative_programming",
+    "title": "Multistack Concatenative Programming Languages"
+  },
+  "@lobstersgram:52": {
+    "telegraph_link": "https://telegra.ph/DREI-WYSIWYG-Emacs-for-HTML-08-09",
+    "article_link": "https://speechcode.com/blog/drei",
+    "discussion_link": "https://lobste.rs/s/rgzrct/drei_wysiwyg_emacs_for_html",
+    "title": "DREI: WYSIWYG Emacs for HTML"
+  },
+  "@lobstersgram:53": {
+    "telegraph_link": "https://telegra.ph/sebastiancarlosfaaah--FAAAH-Filesystem-As-An-AI-Handler---Reuse-your-AI-Agent-subscription-via-text-files-08-09",
+    "article_link": "https://github.com/sebastiancarlos/faaah",
+    "discussion_link": "https://lobste.rs/s/lxy0ea/faaah_filesystem_as_ai_handler",
+    "title": "faaah (Filesystem As An AI Handler)"
+  },
+  "@lobstersgram:54": {
+    "telegraph_link": "https://telegra.ph/The-FastLanes-Unified-Transport-Layout--blogdavetf-08-09",
+    "article_link": "https://blog.dave.tf/post/fastlanes-utl/",
+    "discussion_link": "https://lobste.rs/s/1ubzuf/fastlanes_unified_transport_layout",
+    "title": "The FastLanes Unified Transport Layout"
+  },
+  "@lobstersgram:55": {
+    "telegraph_link": "https://telegra.ph/Code-was-never-the-hard-part-is-an-insult-to-all-programmers---Senko-Rašić-08-09",
+    "article_link": "https://blog.senko.net/code-was-never-the-hard-part-is-an-insult-to-all-programmers",
+    "discussion_link": "https://lobste.rs/s/iixlsm/code_was_never_hard_part_is_insult_all",
+    "title": "\"Code was never the hard part\" is an insult to all programmers"
+  },
+  "@lobstersgram:56": {
+    "telegraph_link": "https://telegra.ph/Introducing-Triton-DirectX-11-driver-for-QEMU--UTM-Blog-08-09",
+    "article_link": "https://blog.getutm.app/2026/introducing-triton-directx-11-driver-for-qemu/",
+    "discussion_link": "https://lobste.rs/s/0gmfid/triton_directx_11_driver_for_qemu",
+    "title": "Triton: DirectX 11 driver for QEMU"
+  },
+  "@lobstersgram:57": {
+    "telegraph_link": "https://telegra.ph/Counting-the-days-revisited---Tony-Finch-08-09",
+    "article_link": "https://dotat.at/@/2026-08-09-rata-die.html",
+    "discussion_link": "https://lobste.rs/s/cqx6f6/counting_days_revisited",
+    "title": "Counting the days, revisited"
+  },
+  "@lobstersgram:58": {
+    "telegraph_link": "https://telegra.ph/my-server-is-a-phone-now---seg6-08-09",
+    "article_link": "https://seg6.space/posts/phone-server/",
+    "discussion_link": "https://lobste.rs/s/ykuqrc/my_server_is_phone_now",
+    "title": "my server is a phone now"
+  },
+  "@lobstersgram:59": {
+    "telegraph_link": "https://telegra.ph/NetBSD-Blog-08-09",
+    "article_link": "https://blog.netbsd.org/tnf/entry/gsoc2026_enlightenment",
+    "discussion_link": "https://lobste.rs/s/xkdbhe/port_enlightenment_desktop_environment",
+    "title": "Port the Enlightenment desktop environment to NetBSD"
+  },
+  "@lobstersgram:60": {
+    "telegraph_link": "https://telegra.ph/Rails-is-done--lucasdohmenio-08-09",
+    "article_link": "https://lucas.dohmen.io/posts/2026/08/09/rails-is-done/",
+    "discussion_link": "https://lobste.rs/s/paryb7/rails_is_done",
+    "title": "Rails is done"
+  },
+  "@lobstersgram:61": {
+    "telegraph_link": "https://telegra.ph/Tracking-down-a-Zsh-history-data-loss-bug----Michael-Stapelberg-08-09",
+    "article_link": "https://michael.stapelberg.ch/posts/2026-08-09-zsh-history-truncation-bug/",
+    "discussion_link": "https://lobste.rs/s/x0jlp7/tracking_down_zsh_history_data_loss_bug",
+    "title": "Tracking down a Zsh history data loss bug"
+  },
+  "@lobstersgram:62": {
+    "telegraph_link": "https://telegra.ph/GrammaTechddisasm--A-fast-and-accurate-disassembler-08-09",
+    "article_link": "https://github.com/GrammaTech/ddisasm",
+    "discussion_link": "https://lobste.rs/s/m70pcl/ddisasm_fast_accurate_disassembler",
+    "title": "ddisasm: A fast and accurate disassembler"
+  },
+  "@lobstersgram:63": {
+    "telegraph_link": "https://telegra.ph/3G-at-last--Nick-vs-Networking-08-09",
+    "article_link": "https://nickvsnetworking.com/3g-at-last/",
+    "discussion_link": "https://lobste.rs/s/dd9poy/3g_at_last",
+    "title": "3G at last"
+  },
+  "@lobstersgram:64": {
+    "telegraph_link": "https://telegra.ph/Alexander-Petros--Getting-off-the-Modernization-Treadmill--Big-Sky-DevCon-2026-08-09",
+    "article_link": "https://www.youtube.com/watch?v=vRJVw8Di-4s",
+    "discussion_link": "https://lobste.rs/s/ogtybl/getting_off_modernization_treadmill",
+    "title": "Getting off the Modernization Treadmill"
+  },
+  "@lobstersgram:65": {
+    "telegraph_link": "https://telegra.ph/Relying-on-Go-08-09-3",
+    "article_link": "https://antonz.org/relying-on-go/",
+    "discussion_link": "https://lobste.rs/s/1ygxcp/relying_on_go",
+    "title": "Relying on Go"
+  },
+  "@lobstersgram:66": {
+    "telegraph_link": "https://telegra.ph/On-scripts-and-hooks--Arch-Linux-Dev-Blog-08-09",
+    "article_link": "https://devblog.archlinux.page/2026/on-scripts-and-hooks/",
+    "discussion_link": "https://lobste.rs/s/0mrntr/on_arch_linux_scripts_hooks",
+    "title": "On Arch Linux scripts and hooks"
+  },
+  "@lobstersgram:67": {
+    "telegraph_link": "https://telegra.ph/I-think-the-vibecoding-tag-has-gotten-out-of-hand--Lobsters-08-09",
+    "article_link": "https://lobste.rs/s/he9j7y/i_think_vibecoding_tag_has_gotten_out_hand",
+    "discussion_link": "https://lobste.rs/s/he9j7y/i_think_vibecoding_tag_has_gotten_out_hand",
+    "title": "I think the vibecoding tag has gotten out of hand"
+  },
+  "@lobstersgram:68": {
+    "telegraph_link": "https://telegra.ph/Mea-Culpa---Dark-Hours---Terry-Godier-08-09-2",
+    "article_link": "https://blog.terrygodier.com/2026/08/09/mea-culpa-dark-hours.html",
+    "discussion_link": "https://lobste.rs/s/jnbujx/mea_culpa_dark_hours",
+    "title": "Mea Culpa - Dark Hours"
+  },
+  "@lobstersgram:69": {
+    "telegraph_link": "https://telegra.ph/postmarketOS--in-2026-07-libcamera-072-08-09",
+    "article_link": "https://postmarketos.org/blog/2026/08/06/pmOS-update-2026-07/",
+    "discussion_link": "https://lobste.rs/s/a5pnxx/postmarketos_2026_07_libcamera_0_7_2",
+    "title": "postmarketOS in 2026-07: libcamera 0.7.2"
+  },
+  "@lobstersgram:70": {
+    "telegraph_link": "https://telegra.ph/IRC-technology-news-from-the-first-half-of-2026--Ilmari-Lauhakangas-08-09",
+    "article_link": "https://www.ilmarilauhakangas.fi/irc_technology_news_from_the_first_half_of_2026/",
+    "discussion_link": "https://lobste.rs/s/u0ks1k/irc_technology_news_from_first_half_2026",
+    "title": "IRC technology news from the first half of 2026"
+  },
+  "@lobstersgram:71": {
+    "telegraph_link": "https://telegra.ph/Commit-message-test-plans-08-09",
+    "article_link": "https://blog.waleedkhan.name/commit-message-test-plans/",
+    "discussion_link": "https://lobste.rs/s/abl0xo/commit_message_test_plans",
+    "title": "Commit message test plans"
+  },
+  "@lobstersgram:72": {
+    "telegraph_link": "https://telegra.ph/sfopSFOP-sp-paperpdf-at-main--signal-sfopsfop--GitHub-08-10",
+    "article_link": "https://github.com/signal-sfop/sfop/blob/main/SFOP_s%26p_paper.pdf",
+    "discussion_link": "https://lobste.rs/s/sh2bax/crashing_through_defenses_exploiting",
+    "title": "Crashing Through Defenses: Exploiting Segfaults and Chaining around Intel CET"
+  },
+  "@lobstersgram:73": {
+    "telegraph_link": "https://telegra.ph/no-title-08-10-468",
+    "article_link": "https://lemire.me/blog/2026/08/09/profile-guided-optimization-in-go/",
+    "discussion_link": "https://lobste.rs/s/noa9x5/profile_guided_optimization_go",
+    "title": "Profile-guided optimization in Go"
+  },
+  "@lobstersgram:74": {
+    "telegraph_link": "https://telegra.ph/SQLite-with-a-Fine-Toothed-Comb---Embedded-in-Academia-08-10",
+    "article_link": "https://blog.regehr.org/archives/1292",
+    "discussion_link": "https://lobste.rs/s/ahyxwp/sqlite_with_fine_toothed_comb_2016",
+    "title": "SQLite with a Fine-Toothed Comb (2016)"
+  },
+  "@lobstersgram:75": {
+    "telegraph_link": "https://telegra.ph/nixpkgs-multiverse-every-version-that-ever-existed--Farid-Zakarias-Blog-08-10",
+    "article_link": "https://fzakaria.com/2026/08/09/nixpkgs-multiverse-every-version-that-ever-existed",
+    "discussion_link": "https://lobste.rs/s/09l5py/nixpkgs_multiverse_every_version_ever",
+    "title": "nixpkgs-multiverse: every version that ever existed"
+  },
+  "@lobstersgram:76": {
+    "telegraph_link": "https://telegra.ph/You-Dont-Know-UndoRedo---DEV-Community-08-10",
+    "article_link": "https://dev.to/isaachagoel/you-dont-know-undoredo-4hol",
+    "discussion_link": "https://lobste.rs/s/wew6tz/undo_redo_systems_collaborative_editing",
+    "title": "Undo/redo systems and collaborative editing (2024)"
+  },
+  "@lobstersgram:77": {
+    "telegraph_link": "https://telegra.ph/IBM-i-OS400-The-Database-Operating-System---OSAdmins-08-10",
+    "article_link": "https://osadmins.com/en/ibm-i-os-400-the-database-operating-system/",
+    "discussion_link": "https://lobste.rs/s/ssljs6/ibm_i_os_400_database_operating_system",
+    "title": "IBM i (OS/400) The Database Operating System"
+  },
+  "@lobstersgram:78": {
+    "telegraph_link": "https://telegra.ph/How-do-programming-languages-impact-token-efficiency-and-correctness-08-10",
+    "article_link": "https://danluu.com/pl-tokens/",
+    "discussion_link": "https://lobste.rs/s/4waghh/how_do_programming_languages_impact",
+    "title": "How do programming languages impact token efficiency and correctness?"
+  },
+  "@lobstersgram:79": {
+    "telegraph_link": "https://telegra.ph/an-ambiguity-in-c89-which-will-never-be-fixed-08-10-2",
+    "article_link": "https://sebsite.pw/w/20260810-c89ambiguity.html",
+    "discussion_link": "https://lobste.rs/s/p3mmqr/ambiguity_c89_which_will_never_be_fixed",
+    "title": "an ambiguity in c89 which will never be fixed"
+  },
+  "@lobstersgram:80": {
+    "telegraph_link": "https://telegra.ph/LightDarkSystem-Theme-Setting-Design---10-Aug-2026-0330-UTC--ValeRocks-08-10",
+    "article_link": "https://vale.rocks/micros/20260810-0330",
+    "discussion_link": "https://lobste.rs/s/rgpvd6/light_dark_system_theme_setting_design",
+    "title": "Light/Dark/System Theme Setting Design"
+  },
+  "@lobstersgram:81": {
+    "telegraph_link": "https://telegra.ph/ignore-the-code-Toggles-Considered-Harmful-08-10",
+    "article_link": "https://ignorethecode.net/blog/2026/08/09/toggles_considered_harmful/",
+    "discussion_link": "https://lobste.rs/s/ulinck/toggles_considered_harmful",
+    "title": "Toggles Considered Harmful"
+  },
+  "@lobstersgram:82": {
+    "telegraph_link": "https://telegra.ph/LLMs-and-xfwl4---Brian-Tarricone-08-10",
+    "article_link": "https://www.spurint.org/journal/2026/07/llms-and-xfwl4",
+    "discussion_link": "https://lobste.rs/s/32ptwj/llms_xfwl4",
+    "title": "LLMs and xfwl4"
+  },
+  "@lobstersgram:83": {
+    "telegraph_link": "https://telegra.ph/Easy-Sandboxing-on-Linux-with-Bubblewrap--Ivan-Molodetskikhs-Webpage-08-10",
+    "article_link": "https://bxt.rs/blog/easy-sandboxing-on-linux-with-bubblewrap/",
+    "discussion_link": "https://lobste.rs/s/stehhb/easy_sandboxing_on_linux_with_bubblewrap",
+    "title": "Easy Sandboxing on Linux with Bubblewrap"
+  },
+  "@lobstersgram:84": {
+    "telegraph_link": "https://telegra.ph/Firefox-Containers-Preview-08-10",
+    "article_link": "https://blog.mozilla.org/en/firefox/firefox-containers-preview/",
+    "discussion_link": "https://lobste.rs/s/ja2gzr/firefox_containers_preview",
+    "title": "Firefox Containers Preview"
+  },
+  "@lobstersgram:85": {
+    "telegraph_link": "https://telegra.ph/Django-is-moving-to-an-annual-release-cycle--Weblog--Django-08-10",
+    "article_link": "https://www.djangoproject.com/weblog/2026/aug/10/annual-release-cycle/",
+    "discussion_link": "https://lobste.rs/s/cn7jyo/django_is_moving_annual_release_cycle",
+    "title": "Django is moving to an annual release cycle"
+  },
+  "@lobstersgram:86": {
+    "telegraph_link": "https://telegra.ph/What-are-you-doing-this-week--Lobsters-08-10",
+    "article_link": "https://lobste.rs/s/3qwloh/what_are_you_doing_this_week",
+    "discussion_link": "https://lobste.rs/s/3qwloh/what_are_you_doing_this_week",
+    "title": "What are you doing this week?"
+  },
+  "@lobstersgram:87": {
+    "telegraph_link": "https://telegra.ph/Re-balancing-Deflate-Compression-Levels---defer-timeSleep-08-10",
+    "article_link": "https://blog.klauspost.com/rebalancing-deflate-compression-levels/",
+    "discussion_link": "https://lobste.rs/s/edtmqj/re_balancing_deflate_compression_levels",
+    "title": "Re-balancing Deflate Compression Levels"
+  },
+  "@lobstersgram:88": {
+    "telegraph_link": "https://telegra.ph/The-Promise-None-of-Them-Kept--Webframp-08-10",
+    "article_link": "https://webframp.com/posts/the-promise-none-of-them-kept/",
+    "discussion_link": "https://lobste.rs/s/sjxzgt/promise_none_them_kept",
+    "title": "The Promise None of Them Kept"
+  },
+  "@lobstersgram:89": {
+    "telegraph_link": "https://telegra.ph/GitHub-Actions-needs-OIDC-audience-constraints-08-10-2",
+    "article_link": "https://blog.yossarian.net/2026/08/10/github-actions-needs-oidc-audience-constraints",
+    "discussion_link": "https://lobste.rs/s/ipt1em/github_actions_needs_oidc_audience",
+    "title": "GitHub Actions needs OIDC audience constraints"
+  },
+  "@lobstersgram:90": {
+    "telegraph_link": "https://telegra.ph/nixpkgs-isnt-doing-too-hot--foxgirlengineering-08-10",
+    "article_link": "https://foxgirl.engineering/blog/nixpkgs-not-hot/",
+    "discussion_link": "https://lobste.rs/s/olo2k9/nixpkgs_isn_t_doing_too_hot",
+    "title": "nixpkgs isn't doing too hot"
+  },
+  "@lobstersgram:91": {
+    "telegraph_link": "https://telegra.ph/jackyzha0sunlit--a-pure-css-implementation-of-some-sunlight-streaming-in-through-the-window-08-10",
+    "article_link": "https://github.com/jackyzha0/sunlit",
+    "discussion_link": "https://lobste.rs/s/lkp7x3/pure_css_implementation_some_sunlight",
+    "title": "a pure css implementation of some sunlight streaming in through the window"
+  },
+  "@lobstersgram:92": {
+    "telegraph_link": "https://telegra.ph/Were-not-done-with-point-clouds-08-10-2",
+    "article_link": "https://claytonwramsey.com/blog/mvt/",
+    "discussion_link": "https://lobste.rs/s/ctwrrt/we_re_not_done_with_point_clouds",
+    "title": "We're not done with point clouds"
+  },
+  "@lobstersgram:93": {
+    "telegraph_link": "https://telegra.ph/A-researcher-bought-noreplynet-Companies-started-sending-him-secrets---Ars-Technica-08-10",
+    "article_link": "https://arstechnica.com/security/2026/08/a-researcher-bought-noreply-net-companies-started-sending-him-secrets/",
+    "discussion_link": "https://lobste.rs/s/exgfc0/researcher_bought_noreply_net_companies",
+    "title": "A researcher bought noreply.net. Companies started sending him secrets"
+  },
+  "@lobstersgram:94": {
+    "telegraph_link": "https://telegra.ph/A-C-toolchain-from-357-bytes-in-Bazel--Farid-Zakarias-Blog-08-10",
+    "article_link": "https://fzakaria.com/2026/08/01/a-c++-toolchain-from-357-bytes-in-bazel",
+    "discussion_link": "https://lobste.rs/s/pq7dtk/c_toolchain_from_357_bytes_bazel",
+    "title": "A C++ toolchain from 357 bytes in Bazel"
+  },
+  "@lobstersgram:95": {
+    "telegraph_link": "https://telegra.ph/Remaking-Party-House--MONDTECH-MAGAZINE-08-10",
+    "article_link": "https://herecomesthemoon.net/2026/08/remaking-party-house/",
+    "discussion_link": "https://lobste.rs/s/gkuj8b/remaking_party_house",
+    "title": "Remaking Party House"
+  },
+  "@lobstersgram:96": {
+    "telegraph_link": "https://telegra.ph/Dark-mode-toggles-two-states-are-enough--Lea-Verou-08-10",
+    "article_link": "https://lea.verou.me/blog/2026/dark-mode-toggles/",
+    "discussion_link": "https://lobste.rs/s/nkoni1/dark_mode_toggles_two_states_are_enough",
+    "title": "Dark mode toggles: two states are enough"
+  },
+  "@lobstersgram:97": {
+    "telegraph_link": "https://telegra.ph/The-Early-Days-The-History-of-Interactive-Computing-08-10",
+    "article_link": "https://obsolescence.dev/interactive-computing-history.html",
+    "discussion_link": "https://lobste.rs/s/tvfhvm/early_days_history_interactive",
+    "title": "The Early Days: A History of Interactive Computing"
+  },
+  "@lobstersgram:98": {
+    "telegraph_link": "https://telegra.ph/Moving-integer-division-to-floating-point-is-trivial-08-10",
+    "article_link": "http://marc-b-reynolds.github.io/math/2026/08/10/IntDivByFP.html",
+    "discussion_link": "https://lobste.rs/s/nvmbfe/moving_integer_division_floating_point",
+    "title": "Moving integer division to floating-point is trivial"
+  },
+  "@lobstersgram:99": {
+    "telegraph_link": "https://telegra.ph/Making-Need-for-Speed-2015-using-GameMaker-08-11-2",
+    "article_link": "https://www.youtube.com/watch?v=ffGqjOBowIc",
+    "discussion_link": "https://lobste.rs/s/kwo9cn/making_need_for_speed_2015_with_game_maker",
+    "title": "Making Need For Speed 2015 with Game Maker"
+  },
+  "@lobstersgram:100": {
+    "telegraph_link": "https://telegra.ph/Watch-out-for-cache-read-costs---Martin-Alderson-08-11",
+    "article_link": "https://martinalderson.com/posts/watch-out-for-cache-read-costs/",
+    "discussion_link": "https://lobste.rs/s/bgvipl/watch_out_for_cache_read_costs",
+    "title": "Watch out for cache read costs"
+  },
+  "@lobstersgram:101": {
+    "telegraph_link": "https://telegra.ph/Breaking-up-lines-is-hard-to-do-08-11",
+    "article_link": "https://www.b-list.org/weblog/2026/aug/10/newlines/",
+    "discussion_link": "https://lobste.rs/s/imdlp6/breaking_up_lines_is_hard_do",
+    "title": "Breaking up (lines) is hard to do"
+  },
+  "@lobstersgram:102": {
+    "telegraph_link": "https://telegra.ph/Reviewing-code-is-a-skill-08-11",
+    "article_link": "https://typesanitizer.com/blog/code-review.html",
+    "discussion_link": "https://lobste.rs/s/gyxkma/reviewing_code_is_skill",
+    "title": "Reviewing code is a skill"
+  },
+  "@lobstersgram:103": {
+    "telegraph_link": "https://telegra.ph/Odd-Comments-and-Strange-Doings-in-Unix-08-11",
+    "article_link": "https://9p.io/who/dmr/odd.html",
+    "discussion_link": "https://lobste.rs/s/csc385/odd_comments_strange_doings_unix",
+    "title": "Odd Comments and Strange Doings in Unix"
+  },
+  "@lobstersgram:104": {
+    "telegraph_link": "https://telegra.ph/An-inter-mesh-deployment-pipeline-08-11",
+    "article_link": "https://blog.zm.is/an-inter-mesh-deployment-pipeline/",
+    "discussion_link": "https://lobste.rs/s/xoivjb/inter_mesh_deployment_pipeline",
+    "title": "An inter-mesh deployment pipeline"
+  },
+  "@lobstersgram:105": {
+    "telegraph_link": "https://telegra.ph/Theres-a-dungeon-under-this-blog--Ata-Kuyumcus-Blog-08-11",
+    "article_link": "https://blog.lvmbdv.dev/posts/theres-a-dungeon-under-this-blog/",
+    "discussion_link": "https://lobste.rs/s/ci7bnd/there_s_dungeon_under_this_blog",
+    "title": "There's a dungeon under this blog"
+  },
+  "@lobstersgram:106": {
+    "telegraph_link": "https://telegra.ph/Briar-is-in-maintenance-mode---Briar-08-11",
+    "article_link": "https://briarproject.org/news/2026-maintenance-mode/",
+    "discussion_link": "https://lobste.rs/s/pqq2gi/briar_is_maintenance_mode",
+    "title": "Briar is in maintenance mode"
+  },
+  "@lobstersgram:107": {
+    "telegraph_link": "https://telegra.ph/Making-holograms-with-a-pen-plotter---Jordan-Matelsky---Code-Coffee--Cortex-08-11",
+    "article_link": "https://blog.jordan.matelsky.com/Penplotter-holography/",
+    "discussion_link": "https://lobste.rs/s/9iliea/making_etched_holograms_with_pen_plotter",
+    "title": "Making [etched] holograms with a pen plotter"
+  },
+  "@lobstersgram:108": {
+    "telegraph_link": "https://telegra.ph/Modeling-State-Transitions-in-Postgres-08-11-3",
+    "article_link": "https://thoughtbot.com/blog/modeling-state-transitions-in-postgres",
+    "discussion_link": "https://lobste.rs/s/ogrb7f/modeling_state_transitions_postgres",
+    "title": "Modeling State Transitions in Postgres"
+  },
+  "@lobstersgram:109": {
+    "telegraph_link": "https://telegra.ph/GNOME-Shell-Design-Dreams---GNOME-Shell--Mutter-08-11",
+    "article_link": "https://blogs.gnome.org/shell-dev/2026/08/11/gnome-shell-design-dreams/",
+    "discussion_link": "https://lobste.rs/s/b3uky6/gnome_shell_design_dreams",
+    "title": "GNOME Shell Design Dreams"
+  },
+  "@lobstersgram:110": {
+    "telegraph_link": "https://telegra.ph/A-noob-learns-FFT-08-11-2",
+    "article_link": "https://entropicthoughts.com/fft",
+    "discussion_link": "https://lobste.rs/s/aeur9s/noob_learns_fft",
+    "title": "A noob learns FFT"
+  },
+  "@lobstersgram:111": {
+    "telegraph_link": "https://telegra.ph/Cleaning-costs-or-examining-the-OpenBSD--fret-clean-flag---Dr-Brian-Robert-Callahan-08-11",
+    "article_link": "https://briancallahan.net/blog/20260811.html",
+    "discussion_link": "https://lobste.rs/s/z5v07a/cleaning_costs_examining_openbsd_fret",
+    "title": "Cleaning costs, or, examining the OpenBSD -fret-clean flag"
+  },
+  "@lobstersgram:112": {
+    "telegraph_link": "https://telegra.ph/The-fastest-double-to-string-algorithm-youve-never-heard-of-08-11-2",
+    "article_link": "https://vitaut.net/posts/2026/yy-dtoa/",
+    "discussion_link": "https://lobste.rs/s/vzza5g/fastest_double_string_algorithm_you_ve",
+    "title": "The fastest double-to-string algorithm you’ve never heard of"
+  },
+  "@lobstersgram:113": {
+    "telegraph_link": "https://telegra.ph/jmarshall23msword--Port-of-Microsoft-Word-11a-to-x64-with-extra-features-for-research-purposes-08-11",
+    "article_link": "https://github.com/jmarshall23/msword",
+    "discussion_link": "https://lobste.rs/s/8k3c7u/msword_port_microsoft_word_1_1a_x64",
+    "title": "msword: Port of Microsoft Word 1.1a to x64"
+  },
+  "@lobstersgram:114": {
+    "telegraph_link": "https://telegra.ph/Performance-impact-of-Alignment--Emanuels-Blog-08-11",
+    "article_link": "https://eme64.github.io/blog/2026/01/12/Alignment-Performance.html",
+    "discussion_link": "https://lobste.rs/s/7hm8yf/performance_impact_alignment",
+    "title": "Performance impact of Alignment"
+  },
+  "@lobstersgram:115": {
+    "telegraph_link": "https://telegra.ph/HOME-AWAY-FROM-HOME-08-11",
+    "article_link": "https://punkx.org/jackdoe/home.html",
+    "discussion_link": "https://lobste.rs/s/unffzk/my_anti_ai_computer",
+    "title": "My Anti AI computer"
+  },
+  "@lobstersgram:116": {
+    "telegraph_link": "https://telegra.ph/Reducing-Graphics-API-Complexity-A-Clean-Slate-Design-for-Modern-GPUs-08-11",
+    "article_link": "https://www.youtube.com/watch?v=aQv9pUl9PBM",
+    "discussion_link": "https://lobste.rs/s/4unr6j/reducing_graphics_api_complexity_clean",
+    "title": "Reducing Graphics API Complexity: A Clean Slate Design for Modern GPUs"
+  },
+  "@lobstersgram:117": {
+    "telegraph_link": "https://telegra.ph/Whos-Hiring---Not-A-Coder-Edition---Aug-2026--Lobsters-08-12",
+    "article_link": "https://lobste.rs/s/cnoaqr/who_s_hiring_not_coder_edition_aug_2026",
+    "discussion_link": "https://lobste.rs/s/cnoaqr/who_s_hiring_not_coder_edition_aug_2026",
+    "title": "Who's Hiring? - Not-A-Coder Edition - Aug 2026"
+  },
+  "@lobstersgram:118": {
+    "telegraph_link": "https://telegra.ph/Making-a-game-on-a-custom-bytecode-VM-in-7-days-and-3kB--Laurent-Le-Bruns-blog-08-12",
+    "article_link": "https://laurent.le-brun.eu/blog/making-a-game-on-a-custom-bytecode-vm-in-7-days-and-3kb",
+    "discussion_link": "https://lobste.rs/s/he9kpd/making_game_on_custom_bytecode_vm_7_days",
+    "title": "Making a game on a custom bytecode VM in 7 days and 3kB"
+  },
+  "@lobstersgram:119": {
+    "telegraph_link": "https://telegra.ph/RangeFrom-Part-1-History-and-background-08-12",
+    "article_link": "https://erk.dev/2026/08/12/rangefrom-part-1",
+    "discussion_link": "https://lobste.rs/s/xgnakx/rangefrom_part_1",
+    "title": "RangeFrom, Part 1․․"
+  },
+  "@lobstersgram:120": {
+    "telegraph_link": "https://telegra.ph/Tail-Call-Interpreters-in-Rust---Jimmy-Ostler-08-12",
+    "article_link": "https://lordgoati.us/blog/tail-call/",
+    "discussion_link": "https://lobste.rs/s/bp6bmx/tail_call_interpreters_rust",
+    "title": "Tail-Call Interpreters in Rust"
+  },
+  "@lobstersgram:121": {
+    "telegraph_link": "https://telegra.ph/C26-stdindirect--Sandor-Dargos-Blog-08-12",
+    "article_link": "https://www.sandordargo.com/blog/2026/08/12/cpp26-indirect",
+    "discussion_link": "https://lobste.rs/s/k4ri7d/c_26_std_indirect",
+    "title": "C++26: std::indirect"
+  },
+  "@lobstersgram:122": {
+    "telegraph_link": "https://telegra.ph/Why-Go-is-an-Ideal-Language-for-AI-Assisted-Software-Engineering---Google-Developers-Blog-08-12",
+    "article_link": "https://developers.googleblog.com/why-go-is-an-ideal-language-for-ai-assisted-software-engineering/",
+    "discussion_link": "https://lobste.rs/s/0rtina/why_go_is_ideal_language_for_ai_assisted",
+    "title": "Why Go is an Ideal Language for AI-Assisted Software Engineering- Google Developers Blog"
+  },
+  "@lobstersgram:123": {
+    "telegraph_link": "https://telegra.ph/Unpacking-ionCube-08-12",
+    "article_link": "https://dustri.org/b/unpacking-ioncube.html",
+    "discussion_link": "https://lobste.rs/s/ohc3cr/unpacking_ioncube",
+    "title": "Unpacking ionCube"
+  },
+  "@lobstersgram:124": {
+    "telegraph_link": "https://telegra.ph/I-hate-packaging-my-software-for-Linux--Fresh-08-12-2",
+    "article_link": "https://getfresh.dev/docs/blog/packaging-for-linux/",
+    "discussion_link": "https://lobste.rs/s/ixbrmc/i_hate_packaging_my_software_for_linux",
+    "title": "I hate packaging my software for Linux"
+  },
+  "@lobstersgram:125": {
+    "telegraph_link": "https://telegra.ph/On-AI-Coding-and-Its-Discontents---Cal-Newport-08-12-2",
+    "article_link": "https://calnewport.com/on-ai-coding-and-its-discontents/",
+    "discussion_link": "https://lobste.rs/s/9yslt6/on_ai_coding_its_discontents",
+    "title": "On AI Coding and Its Discontents"
+  },
+  "@lobstersgram:126": {
+    "telegraph_link": "https://telegra.ph/Rebane-i-love-seeing-creative-qr-code-designs-so-i-made---Infosec-Exchange-08-12",
+    "article_link": "https://infosec.exchange/@rebane2001/117078420917152774",
+    "discussion_link": "https://lobste.rs/s/omcyaz/guide_not_fucking_up_qr_codes",
+    "title": "Guide to (not) fucking up QR codes"
+  },
+  "@lobstersgram:127": {
+    "telegraph_link": "https://telegra.ph/Numba-in-the-Browser-Unlocking-a-New-Scientific-Python-Stack-in-JupyterLite--Notebooklink-Documentation-08-12",
+    "article_link": "https://notebook.link/blog/numba-in-the-browser/",
+    "discussion_link": "https://lobste.rs/s/l3ephx/numba_browser_unlocking_new_scientific",
+    "title": "Numba in the Browser: Unlocking a New Scientific Python Stack in JupyterLite"
+  },
+  "@lobstersgram:128": {
+    "telegraph_link": "https://telegra.ph/Im-done-using-AI---Brett-Codes-08-12",
+    "article_link": "https://brettcodes.com/im-done-using-ai/",
+    "discussion_link": "https://lobste.rs/s/rfiuko/i_m_done_using_ai",
+    "title": "I'm done using AI"
+  },
+  "@lobstersgram:129": {
+    "telegraph_link": "https://telegra.ph/Mindful-coding-Purpose-and-intention---var0xyz-08-12",
+    "article_link": "https://var0.xyz/posts/mindful-coding-purpose-and-intention.html",
+    "discussion_link": "https://lobste.rs/s/864m3v/mindful_coding_purpose_intention",
+    "title": "Mindful coding: Purpose and intention"
+  },
+  "@lobstersgram:130": {
+    "telegraph_link": "https://telegra.ph/Apple-Limits-Bug-Bounty-Submissions-After-a-Barrage-of-AI-Entries--PCMag-08-12",
+    "article_link": "https://www.pcmag.com/news/apple-limits-bug-bounty-submissions-after-a-barrage-of-ai-entries",
+    "discussion_link": "https://lobste.rs/s/uyyfhi/apple_limits_bug_bounty_submissions",
+    "title": "Apple Limits Bug Bounty Submissions After a Barrage of AI Entries"
+  },
+  "@lobstersgram:131": {
+    "telegraph_link": "https://telegra.ph/My-Homelab-Got-Hacked---A-Postmortem---Phunky-Cafe-08-12",
+    "article_link": "https://phunky.cafe/my-homelab-got-hacked/",
+    "discussion_link": "https://lobste.rs/s/ugkhor/my_homelab_got_hacked_postmortem",
+    "title": "My Homelab Got Hacked - A Postmortem"
+  },
+  "@lobstersgram:132": {
+    "telegraph_link": "https://telegra.ph/How-Tailscale-helped-find-the-SQLite-WAL-Reset-bug-08-12-2",
+    "article_link": "https://tailscale.com/blog/sqlite-wal-reset-bug",
+    "discussion_link": "https://lobste.rs/s/e0lkmi/how_tailscale_helped_find_sqlite_wal",
+    "title": "How Tailscale helped find the SQLite WAL-Reset bug"
+  },
+  "@lobstersgram:133": {
+    "telegraph_link": "https://telegra.ph/Hacking-in-the-nameOf-08-12",
+    "article_link": "https://committing-crimes.com/articles/2026-08-04-java-nameof/",
+    "discussion_link": "https://lobste.rs/s/bcfzer/hacking_nameof",
+    "title": "Hacking in the 'nameOf'"
+  },
+  "@lobstersgram:134": {
+    "telegraph_link": "https://telegra.ph/Guillaume-Técher-08-12-5",
+    "article_link": "https://guillaumetech.github.io/posts/jpg-scaling-chrome/",
+    "discussion_link": "https://lobste.rs/s/xwo03g/why_tiny_jpegs_look_different_chrome",
+    "title": "Why tiny JPEGs look different in Chrome"
+  },
+  "@lobstersgram:135": {
+    "telegraph_link": "https://telegra.ph/Decrypting-Flume-Water-Monitor-Traffic-08-12",
+    "article_link": "https://lithostech.com/2026/08/decrypting-flume-water-monitor-traffic/",
+    "discussion_link": "https://lobste.rs/s/g94aro/decrypting_flume_water_monitor_traffic",
+    "title": "Decrypting Flume Water Monitor Traffic"
+  },
+  "@lobstersgram:136": {
+    "telegraph_link": "https://telegra.ph/Tail-Call-Interpreters-in-Rust---Jimmy-Ostler-08-12-3",
+    "article_link": "https://lordgoati.us/blog/tail-call/",
+    "discussion_link": "https://lobste.rs/s/bp6bmx/tail_call_interpreters_rust",
+    "title": "Tail-Call Interpreters in Rust"
+  },
+  "@lobstersgram:137": {
+    "telegraph_link": "https://telegra.ph/I-found-a-KVM-guest-to-host-heap-corruption-bug-and-someone-else-got-there-first--Himanshu-Anand--Security--Other-Notes-08-12",
+    "article_link": "https://blog.himanshuanand.com/2026/08/i-found-a-kvm-guest-to-host-heap-corruption-bug-and-someone-else-got-there-first/",
+    "discussion_link": "https://lobste.rs/s/octplv/i_found_kvm_guest_host_heap_corruption_bug",
+    "title": "I found a KVM guest-to-host heap corruption bug and someone else got there first"
+  },
+  "@lobstersgram:138": {
+    "telegraph_link": "https://telegra.ph/GitHub-Stacks-in-Jujutsu--Alan-Norbauer-08-13",
+    "article_link": "https://alan.norbauer.com/articles/github-stacks-with-jujutsu/",
+    "discussion_link": "https://lobste.rs/s/keiw21/github_stacks_jujutsu",
+    "title": "GitHub Stacks in Jujutsu"
+  },
+  "@lobstersgram:139": {
+    "telegraph_link": "https://telegra.ph/henrygdbeszel--Lightweight-server-monitoring-with-historical-data-docker-stats-and-alerts-08-13",
+    "article_link": "https://github.com/henrygd/beszel",
+    "discussion_link": "https://lobste.rs/s/6dw7pl/beszel",
+    "title": "beszel"
+  },
+  "@lobstersgram:140": {
+    "telegraph_link": "https://telegra.ph/Introducing-chestnut---commaai-blog-08-13",
+    "article_link": "https://blog.comma.ai/chestnut/",
+    "discussion_link": "https://lobste.rs/s/m0ure0/introducing_chestnut",
+    "title": "Introducing chestnut"
+  },
+  "@lobstersgram:141": {
+    "telegraph_link": "https://telegra.ph/Does-anyone-run-Postgres-without-PgBouncer---brandurorg-08-13",
+    "article_link": "https://brandur.org/fragments/postgres-without-pgbouncer",
+    "discussion_link": "https://lobste.rs/s/xic1nn/does_anyone_run_postgres_without",
+    "title": "Does anyone run Postgres without PgBouncer?"
+  },
+  "@lobstersgram:142": {
+    "telegraph_link": "https://telegra.ph/How-should-Futhark-expose-irregular-arrays-to-the-programmer-08-13",
+    "article_link": "https://futhark-lang.org/blog/2026-08-12-flatmap.html",
+    "discussion_link": "https://lobste.rs/s/p4oxjz/how_should_futhark_expose_irregular",
+    "title": "How should Futhark expose irregular arrays to the programmer?"
+  },
+  "@lobstersgram:143": {
+    "telegraph_link": "https://telegra.ph/pythons-pre-declared-constants-are-kinda-weird-08-13",
+    "article_link": "https://sebsite.pw/w/20260801-pythonconstants.html",
+    "discussion_link": "https://lobste.rs/s/62kxco/python_s_pre_declared_constants_are_kinda",
+    "title": "python's pre-declared constants are kinda weird"
+  },
+  "@lobstersgram:144": {
+    "telegraph_link": "https://telegra.ph/Introducing-Delta---Zeds-Blog-08-13",
+    "article_link": "https://zed.dev/blog/introducing-delta",
+    "discussion_link": "https://lobste.rs/s/go39b7/zed_introducing_delta",
+    "title": "Zed: Introducing Delta"
+  },
+  "@lobstersgram:145": {
+    "telegraph_link": "https://telegra.ph/On-Hacking---Richard-Stallman-08-13",
+    "article_link": "https://stallman.org/articles/on-hacking.html",
+    "discussion_link": "https://lobste.rs/s/0o3xpp/on_hacking",
+    "title": "On Hacking"
+  },
+  "@lobstersgram:146": {
+    "telegraph_link": "https://telegra.ph/Whats-new-in-Flutter-347--The-Flutter-Blog-08-13-2",
+    "article_link": "https://flutter.dev/blog/whats-new-in-flutter-3-47",
+    "discussion_link": "https://lobste.rs/s/p02oa2/what_s_new_flutter_3_47",
+    "title": "What’s new in Flutter 3.47"
+  },
+  "@lobstersgram:147": {
+    "telegraph_link": "https://telegra.ph/Abstract-Heresies-Why-vibe-code-in-Lisp-08-13",
+    "article_link": "http://funcall.blogspot.com/2026/08/why-vibe-code-in-lisp.html",
+    "discussion_link": "https://lobste.rs/s/tkzdj2/why_vibe_code_lisp",
+    "title": "Why vibe code in Lisp?"
+  },
+  "@lobstersgram:148": {
+    "telegraph_link": "https://telegra.ph/SQLite-How-it-works-by-Richard-Hipp-08-13",
+    "article_link": "https://www.youtube.com/watch?v=ZSKLA81tBis",
+    "discussion_link": "https://lobste.rs/s/v2xrcm/sqlite_how_it_works_by_richard_hipp_2024",
+    "title": "SQLite: How it works, by Richard Hipp (2024)"
+  },
+  "@lobstersgram:149": {
+    "telegraph_link": "https://telegra.ph/AI-is-removing-the-middle-class-of-software-engineering-08-13-2",
+    "article_link": "https://blog.florianherrengt.com/ai-removing-middle-class-software-engineering.html",
+    "discussion_link": "https://lobste.rs/s/xk3ley/ai_is_removing_middle_class_software",
+    "title": "AI is removing the middle class of software engineering"
+  },
+  "@lobstersgram:150": {
+    "telegraph_link": "https://telegra.ph/EuroZig-08-13",
+    "article_link": "http://eurozig.eu/",
+    "discussion_link": "https://lobste.rs/s/rn4sp8/eurozig",
+    "title": "EuroZig"
+  },
+  "@lobstersgram:151": {
+    "telegraph_link": "https://telegra.ph/I-want-extern-fil-c--Domen-Kožar-08-13",
+    "article_link": "https://domenkozar.com/2026/08/13/i-want-extern-fil-c/",
+    "discussion_link": "https://lobste.rs/s/tssf5y/i_want_extern_fil_c",
+    "title": "I want extern \"fil-c\""
+  },
+  "@lobstersgram:152": {
+    "telegraph_link": "https://telegra.ph/xoreaxeaxeaxskitter-creek-bath-salts--Unlocking-everything-on-the-CPU-with-DRAM-scrambling-08-13",
+    "article_link": "https://github.com/xoreaxeaxeax/skitter-creek-bath-salts",
+    "discussion_link": "https://lobste.rs/s/a4zifd/unlocking_everything_on_cpu_with_dram",
+    "title": "Unlocking _everything_ on the CPU with DRAM scrambling"
+  },
+  "@lobstersgram:153": {
+    "telegraph_link": "https://telegra.ph/The-SvelteKit-3-Release-Candidate-is-here-08-13-2",
+    "article_link": "https://svelte.dev/blog/sveltekit-3-release-candidate",
+    "discussion_link": "https://lobste.rs/s/avlnjl/sveltekit_3_release_candidate_is_here",
+    "title": "The SvelteKit 3 Release Candidate is here"
+  },
+  "@lobstersgram:154": {
+    "telegraph_link": "https://telegra.ph/A-Preview-of-Roc-010-by-Richard-Feldman-08-13-3",
+    "article_link": "https://www.youtube.com/watch?v=a7qEOtkkDb8&feature=youtu.be",
+    "discussion_link": "https://lobste.rs/s/utpgi9/preview_roc_0_1_0",
+    "title": "A preview of Roc 0.1.0"
+  },
+  "@lobstersgram:155": {
+    "telegraph_link": "https://telegra.ph/djcoxish-08-14",
+    "article_link": "https://github.com/djc/oxish",
+    "discussion_link": "https://lobste.rs/s/xi7txx/oxish_ssh_server_written_rust",
+    "title": "OxiSH: SSH server written in Rust"
+  },
+  "@lobstersgram:156": {
+    "telegraph_link": "https://telegra.ph/Lets-not-call-it-tech-debt-its-just-mess-08-14",
+    "article_link": "https://www.simplermachines.com/lets-not-call-it-tech-debt-its-just-mess/",
+    "discussion_link": "https://lobste.rs/s/dnlhah/let_s_not_call_it_tech_debt_it_s_just_mess",
+    "title": "Let's not call it \"tech debt,\" it's just \"mess\""
+  },
+  "@lobstersgram:157": {
+    "telegraph_link": "https://telegra.ph/Logging-into-a-Linux-machine-from-a-flip-phone-over-Bluetooth-08-14",
+    "article_link": "https://www.youtube.com/watch?v=eETHOyuSiMA",
+    "discussion_link": "https://lobste.rs/s/4d7o9o/logging_into_linux_machine_from_flip",
+    "title": "Logging into a Linux machine from a flip phone over Bluetooth (2020)"
+  },
+  "@lobstersgram:158": {
+    "telegraph_link": "https://telegra.ph/A-long-division-story---Novak-Kaluđerović---Kolja-08-14",
+    "article_link": "https://kolja.rs/algorithm-d/",
+    "discussion_link": "https://lobste.rs/s/d857ms/long_division_story",
+    "title": "A long division story"
+  },
+  "@lobstersgram:159": {
+    "telegraph_link": "https://telegra.ph/I-Made-the-Worlds-First-Link-Compressor-08-14",
+    "article_link": "https://www.youtube.com/watch?v=TOr1Vvji6jA",
+    "discussion_link": "https://lobste.rs/s/ybo5gr/i_made_world_s_first_link_compressor",
+    "title": "I Made the World's First \"Link Compressor\""
+  },
+  "@lobstersgram:160": {
+    "telegraph_link": "https://telegra.ph/Speeding-Up-small-Ruby-Hashes--byroots-blog-08-14",
+    "article_link": "https://byroot.github.io/ruby/performance/2026/08/13/speeding-up-ruby-hashes.html",
+    "discussion_link": "https://lobste.rs/s/zoexyi/speeding_up_small_ruby_hashes",
+    "title": "Speeding Up (small) Ruby Hashes"
+  },
+  "@lobstersgram:161": {
+    "telegraph_link": "https://telegra.ph/What-are-you-doing-this-weekend--Lobsters-08-14",
+    "article_link": "https://lobste.rs/s/n3pkuh/what_are_you_doing_this_weekend",
+    "discussion_link": "https://lobste.rs/s/n3pkuh/what_are_you_doing_this_weekend",
+    "title": "What are you doing this weekend?"
+  },
+  "@lobstersgram:162": {
+    "telegraph_link": "https://telegra.ph/no-title-08-14-860",
+    "article_link": "https://beyondloom.com/blog/artofchip8.html",
+    "discussion_link": "https://lobste.rs/s/aqmagt/art_chip_8",
+    "title": "The Art of CHIP-8"
+  },
+  "@lobstersgram:163": {
+    "telegraph_link": "https://telegra.ph/The-comments-that-go-into-code-versus-those-that-go-into-the-pull-request-description---The-Old-New-Thing-08-14",
+    "article_link": "https://devblogs.microsoft.com/oldnewthing/20260812-00/?p=112607",
+    "discussion_link": "https://lobste.rs/s/2dsufc/comments_code_vs_pr_description",
+    "title": "Comments in the code vs PR description"
+  },
+  "@lobstersgram:164": {
+    "telegraph_link": "https://telegra.ph/Tech-Notes-Computing-graph-dominators-08-14",
+    "article_link": "https://neugierig.org/software/blog/2026/08/dominators.html",
+    "discussion_link": "https://lobste.rs/s/fliek2/computing_graph_dominators",
+    "title": "Computing graph dominators"
+  },
+  "@lobstersgram:165": {
+    "telegraph_link": "https://telegra.ph/curl-performance--danielhaxxse-08-14",
+    "article_link": "https://daniel.haxx.se/blog/2026/08/14/curl-performance-2/",
+    "discussion_link": "https://lobste.rs/s/avjfxw/curl_performance",
+    "title": "Curl Performance"
+  },
+  "@lobstersgram:166": {
+    "telegraph_link": "https://telegra.ph/Unexpected-to-me-behaviour-in-Lisp-sub-typing--Simon-Dobson-08-14",
+    "article_link": "https://simondobson.org/2026/08/07/strange-behaviour-in-lisp-sub-typing/",
+    "discussion_link": "https://lobste.rs/s/zkgab8/unexpected_me_behaviour_lisp_sub_typing",
+    "title": "Unexpected (to me) behaviour in Lisp sub-typing"
+  },
+  "@lobstersgram:167": {
+    "telegraph_link": "https://telegra.ph/There-Is-Still-No-Silver-Bullet--cekremgithubio-08-14-2",
+    "article_link": "https://cekrem.github.io/posts/there-is-still-no-silver-bullet/",
+    "discussion_link": "https://lobste.rs/s/pf0hfr/there_is_still_no_silver_bullet",
+    "title": "There Is Still No Silver Bullet"
+  },
+  "@lobstersgram:168": {
+    "telegraph_link": "https://telegra.ph/Whos-Tracking-You-Use-This-New-Service-to-Find-Out---Krebs-on-Security-08-14-3",
+    "article_link": "https://krebsonsecurity.com/2026/08/whos-tracking-you-use-this-new-service-to-find-out/",
+    "discussion_link": "https://lobste.rs/s/dfel1t/find_out_who_s_tracking_you_with",
+    "title": "Find out who’s tracking you with DecryptAds"
+  },
+  "@lobstersgram:169": {
+    "telegraph_link": "https://telegra.ph/Desktop-Calendar-A-Design-Journey---The-Thunderbird-Blog-08-14-2",
+    "article_link": "https://blog.thunderbird.net/2026/08/desktop-calendar-a-design-journey/",
+    "discussion_link": "https://lobste.rs/s/lxuwtv/thunderbird_s_desktop_calendar_visual",
+    "title": "Thunderbird’s Desktop Calendar Visual Redesign"
+  },
+  "@lobstersgram:170": {
+    "telegraph_link": "https://telegra.ph/ActivityPub-Won-by-Being-Boring---Owl-Owl-OÜ-08-14",
+    "article_link": "https://o.ee/blog/activitypub-won-by-being-boring/",
+    "discussion_link": "https://lobste.rs/s/ngz2wn/activitypub_won_by_being_boring",
+    "title": "ActivityPub Won by Being Boring"
+  },
+  "@lobstersgram:171": {
+    "telegraph_link": "https://telegra.ph/RISC-V-They-Should-Have-Known-Better---DmitryGR-08-14",
+    "article_link": "https://dmitry.gr/?r=06.%20Thoughts&proj=12.%20RV",
+    "discussion_link": "https://lobste.rs/s/pu3yzg/risc_v_they_should_have_known_better",
+    "title": "RISC-V: They Should Have Known Better"
+  },
+  "@lobstersgram:172": {
+    "telegraph_link": "https://telegra.ph/My-comment-section-is-static-HTML--jvalol-08-15",
+    "article_link": "https://jva.lol/weblog/my-comment-section-is-static-html/",
+    "discussion_link": "https://lobste.rs/s/fjwpeh/my_comment_section_is_static_html",
+    "title": "My comment section is static HTML"
+  },
+  "@lobstersgram:173": {
+    "telegraph_link": "https://telegra.ph/An-Anecdote-Against-Slop-Artifacts-08-15",
+    "article_link": "https://www.markusde.ca/pages/noslop.html",
+    "discussion_link": "https://lobste.rs/s/7tjseu/anecdote_against_slop_artifacts",
+    "title": "An Anecdote Against Slop Artifacts"
+  },
+  "@lobstersgram:174": {
+    "telegraph_link": "https://telegra.ph/RVA23-vs-ARMv9-a-Small-Experiment--GitHub-08-15",
+    "article_link": "https://gist.github.com/camel-cdr/3a7aed17e017e8cab675ad696c7d14af",
+    "discussion_link": "https://lobste.rs/s/lhkquh/rva23_vs_armv9_small_experiment",
+    "title": "RVA23 vs ARMv9 a Small Experiment"
+  },
+  "@lobstersgram:175": {
+    "telegraph_link": "https://telegra.ph/Firefox-is-now-the-last-major-browser-that-still-supports-uBlock-Origin--PCWorld-08-15",
+    "article_link": "https://www.pcworld.com/article/3212428/firefox-is-now-the-last-major-browser-that-still-supports-ublock-origin.html",
+    "discussion_link": "https://lobste.rs/s/lfmss9/firefox_is_now_last_major_browser_still",
+    "title": "Firefox is now the last major browser that still supports uBlock Origin"
+  },
+  "@lobstersgram:176": {
+    "telegraph_link": "https://telegra.ph/vmartinvnek--Nintento-Entertainment-Kernel-Nintendo-emulator-08-15",
+    "article_link": "https://github.com/vmartinv/nek",
+    "discussion_link": "https://lobste.rs/s/nqmm3r/kernel_only_runs_nes_emulator",
+    "title": "Kernel that only runs an NES emulator"
+  },
+  "@lobstersgram:177": {
+    "telegraph_link": "https://telegra.ph/nixpkgs-multiverse-fast-mode--Farid-Zakarias-Blog-08-15",
+    "article_link": "https://fzakaria.com/2026/08/14/nixpkgs-multiverse-fast-mode",
+    "discussion_link": "https://lobste.rs/s/1r13yd/nixpkgs_multiverse_fast_mode",
+    "title": "nixpkgs-multiverse: fast mode"
+  },
+  "@lobstersgram:178": {
+    "telegraph_link": "https://telegra.ph/How-2004-RuneScape-fit-a-multiplayer-RPG-into-56k-dial-up--jkmdev-08-15-2",
+    "article_link": "https://jkm.dev/posts/how-2004-runescape-fit-a-multiplayer-rpg-into-56k-dialup/",
+    "discussion_link": "https://lobste.rs/s/bedqru/how_2004_runescape_fit_multiplayer_rpg",
+    "title": "How 2004 RuneScape fit a multiplayer RPG into 56k dial-up"
+  },
+  "@lobstersgram:179": {
+    "telegraph_link": "https://telegra.ph/Flirt-GitHub-and-Mailing-List-backends-08-15",
+    "article_link": "https://blog.buenzli.dev/flirt-github-and-mailing-list/",
+    "discussion_link": "https://lobste.rs/s/scwuwv/flirt_github_mailing_list_backends",
+    "title": "Flirt: GitHub and Mailing List backends"
+  },
+  "@lobstersgram:180": {
+    "telegraph_link": "https://telegra.ph/Everything-is-about-to-go-dark---A-Few-Thoughts-on-Cryptographic-Engineering-08-15",
+    "article_link": "https://blog.cryptographyengineering.com/2026/08/14/everything-is-about-to-go-dark/",
+    "discussion_link": "https://lobste.rs/s/w5rmwi/everything_is_about_go_dark",
+    "title": "Everything is about to “go dark”"
+  },
+  "@lobstersgram:181": {
+    "telegraph_link": "https://telegra.ph/Are-Latent-Reasoning-Models-Easily-Interpretable-08-15",
+    "article_link": "https://arxiv.org/abs/2604.04902",
+    "discussion_link": "https://lobste.rs/s/obo3ie/are_latent_reasoning_models_easily",
+    "title": "Are Latent Reasoning Models Easily Interpretable?"
+  },
+  "@lobstersgram:182": {
+    "telegraph_link": "https://telegra.ph/Recap-Software-Should-Work-2026--Ben-Cornia-08-15",
+    "article_link": "https://bencornia.com/blog/recap-software-should-work-2026",
+    "discussion_link": "https://lobste.rs/s/khcojf/recap_software_should_work_2026_ben",
+    "title": "Recap: Software Should Work 2026 | Ben Cornia"
+  },
+  "@lobstersgram:183": {
+    "telegraph_link": "https://telegra.ph/lazy-promiselazy-promise--A-Promise-like-primitive-which-is-lazy-cancelable-emits-synchronously-instead-of-in-a-microtask-and-su-08-16",
+    "article_link": "https://github.com/lazy-promise/lazy-promise",
+    "discussion_link": "https://lobste.rs/s/djlv1s/what_do_you_think_lazypromise_as",
+    "title": "What do you think of LazyPromise as a lightweight alternative to Effect?"
+  },
+  "@lobstersgram:184": {
+    "telegraph_link": "https://telegra.ph/paperpaperpdf-at-main--cordiversepaper--GitHub-08-16",
+    "article_link": "https://github.com/cordiverse/paper/blob/main/paper.pdf",
+    "discussion_link": "https://lobste.rs/s/wwf3th/programming_paradigm_for",
+    "title": "A Programming Paradigm for Spatiotemporal Composability"
+  },
+  "@lobstersgram:185": {
+    "telegraph_link": "https://telegra.ph/Whats-missing-to-have-reproducible-builds-on-PyPI-08-16",
+    "article_link": "https://snarky.ca/whats-missing-to-have-reproducible-builds-on-pypi/",
+    "discussion_link": "https://lobste.rs/s/rexoqj/what_s_missing_have_reproducible_builds",
+    "title": "What's missing to have reproducible builds on PyPI"
+  },
+  "@lobstersgram:186": {
+    "telegraph_link": "https://telegra.ph/Aiki-Alpha-Milestone-26-Update---decusers-blog-08-16",
+    "article_link": "https://decuser.github.io/posts/aiki-alpha-mileston26-update/",
+    "discussion_link": "https://lobste.rs/s/qlvnlu/aiki_reaches_recursive_self",
+    "title": "Aiki reaches recursive self-interpretation"
+  },
+  "@lobstersgram:187": {
+    "telegraph_link": "https://telegra.ph/Software-Engineering-fundamentals-matter-more-than-ever---Rhonabwy-08-16-2",
+    "article_link": "https://rhonabwy.com/2026/08/15/software-engineering-fundamentals-matter-more-than-ever/",
+    "discussion_link": "https://lobste.rs/s/iuqkgi/software_engineering_fundamentals",
+    "title": "Software Engineering fundamentals matter more than ever"
+  },
+  "@lobstersgram:188": {
+    "telegraph_link": "https://telegra.ph/Main-Stage---Tent--JuliaCon-Global-2026--Day-1-08-16",
+    "article_link": "https://www.youtube.com/watch?v=MQeIerDsReA&t=673s",
+    "discussion_link": "https://lobste.rs/s/5rh6fs/haskell_origins_evolution_future",
+    "title": "Haskell: origins, evolution, and future"
+  },
+  "@lobstersgram:189": {
+    "telegraph_link": "https://telegra.ph/The-essence-of-architectural-work---Part-5-08-16",
+    "article_link": "https://www.ufried.com/blog/essence_of_architecture_5/",
+    "discussion_link": "https://lobste.rs/s/cdzcx4/essence_architectural_work_part_5",
+    "title": "The essence of architectural work - Part 5"
+  },
+  "@lobstersgram:190": {
+    "telegraph_link": "https://telegra.ph/Monitoring-SystemD-services-with-Healthchecksio--passbecom-08-16",
+    "article_link": "https://passbe.com/2022/healthchecks-io-systemd-checks/",
+    "discussion_link": "https://lobste.rs/s/dxfl0r/monitoring_systemd_services_with",
+    "title": "Monitoring SystemD services with Healthchecks.io"
+  },
+  "@lobstersgram:191": {
+    "telegraph_link": "https://telegra.ph/A-Tour-of-Magits-Status-Interface--heiwipers-website-08-16",
+    "article_link": "https://heiwiper.com/posts/magit-status-tour/",
+    "discussion_link": "https://lobste.rs/s/bhhcf3/tour_magit_s_status_interface",
+    "title": "A Tour of Magit's Status Interface"
+  },
+  "@lobstersgram:192": {
+    "telegraph_link": "https://telegra.ph/djr-747nokia-dct3-emulator--Open-source-emulator--analysis-toolkit-for-Nokia-DCT3-phones-331034105210821082508850-Boots-real-fir-08-16",
+    "article_link": "https://github.com/djr-747/nokia-dct3-emulator",
+    "discussion_link": "https://lobste.rs/s/pb8wvr/nokia_dct3_emulator_open_source_emulator",
+    "title": "nokia-dct3-emulator: Open-source emulator + analysis toolkit for Nokia DCT3 phones"
+  },
+  "@lobstersgram:193": {
+    "telegraph_link": "https://telegra.ph/CVE-2026-33696-From-a-Schema-Name-to-RCE-in-n8n--Simon-Koeck-08-16",
+    "article_link": "https://simonkoeck.com/writeups/n8n-gsuiteadmin-prototype-pollution-rce",
+    "discussion_link": "https://lobste.rs/s/0emxj9/cve_2026_33696_from_schema_name_rce_n8n",
+    "title": "CVE-2026-33696: From a Schema Name to RCE in n8n"
+  },
+  "@lobstersgram:194": {
+    "telegraph_link": "https://telegra.ph/You-can-just-choose-how-many-bugs-you-want-now--Read-the-Tea-Leaves-08-16",
+    "article_link": "https://nolanlawson.com/2026/08/16/you-can-just-choose-how-many-bugs-you-want-now/",
+    "discussion_link": "https://lobste.rs/s/8izobt/you_can_just_choose_how_many_bugs_you_want",
+    "title": "You can just choose how many bugs you want now"
+  },
+  "@lobstersgram:195": {
+    "telegraph_link": "https://telegra.ph/Anti-Social-Media--Christian-Heilmann-08-16",
+    "article_link": "https://christianheilmann.com/2026/08/11/anti-social-media/",
+    "discussion_link": "https://lobste.rs/s/zjg7ux/anti_social_media",
+    "title": "Anti-Social Media"
+  },
+  "@lobstersgram:196": {
+    "telegraph_link": "https://telegra.ph/A-Third-World-Embedded-Engineer-Responds-to-RISC-V-They-Should-Have-Known-Better-08-16-2",
+    "article_link": "https://rvembedded.com/blog_post/12/",
+    "discussion_link": "https://lobste.rs/s/zeqgd4/third_world_embedded_engineer_responds",
+    "title": "A Third World Embedded Engineer Responds to \"RISC-V: They Should Have Known Better\""
+  },
+  "@lobstersgram:197": {
+    "telegraph_link": "https://telegra.ph/I-think-theres-a-lot-of-value-in-these---Unsung-08-16",
+    "article_link": "https://unsung.aresluna.org/i-think-theres-a-lot-of-value-in-these/",
+    "discussion_link": "https://lobste.rs/s/xhliz8/human_interface_guidelines_from_various",
+    "title": "Human Interface Guidelines from various platforms"
+  },
+  "@lobstersgram:198": {
+    "telegraph_link": "https://telegra.ph/Models-Are-Getting-Dumber-on-Purpose---Walter-van-der-Giessen-08-16-2",
+    "article_link": "https://w4g1.dev/blog/models-are-getting-dumber-on-purpose",
+    "discussion_link": "https://lobste.rs/s/cgpbme/models_are_getting_dumber_on_purpose",
+    "title": "Models Are Getting Dumber on Purpose"
+  },
+  "@lobstersgram:199": {
+    "telegraph_link": "https://telegra.ph/A-faster-way-to-calculate-the-day-of-the-week-08-16-2",
+    "article_link": "https://www.benjoffe.com/fast-day-of-week",
+    "discussion_link": "https://lobste.rs/s/ln3dao/faster_way_calculate_day_week",
+    "title": "A faster way to calculate the day-of-the-week"
+  },
+  "@lobstersgram:200": {
+    "telegraph_link": "https://telegra.ph/Every-Fucking-Website---Slop-Edition-08-16",
+    "article_link": "https://op.tngl.io/every-fucking-website/",
+    "discussion_link": "https://lobste.rs/s/ii5tun/every_fucking_website",
+    "title": "Every Fucking Website"
+  },
+  "@lobstersgram:201": {
+    "telegraph_link": "https://telegra.ph/AI-Software-Development---What-Does-The-Data-Say---Codemanships-Blog-08-17",
+    "article_link": "https://codemanship.wordpress.com/2026/08/12/ai-software-development-what-does-the-data-say/",
+    "discussion_link": "https://lobste.rs/s/joyawz/ai_software_development_what_does_data",
+    "title": "AI Software Development – What Does The Data Say?"
+  },
+  "@lobstersgram:202": {
+    "telegraph_link": "https://telegra.ph/The-Limits-of-AI---Hubert-Dreyfus-1985-08-17",
+    "article_link": "https://www.youtube.com/watch?v=ePsQksj99LM",
+    "discussion_link": "https://lobste.rs/s/xculjp/limits_ai_hubert_dreyfus_1985",
+    "title": "The Limits of AI - Hubert Dreyfus (1985)"
+  },
+  "@lobstersgram:203": {
+    "telegraph_link": "https://telegra.ph/Ponys-Arena-Allocator---Pony-08-17",
+    "article_link": "https://www.ponylang.io/blog/2026/08/ponys-arena-allocator/",
+    "discussion_link": "https://lobste.rs/s/vnpw9j/pony_s_arena_allocator",
+    "title": "Pony's Arena Allocator"
+  },
+  "@lobstersgram:204": {
+    "telegraph_link": "https://telegra.ph/WEBMASTER-a-manifesto-for-everyone--brennanday-08-17-2",
+    "article_link": "https://brennan.day/webmaster-a-manifesto-for-everyone/",
+    "discussion_link": "https://lobste.rs/s/g1rpmg/webmaster_manifesto_for_everyone",
+    "title": "WEBMASTER@ a manifesto for everyone"
+  },
+  "@lobstersgram:205": {
+    "telegraph_link": "https://telegra.ph/SCM-RIGHTS-API-quirks--GitHub-08-17",
+    "article_link": "https://gist.github.com/kentonv/bc7592af98c68ba2738f4436920868dc",
+    "discussion_link": "https://lobste.rs/s/qcasbd/scm_rights_api_quirks_2019",
+    "title": "SCM_RIGHTS API quirks (2019)"
+  },
+  "@lobstersgram:206": {
+    "telegraph_link": "https://telegra.ph/Agents-in-Orbs---Amp-08-17",
+    "article_link": "https://ampcode.com/news/agents-in-orbs",
+    "discussion_link": "https://lobste.rs/s/th88mx/agents_orbs",
+    "title": "Agents in Orbs"
+  },
+  "@lobstersgram:207": {
+    "telegraph_link": "https://telegra.ph/What-Comes-After-FOSS---Digital-Infrastructure-Insights-Fund-08-17",
+    "article_link": "https://infrastructureinsights.fund/projects/what-comes-after-foss/",
+    "discussion_link": "https://lobste.rs/s/i9u22k/what_comes_after_foss",
+    "title": "(What Comes) After FOSS?"
+  },
+  "@lobstersgram:208": {
+    "telegraph_link": "https://telegra.ph/Build-time-systemd-schedule---Gabriel-Volpe-08-17",
+    "article_link": "https://gvolpe.com/blog/systemd-schedule/",
+    "discussion_link": "https://lobste.rs/s/irgjfw/build_time_systemd_schedule",
+    "title": "Build-time systemd schedule"
+  },
+  "@lobstersgram:209": {
+    "telegraph_link": "https://telegra.ph/Four-levels-of-in-place-initialization---Yosh-Wuyts---Blog-08-17",
+    "article_link": "https://blog.yoshuawuyts.com/four-levels-of-in-place-initialization/",
+    "discussion_link": "https://lobste.rs/s/snhfrq/four_levels_place_initialization",
+    "title": "Four levels of in-place initialization"
+  },
+  "@lobstersgram:210": {
+    "telegraph_link": "https://telegra.ph/What-are-you-doing-this-week--Lobsters-08-17",
+    "article_link": "https://lobste.rs/s/5p0kgt/what_are_you_doing_this_week",
+    "discussion_link": "https://lobste.rs/s/5p0kgt/what_are_you_doing_this_week",
+    "title": "What are you doing this week?"
+  },
+  "@lobstersgram:211": {
+    "telegraph_link": "https://telegra.ph/Passphrase-less-reboots-using-kexec-under-NixOS--bevuta-IT-08-17",
+    "article_link": "https://www.bevuta.com/en/blog/passphraseless-reboots-using-kexec/",
+    "discussion_link": "https://lobste.rs/s/nrnwc6/passphrase_less_reboots_using_kexec",
+    "title": "Passphrase-less reboots using kexec under NixOS"
+  },
+  "@lobstersgram:212": {
+    "telegraph_link": "https://telegra.ph/Writing-a-Fast-Compiler---Marc-Kerbiquet-08-17",
+    "article_link": "https://tibleiz.net/blog/2024-02-04-writing-a-fast-compiler.html",
+    "discussion_link": "https://lobste.rs/s/6i1at9/writing_fast_compiler",
+    "title": "Writing a Fast Compiler"
+  },
+  "@lobstersgram:213": {
+    "telegraph_link": "https://telegra.ph/Vetted-AI-code-is-hard-to-justify-08-17-2",
+    "article_link": "https://amoffat.github.io/blog/vetting-burnout.html",
+    "discussion_link": "https://lobste.rs/s/os20fa/vetted_ai_code_is_hard_justify",
+    "title": "Vetted AI code is hard to justify"
+  },
+  "@lobstersgram:214": {
+    "telegraph_link": "https://telegra.ph/ANNOUNCE-linux-72-ck1-MuQSS-CPU-scheduler-for-linux-72---Con-Kolivas-08-17",
+    "article_link": "https://lore.kernel.org/lkml/CABqErrH=oQ3povVuSPhRON97v63=mB85jQmZjf443ofdYAuxxw@mail.gmail.com/",
+    "discussion_link": "https://lobste.rs/s/o5vcbw/muqss_cpu_scheduler_for_linux_7_2_by_con",
+    "title": "MuQSS CPU scheduler for Linux 7.2 by Con Kolivas"
+  },
+  "@lobstersgram:215": {
+    "telegraph_link": "https://telegra.ph/Thinking-about-tests-assertions-and-matchers-08-17",
+    "article_link": "https://zverok.space/blog/2026-08-16-assertions-and-matchers.html",
+    "discussion_link": "https://lobste.rs/s/usr2t2/thinking_about_tests_assertions",
+    "title": "Thinking about tests: assertions and matchers"
+  },
+  "@lobstersgram:216": {
+    "telegraph_link": "https://telegra.ph/Stratum-1-PTP-Grandmaster-CM4--SR1723U10-Part-1--Opscode---Linux--Infrastructure-Engineering-08-17",
+    "article_link": "https://opscode.io/posts/ptp-grandmaster-cm4-sr1723u10/",
+    "discussion_link": "https://lobste.rs/s/mekgva/stratum_1_ptp_grandmaster_cm4_sr1723u10",
+    "title": "Stratum 1 PTP Grandmaster: CM4 + SR1723U10 (Part 1)"
+  },
+  "@lobstersgram:217": {
+    "telegraph_link": "https://telegra.ph/Does-it-make-sense-to-switch-to-a-Github-Alternative---Lobsters-08-17",
+    "article_link": "https://lobste.rs/s/0zdh32/does_it_make_sense_switch_github",
+    "discussion_link": "https://lobste.rs/s/0zdh32/does_it_make_sense_switch_github",
+    "title": "Does it make sense to switch to a Github Alternative ?"
+  },
+  "@lobstersgram:218": {
+    "telegraph_link": "https://telegra.ph/When-the-Down-Arrow-is-not-an-Upside-Down-Up-Arrow-08-17",
+    "article_link": "https://thefloatingcontinent.com/blog/upside-down-arrow-unicode/",
+    "discussion_link": "https://lobste.rs/s/gwc2me/when_down_arrow_is_not_upside_down_up_arrow",
+    "title": "When the Down Arrow is not an Upside-Down Up Arrow (2022)"
+  },
+  "@lobstersgram:219": {
+    "telegraph_link": "https://telegra.ph/A-Preview-of-DuckDB-v20---DuckDB-08-17-2",
+    "article_link": "https://duckdb.org/2026/08/17/duckdb-20-highlights",
+    "discussion_link": "https://lobste.rs/s/wya4zt/preview_duckdb_v2_0",
+    "title": "A Preview of DuckDB v2.0"
+  },
+  "@lobstersgram:220": {
+    "telegraph_link": "https://telegra.ph/Qwen-38-27B-is-excellent-but-it-defaults-to-wildly-overthinking-things-08-17-81",
+    "article_link": "https://simonwillison.net/2026/Aug/16/qwen-38-27b/",
+    "discussion_link": "https://lobste.rs/s/k7myyp/qwen_3_8_27b_is_excellent_it_defaults",
+    "title": "Qwen 3.8 27B is excellent, but it defaults to wildly overthinking things"
+  },
+  "@lobstersgram:221": {
+    "telegraph_link": "https://telegra.ph/GitHub-has-alternatives-but-no-replacement---Lalit-Maganti-08-17",
+    "article_link": "https://lalitm.com/post/github-alternatives/",
+    "discussion_link": "https://lobste.rs/s/izrwdc/github_has_alternatives_no_replacement",
+    "title": "GitHub has alternatives, but no replacement"
+  },
+  "@lobstersgram:222": {
+    "telegraph_link": "https://telegra.ph/How-Go-detects-struct-copies-with-syncnoCopy-08-17-7",
+    "article_link": "https://func25.dev/posts/go-sync-nocopy/",
+    "discussion_link": "https://lobste.rs/s/ttrnw5/how_go_detects_struct_copies_with_sync",
+    "title": "How Go detects struct copies with sync.noCopy"
+  },
+  "@lobstersgram:223": {
+    "telegraph_link": "https://telegra.ph/We-Tracked-a-Shipment-of-Rare-Books-It-Ended-at-an-Amazon-AI-Training-Facility-08-17-5",
+    "article_link": "https://simonwillison.net/2026/Aug/17/we-tracked-a-shipment-of-rare-books-it-ended-at-an-amazon-ai-tra/",
+    "discussion_link": "https://lobste.rs/s/flcpeu/we_tracked_shipment_rare_books_it_ended_at",
+    "title": "We Tracked a Shipment of Rare Books. It Ended at an Amazon AI Training Facility"
+  },
+  "@lobstersgram:224": {
+    "telegraph_link": "https://telegra.ph/How-Bluesky-draws-its-logo-on-screenshots-08-17",
+    "article_link": "https://timmarinin.net/2026/bluesky-screenshots/",
+    "discussion_link": "https://lobste.rs/s/05ocit/how_bluesky_draws_its_logo_on_screenshots",
+    "title": "How Bluesky draws its logo on screenshots"
+  },
+  "@lobstersgram:225": {
+    "telegraph_link": "https://telegra.ph/AIDR-AI-Didnt-Read---Rick-Maneliuss-Newsletter-08-17-2",
+    "article_link": "https://www.rickmanelius.com/p/aidr-ai-didnt-read",
+    "discussion_link": "https://lobste.rs/s/fx9pic/ai_dr_ai_didn_t_read",
+    "title": "AI;DR (AI; Didn’t Read)"
+  },
+  "@lobstersgram:226": {
+    "telegraph_link": "https://telegra.ph/iterate-think-thoughts-A-practical-workflow-for-LLM-assisted-development-08-18",
+    "article_link": "https://yogthos.net/posts/2026-08-17-llm-workflow.html",
+    "discussion_link": "https://lobste.rs/s/bx8zu1/practical_workflow_for_llm_assisted",
+    "title": "A practical workflow for LLM-assisted development"
+  },
+  "@lobstersgram:227": {
+    "telegraph_link": "https://telegra.ph/How-AI-text-watermarking-works-a-visual-guide-08-18",
+    "article_link": "https://declaude.org/watermarking/",
+    "discussion_link": "https://lobste.rs/s/5odlru/how_ai_text_watermarking_works_visual",
+    "title": "How AI text watermarking works: a visual guide"
+  },
+  "@lobstersgram:228": {
+    "telegraph_link": "https://telegra.ph/Quake-Shareware-a-CD-ROM-just-a-little-too-full-08-18-5",
+    "article_link": "https://fabiensanglard.net/quake_shareware_cd/index.html",
+    "discussion_link": "https://lobste.rs/s/j5xjf2/quake_shareware_cd_rom_just_little_too",
+    "title": "Quake Shareware, a CD-ROM just a little too full"
+  },
+  "@lobstersgram:229": {
+    "telegraph_link": "https://telegra.ph/Retrofitting-a-build-system-into-a-compiler--Notes-from-the-Windows-corner-08-18",
+    "article_link": "https://www.dra27.uk/blog/platform/2025/09/25/building-with-effects.html",
+    "discussion_link": "https://lobste.rs/s/izkimy/retrofitting_build_system_into_compiler",
+    "title": "Retrofitting a build system into a compiler"
+  },
+  "@lobstersgram:230": {
+    "telegraph_link": "https://telegra.ph/codereportmax-odd-binaryWHY-BQN-WINSmd-08-18",
+    "article_link": "https://github.com/codereport/max-odd-binary/blob/main/WHY_BQN_WINS.md",
+    "discussion_link": "https://lobste.rs/s/lqelb1/why_bqn_wins",
+    "title": "Why BQN Wins"
+  },
+  "@lobstersgram:231": {
+    "telegraph_link": "https://telegra.ph/The-benchmarkpocalypse-08-18-3",
+    "article_link": "https://danluu.com/benchpocalypse/",
+    "discussion_link": "https://lobste.rs/s/wlofzl/benchmarkpocalypse",
+    "title": "The benchmarkpocalypse"
+  },
+  "@lobstersgram:232": {
+    "telegraph_link": "https://telegra.ph/Your-Finances---made-simple--Actual-Budget-08-18",
+    "article_link": "https://actualbudget.org/",
+    "discussion_link": "https://lobste.rs/s/tfjoxv/actual_budget",
+    "title": "Actual Budget"
+  },
+  "@lobstersgram:233": {
+    "telegraph_link": "https://telegra.ph/Encoding-vcmpps-and-vcmppd-08-18",
+    "article_link": "https://www.corsix.org/content/encoding-vcmpps-vcmppd",
+    "discussion_link": "https://lobste.rs/s/qhs0pn/encoding_vcmpps_vcmppd",
+    "title": "Encoding vcmpps and vcmppd"
+  },
+  "@lobstersgram:234": {
+    "telegraph_link": "https://telegra.ph/Biboumi---XMPP-gateway-to-IRC---biboumi-100-documentation-08-18",
+    "article_link": "https://biboumi.codeberg.page/doc/",
+    "discussion_link": "https://lobste.rs/s/ih4bmy/biboumi_xmpp_gateway_irc",
+    "title": "Biboumi – XMPP gateway to IRC"
+  },
+  "@lobstersgram:235": {
+    "telegraph_link": "https://telegra.ph/Rethinking-Database-Programming-08-18-3",
+    "article_link": "https://acadia.engineering/blog/rethinking-database-programming",
+    "discussion_link": "https://lobste.rs/s/ykq7ym/rethinking_database_programming",
+    "title": "Rethinking Database Programming"
+  },
+  "@lobstersgram:236": {
+    "telegraph_link": "https://telegra.ph/How-I-browse-the-Web-with-uBlock-Hard-Mode-08-18",
+    "article_link": "https://untrusem.party/blog/how-I-browse-the-web-with-Ublock-Hard-Mode.html",
+    "discussion_link": "https://lobste.rs/s/nsywuo/how_i_browse_web_with_ublock_hard_mode",
+    "title": "How I browse the Web with uBlock (Hard Mode)"
+  },
+  "@lobstersgram:237": {
+    "telegraph_link": "https://telegra.ph/Selective-Applicative-Functors-08-18",
+    "article_link": "https://blog.veritates.love/selective-applicatives-theoretical-basis",
+    "discussion_link": "https://lobste.rs/s/jin8t5/selective_applicative_functors",
+    "title": "Selective Applicative Functors"
+  },
+  "@lobstersgram:238": {
+    "telegraph_link": "https://telegra.ph/Using-the-railway-network-as-a-flatbed-scanner-08-18",
+    "article_link": "https://philo.gay/linecam/",
+    "discussion_link": "https://lobste.rs/s/n7i1jn/using_railway_network_as_flatbed_scanner",
+    "title": "Using the railway network as a flatbed scanner"
+  },
+  "@lobstersgram:239": {
+    "telegraph_link": "https://telegra.ph/gajuscss-in-js-arena--Comparison-of-modern-CSS-in-JS-frameworks-08-18",
+    "article_link": "https://github.com/gajus/css-in-js-arena",
+    "discussion_link": "https://lobste.rs/s/wj7pei/css_js_arena_bamboo_stylex_panda_on_pixel",
+    "title": "CSS-in-JS Arena Bamboo, StyleX and Panda on Pixel-Identical Apps"
+  },
+  "@lobstersgram:240": {
+    "telegraph_link": "https://telegra.ph/Fairphone-6--PostmarketOS-working-main-camera---Catcrafts-08-18",
+    "article_link": "https://catcrafts.net/posts/fairphone-6-postmarketos-working-main-camera",
+    "discussion_link": "https://lobste.rs/s/hisxut/fairphone_6_postmarketos_working_main",
+    "title": "Fairphone 6 + PostmarketOS working main camera"
+  },
+  "@lobstersgram:241": {
+    "telegraph_link": "https://telegra.ph/What-software-do-you-use-daily-in-2026--Lobsters-08-18",
+    "article_link": "https://lobste.rs/s/ttxwdz/what_software_do_you_use_daily_2026",
+    "discussion_link": "https://lobste.rs/s/ttxwdz/what_software_do_you_use_daily_2026",
+    "title": "What software do you use daily in 2026?"
+  },
+  "@lobstersgram:242": {
+    "telegraph_link": "https://telegra.ph/Inline-asm-Templates-Overview--Odin-Programming-Language-08-18",
+    "article_link": "https://odin-lang.org/docs/inline-asm/",
+    "discussion_link": "https://lobste.rs/s/loltt2/odin_s_new_inline_assembly_templates",
+    "title": "Odin's New Inline Assembly Templates"
+  },
+  "@lobstersgram:243": {
+    "telegraph_link": "https://telegra.ph/Kakoune---Official-site-08-18",
+    "article_link": "https://kakoune.org/",
+    "discussion_link": "https://lobste.rs/s/3dqrwr/kakoune_code_editor",
+    "title": "Kakoune code editor"
+  },
+  "@lobstersgram:244": {
+    "telegraph_link": "https://telegra.ph/Hyper-Customized-One-Off-Software-for-Cheap-08-18",
+    "article_link": "https://blog.gnoack.org/post/hyper-customized-one-off-software",
+    "discussion_link": "https://lobste.rs/s/tmlrxs/hyper_customized_one_off_software_for",
+    "title": "Hyper-Customized One-Off Software for Cheap"
+  },
+  "@lobstersgram:245": {
+    "telegraph_link": "https://telegra.ph/GitHub-Status---Incident-with-GitHubcom-08-19",
+    "article_link": "https://www.githubstatus.com/incidents/zkxwbgr0cnmx",
+    "discussion_link": "https://lobste.rs/s/ljhgcd/incident_report_for_github_outage_on_2026",
+    "title": "Incident Report for GitHub outage on 2026-08-17"
+  },
+  "@lobstersgram:246": {
+    "telegraph_link": "https://telegra.ph/Organizing-in-Layer-8--Building-Tech-in-Democratic-Socialists-of-America-08-19",
+    "article_link": "https://www.youtube.com/watch?v=-koLM6yT5FY",
+    "discussion_link": "https://lobste.rs/s/aqwiot/organizing_layer_8_building_tech",
+    "title": "Organizing in Layer 8 – Building Tech in Democratic Socialists of America"
+  },
+  "@lobstersgram:247": {
+    "telegraph_link": "https://telegra.ph/When-strlower-is-a-security-vulnerability-in-Python---Seth-Larson-08-19",
+    "article_link": "https://sethmlarson.dev/when-str-lower-is-a-security-vulnerability",
+    "discussion_link": "https://lobste.rs/s/ap9w8i/when_str_lower_is_security_vulnerability",
+    "title": "When str.lower() is a security vulnerability in Python"
+  },
+  "@lobstersgram:248": {
+    "telegraph_link": "https://telegra.ph/50-Laying-the-foundation---Mastodon-Blog-08-19",
+    "article_link": "https://blog.joinmastodon.org/2026/08/5.0-laying-the-foundation/",
+    "discussion_link": "https://lobste.rs/s/m0okh1/mastodon_5_0_laying_foundation",
+    "title": "Mastodon 5.0: Laying the foundation"
+  },
+  "@lobstersgram:249": {
+    "telegraph_link": "https://telegra.ph/littledivydgit--Git-forge-on-Durable-Objects-08-19",
+    "article_link": "https://github.com/littledivy/dgit",
+    "discussion_link": "https://lobste.rs/s/vbaang/dgit_git_forge_on_durable_objects",
+    "title": "dgit: Git forge on Durable Objects"
+  },
+  "@lobstersgram:250": {
+    "telegraph_link": "https://telegra.ph/Claude-and-I-built-an-app---Folkwolfnet-08-19",
+    "article_link": "https://folkwolf.net/claude-and-i-built-an-app/",
+    "discussion_link": "https://lobste.rs/s/r8x9et/claude_i_built_app",
+    "title": "Claude and I built an app"
+  },
+  "@lobstersgram:251": {
+    "telegraph_link": "https://telegra.ph/How-Bluesky-draws-its-logo-on-screenshots-08-19",
+    "article_link": "https://timmarinin.net/2026/bluesky-screenshots/",
+    "discussion_link": "https://lobste.rs/s/05ocit/how_bluesky_draws_its_logo_on_screenshots",
+    "title": "How Bluesky draws its logo on screenshots"
+  },
+  "@lobstersgram:252": {
+    "telegraph_link": "https://telegra.ph/Alibabas-TSMC-Built-5nm-RISC-V-Chip-XuanTie-C950-Now-Runs-Qwen-38-27B-Model-Natively-Unlocking-Massive-Vertical-Integration-Tail-08-19",
+    "article_link": "https://wccftech.com/alibabas-tsmc-built-5nm-risc-v-chip-xuantie-c950-now-runs-qwen-3-8-27b-model-natively-unlocking-massive-vertical-integration-tailwinds/",
+    "discussion_link": "https://lobste.rs/s/5kw58e/alibaba_s_tsmc_built_5nm_risc_v_chip",
+    "title": "Alibaba's TSMC-Built 5nm RISC-V Chip, XuanTie C950, Now Runs Qwen-3.8 27B Model Natively, Unlocking Massive Vertical Integration Tailwinds"
+  },
+  "@lobstersgram:253": {
+    "telegraph_link": "https://telegra.ph/Susan-Kare-Designing-Icons--Graphics-For-the-Original-Mac-08-19",
+    "article_link": "https://www.youtube.com/watch?v=YEvLKzsEwMw",
+    "discussion_link": "https://lobste.rs/s/l5rmvg/susan_kare_designing_icons_graphics_for",
+    "title": "Susan Kare: Designing Icons & Graphics For the Original Mac"
+  },
+  "@lobstersgram:254": {
+    "telegraph_link": "https://telegra.ph/Things-I-want-in-a-modern-relational-query-language---the-sporks-space-08-19",
+    "article_link": "https://sporks.space/2026/08/19/things-i-want-in-a-modern-relational-query-language/",
+    "discussion_link": "https://lobste.rs/s/p5lkok/things_i_want_modern_relational_query",
+    "title": "Things I want in a modern relational query language"
+  },
+  "@lobstersgram:255": {
+    "telegraph_link": "https://telegra.ph/Fargate-Is-Not-Firecracker---Justin-Garrison-08-19",
+    "article_link": "https://justingarrison.com/blog/2024-02-08-fargate-is-not-firecracker/",
+    "discussion_link": "https://lobste.rs/s/qrbu3o/fargate_is_not_firecracker_2024",
+    "title": "Fargate Is Not Firecracker (2024)"
+  },
+  "@lobstersgram:256": {
+    "telegraph_link": "https://telegra.ph/a-filename-when-none-exists--danielhaxxse-08-19",
+    "article_link": "https://daniel.haxx.se/blog/2024/08/19/a-filename-when-none-exists/",
+    "discussion_link": "https://lobste.rs/s/xftgtd/filename_when_none_exists",
+    "title": "a filename when none exists"
+  },
+  "@lobstersgram:257": {
+    "telegraph_link": "https://telegra.ph/Palomar---a-registry-of-Lean-verified-mathematics--Whats-new-08-19-2",
+    "article_link": "https://terrytao.wordpress.com/2026/08/18/palomar-a-registry-of-lean-verified-mathematics/",
+    "discussion_link": "https://lobste.rs/s/rjxezi/palomar_registry_lean_verified",
+    "title": "Palomar – a registry of Lean verified mathematics"
+  },
+  "@lobstersgram:258": {
+    "telegraph_link": "https://telegra.ph/Bun-14-Rust-rewrite-is-not-looking-good--Tero-Piirainen-08-19-2",
+    "article_link": "https://tipiirai.com/writing/bun-rust-rewrite-worries",
+    "discussion_link": "https://lobste.rs/s/caubyr/bun_1_4_rust_rewrite_is_not_looking_good",
+    "title": "Bun 1.4 Rust rewrite is not looking good"
+  },
+  "@lobstersgram:259": {
+    "telegraph_link": "https://telegra.ph/pg83solo--Portable-Linux-binaries-solved-08-19",
+    "article_link": "https://github.com/pg83/solo",
+    "discussion_link": "https://lobste.rs/s/dajsxn/solo_so_loader_for_static_linux_binaries",
+    "title": "Solo: a .so loader for static Linux binaries"
+  },
+  "@lobstersgram:260": {
+    "telegraph_link": "https://telegra.ph/AeonBox-Logical-Guardrails-for-Agents-by-Alcides-Fonseca-08-19",
+    "article_link": "https://wiki.alcidesfonseca.com/blog/aeonbox-logical-guardrails-for-agents/",
+    "discussion_link": "https://lobste.rs/s/9oy4ao/liquid_types_as_behavioural_sandbox_for",
+    "title": "Liquid Types as a behavioural sandbox for agents"
+  },
+  "@lobstersgram:261": {
+    "telegraph_link": "https://telegra.ph/gralhix-004-08-19-2",
+    "article_link": "https://yassa9.github.io/osint/gralhix-004/",
+    "discussion_link": "https://lobste.rs/s/th7q3y/geolocating_random_islet_image_using",
+    "title": "Geolocating Random Islet Image Using Geometry & CUDA GPU Programming"
+  },
+  "@lobstersgram:262": {
+    "telegraph_link": "https://telegra.ph/Aiki-Alpha-2-Released---decusers-blog-08-19",
+    "article_link": "https://decuser.github.io/posts/aiki-alpha-2-release/",
+    "discussion_link": "https://lobste.rs/s/rdcyoc/aiki_alpha_2_released",
+    "title": "Aiki Alpha 2 Released"
+  },
+  "@lobstersgram:263": {
+    "telegraph_link": "https://telegra.ph/Why-I-still-hand-write-my-commit-messages--Jamie-Tanna--Software-Engineer-08-19",
+    "article_link": "https://www.jvt.me/posts/2026/08/17/hand-write-commits/",
+    "discussion_link": "https://lobste.rs/s/kj1bvt/why_i_still_hand_write_my_commit_messages",
+    "title": "Why I still hand write my commit messages"
+  },
+  "@lobstersgram:264": {
+    "telegraph_link": "https://telegra.ph/SQLite-for-Everything--JoeCode-08-19",
+    "article_link": "https://joecode.com/2026-08-19-sqlite3/",
+    "discussion_link": "https://lobste.rs/s/gmherj/sqlite_for_everything",
+    "title": "SQLite for Everything"
+  },
+  "@lobstersgram:265": {
+    "telegraph_link": "https://telegra.ph/Extreme-Programming-A-Gentle-Introduction-08-19",
+    "article_link": "http://www.extremeprogramming.org/",
+    "discussion_link": "https://lobste.rs/s/qmx2sh/extreme_programming_gentle",
+    "title": "Extreme Programming: A Gentle Introduction"
+  },
+  "@lobstersgram:266": {
+    "telegraph_link": "https://telegra.ph/Go-127-is-released---The-Go-Programming-Language-08-19",
+    "article_link": "https://go.dev/blog/go1.27",
+    "discussion_link": "https://lobste.rs/s/smrw3n/go_1_27_is_released_go_programming",
+    "title": "Go 1.27 is released - The Go Programming Language"
+  },
+  "@lobstersgram:267": {
+    "telegraph_link": "https://telegra.ph/capri--v020-08-19",
+    "article_link": "https://capri.hexdocs.pm/",
+    "discussion_link": "https://lobste.rs/s/3tbpsd/capri_type_safe_atomic_gleam_bindings_for",
+    "title": "capri: Type-safe, atomic Gleam bindings for Khepri, the modern distributed database for the BEAM"
+  },
+  "@lobstersgram:268": {
+    "telegraph_link": "https://telegra.ph/Introducing-Microlighter---daverupertcom-08-19",
+    "article_link": "https://daverupert.com/2026/08/microlighter/",
+    "discussion_link": "https://lobste.rs/s/lxo74i/introducing_microlighter",
+    "title": "Introducing Microlighter"
+  },
+  "@lobstersgram:269": {
+    "telegraph_link": "https://telegra.ph/Plain-Text-Accounting-is-Pretty-Cool---Sumner-Evans-08-19",
+    "article_link": "https://sumnerevans.com/posts/money/plain-text-accounting/",
+    "discussion_link": "https://lobste.rs/s/i4lxyt/plain_text_accounting_is_pretty_cool",
+    "title": "Plain Text Accounting is Pretty Cool"
+  },
+  "@lobstersgram:270": {
+    "telegraph_link": "https://telegra.ph/The-A-is-finally-here---The-Ploopy-Blog-08-19",
+    "article_link": "https://blog.ploopy.co/the-aplus-is-finally-here-499",
+    "discussion_link": "https://lobste.rs/s/vpmzvx/ploopy_external_trackball",
+    "title": "Ploopy A+ (external trackball)"
+  },
+  "@lobstersgram:271": {
+    "telegraph_link": "https://telegra.ph/Go-127-Release-Notes---The-Go-Programming-Language-08-19",
+    "article_link": "https://go.dev/doc/go1.27",
+    "discussion_link": "https://lobste.rs/s/q0wkpe/go_1_27_release_notes",
+    "title": "Go 1.27 Release Notes"
+  },
+  "@lobstersgram:272": {
+    "telegraph_link": "https://telegra.ph/etckernelkennel--Packing-malware-in-Rosetta-2-08-19",
+    "article_link": "https://kernelkennel.com/blog/summercon2026-rosetta/",
+    "discussion_link": "https://lobste.rs/s/ppvyr1/packing_malware_rosetta_2",
+    "title": "Packing Malware in Rosetta 2"
+  },
+  "@lobstersgram:273": {
+    "telegraph_link": "https://telegra.ph/Reclaim-the-terminal--Nishant-Joshi-08-19",
+    "article_link": "https://nishantjosh.dev/blogs/reclaim-the-terminal/",
+    "discussion_link": "https://lobste.rs/s/7v1wvd/reclaim_terminal",
+    "title": "Reclaim the terminal"
+  },
+  "@lobstersgram:274": {
+    "telegraph_link": "https://telegra.ph/Sing-song-a-speakable-encoding-for-long-numbers-and-keys--blogvrypannet-08-19",
+    "article_link": "https://blog.vrypan.net/2026/08/19/260819-sing-song/",
+    "discussion_link": "https://lobste.rs/s/wvwqro/sing_song_speakable_encoding_for_long",
+    "title": "Sing-song: a speakable encoding for long numbers and keys"
+  },
+  "@lobstersgram:275": {
+    "telegraph_link": "https://telegra.ph/SQLite-for-Everything--JoeCode-08-20",
+    "article_link": "https://joecode.com/2026-08-19-sqlite3/",
+    "discussion_link": "https://lobste.rs/s/gmherj/sqlite_for_everything",
+    "title": "SQLite for Everything"
+  },
+  "@lobstersgram:276": {
+    "telegraph_link": "https://telegra.ph/Goroutines-101-A-basic-walkthrough-08-20",
+    "article_link": "https://func25.dev/posts/go-goroutines-basics/",
+    "discussion_link": "https://lobste.rs/s/ixxtwz/goroutines_101_basic_walkthrough",
+    "title": "Goroutines 101: A basic walkthrough"
+  },
+  "@lobstersgram:277": {
+    "telegraph_link": "https://telegra.ph/Parsing-IP-addresses-in-C-at-crazy-speeds---Daniel-Lemires-blog-08-20",
+    "article_link": "https://lemire.me/blog/2026/08/19/parsing-ip-addresses-in-c-at-crazy-speeds/",
+    "discussion_link": "https://lobste.rs/s/fboohk/parsing_ip_addresses_c_at_crazy_speeds",
+    "title": "Parsing IP addresses in C# at crazy speeds"
+  },
+  "@lobstersgram:278": {
+    "telegraph_link": "https://telegra.ph/Reverse-engineering-Find-My-People-to-stalk-my-ex-a-friend-cause-I-can--zerotistic-08-20",
+    "article_link": "https://zerotistic.blog/posts/find-my-people-linux/",
+    "discussion_link": "https://lobste.rs/s/ope7za/reverse_engineering_find_my_people_stalk",
+    "title": "Reverse-engineering Find My People to stalk ̶m̶y̶ ̶e̶x̶ a friend, cause I can"
+  },
+  "@lobstersgram:279": {
+    "telegraph_link": "https://telegra.ph/What-Zig-felt-like-coming-from-Rust--besok-08-20",
+    "article_link": "https://besok.github.io/posts/what-zig-felt-like-coming-from-rust/",
+    "discussion_link": "https://lobste.rs/s/oaybfe/what_zig_felt_like_coming_from_rust",
+    "title": "What Zig felt like, coming from Rust"
+  },
+  "@lobstersgram:280": {
+    "telegraph_link": "https://telegra.ph/How-a-joke-domain-purchase-turned-into-geopolitical-warfare-08-20-2",
+    "article_link": "https://sprocketfox.io/xssfox/2026/08/19/sondehub-and-war/",
+    "discussion_link": "https://lobste.rs/s/sfi9te/how_joke_domain_purchase_turned_into",
+    "title": "How a joke domain purchase turned into geopolitical warfare"
+  },
+  "@lobstersgram:281": {
+    "telegraph_link": "https://telegra.ph/b12n-raylib-jlt---raylib-examples-in-Jolt-08-20",
+    "article_link": "https://raylib-jlt.b12n.app/",
+    "discussion_link": "https://lobste.rs/s/qoosh8/raylib_examples_jolt",
+    "title": "raylib examples in Jolt"
+  },
+  "@lobstersgram:282": {
+    "telegraph_link": "https://telegra.ph/Why-compiling-Rust-to-WebAssembly-is-slow---Frank-DENIS-random-thoughts-08-20",
+    "article_link": "https://00f.net/2026/08/19/why-compiling-rust-to-webassembly-is-slow/",
+    "discussion_link": "https://lobste.rs/s/vcqcgl/why_compiling_rust_webassembly_is_slow",
+    "title": "Why compiling Rust to WebAssembly is slow"
+  },
+  "@lobstersgram:283": {
+    "telegraph_link": "https://telegra.ph/XOrg-Server-261-RC1-Prepares-For-First-Feature-Release-In-Five-Years---Phoronix-08-20",
+    "article_link": "https://www.phoronix.com/news/X.Org-Server-26.1-RC1",
+    "discussion_link": "https://lobste.rs/s/exrno8/x_org_server_26_1_rc1_prepares_for_first",
+    "title": "X.Org Server 26.1 RC1 Prepares For First Feature Release In Five Years - Phoronix"
+  },
+  "@lobstersgram:284": {
+    "telegraph_link": "https://telegra.ph/20-the-CI-traffic-without-getting-slower-How-we-rebuilt-Git-serving-at-Datadog--Datadog-08-20",
+    "article_link": "https://www.datadoghq.com/blog/engineering/gitretriever/",
+    "discussion_link": "https://lobste.rs/s/q8whub/20x_ci_traffic_without_getting_slower_how",
+    "title": "20× the CI traffic without getting slower: How we rebuilt Git serving at Datadog"
+  },
+  "@lobstersgram:285": {
+    "telegraph_link": "https://telegra.ph/laserphile-AliExpress-webpage-keeping-multipoint-Bluetooth-headphones-active-with-WebAudio-fingerprinting-08-20-2",
+    "article_link": "https://blog.laserphile.com/2026/08/aliexpress-webpage-keeping-multipoint.html",
+    "discussion_link": "https://lobste.rs/s/b0olmy/aliexpress_keeps_multipoint_bluetooth",
+    "title": "AliExpress keeps multipoint Bluetooth headphones active with WebAudio fingerprinting"
+  },
+  "@lobstersgram:286": {
+    "telegraph_link": "https://telegra.ph/A-Personal-Computer-For-Children-Of-All-Cultures-by-Ramsey-Nasser---Deconstruct-08-20",
+    "article_link": "https://www.deconstructconf.com/2019/ramsey-nasser-a-personal-computer-for-children-of-all-cultures",
+    "discussion_link": "https://lobste.rs/s/ikeag0/personal_computer_for_children_all",
+    "title": "A Personal Computer For Children Of All Cultures"
+  },
+  "@lobstersgram:287": {
+    "telegraph_link": "https://telegra.ph/Open-sourcing-OpenPubkey-SSH-OPKSSH-integrating-single-sign-on-with-SSH-08-20",
+    "article_link": "https://www.ethanheilman.com/x/33/index.html",
+    "discussion_link": "https://lobste.rs/s/n7kpm6/open_sourcing_openpubkey_ssh_opkssh",
+    "title": "Open-sourcing OpenPubkey SSH (OPKSSH): integrating single sign-on with SSH"
+  },
+  "@lobstersgram:288": {
+    "telegraph_link": "https://telegra.ph/Going-freestanding-08-20-2",
+    "article_link": "https://antonz.org/going-freestanding/",
+    "discussion_link": "https://lobste.rs/s/8cq6jl/going_freestanding",
+    "title": "Going freestanding"
+  },
+  "@lobstersgram:289": {
+    "telegraph_link": "https://telegra.ph/yaoshiuopus--Opus-is-a-minimal-statically-scoped-Lisp-dialect-based-on-the-semantics-of-f-expressions-the-Kernel-language-08-20",
+    "article_link": "https://github.com/yaoshiu/opus",
+    "discussion_link": "https://lobste.rs/s/0rggrb/opus_is_minimal_statically_scoped_lisp",
+    "title": "Opus is a minimal, statically-scoped Lisp dialect based on the semantics of f-expressions (the Kernel language)"
+  },
+  "@lobstersgram:290": {
+    "telegraph_link": "https://telegra.ph/Everyone-Says-Assembly-Is-Untyped-Everyone-Is-Wrong---gingerBill-08-20",
+    "article_link": "https://www.gingerbill.org/article/2026/08/20/designing-odins-inline-asm/",
+    "discussion_link": "https://lobste.rs/s/wphnca/everyone_says_assembly_is_untyped",
+    "title": "Everyone Says Assembly Is Untyped—Everyone Is Wrong - gingerBill"
+  },
+  "@lobstersgram:291": {
+    "telegraph_link": "https://telegra.ph/Decoding-Magic-School-Lunars-Save-Game-Format---The-Future-Is-Now-08-21",
+    "article_link": "https://www.mistys-internet.website/blog/blog/2026/08/01/decoding-magic-school-lunars-save-game-format/",
+    "discussion_link": "https://lobste.rs/s/ygsics/decoding_magic_school_lunar_s_save_game",
+    "title": "Decoding Magic School Lunar's Save Game Format"
+  },
+  "@lobstersgram:292": {
+    "telegraph_link": "https://telegra.ph/emacsetcHISTORY-at-062dcd2aead00c3b47c14ff5b6c40313f7a775f5--emacs-mirroremacs--GitHub-08-21",
+    "article_link": "https://github.com/emacs-mirror/emacs/blob/062dcd2aead00c3b47c14ff5b6c40313f7a775f5/etc/HISTORY#L246",
+    "discussion_link": "https://lobste.rs/s/ikhwaz/emacs_31_1_will_release_on_8_24",
+    "title": "Emacs 31.1 will release on 8/24"
+  },
+  "@lobstersgram:293": {
+    "telegraph_link": "https://telegra.ph/Zero-Knowledge-Proofs-Arent-Age-Verification-Silver-Bullets--Electronic-Frontier-Foundation-08-21",
+    "article_link": "https://www.eff.org/deeplinks/2026/08/zkps-arent-age-verification-silver-bullets",
+    "discussion_link": "https://lobste.rs/s/yigyaq/zero_knowledge_proofs_aren_t_age",
+    "title": "Zero-Knowledge Proofs Aren’t Age Verification Silver Bullets"
+  },
+  "@lobstersgram:294": {
+    "telegraph_link": "https://telegra.ph/Survival-Guide-for-a-Censored-Internet---AkitaOnRailscom-08-21",
+    "article_link": "https://akitaonrails.com/en/2026/08/19/survival-guide-for-a-censored-internet/",
+    "discussion_link": "https://lobste.rs/s/pfnai9/survival_guide_for_censored_internet",
+    "title": "Survival Guide for a Censored Internet"
+  },
+  "@lobstersgram:295": {
+    "telegraph_link": "https://telegra.ph/Btrfs-Snapshot-Integration-in-KDE--bharadwaj-08-21",
+    "article_link": "https://bharadwajraju.com/posts/btrfs-snapshots-in-kde/",
+    "discussion_link": "https://lobste.rs/s/umey8v/btrfs_snapshot_integration_kde",
+    "title": "Btrfs Snapshot Integration in KDE"
+  },
+  "@lobstersgram:296": {
+    "telegraph_link": "https://telegra.ph/Better-Batteries-08-21-2",
+    "article_link": "https://matklad.github.io/2026/08/20/better-batteries.html",
+    "discussion_link": "https://lobste.rs/s/qxvz7f/better_batteries",
+    "title": "Better Batteries"
+  },
+  "@lobstersgram:297": {
+    "telegraph_link": "https://telegra.ph/Vibe-coding-personal-apps-in-mid-2026---Francis-Irving-08-21",
+    "article_link": "https://www.flourish.org/2026/08/personal-apps/",
+    "discussion_link": "https://lobste.rs/s/vvdveb/vibe_coding_personal_apps_mid_2026",
+    "title": "Vibe coding personal apps in mid-2026"
+  },
+  "@lobstersgram:298": {
+    "telegraph_link": "https://telegra.ph/The-road-to-ACID-transactions-in-Cassandra-6---The-Consensus-08-21",
+    "article_link": "https://theconsensus.dev/p/2026/08/16/transactions-in-cassandra.html",
+    "discussion_link": "https://lobste.rs/s/c9xng0/road_acid_transactions_cassandra_6",
+    "title": "The road to ACID transactions in Cassandra 6"
+  },
+  "@lobstersgram:299": {
+    "telegraph_link": "https://telegra.ph/What-are-you-doing-this-weekend--Lobsters-08-21",
+    "article_link": "https://lobste.rs/s/ittn74/what_are_you_doing_this_weekend",
+    "discussion_link": "https://lobste.rs/s/ittn74/what_are_you_doing_this_weekend",
+    "title": "What are you doing this weekend?"
+  },
+  "@lobstersgram:300": {
+    "telegraph_link": "https://telegra.ph/I-accidentally-logged-hundreds-of-thousands-of-phone-calls-to-military-bases---linas-blog-08-21",
+    "article_link": "https://lina.sh/blog/hijacking-e164-arpa",
+    "discussion_link": "https://lobste.rs/s/dyswyz/i_accidentally_logged_hundreds",
+    "title": "I accidentally logged hundreds of thousands of phone calls to military bases"
+  },
+  "@lobstersgram:301": {
+    "telegraph_link": "https://telegra.ph/Data-races-and-the-memory-model-in-Go-08-21-2",
+    "article_link": "https://func25.dev/posts/go-memory-visibility/",
+    "discussion_link": "https://lobste.rs/s/chhsuf/data_races_memory_model_go",
+    "title": "Data races and the memory model in Go"
+  },
+  "@lobstersgram:302": {
+    "telegraph_link": "https://telegra.ph/Japan-tried-to-build-an-operating-system-for-the-entire-world-then-the-US-government-intervened-08-21-2",
+    "article_link": "https://www.xda-developers.com/japan-tried-build-operating-system-entire-world-us-government-intervened/",
+    "discussion_link": "https://lobste.rs/s/mfo0fd/japan_tried_build_operating_system_for",
+    "title": "Japan tried to build an operating system for the entire world, then the US government intervened"
+  },
+  "@lobstersgram:303": {
+    "telegraph_link": "https://telegra.ph/Hello-world--Rust-Glancer-08-21",
+    "article_link": "https://rust-glancer.github.io/blog/hello-world/",
+    "discussion_link": "https://lobste.rs/s/am0xtj/rust_glancer_alternative_lsp_for_rust",
+    "title": "rust-glancer: An alternative LSP for Rust with focus on low memory usage"
+  },
+  "@lobstersgram:304": {
+    "telegraph_link": "https://telegra.ph/Unfortunately-you-sometimes-need-to-do-the-thing--Griffin-Berlstein-08-21",
+    "article_link": "https://griffinberlste.in/blog/do-the-thing/",
+    "discussion_link": "https://lobste.rs/s/ry92nr/unfortunately_you_sometimes_need_do",
+    "title": "Unfortunately you sometimes need to do the thing"
+  },
+  "@lobstersgram:305": {
+    "telegraph_link": "https://telegra.ph/Homebrew-68K-Machine-Has-A-PCI-Bus--Hackaday-08-21",
+    "article_link": "https://hackaday.com/2026/08/20/homebrew-68k-machine-has-a-pci-bus/",
+    "discussion_link": "https://lobste.rs/s/zstki6/homebrew_68k_machine_has_pci_bus",
+    "title": "Homebrew 68K Machine Has A PCI Bus"
+  },
+  "@lobstersgram:306": {
+    "telegraph_link": "https://telegra.ph/exim-Exim-4100-released-08-22",
+    "article_link": "https://lists.exim.org/lurker/message/20260820.154633.91995f73.en.html",
+    "discussion_link": "https://lobste.rs/s/pdx6jg/exim_4_100_released",
+    "title": "Exim 4.100 released"
+  },
+  "@lobstersgram:307": {
+    "telegraph_link": "https://telegra.ph/Programming-Language-Semantics-and-Memory-Safety-08-22",
+    "article_link": "https://burakemir.ch/post/formal-semantics/",
+    "discussion_link": "https://lobste.rs/s/lmpkkr/programming_language_semantics_memory",
+    "title": "Programming Language Semantics and Memory Safety"
+  },
+  "@lobstersgram:308": {
+    "telegraph_link": "https://telegra.ph/Emacs-Arbitrary-Code-Execution-Returns-08-22",
+    "article_link": "https://eshelyaron.com/posts/2026-08-06-emacs-arbitrary-code-execution-returns.html",
+    "discussion_link": "https://lobste.rs/s/jdjb2a/emacs_arbitrary_code_execution_returns",
+    "title": "Emacs Arbitrary Code Execution Returns"
+  },
+  "@lobstersgram:309": {
+    "telegraph_link": "https://telegra.ph/The-cool-things-of-Gleam---A-Bit-08-22",
+    "article_link": "https://a.baez.link/3mtdbbp2dmc27",
+    "discussion_link": "https://lobste.rs/s/lzgbrv/cool_things_gleam",
+    "title": "The cool things of Gleam"
+  },
+  "@lobstersgram:310": {
+    "telegraph_link": "https://telegra.ph/Roomy-is-generally-available---Roomy-08-22",
+    "article_link": "https://blog.roomy.space/3mplw6vvw4s23",
+    "discussion_link": "https://lobste.rs/s/zfew3n/roomy_is_generally_available",
+    "title": "Roomy is generally available"
+  },
+  "@lobstersgram:311": {
+    "telegraph_link": "https://telegra.ph/download-circle-08-22-2",
+    "article_link": "https://matduggan.com/otel-isnt-going-well-and-i-made-a-spreadsheet-about-it/",
+    "discussion_link": "https://lobste.rs/s/ubeyqf/otel_isn_t_going_well_i_made_spreadsheet",
+    "title": "OTel Isn't Going Well (And I Made A Spreadsheet About It)"
+  },
+  "@lobstersgram:312": {
+    "telegraph_link": "https://telegra.ph/no-title-08-22-1015",
+    "article_link": "https://hackernoon.com/how-i-hacked-and-turned-my-casio-f-91w-into-a-contactless-payment-device",
+    "discussion_link": "https://lobste.rs/s/bhzp2z/turning_my_casio_f_91w_into_contactless",
+    "title": "Turning My CASIO F-91W Into a Contactless Payment Device"
+  },
+  "@lobstersgram:313": {
+    "telegraph_link": "https://telegra.ph/Compile-Time-Improvements-in-LLVM-23-08-22",
+    "article_link": "https://aengelke.net/llvm23-ct.html",
+    "discussion_link": "https://lobste.rs/s/ku4v3b/compile_time_improvements_llvm_23",
+    "title": "Compile-Time Improvements in LLVM 23"
+  },
+  "@lobstersgram:314": {
+    "telegraph_link": "https://telegra.ph/Aerotwist---Guitar-Tuner-08-22",
+    "article_link": "https://aerotwist.com/blog/guitar-tuner/",
+    "discussion_link": "https://lobste.rs/s/twaqbs/guitar_tuner_2015",
+    "title": "Guitar Tuner (2015)"
+  },
+  "@lobstersgram:315": {
+    "telegraph_link": "https://telegra.ph/Stop-Making-TUIs---Quarrelsome-08-22",
+    "article_link": "https://sockpuppet.org/blog/2026/08/20/stop-making-tuis/",
+    "discussion_link": "https://lobste.rs/s/kyb21s/stop_making_tuis",
+    "title": "Stop Making TUIs"
+  },
+  "@lobstersgram:316": {
+    "telegraph_link": "https://telegra.ph/The-Schrödinger-Email-08-22",
+    "article_link": "https://yashgarg.dev/posts/the-schrodinger-email/",
+    "discussion_link": "https://lobste.rs/s/qtsnvd/schrodinger_email",
+    "title": "The Schrödinger Email"
+  },
+  "@lobstersgram:317": {
+    "telegraph_link": "https://telegra.ph/Robot-comment-classifier-08-22",
+    "article_link": "https://entropicthoughts.com/ai-comment-classifier",
+    "discussion_link": "https://lobste.rs/s/ilfiqa/robot_comment_classifier",
+    "title": "Robot comment classifier"
+  },
+  "@lobstersgram:318": {
+    "telegraph_link": "https://telegra.ph/Espressif-Systems-releases-a-Linux-BSP-developer-preview-for-ESP32-S31-RISC-V-microprocessor---CNX-Software-08-22",
+    "article_link": "https://www.cnx-software.com/2026/08/22/espressif-systems-releases-a-linux-bsp-developer-preview-for-esp32-s31-risc-v-microprocessor/",
+    "discussion_link": "https://lobste.rs/s/jwzbqi/espressif_releases_linux_bsp_for_esp32",
+    "title": "Espressif releases Linux BSP for ESP32-S31 RISC-V boards"
+  },
+  "@lobstersgram:319": {
+    "telegraph_link": "https://telegra.ph/DefCon-34---Stalking-the-Wily-Hacker-40-years-later---Cliff-Stoll-08-22",
+    "article_link": "https://www.youtube.com/watch?v=656058JxTM0&feature=youtu.be",
+    "discussion_link": "https://lobste.rs/s/r77bda/stalking_wily_hacker_40_years_later",
+    "title": "Stalking the Wily Hacker: 40 years later"
+  },
+  "@lobstersgram:320": {
+    "telegraph_link": "https://telegra.ph/drmxe-Dont-hand-out-the-flat-CCS-storage-as-usable-VRAM--torvaldslinux818bebe--GitHub-08-22",
+    "article_link": "https://github.com/torvalds/linux/commit/818bebeb63dd6bf5f4e07e145f6cdbace520a34c",
+    "discussion_link": "https://lobste.rs/s/eyaz5f/linus_torvalds_uses_ai_debug_intel_gpu",
+    "title": "Linus Torvalds uses AI to debug an Intel GPU driver bug"
+  },
+  "@lobstersgram:321": {
+    "telegraph_link": "https://telegra.ph/Fwd-InjectionBunny-NTFS3-SUID-injection-leading-to-local-privilege-escalation-08-22",
+    "article_link": "https://lore.kernel.org/ntfs3/CAGBKPgPiXyKWtjgYSACnugmG1XPs=mPg-Zu-xQziUZ1k921+qA@mail.gmail.com/T/#mc251816dfcb7d4dcbf07368f0d288dbfb1b8e1c9",
+    "discussion_link": "https://lobste.rs/s/2mvgzt/injectionbunny_ntfs3_suid_injection_for",
+    "title": "InjectionBunny, a NTFS3 SUID injection for privilege escalation"
+  },
+  "@lobstersgram:322": {
+    "telegraph_link": "https://telegra.ph/felixsnss-userhosts-A-glibc-Name-Service-Switch-NSS-extension-library-to-allow-unprivileged-users-to-have-their-own-etchosts-lik-08-22",
+    "article_link": "https://codeberg.org/felixs/nss-userhosts",
+    "discussion_link": "https://lobste.rs/s/qvlroc/nss_userhosts_hosts_files_for",
+    "title": "nss-userhosts - hosts files for unprivileged users"
+  },
+  "@lobstersgram:323": {
+    "telegraph_link": "https://telegra.ph/There-continue-to-be-reasons-for-software-to-be-slow-08-22",
+    "article_link": "https://typesanitizer.com/blog/performance-issues.html",
+    "discussion_link": "https://lobste.rs/s/zibquu/there_continue_be_reasons_for_software_be",
+    "title": "There continue to be reasons for software to be slow"
+  },
+  "@lobstersgram:324": {
+    "telegraph_link": "https://telegra.ph/hdiutil-is-deprecated-in-macOS-27-Golden-Gate-08-22-4",
+    "article_link": "https://lapcatsoftware.com/articles/2026/8/7.html",
+    "discussion_link": "https://lobste.rs/s/xkngcm/hdiutil_is_deprecated_macos_27_golden",
+    "title": "hdiutil is deprecated in macOS 27 Golden Gate"
+  },
+  "@lobstersgram:325": {
+    "telegraph_link": "https://telegra.ph/Web-Camera-on-PiKVM-V4-and-V3---PiKVM-Handbook-08-22",
+    "article_link": "https://docs.pikvm.org/camera/",
+    "discussion_link": "https://lobste.rs/s/qpm7tl/pikvm_project_has_gained_support_for_web",
+    "title": "PiKVM project has gained support for web-camera forwarding"
+  },
+  "@lobstersgram:326": {
+    "telegraph_link": "https://telegra.ph/netbsd-advocacy-NetBSD-and-my-life-08-22-2",
+    "article_link": "https://mail-index.netbsd.org/netbsd-advocacy/2005/09/10/0000.html",
+    "discussion_link": "https://lobste.rs/s/a23bk3/netbsd_my_life_2005",
+    "title": "NetBSD and my life (2005)"
+  },
+  "@lobstersgram:327": {
+    "telegraph_link": "https://telegra.ph/KDE-Linux-experiences--AksDev-08-22-3",
+    "article_link": "https://akselmo.dev/posts/kde-linux-experiences/",
+    "discussion_link": "https://lobste.rs/s/ate5gb/kde_linux_experiences",
+    "title": "KDE Linux experiences"
+  },
+  "@lobstersgram:328": {
+    "telegraph_link": "https://telegra.ph/The-immortal-1984-Macintosh-restoration-diary-08-23",
+    "article_link": "https://www.thebyteattic.com/2026/08/the-immortal-macintosh-restoration-diary.html",
+    "discussion_link": "https://lobste.rs/s/er8kot/immortal_1984_macintosh_restoration",
+    "title": "The immortal 1984 Macintosh (restoration diary)"
+  },
+  "@lobstersgram:329": {
+    "telegraph_link": "https://telegra.ph/Huge-Breakthrough-in-the-Math-of-Imbalance--Quanta-Magazine-08-23",
+    "article_link": "https://www.quantamagazine.org/huge-breakthrough-in-the-math-of-imbalance-20260821/",
+    "discussion_link": "https://lobste.rs/s/rlcsrg/huge_breakthrough_math_imbalance",
+    "title": "‘Huge Breakthrough’ in the Math of Imbalance"
+  },
+  "@lobstersgram:330": {
+    "telegraph_link": "https://telegra.ph/JPs-Website--2026-08-22--Why-arent-my-two-Cortex-A9-cores-cache-coherent-08-23",
+    "article_link": "https://thejpster.org.uk/blog/blog-2026-08-22/",
+    "discussion_link": "https://lobste.rs/s/vikit1/why_aren_t_my_two_cortex_a9_cores_cache",
+    "title": "Why aren't my two Cortex-A9 cores cache coherent?"
+  },
+  "@lobstersgram:331": {
+    "telegraph_link": "https://telegra.ph/JIT-Compiling-Code-in-5μs---malisperme-08-23-2",
+    "article_link": "https://malisper.me/jit-compiling-code-in-5-us/",
+    "discussion_link": "https://lobste.rs/s/aujfn1/jit_compiling_code_5_s",
+    "title": "JIT Compiling Code in 5μs"
+  },
+  "@lobstersgram:332": {
+    "telegraph_link": "https://telegra.ph/Optimizing-memory-use-in-markdown-parser-08-23",
+    "article_link": "https://blog.kowalczyk.info/a-n8wf/optimizing-memory-use-in-markdown-parser.html",
+    "discussion_link": "https://lobste.rs/s/1swh9l/optimizing_memory_usage_markdown_parser",
+    "title": "Optimizing memory usage in a markdown parser"
+  },
+  "@lobstersgram:333": {
+    "telegraph_link": "https://telegra.ph/Are-there-any-decent-programs-for-pdf-viewing-and-editing-for-Linux-that-replace-Adobe-Acrobat--Lobsters-08-23",
+    "article_link": "https://lobste.rs/s/kxualw/are_there_any_decent_programs_for_pdf",
+    "discussion_link": "https://lobste.rs/s/kxualw/are_there_any_decent_programs_for_pdf",
+    "title": "Are there any decent programs for pdf viewing and editing for Linux that replace Adobe Acrobat?"
+  },
+  "@lobstersgram:334": {
+    "telegraph_link": "https://telegra.ph/A-Friendly-Introduction-to-Racket---geometridae-08-23",
+    "article_link": "https://geometridae.bearblog.dev/a-friendly-introduction-to-racket/",
+    "discussion_link": "https://lobste.rs/s/nxeygh/friendly_introduction_racket",
+    "title": "A Friendly Introduction to Racket"
+  },
+  "@lobstersgram:335": {
+    "telegraph_link": "https://telegra.ph/And-then-the-men-with-guns-tell-you-to-do-it-anyway---Terence-Edens-Blog-08-23",
+    "article_link": "https://shkspr.mobi/blog/2026/08/and-then-the-men-with-guns-tell-you-to-do-it-anyway/",
+    "discussion_link": "https://lobste.rs/s/u7v2sn/then_men_with_guns_tell_you_do_it_anyway",
+    "title": "And then the men with guns tell you to do it anyway"
+  },
+  "@lobstersgram:336": {
+    "telegraph_link": "https://telegra.ph/daniel5151clicky--A-clickwheel-iPod-emulator-WIP-08-23",
+    "article_link": "https://github.com/daniel5151/clicky",
+    "discussion_link": "https://lobste.rs/s/hdz6bx/clicky_clickwheel_ipod_emulator",
+    "title": "clicky: A clickwheel iPod emulator"
+  },
+  "@lobstersgram:337": {
+    "telegraph_link": "https://telegra.ph/How-To-Report-A-Bug-So-It-Actually-Gets-Fixed--The-Tymscar-Blog-08-23",
+    "article_link": "https://blog.tymscar.com/posts/howtoreportabug/",
+    "discussion_link": "https://lobste.rs/s/tc2em9/how_report_bug_so_it_actually_gets_fixed",
+    "title": "How To Report A Bug So It Actually Gets Fixed"
+  },
+  "@lobstersgram:338": {
+    "telegraph_link": "https://telegra.ph/Amazon-kept-shutting-down-my-tablet-so-I-spent-266-on-four-AI-models-to-own-it-08-23",
+    "article_link": "https://ericpardee.github.io/fire-hd-ownership/",
+    "discussion_link": "https://lobste.rs/s/fadbev/amazon_kept_shutting_down_my_tablet_so_i",
+    "title": "Amazon kept shutting down my tablet, so I spent $266 on four AI models to own it"
+  },
+  "@lobstersgram:339": {
+    "telegraph_link": "https://telegra.ph/SirWumpuseh-eh---Edit-Here---vi1-the-good-parts-version-is-a-minimalist-version-of-vi1-It-is-an-example-of-the-Buffer-Gap-method-08-23",
+    "article_link": "https://codeberg.org/SirWumpus/eh",
+    "discussion_link": "https://lobste.rs/s/au6oho/eh_minimalist_vi_like_editor",
+    "title": "eh: a minimalist vi-like editor"
+  },
+  "@lobstersgram:340": {
+    "telegraph_link": "https://telegra.ph/My-favorite-Computer-Science-books-and-why--Jean-Christophes-programming-corner-08-23",
+    "article_link": "https://backtracking.github.io/en/2020/02/20/cs-books.html",
+    "discussion_link": "https://lobste.rs/s/gybcec/my_favorite_computer_science_books_why",
+    "title": "My favorite Computer Science books, and why"
+  },
+  "@lobstersgram:341": {
+    "telegraph_link": "https://telegra.ph/An-Introduction-to-Canvas-in-GNU-Emacs-08-23",
+    "article_link": "https://monadicsheep.org/blog/an-introduction-to-canvas-in-emacs.html",
+    "discussion_link": "https://lobste.rs/s/9xglf3/introduction_canvas_gnu_emacs",
+    "title": "An Introduction to Canvas in GNU Emacs"
+  },
+  "@lobstersgram:342": {
+    "telegraph_link": "https://telegra.ph/RSoC-2026-EEVDF-for-Redox---Redox---Your-NextGen-OS-08-23",
+    "article_link": "https://www.redox-os.org/news/rsoc-eevdf/",
+    "discussion_link": "https://lobste.rs/s/p92osu/rsoc_2026_eevdf_for_redox",
+    "title": "RSoC 2026: EEVDF for Redox"
+  },
+  "@lobstersgram:343": {
+    "telegraph_link": "https://telegra.ph/Wild-AI-related-reliability-incidents-are-coming---Surfing-Complexity-08-23",
+    "article_link": "https://surfingcomplexity.blog/2026/08/22/wild-ai-related-reliability-incidents-are-coming/",
+    "discussion_link": "https://lobste.rs/s/jzr2ey/wild_ai_related_reliability_incidents",
+    "title": "Wild AI-related reliability incidents are coming"
+  },
+  "@lobstersgram:344": {
+    "telegraph_link": "https://telegra.ph/tmpout-v-08-23",
+    "article_link": "https://tmpout.sh/5/",
+    "discussion_link": "https://lobste.rs/s/xiwynb/tmp_0ut_volume_5",
+    "title": "tmp.0ut volume 5"
+  },
+  "@lobstersgram:345": {
+    "telegraph_link": "https://telegra.ph/Replicating-Reddits-best-feature-on-other-forums--xavdid-08-23",
+    "article_link": "https://xavd.id/blog/post/highlighting-users/",
+    "discussion_link": "https://lobste.rs/s/ll6pak/replicating_reddit_s_best_feature_on",
+    "title": "Replicating Reddit's best feature on other forums"
+  },
+  "@lobstersgram:346": {
+    "telegraph_link": "https://telegra.ph/SVG-Filter-Effects-Creating-Texture-with-feTurbulence--Codrops-08-23",
+    "article_link": "https://tympanus.net/codrops/2019/02/19/svg-filter-effects-creating-texture-with-feturbulence/",
+    "discussion_link": "https://lobste.rs/s/jxloti/svg_filter_effects_creating_texture_with",
+    "title": "SVG Filter Effects: Creating Texture with <feTurbulence> (2019)"
+  },
+  "@lobstersgram:347": {
+    "telegraph_link": "https://telegra.ph/My-DIY-DEF-CON-Choker-Has-a-Screen-On-It--The-Cat-House-08-23",
+    "article_link": "https://www.scd31.com/posts/defcon-choker",
+    "discussion_link": "https://lobste.rs/s/ft1wfv/my_diy_def_con_choker_has_screen_on_it",
+    "title": "My DIY DEF CON Choker Has a Screen On It"
+  },
+  "@lobstersgram:348": {
+    "telegraph_link": "https://telegra.ph/My-experience-as-a-first-time-speaker-08-23",
+    "article_link": "https://blog.guillheu.dev/articles/first-time-speaker/",
+    "discussion_link": "https://lobste.rs/s/o0z5aw/my_experience_as_first_time_speaker",
+    "title": "My experience as a first time speaker"
+  },
+  "@lobstersgram:349": {
+    "telegraph_link": "https://telegra.ph/The-text-mode-lie-why-modern-TUIs-are-a-nightmare-for-accessibility---OSnews-08-23",
+    "article_link": "https://www.osnews.com/story/144892/the-text-mode-lie-why-modern-tuis-are-a-nightmare-for-accessibility/",
+    "discussion_link": "https://lobste.rs/s/9i36rv/text_mode_lie_why_modern_tuis_are",
+    "title": "The text mode lie: why modern TUIs are a nightmare for accessibility"
+  },
+  "@lobstersgram:350": {
+    "telegraph_link": "https://telegra.ph/Declarative-WebGPU-with-S-expressions-08-23",
+    "article_link": "https://hugodaniel.com/posts/declarative-webgpu-with-s-expressions/",
+    "discussion_link": "https://lobste.rs/s/hypo37/declarative_webgpu_with_s_expressions",
+    "title": "Declarative WebGPU with S-expressions"
+  },
+  "@lobstersgram:351": {
+    "telegraph_link": "https://telegra.ph/offgrid-electric-car-08-24",
+    "article_link": "https://joeyh.name/blog/entry/offgrid_electric_car/",
+    "discussion_link": "https://lobste.rs/s/slaivx/offgrid_electric_car_2025",
+    "title": "offgrid electric car (2025)"
+  },
+  "@lobstersgram:352": {
+    "telegraph_link": "https://telegra.ph/Tutorial-part-4-Adding-JIT-compilation-to-a-toy-interpreter---libgccjit-1700-experimental--documentation-08-24",
+    "article_link": "https://gcc.gnu.org/onlinedocs/jit/intro/tutorial04.html",
+    "discussion_link": "https://lobste.rs/s/pkktjt/adding_jit_compilation_toy_interpreter",
+    "title": "Adding JIT-compilation to a toy interpreter with libgccjit"
+  },
+  "@lobstersgram:353": {
+    "telegraph_link": "https://telegra.ph/Everything-I-own-owned---schlarpcom-08-24",
+    "article_link": "https://schlarp.com/posts/everything-i-own-owned/",
+    "discussion_link": "https://lobste.rs/s/vcdk2q/everything_i_own_owned",
+    "title": "Everything I own, owned"
+  },
+  "@lobstersgram:354": {
+    "telegraph_link": "https://telegra.ph/Kodak-DC50-now-usable-on-the-Apple-II---colincolinonet-08-24",
+    "article_link": "https://www.colino.net/wordpress/archives/2026/08/23/kodak-dc50-now-usable-on-the-apple-ii/",
+    "discussion_link": "https://lobste.rs/s/tkvorw/kodak_dc50_now_usable_on_apple_ii",
+    "title": "Kodak DC50 now usable on the Apple II"
+  },
+  "@lobstersgram:355": {
+    "telegraph_link": "https://telegra.ph/Your-executable-is-a-SQLite-database--Farid-Zakarias-Blog-08-24",
+    "article_link": "https://fzakaria.com/2026/08/23/your-executable-is-a-sqlite-database",
+    "discussion_link": "https://lobste.rs/s/8ttu5n/your_executable_is_sqlite_database",
+    "title": "Your executable is a SQLite database"
+  },
+  "@lobstersgram:356": {
+    "telegraph_link": "https://telegra.ph/3-constraints-before-I-build-anything--Jordan-Lord-08-24",
+    "article_link": "https://jordanlord.co.uk/blog/3-constraints/",
+    "discussion_link": "https://lobste.rs/s/xlorxi/3_constraints_before_i_build_anything",
+    "title": "3 constraints before I build anything | Jordan Lord"
+  },
+  "@lobstersgram:357": {
+    "telegraph_link": "https://telegra.ph/Tiny-Untyped-Monads-08-24",
+    "article_link": "https://text.marvinborner.de/2024-11-18-00.html",
+    "discussion_link": "https://lobste.rs/s/gj556c/tiny_untyped_monads_2024",
+    "title": "Tiny, Untyped Monads (2024)"
+  },
+  "@lobstersgram:358": {
+    "telegraph_link": "https://telegra.ph/What-are-you-doing-this-week--Lobsters-08-24",
+    "article_link": "https://lobste.rs/s/lo28ad/what_are_you_doing_this_week",
+    "discussion_link": "https://lobste.rs/s/lo28ad/what_are_you_doing_this_week",
+    "title": "What are you doing this week?"
+  },
+  "@lobstersgram:359": {
+    "telegraph_link": "https://telegra.ph/Building-certgrepsh-a-free-CT-search-engine---Have-I-Been-Squatted-08-24",
+    "article_link": "https://haveibeensquatted.com/blog/building-certgrep",
+    "discussion_link": "https://lobste.rs/s/ihethb/building_certgrep_sh_free_certificate",
+    "title": "Building certgrep.sh: a free certificate transparency search engine"
+  },
+  "@lobstersgram:360": {
+    "telegraph_link": "https://telegra.ph/Emacs-311-released-08-24",
+    "article_link": "https://lists.gnu.org/archive/html/info-gnu-emacs/2026-08/msg00004.html",
+    "discussion_link": "https://lobste.rs/s/rehaa3/emacs_31_1_released",
+    "title": "Emacs 31.1 released"
+  },
+  "@lobstersgram:361": {
+    "telegraph_link": "https://telegra.ph/Micro-language-implementation-Calcium--Ned-Batchelder-08-24",
+    "article_link": "https://nedbatchelder.com/blog/202608/micro_language_implementation_calcium",
+    "discussion_link": "https://lobste.rs/s/iii8sl/micro_language_implementation_calcium",
+    "title": "Micro language implementation: Calcium"
+  },
+  "@lobstersgram:362": {
+    "telegraph_link": "https://telegra.ph/I-cannot-survive-from-burnout--Lobsters-08-24",
+    "article_link": "https://lobste.rs/s/0typpq/i_cannot_survive_from_burnout",
+    "discussion_link": "https://lobste.rs/s/0typpq/i_cannot_survive_from_burnout",
+    "title": "I cannot survive from burnout"
+  },
+  "@lobstersgram:363": {
+    "telegraph_link": "https://telegra.ph/Can-a-blog-post-be-handwritten-08-24",
+    "article_link": "https://diggingforfire.blog/posts/can-a-blog-post-be-handwritten/",
+    "discussion_link": "https://lobste.rs/s/wxjtxq/can_blog_post_be_handwritten",
+    "title": "Can a blog post be handwritten?"
+  },
+  "@lobstersgram:364": {
+    "telegraph_link": "https://telegra.ph/Nathan-Cooper---IPython-is-All-You-Need-08-24",
+    "article_link": "https://nathancooper.io/blog/2026-08-10-ipython-is-all-you-need",
+    "discussion_link": "https://lobste.rs/s/oqv9np/ipython_is_all_you_need",
+    "title": "IPython is All You Need"
+  },
+  "@lobstersgram:365": {
+    "telegraph_link": "https://telegra.ph/Dynamically-Naming-Servers-08-24",
+    "article_link": "https://arch.dog/bark/dynamically-naming-servers",
+    "discussion_link": "https://lobste.rs/s/swzhtb/dynamically_naming_servers",
+    "title": "Dynamically Naming Servers"
+  },
+  "@lobstersgram:366": {
+    "telegraph_link": "https://telegra.ph/Announcing-Perspec-10---Adrian-Siebers-Website-08-24",
+    "article_link": "https://adriansieber.com/announcing-perspec-1-0/",
+    "discussion_link": "https://lobste.rs/s/plmwzl/perspec_1_0_haskell_desktop_app_for",
+    "title": "Perspec 1.0: A Haskell desktop app for perspective correction of document photos"
+  },
+  "@lobstersgram:367": {
+    "telegraph_link": "https://telegra.ph/AI-Coding-will-Prevent-Expertise--Lars-Faye-08-24-2",
+    "article_link": "https://larsfaye.com/articles/ai-coding-will-prevent-expertise",
+    "discussion_link": "https://lobste.rs/s/gzddgr/ai_coding_will_prevent_expertise_lars",
+    "title": "AI Coding will Prevent Expertise | Lars Faye"
+  },
+  "@lobstersgram:368": {
+    "telegraph_link": "https://telegra.ph/Intent-to-Ship-JPEG-XL---Mozilla-Hacks---the-Web-developer-blog-08-24",
+    "article_link": "https://hacks.mozilla.org/2026/08/intent-to-ship-jpeg-xl/",
+    "discussion_link": "https://lobste.rs/s/26oj2u/intent_ship_jpeg_xl",
+    "title": "Intent to Ship: JPEG XL"
+  },
+  "@lobstersgram:369": {
+    "telegraph_link": "https://telegra.ph/Atkinson-Hyperlegible-appears-a-little-smaller-than-some-other-fonts-at-the-same-font-size-so-if-youre-replacing-an-existing-fon-08-24",
+    "article_link": "https://twotwos.nekoweb.org/posts/hyperlegible.html",
+    "discussion_link": "https://lobste.rs/s/hgirjs/atkinson_hyperlegible_appears_little",
+    "title": "Atkinson Hyperlegible appears a little smaller than some other fonts at the same font size"
+  },
+  "@lobstersgram:370": {
+    "telegraph_link": "https://telegra.ph/distributed-identity-08-24-3",
+    "article_link": "https://jyn.dev/distributed-identity/",
+    "discussion_link": "https://lobste.rs/s/al6sdh/distributed_identity",
+    "title": "distributed identity"
+  },
+  "@lobstersgram:371": {
+    "telegraph_link": "https://telegra.ph/pythopskudu---Easily-manage-VMs-on-Linux-08-24",
+    "article_link": "https://github.com/pythops/kudu",
+    "discussion_link": "https://lobste.rs/s/uodrjx/kudu_easily_manage_vms_on_linux",
+    "title": "kudu - easily manage VMs on Linux"
+  },
+  "@lobstersgram:372": {
+    "telegraph_link": "https://telegra.ph/Hot-Chips-2026-CUDA-Targets-RISC-V---by-Chester-Lam-08-25",
+    "article_link": "https://chipsandcheese.com/p/hot-chips-2026-cuda-targets-risc",
+    "discussion_link": "https://lobste.rs/s/nfmlwp/hot_chips_2026_cuda_targets_risc_v",
+    "title": "Hot Chips 2026: CUDA targets RISC-V"
+  },
+  "@lobstersgram:373": {
+    "telegraph_link": "https://telegra.ph/POP-2000-a-lingua-franca-POP-2-dialect-08-25",
+    "article_link": "https://hitogata.neocities.org/POP-2000",
+    "discussion_link": "https://lobste.rs/s/w0d3um/pop_2000_lingua_franca_pop_2_dialect",
+    "title": "POP-2000, a lingua-franca POP-2 dialect"
+  },
+  "@lobstersgram:374": {
+    "telegraph_link": "https://telegra.ph/Daniel-Gultsch--JabberXMPP-25-Years-of-Digital-Independence-08-25",
+    "article_link": "https://gultsch.de/posts/25-years-of-digital-independence/",
+    "discussion_link": "https://lobste.rs/s/ashxnz/jabber_xmpp_25_years_digital",
+    "title": "Jabber/XMPP: 25 Years of Digital Independence"
+  },
+  "@lobstersgram:375": {
+    "telegraph_link": "https://telegra.ph/Haskell-diagrams-Tessellations--Marcelo-Garlet-Milani-08-25",
+    "article_link": "https://mgarletmilani.com/blog/2026-06-03-tessellations/",
+    "discussion_link": "https://lobste.rs/s/fyps8w/haskell_diagrams_tessellations",
+    "title": "Haskell diagrams: Tessellations"
+  },
+  "@lobstersgram:376": {
+    "telegraph_link": "https://telegra.ph/Solving-the-1N-Query-Problem-08-25-2",
+    "article_link": "https://acadia.engineering/blog/solving-the-1-plus-N-query-problem",
+    "discussion_link": "https://lobste.rs/s/k5feqe/solving_1_n_query_problem",
+    "title": "Solving the 1+N query problem"
+  },
+  "@lobstersgram:377": {
+    "telegraph_link": "https://telegra.ph/Another-look-at-SQLites-WAL-Reset-bug---The-Consensus-08-25",
+    "article_link": "https://theconsensus.dev/p/2026/08/23/another-look-at-sqlite-wal-reset.html",
+    "discussion_link": "https://lobste.rs/s/b15udy/another_look_at_sqlite_s_wal_reset_bug",
+    "title": "Another look at SQLite's WAL-Reset bug"
+  },
+  "@lobstersgram:378": {
+    "telegraph_link": "https://telegra.ph/Hunting-Down-a-Go-Runtime-Bug-on-32-bit-Embedded-Systems-08-25",
+    "article_link": "https://sigma-star.at/blog/2026/08/go-runtime-netpoll-bug/",
+    "discussion_link": "https://lobste.rs/s/apjhyj/hunting_down_go_runtime_bug_on_32_bit",
+    "title": "Hunting Down a Go Runtime Bug on 32-bit Embedded Systems"
+  },
+  "@lobstersgram:379": {
+    "telegraph_link": "https://telegra.ph/Home---The-XY-Problem-08-25",
+    "article_link": "https://xyproblem.info/",
+    "discussion_link": "https://lobste.rs/s/useg7x/xy_problem",
+    "title": "The XY Problem"
+  },
+  "@lobstersgram:380": {
+    "telegraph_link": "https://telegra.ph/David-Chisnall-Now-with-50-more-sarcasm-halcyicosahedronwebsite-whitequarktreehouse---Infosec-Exchange-08-25",
+    "article_link": "https://infosec.exchange/@david_chisnall/117156204452541109",
+    "discussion_link": "https://lobste.rs/s/ozkoqo/adding_cpu_affinity_24_core_build_machine",
+    "title": "Adding CPU affinity in a 24-core build machine made builds take longer"
+  },
+  "@lobstersgram:381": {
+    "telegraph_link": "https://telegra.ph/Feature-comparison-of-ack-ag-git-grep-grep-and-ripgrep-08-25",
+    "article_link": "https://beyondgrep.com/feature-comparison/",
+    "discussion_link": "https://lobste.rs/s/vr7u5k/feature_comparison_ack_ag_git_grep_grep",
+    "title": "Feature comparison of ack, ag, git-grep, grep and ripgrep"
+  },
+  "@lobstersgram:382": {
+    "telegraph_link": "https://telegra.ph/Replacing-a-Rust-Enum-with-a-64-bit-Word-Made-My-Interpreter-17-Faster-08-25",
+    "article_link": "https://pointersgonewild.com/2026-08-25-replacing-a-rust-enum-with-a-64-bit-word/",
+    "discussion_link": "https://lobste.rs/s/gyi8v8/replacing_rust_enum_with_64_bit_word_made",
+    "title": "Replacing a Rust Enum with a 64-bit Word Made My Interpreter 17% Faster"
+  },
+  "@lobstersgram:383": {
+    "telegraph_link": "https://telegra.ph/C2PA-Cameras-Do-Not-Survive-Contact-With-Reality--Blog-08-25",
+    "article_link": "https://www.da.vidbuchanan.co.uk/blog/android-c2pa.html",
+    "discussion_link": "https://lobste.rs/s/4netv1/c2pa_cameras_do_not_survive_contact_with",
+    "title": "C2PA Cameras Do Not Survive Contact With Reality"
+  },
+  "@lobstersgram:384": {
+    "telegraph_link": "https://telegra.ph/I-stabilized-never-type--I-hate-reality-08-25",
+    "article_link": "https://blog.ihatereality.space/0C-never-type/",
+    "discussion_link": "https://lobste.rs/s/gizvfn/i_stabilized_never_type",
+    "title": "I stabilized never type"
+  },
+  "@lobstersgram:385": {
+    "telegraph_link": "https://telegra.ph/Run-OpenBSD-on-DigitalOcean-for-4month---Nil-08-25-2",
+    "article_link": "https://nil.wallyjones.com/run-openbsd-on-digitalocean-for-4month/",
+    "discussion_link": "https://lobste.rs/s/za8vwp/run_openbsd_on_digitalocean_for_4_month",
+    "title": "Run OpenBSD on DigitalOcean for $4/month"
+  },
+  "@lobstersgram:386": {
+    "telegraph_link": "https://telegra.ph/The-Move-to-Python-3-Begins--EVE-Online-08-25",
+    "article_link": "https://www.eveonline.com/news/view/the-move-to-python-3-begins",
+    "discussion_link": "https://lobste.rs/s/e1oalq/move_python_3_begins",
+    "title": "The Move to Python 3 Begins"
+  },
+  "@lobstersgram:387": {
+    "telegraph_link": "https://telegra.ph/AI-At-Home-Part-2-Multi-GPU-Drifting-08-25",
+    "article_link": "https://jdagostino.github.io/ai-pt2-multi-gpu-drifting/index.html",
+    "discussion_link": "https://lobste.rs/s/qc6pjd/ai_at_home_part_2_multi_gpu_drifting",
+    "title": "AI At Home Part 2: Multi GPU Drifting"
+  },
+  "@lobstersgram:388": {
+    "telegraph_link": "https://telegra.ph/AI-Review-Loops-Dont-Always-Stabilise-08-25",
+    "article_link": "https://kevinmahoney.co.uk/articles/ai-review-loops/",
+    "discussion_link": "https://lobste.rs/s/52povq/ai_review_loops_don_t_always_stabilise",
+    "title": "AI Review Loops Don't Always Stabilise"
+  },
+  "@lobstersgram:389": {
+    "telegraph_link": "https://telegra.ph/runetesmaiao--Seamless-GitHub-PR-management-from-the-command-line-08-25",
+    "article_link": "https://github.com/runetes/maiao",
+    "discussion_link": "https://lobste.rs/s/2hsncr/maiao_gerrit_style_stacked_diffs_for",
+    "title": "maiao: Gerrit-style stacked diffs for GitHub, Cursor Origin, GitLab, Codeberg and more"
+  },
+  "@lobstersgram:390": {
+    "telegraph_link": "https://telegra.ph/Fuzzing-The-Gleam-Compiler--kurznet-08-26",
+    "article_link": "https://www.kurz.net/posts/fuzzing-gleam-compiler",
+    "discussion_link": "https://lobste.rs/s/vddo8h/fuzzing_gleam_compiler",
+    "title": "Fuzzing The Gleam Compiler"
+  },
+  "@lobstersgram:391": {
+    "telegraph_link": "https://telegra.ph/the-beauty-in-dsl-able-languages-08-26",
+    "article_link": "https://w.on-t.work/dslable",
+    "discussion_link": "https://lobste.rs/s/8emue2/beauty_dsl_able_languages",
+    "title": "the beauty in dsl-able languages"
+  },
+  "@lobstersgram:392": {
+    "telegraph_link": "https://telegra.ph/mold-A-Massively-Parallel-Linker-08-26",
+    "article_link": "https://arxiv.org/abs/2608.23228",
+    "discussion_link": "https://lobste.rs/s/e291dc/mold_massively_parallel_linker",
+    "title": "mold: A Massively Parallel Linker"
+  },
+  "@lobstersgram:393": {
+    "telegraph_link": "https://telegra.ph/Casey-Muratori--The-Root-of-The-Root-of-All-Evil--BSC-2026-08-26-3",
+    "article_link": "https://www.youtube.com/watch?v=hpj6r6CjJf8",
+    "discussion_link": "https://lobste.rs/s/p8exgy/casey_muratori_root_root_all_evil_bsc_2026",
+    "title": "Casey Muratori – The Root of The Root of All Evil – BSC 2026"
+  },
+  "@lobstersgram:394": {
+    "telegraph_link": "https://telegra.ph/Using-TypeScript-to-Obtain-One-of-the-Rarest-License-Plates--Jacks-Blog-08-26",
+    "article_link": "https://www.jack.bio/blog/licenseplate",
+    "discussion_link": "https://lobste.rs/s/jykbra/using_typescript_obtain_one_rarest",
+    "title": "Using TypeScript to Obtain One of the Rarest License Plates (2025)"
+  },
+  "@lobstersgram:395": {
+    "telegraph_link": "https://telegra.ph/Whats-in-a-tag-name-JavaScript-apparently--PortSwigger-Research-08-26",
+    "article_link": "https://portswigger.net/research/whats-in-a-tag-name-javascript-apparently",
+    "discussion_link": "https://lobste.rs/s/lbsvk7/what_s_tag_name_javascript_apparently",
+    "title": "What's in a tag name? JavaScript, apparently"
+  },
+  "@lobstersgram:396": {
+    "telegraph_link": "https://telegra.ph/Beyond-recall-and-the-illusion-of-competence---var0xyz-08-26",
+    "article_link": "https://var0.xyz/posts/beyond-recall-and-the-illusion-of-competence.html",
+    "discussion_link": "https://lobste.rs/s/tv1xpz/beyond_recall_illusion_competence",
+    "title": "Beyond recall and the illusion of competence"
+  },
+  "@lobstersgram:397": {
+    "telegraph_link": "https://telegra.ph/Problem-with-concurrent-linter-fixes-08-26-2",
+    "article_link": "https://jfmengels.net/concurrent-linter-fixes/",
+    "discussion_link": "https://lobste.rs/s/3rtqua/problem_with_concurrent_linter_fixes",
+    "title": "Problem with concurrent linter fixes"
+  },
+  "@lobstersgram:398": {
+    "telegraph_link": "https://telegra.ph/Understanding-Gos-syncMap-from-API-to-Hash-Trie-08-26-2",
+    "article_link": "https://victoriametrics.com/blog/go-sync-map-hash-trie/",
+    "discussion_link": "https://lobste.rs/s/oqno0v/understanding_go_s_sync_map_from_api_hash",
+    "title": "Understanding Go's sync.Map from API to Hash Trie"
+  },
+  "@lobstersgram:399": {
+    "telegraph_link": "https://telegra.ph/Lukas-Werner---Kinesis-Redux-08-26",
+    "article_link": "https://lukaswerner.com/post/2026-08-25@kinesis-advantage-build",
+    "discussion_link": "https://lobste.rs/s/ildmgi/fixing_my_kinesis_advantage",
+    "title": "Fixing my Kinesis Advantage"
+  },
+  "@lobstersgram:400": {
+    "telegraph_link": "https://telegra.ph/Merchants-of-Insecurity---One-Happy-Fellow---blog-08-26-2",
+    "article_link": "https://blog.happyfellow.dev/merchants-of-insecurity/",
+    "discussion_link": "https://lobste.rs/s/eove8s/merchants_insecurity",
+    "title": "Merchants of Insecurity"
+  },
+  "@lobstersgram:401": {
+    "telegraph_link": "https://telegra.ph/Memory-ordering-in-CPUs--The-ryg-blog-08-26",
+    "article_link": "https://fgiesen.wordpress.com/2026/08/25/memory-ordering-in-cpus/",
+    "discussion_link": "https://lobste.rs/s/idtlvo/memory_ordering_cpus",
+    "title": "Memory ordering in CPUs"
+  },
+  "@lobstersgram:402": {
+    "telegraph_link": "https://telegra.ph/WebSockets-vs-SSE-should-be-about-ordering-and-correctness---Dashbit-Blog-08-26",
+    "article_link": "https://dashbit.co/blog/websockets-vs-sse",
+    "discussion_link": "https://lobste.rs/s/wski9u/websockets_vs_sse_should_be_about",
+    "title": "WebSockets vs. SSE should be about ordering and correctness"
+  },
+  "@lobstersgram:403": {
+    "telegraph_link": "https://telegra.ph/VMs-wont-contain-cyber-capable-agents---The-Trail-of-Bits-Blog-08-26-2",
+    "article_link": "https://blog.trailofbits.com/2026/08/26/vms-wont-contain-cyber-capable-agents/",
+    "discussion_link": "https://lobste.rs/s/q6qjjr/vms_won_t_contain_cyber_capable_agents",
+    "title": "VMs won't contain cyber-capable agents"
+  },
+  "@lobstersgram:404": {
+    "telegraph_link": "https://telegra.ph/Motorolas-GrapheneOS-phones-will-launch-in-2027-priced-higher-than-Pixels---Ars-Technica-08-26",
+    "article_link": "https://arstechnica.com/gadgets/2026/08/motorolas-grapheneos-phones-will-launch-in-2027-priced-higher-than-pixels/",
+    "discussion_link": "https://lobste.rs/s/me3mun/motorola_s_grapheneos_phones_will_launch",
+    "title": "Motorola's GrapheneOS phones will launch in 2027 priced higher than Pixels"
+  },
+  "@lobstersgram:405": {
+    "telegraph_link": "https://telegra.ph/DuckLabs---DuckLabs-to-Join-AWS-Projects-to-Remain-Open-Source-08-26-2",
+    "article_link": "https://ducklabs.com/news/2026/08/26/ducklabs-to-join-aws",
+    "discussion_link": "https://lobste.rs/s/p86r57/ducklabs_join_aws_projects_remain_open",
+    "title": "DuckLabs to Join AWS, Projects to Remain Open Source"
+  },
+  "@lobstersgram:406": {
+    "telegraph_link": "https://telegra.ph/Freedom-to-Handcraft-Software---rohanrd-08-26",
+    "article_link": "https://rohanrd.mataroa.blog/blog/freedom-to-handcraft-software/",
+    "discussion_link": "https://lobste.rs/s/fvvxvy/freedom_handcraft_software",
+    "title": "Freedom to Handcraft Software"
+  },
+  "@lobstersgram:407": {
+    "telegraph_link": "https://telegra.ph/Building-textlog-without-JavaScript--GitHub-08-26",
+    "article_link": "https://gist.github.com/stagas/09ad937b493bf8cd3285917279de2488",
+    "discussion_link": "https://lobste.rs/s/nksuk5/building_textlog_without_javascript",
+    "title": "Building textlog without JavaScript"
+  },
+  "@lobstersgram:408": {
+    "telegraph_link": "https://telegra.ph/Getting-a-Cease-and-Desist-from-Waffle-House--Jacks-Blog-08-26",
+    "article_link": "https://www.jack.bio/blog/wafflehouse",
+    "discussion_link": "https://lobste.rs/s/erm1zp/getting_cease_desist_from_waffle_house",
+    "title": "Getting a Cease and Desist from Waffle House"
+  },
+  "@lobstersgram:409": {
+    "telegraph_link": "https://telegra.ph/The-Power-of-Ten-Rules-for-Safety-Critical-Coding-by-Gerard-Holzmann-08-27",
+    "article_link": "https://www.youtube.com/watch?v=GRJtYwneG2Q",
+    "discussion_link": "https://lobste.rs/s/aecolw/power_ten_rules_for_safety_critical",
+    "title": "The Power of Ten: Rules for Safety Critical Coding"
+  },
+  "@lobstersgram:410": {
+    "telegraph_link": "https://telegra.ph/Rosenzweig---Dissecting-the-Apple-M1-GPU-the-end-08-27",
+    "article_link": "https://alyssarosenzweig.ca/blog/asahi-gpu-part-n.html",
+    "discussion_link": "https://lobste.rs/s/w2g5fx/dissectingthe_apple_m1_gpu_end",
+    "title": "Dissectingthe Apple M1 GPU, the end"
+  },
+  "@lobstersgram:411": {
+    "telegraph_link": "https://telegra.ph/Progress-Report-Linux-72---Asahi-Linux-08-27-2",
+    "article_link": "https://asahilinux.org/2026/08/progress-report-7-2/",
+    "discussion_link": "https://lobste.rs/s/6qxd8g/asahi_linux_progress_report_linux_7_2",
+    "title": "Asahi Linux Progress Report: Linux 7.2"
+  },
+  "@lobstersgram:412": {
+    "telegraph_link": "https://telegra.ph/Symmetries-in-boolean-scans-08-27",
+    "article_link": "https://ap29600.github.io/boolean_scans.html",
+    "discussion_link": "https://lobste.rs/s/hzbkr2/symmetries_boolean_scans",
+    "title": "Symmetries in boolean scans"
+  },
+  "@lobstersgram:413": {
+    "telegraph_link": "https://telegra.ph/Bonsai-Blog--Fully-Managed-Elasticsearch--OpenSearch--Float-Bloat-vector-serialization-gone-wrong-08-27",
+    "article_link": "https://bonsai.io/blog/float-bloat/",
+    "discussion_link": "https://lobste.rs/s/m31l5c/float_bloat_vector_serialization_gone",
+    "title": "Float Bloat: vector serialization gone wrong"
+  },
+  "@lobstersgram:414": {
+    "telegraph_link": "https://telegra.ph/What-happens-when-a-GPU-reads-memory--Doubleword-08-27",
+    "article_link": "https://blog.doubleword.ai/what-happens-when-a-gpu-reads-memory",
+    "discussion_link": "https://lobste.rs/s/bkcjsa/what_happens_when_gpu_reads_memory",
+    "title": "What happens when a GPU reads memory"
+  },
+  "@lobstersgram:415": {
+    "telegraph_link": "https://telegra.ph/A-Million-Kakapos-08-27",
+    "article_link": "https://blog.mempko.com/a-million-kakapos/",
+    "discussion_link": "https://lobste.rs/s/ir1jkh/million_kakapos",
+    "title": "A Million Kakapos"
+  },
+  "@lobstersgram:416": {
+    "telegraph_link": "https://telegra.ph/Announcing-Sovereign-Tech-Agency-Investment-in-Flatpak---Modal-Collective-08-28",
+    "article_link": "https://modal.cx/blog/announcing-flatpak-sta/",
+    "discussion_link": "https://lobste.rs/s/kvlafj/announcing_sovereign_tech_agency",
+    "title": "Announcing Sovereign Tech Agency Investment in Flatpak"
+  },
+  "@lobstersgram:417": {
+    "telegraph_link": "https://telegra.ph/Co-Creator-of-Haskell-Functional-Programming-Thinking-in-Types-Useless-Languages--Simon-Jones-08-28",
+    "article_link": "https://www.youtube.com/watch?v=xcB_LF3cdqw",
+    "discussion_link": "https://lobste.rs/s/ko74yd/simon_peyton_jones_on_functional",
+    "title": "Simon Peyton Jones on Functional Programming, Thinking in Types, Useless Languages"
+  },
+  "@lobstersgram:418": {
+    "telegraph_link": "https://telegra.ph/Why-Free-Software-usability-tends-to-suck-08-28",
+    "article_link": "https://web.archive.org/web/20030201183139/http://mpt.phrasewise.com/discuss/msgReader$173",
+    "discussion_link": "https://lobste.rs/s/a5qr8n/why_free_software_usability_tends_suck",
+    "title": "Why Free Software usability tends to suck (2002)"
+  },
+  "@lobstersgram:419": {
+    "telegraph_link": "https://telegra.ph/tailscaletailcat--like-netcat-but-over-Tailscales-data-plane-without-Tailscales-control-plane-08-28",
+    "article_link": "https://github.com/tailscale/tailcat",
+    "discussion_link": "https://lobste.rs/s/pdvxvf/tailcat_like_netcat_over_tailscale_s_data",
+    "title": "tailcat: like netcat, but over Tailscale's data plane, without Tailscale's control plane"
+  },
+  "@lobstersgram:420": {
+    "telegraph_link": "https://telegra.ph/Talk-is-Cheap-Code-is-Cheap-Show-me-the-Source--Dilips-Log-08-28",
+    "article_link": "https://idlip.in/posts/show-me-source/",
+    "discussion_link": "https://lobste.rs/s/idizd1/talk_is_cheap_code_is_cheap_show_me_source",
+    "title": "Talk is Cheap. Code is Cheap. Show me the Source"
+  },
+  "@lobstersgram:421": {
+    "telegraph_link": "https://telegra.ph/Please-stop-flooding-our-projects-with-AI-slop-to-furnish-your-CV--neilalexanderdev-08-29",
+    "article_link": "https://neilalexander.dev/2026/06/30/flooding-contributions",
+    "discussion_link": "https://lobste.rs/s/rzvdqo/please_stop_flooding_our_projects_with_ai",
+    "title": "Please stop flooding our projects with AI slop to furnish your CV"
+  },
+  "@lobstersgram:422": {
+    "telegraph_link": "https://telegra.ph/25x-Performance-Three-Optimizations-08-29",
+    "article_link": "https://maplant.com/2025-04-20-25x-Performance,-Three-Optimizations.html",
+    "discussion_link": "https://lobste.rs/s/rhto2r/25x_performance_three_optimizations",
+    "title": "25x Performance, Three Optimizations"
+  },
+  "@lobstersgram:423": {
+    "telegraph_link": "https://telegra.ph/Rosenzweig---Hilariously-Fast-Volume-Computation-with-the-Divergence-Theorem-08-29",
+    "article_link": "https://alyssarosenzweig.ca/blog/hilariously-fast-volume-computation-with-the-divergence-theorem.html",
+    "discussion_link": "https://lobste.rs/s/dbavwl/hilariously_fast_volume_computation",
+    "title": "Hilariously Fast Volume Computation with the Divergence Theorem (2018)"
+  },
+  "@lobstersgram:424": {
+    "telegraph_link": "https://telegra.ph/A-Perfect-SimCity--Articles-08-29-2",
+    "article_link": "https://www.jeffquast.com/post/a-perfect-simcity/",
+    "discussion_link": "https://lobste.rs/s/r4egb5/perfect_simcity",
+    "title": "A Perfect SimCity"
+  },
+  "@lobstersgram:425": {
+    "telegraph_link": "https://telegra.ph/zedeusnitter--Alternative-Twitter-front-end-08-29",
+    "article_link": "https://github.com/zedeus/nitter",
+    "discussion_link": "https://lobste.rs/s/zfhall/nitter_xcancel_shutdown_over_cease",
+    "title": "Nitter, XCancel Shutdown Over Cease-And-Desist"
+  },
+  "@lobstersgram:426": {
+    "telegraph_link": "https://telegra.ph/Changes-to-SourceHuts-terms-of-service-regarding-LLMs-08-29",
+    "article_link": "https://sourcehut.org/blog/2026-08-27-tos-changes-and-llms/",
+    "discussion_link": "https://lobste.rs/s/iqgrsx/changes_sourcehut_s_terms_service",
+    "title": "Changes to SourceHut's terms of service regarding LLMs"
+  },
+  "@lobstersgram:427": {
+    "telegraph_link": "https://telegra.ph/Nobody-Argued-For-Your-Stack---DEV-Community-08-29",
+    "article_link": "https://dev.to/playfulprogramming/nobody-argued-for-your-stack-51fj",
+    "discussion_link": "https://lobste.rs/s/hg2lbk/nobody_argued_for_your_stack",
+    "title": "Nobody Argued For Your Stack"
+  },
+  "@lobstersgram:428": {
+    "telegraph_link": "https://telegra.ph/How-we-saved-100-terabytes-of-memory-by-optimizing-1111s-DNS-cache--Cloudflare-Blog-08-29",
+    "article_link": "https://blog.cloudflare.com/dns-cache-memory-optimization-1111/",
+    "discussion_link": "https://lobste.rs/s/p7solr/how_we_saved_100_terabytes_memory_by",
+    "title": "How we saved 100 terabytes of memory by optimizing 1.1.1.1’s DNS cache"
+  },
+  "@lobstersgram:429": {
+    "telegraph_link": "https://telegra.ph/What-are-you-doing-this-weekend--Lobsters-08-29",
+    "article_link": "https://lobste.rs/s/oveaa3/what_are_you_doing_this_weekend",
+    "discussion_link": "https://lobste.rs/s/oveaa3/what_are_you_doing_this_weekend",
+    "title": "What are you doing this weekend?"
+  },
+  "@lobstersgram:430": {
+    "telegraph_link": "https://telegra.ph/Zero-Cost-Tagless-Final-in-Rust-with-GADT-style-Enums--Inferara-08-29",
+    "article_link": "https://inferara.com/blog/rust-tagless-final-gadt/",
+    "discussion_link": "https://lobste.rs/s/max8q6/zero_cost_tagless_final_rust_with_gadt",
+    "title": "Zero-Cost 'Tagless Final' in Rust with GADT-style Enums"
+  },
+  "@lobstersgram:431": {
+    "telegraph_link": "https://telegra.ph/Reviving-An-SD-Card-With-Shorted-Capacitors--Hackaday-08-29",
+    "article_link": "https://hackaday.com/2026/08/28/reviving-an-sd-card-with-shorted-capacitors/",
+    "discussion_link": "https://lobste.rs/s/s8x8xq/reviving_sd_card_with_shorted_capacitors",
+    "title": "Reviving An SD Card With Shorted Capacitors"
+  },
+  "@lobstersgram:432": {
+    "telegraph_link": "https://telegra.ph/Civic-Hygiene---Terence-Edens-Blog-08-29",
+    "article_link": "https://shkspr.mobi/blog/2013/11/civic-hygiene/",
+    "discussion_link": "https://lobste.rs/s/tnmkfp/civic_hygiene_2013",
+    "title": "Civic Hygiene (2013)"
+  },
+  "@lobstersgram:433": {
+    "telegraph_link": "https://telegra.ph/Now-Hiring-Senior-Open-Source-Maintainer--Andrew-Nesbitt-08-29",
+    "article_link": "https://nesbitt.io/2026/08/28/now-hiring-senior-open-source-maintainer.html",
+    "discussion_link": "https://lobste.rs/s/p6kxjh/now_hiring_senior_open_source_maintainer",
+    "title": "Now Hiring: Senior Open Source Maintainer"
+  },
+  "@lobstersgram:434": {
+    "telegraph_link": "https://telegra.ph/Stopping-the-smart-TV-from-being-used-against-you---S-Config-08-29",
+    "article_link": "https://www.s-config.com/stopping-a-smart-tv-from-being-used-against-you/",
+    "discussion_link": "https://lobste.rs/s/nfvukc/stopping_smart_tv_from_being_used_against",
+    "title": "Stopping the smart TV from being used against you"
+  },
+  "@lobstersgram:435": {
+    "telegraph_link": "https://telegra.ph/Does-Computer-Science-Need-Computers--Quanta-Magazine-08-29",
+    "article_link": "https://www.quantamagazine.org/does-computer-science-need-computers-20260828/",
+    "discussion_link": "https://lobste.rs/s/xeedei/does_computer_science_need_computers",
+    "title": "Does Computer Science Need Computers?"
+  },
+  "@lobstersgram:436": {
+    "telegraph_link": "https://telegra.ph/How-I-made-Rustdoc-33-faster-in-one-week---Noah-Lev-Bartell-Mangel-08-29",
+    "article_link": "https://noahlev.org/blog/2026/08/27/making-rustdoc-faster/",
+    "discussion_link": "https://lobste.rs/s/ulkqhi/how_i_made_rustdoc_33_faster_one_week",
+    "title": "How I made Rustdoc 33% faster in one week"
+  },
+  "@lobstersgram:437": {
+    "telegraph_link": "https://telegra.ph/Quest-for-the-eternal-Dock---lambdock---jointhefreeworld-08-29",
+    "article_link": "https://jointhefreeworld.org/blog/articles/gnu-linux/quest-for-eternal-dock/index.html",
+    "discussion_link": "https://lobste.rs/s/lvspri/quest_for_eternal_dock_on_wayland",
+    "title": "Quest for eternal dock on Wayland - lambdock (C + GTK4 + Lisp GNU Guile Scheme)"
+  },
+  "@lobstersgram:438": {
+    "telegraph_link": "https://telegra.ph/todotgecanonical-basis--Canonical-basis-realignment-for-Transformer-LLMs-every-hidden-axis-becomes-independently-measurable-and--08-29",
+    "article_link": "https://github.com/todotge/canonical-basis",
+    "discussion_link": "https://lobste.rs/s/wg65qn/canonical_basis_realignment_for",
+    "title": "Canonical-basis realignment for Transformer LLMs: every hidden axis becomes independently measurable and controllable"
+  },
+  "@lobstersgram:439": {
+    "telegraph_link": "https://telegra.ph/EasyEffects-should-be-part-of-every-Linux-distribution-and-desktop-environment-to-massively-improve-laptop-speaker-sound-quality-08-29-5",
+    "article_link": "https://www.osnews.com/story/145883/easyeffects-should-be-part-of-every-linux-distribution-and-desktop-environment-to-massively-improve-laptop-speaker-sound-quality/",
+    "discussion_link": "https://lobste.rs/s/zhnpv1/easyeffects_should_be_part_every_linux",
+    "title": "EasyEffects should be part of every Linux distribution to improve laptop speaker sound quality"
+  },
+  "@lobstersgram:440": {
+    "telegraph_link": "https://telegra.ph/Debian-Votes-To-Allow-Responsible-Use-Of-Generative-AI---Phoronix-08-29",
+    "article_link": "https://www.phoronix.com/news/Debian-Votes-Responsible-AI-Use",
+    "discussion_link": "https://lobste.rs/s/34qdwx/debian_votes_allow_responsible_use",
+    "title": "Debian Votes To Allow \"Responsible Use Of Generative AI\""
+  },
+  "@lobstersgram:441": {
+    "telegraph_link": "https://telegra.ph/Omnipresent-availability-risks-in-cloud-software---Surfing-Complexity-08-30",
+    "article_link": "https://surfingcomplexity.blog/2026/08/29/omnipresent-availability-risks-in-cloud-software/",
+    "discussion_link": "https://lobste.rs/s/m3brob/omnipresent_availability_risks_cloud",
+    "title": "Omnipresent availability risks in cloud software"
+  },
+  "@lobstersgram:442": {
+    "telegraph_link": "https://telegra.ph/GUIs-should-be-fully-keyboard-driven--Charalampos-Kardaris-08-30",
+    "article_link": "https://ckardaris.com/blog/2026/08/28/keyboard-driven-guis.html",
+    "discussion_link": "https://lobste.rs/s/qlpiur/guis_should_be_fully_keyboard_driven",
+    "title": "GUIs should be fully keyboard-driven"
+  },
+  "@lobstersgram:443": {
+    "telegraph_link": "https://telegra.ph/Just-a-rumour-of-a-bug-is-enough-to-find-a-security-exploit-these-days--Anil-Madhavapeddy-08-30",
+    "article_link": "https://anil.recoil.org/notes/rumour-is-the-exploit",
+    "discussion_link": "https://lobste.rs/s/t73wqi/just_rumour_bug_is_enough_find_security",
+    "title": "Just a rumour of a bug is enough to find a security exploit these days"
+  },
+  "@lobstersgram:444": {
+    "telegraph_link": "https://telegra.ph/OpenOffice-does-not-print-on-Tuesdays--Andreas-Zwinkau-08-30",
+    "article_link": "https://beza1e1.tuxen.de/lore/print_on_tuesday.html",
+    "discussion_link": "https://lobste.rs/s/im3eeh/openoffice_does_not_print_on_tuesdays",
+    "title": "OpenOffice does not print on Tuesdays (2009)"
+  },
+  "@lobstersgram:445": {
+    "telegraph_link": "https://telegra.ph/Any-true-alternatives-to-electron-JavaScript--Lobsters-08-30",
+    "article_link": "https://lobste.rs/s/vji9aj/any_true_alternatives_electron",
+    "discussion_link": "https://lobste.rs/s/vji9aj/any_true_alternatives_electron",
+    "title": "Any true alternatives to electron JavaScript?"
+  },
+  "@lobstersgram:446": {
+    "telegraph_link": "https://telegra.ph/Gram-330-released-08-30",
+    "article_link": "https://gram-editor.com/posts/release-3.3.0/",
+    "discussion_link": "https://lobste.rs/s/rr2irk/gram_editor_3_3_0_released",
+    "title": "Gram Editor 3.3.0 Released"
+  },
+  "@lobstersgram:447": {
+    "telegraph_link": "https://telegra.ph/htmx-400-has-been-released--htmx-08-30",
+    "article_link": "https://four.htmx.org/announcements/2026-08-28-htmx-4.0.0-is-released",
+    "discussion_link": "https://lobste.rs/s/77uge9/htmx_4_0_0_has_been_released",
+    "title": "htmx 4.0.0 has been released"
+  },
+  "@lobstersgram:448": {
+    "telegraph_link": "https://telegra.ph/Breaking-Claude-Code-Opus-5-Auto-Mode--Embrace-The-Red-08-30",
+    "article_link": "https://embracethered.com/blog/posts/2026/breaking-claude-code-opus-5-and-automode/",
+    "discussion_link": "https://lobste.rs/s/ktbweg/prompt_injection_claude_code_opus_5_auto",
+    "title": "Prompt Injection in Claude Code Opus 5 Auto Mode"
+  },
+  "@lobstersgram:449": {
+    "telegraph_link": "https://telegra.ph/Yap-a-particular-kind-of-slop-08-30",
+    "article_link": "https://mckayla.blog/posts/yap.html",
+    "discussion_link": "https://lobste.rs/s/xr1eor/yap_particular_kind_slop",
+    "title": "Yap: a particular kind of slop"
+  },
+  "@lobstersgram:450": {
+    "telegraph_link": "https://telegra.ph/The-essence-of-architectural-work---Part-6-08-30",
+    "article_link": "https://www.ufried.com/blog/essence_of_architecture_6/",
+    "discussion_link": "https://lobste.rs/s/kgtvxb/essence_architectural_work_part_6",
+    "title": "The essence of architectural work - Part 6"
+  },
+  "@lobstersgram:451": {
+    "telegraph_link": "https://telegra.ph/OpenWrt-Monitor-your-IPv6-Status---Ralfs-Blog-08-30",
+    "article_link": "https://bergs.biz/blog/2026/08/30/openwrt-monitor-your-ipv6-status/",
+    "discussion_link": "https://lobste.rs/s/zaavff/openwrt_monitor_your_ipv6_status",
+    "title": "OpenWrt: Monitor your IPv6 Status"
+  },
+  "@lobstersgram:452": {
+    "telegraph_link": "https://telegra.ph/On-Taste---Matti-Ryttyläinen-08-30",
+    "article_link": "https://www.mattiryttylainen.com/posts/on-taste",
+    "discussion_link": "https://lobste.rs/s/s7ulwg/on_taste",
+    "title": "On Taste"
+  },
+  "@lobstersgram:453": {
+    "telegraph_link": "https://telegra.ph/Parsing-the-Infamous-Japanese-Postal-CSV-08-30",
+    "article_link": "https://www.dampfkraft.com/posuto.html",
+    "discussion_link": "https://lobste.rs/s/k9uxu5/parsing_infamous_japanese_postal_csv",
+    "title": "Parsing the Infamous Japanese Postal CSV (2020)"
+  },
+  "@lobstersgram:454": {
+    "telegraph_link": "https://telegra.ph/A-SAT-Attack-on-Tarskis-High-School-Algebra-Problem-08-30",
+    "article_link": "https://arxiv.org/abs/2608.08421",
+    "discussion_link": "https://lobste.rs/s/syxqrd/sat_attack_on_tarski_s_high_school_algebra",
+    "title": "A SAT Attack on Tarski's High School Algebra Problem"
+  },
+  "@lobstersgram:455": {
+    "telegraph_link": "https://telegra.ph/HSK-Manga-Turning-Manga-into-Beginner-Level-Chinese-08-30",
+    "article_link": "https://hskmanga.com/blog/",
+    "discussion_link": "https://lobste.rs/s/fkcpnp/hsk_manga_turning_manga_into_beginner",
+    "title": "HSK Manga: Turning Manga into Beginner-Level Chinese"
+  },
+  "@lobstersgram:456": {
+    "telegraph_link": "https://telegra.ph/Debugging-Type-Based-Alias-Analysis-optimizations-in-BPF-08-30",
+    "article_link": "https://loshz.com/debugging-bpf-tbaa/",
+    "discussion_link": "https://lobste.rs/s/pkqqr5/debugging_type_based_alias_analysis",
+    "title": "Debugging Type-Based Alias Analysis optimizations in BPF"
+  },
+  "@lobstersgram:457": {
+    "telegraph_link": "https://telegra.ph/iterate-think-thoughts-Wrapping-GTK4-in-800-lines-of-Clojure-with-Jolt-08-30",
+    "article_link": "https://yogthos.net/posts/2026-08-29-glimmer-ui.html",
+    "discussion_link": "https://lobste.rs/s/svga6q/wrapping_gtk4_800_lines_clojure_with_jolt",
+    "title": "Wrapping GTK4 in 800 lines of Clojure with Jolt"
+  },
+  "@lobstersgram:458": {
+    "telegraph_link": "https://telegra.ph/Parallel-mathcal-Osqrt-n-Overhead-LSD-Radix-Sort-08-30",
+    "article_link": "https://arxiv.org/abs/2607.05302",
+    "discussion_link": "https://lobste.rs/s/9ac8ta/parallel_o_sqrt_n_overhead_lsd_radix_sort",
+    "title": "Parallel O(sqrt n) Overhead LSD Radix Sort"
+  },
+  "@lobstersgram:459": {
+    "telegraph_link": "https://telegra.ph/What-GLM-53-Flash-running-on-Chinese-hardware-actually-means---Martin-Alderson-08-30",
+    "article_link": "https://martinalderson.com/posts/glm-5-3-flash-chinese-hardware/",
+    "discussion_link": "https://lobste.rs/s/wsbhcr/what_glm_5_3_flash_running_on_chinese",
+    "title": "What GLM-5.3 Flash running on Chinese hardware actually means"
+  },
+  "@lobstersgram:460": {
+    "telegraph_link": "https://telegra.ph/Bug-blindness-08-30-10",
+    "article_link": "https://danluu.com/bug-blind/",
+    "discussion_link": "https://lobste.rs/s/n1jlxt/bug_blindness",
+    "title": "Bug blindness"
+  },
+  "@lobstersgram:461": {
+    "telegraph_link": "https://telegra.ph/Aiki-Alpha-3-Released---decusers-blog-08-30",
+    "article_link": "https://decuser.github.io/posts/aiki-alpha-3-release/",
+    "discussion_link": "https://lobste.rs/s/hutycp/aiki_alpha_3_released_performance",
+    "title": "Aiki Alpha 3 Released - Performance Improved"
+  },
+  "@lobstersgram:462": {
+    "telegraph_link": "https://telegra.ph/Debian-and-the-sirens-08-30",
+    "article_link": "https://joeyh.name/blog/entry/Debian_and_the_sirens/",
+    "discussion_link": "https://lobste.rs/s/pxmp9r/debian_sirens",
+    "title": "Debian and the sirens"
+  },
+  "@lobstersgram:463": {
+    "telegraph_link": "https://telegra.ph/RailsConf-2014---All-the-Little-Things-by-Sandi-Metz-08-31",
+    "article_link": "https://www.youtube.com/watch?v=8bZh5LMaSmE",
+    "discussion_link": "https://lobste.rs/s/gtarrm/all_little_things_2014",
+    "title": "All the Little Things (2014)"
+  },
+  "@lobstersgram:464": {
+    "telegraph_link": "https://telegra.ph/One-flake-to-rule-them-all--Farid-Zakarias-Blog-08-31",
+    "article_link": "https://fzakaria.com/2026/08/28/one-flake-to-rule-them-all",
+    "discussion_link": "https://lobste.rs/s/qjbw27/one_flake_rule_them_all",
+    "title": "One flake to rule them all"
+  },
+  "@lobstersgram:465": {
+    "telegraph_link": "https://telegra.ph/smooresdev---Automating-immersive-reading-08-31",
+    "article_link": "https://smoores.dev/post/automating_immersive_reading/",
+    "discussion_link": "https://lobste.rs/s/n1h6mh/automating_immersive_reading",
+    "title": "Automating immersive reading"
+  },
+  "@lobstersgram:466": {
+    "telegraph_link": "https://telegra.ph/sorvi-platformdekoodaaja--Providers-fast-decoders-for-various-image-formats-Currently-only-QOI-08-31",
+    "article_link": "https://github.com/sorvi-platform/dekoodaaja",
+    "discussion_link": "https://lobste.rs/s/wdke4a/small_reasonably_fast_qoi_decoder",
+    "title": "Small and reasonably fast QOI decoder written in zig"
+  },
+  "@lobstersgram:467": {
+    "telegraph_link": "https://telegra.ph/Interview-With-Oofoe-08-31",
+    "article_link": "https://alexalejandre.com/interviews/interview-with-oofoe/",
+    "discussion_link": "https://lobste.rs/s/3ccvfi/interview_with_oofoe_about_rebol_forth",
+    "title": "Interview with oofoe about REBOL, Forth, Decker, Janet and the VFx Industry"
+  },
+  "@lobstersgram:468": {
+    "telegraph_link": "https://telegra.ph/Being-kicked-out-of-the-tech-industry---Jacky-Alciné-08-31",
+    "article_link": "https://www.jacky.wtf/essays/2026/kicked-out/",
+    "discussion_link": "https://lobste.rs/s/mroowi/being_kicked_out_tech_industry",
+    "title": "Being kicked out of the tech industry"
+  },
+  "@lobstersgram:469": {
+    "telegraph_link": "https://telegra.ph/Creepy-crawlies---Konstantin-Ryabitsev-08-31",
+    "article_link": "https://people.kernel.org/monsieuricon/creepy-crawlies",
+    "discussion_link": "https://lobste.rs/s/nbjo0i/creepy_crawlies",
+    "title": "Creepy crawlies"
+  },
+  "@lobstersgram:470": {
+    "telegraph_link": "https://telegra.ph/Prela-Tutorial-08-31",
+    "article_link": "https://prela-lang.org/tutorial/",
+    "discussion_link": "https://lobste.rs/s/xnljk9/better_sql_11_lines_code",
+    "title": "A Better SQL in 11 Lines of Code"
+  },
+  "@lobstersgram:471": {
+    "telegraph_link": "https://telegra.ph/California-Passes-AB-1856-For-Open-Source-Relief-Over-Age-Verification---Phoronix-08-31",
+    "article_link": "https://www.phoronix.com/news/California-AB-1856-Passes",
+    "discussion_link": "https://lobste.rs/s/pcldcc/california_passes_ab_1856_for_open_source",
+    "title": "California Passes AB-1856 For Open-Source Relief Over Age Verification"
+  },
+  "@lobstersgram:472": {
+    "telegraph_link": "https://telegra.ph/C26-Standard-Library-Hardening-Experiments---C-Stories-08-31-2",
+    "article_link": "https://www.cppstories.com/2026/hardening-experiments/",
+    "discussion_link": "https://lobste.rs/s/qtakqk/c_26_standard_library_hardening",
+    "title": "C++26: Standard Library Hardening Experiments"
+  },
+  "@lobstersgram:473": {
+    "telegraph_link": "https://telegra.ph/Bootstrappable-builds-how-and-why-LWNnet-08-31",
+    "article_link": "https://lwn.net/Articles/1088279/",
+    "discussion_link": "https://lobste.rs/s/xygw0y/bootstrappable_builds_how_why",
+    "title": "Bootstrappable builds: how and why"
+  },
+  "@lobstersgram:474": {
+    "telegraph_link": "https://telegra.ph/Rootless-Docker-and-Its-Hidden-Security-Trade-Offs---Ken-Muse-08-31",
+    "article_link": "https://www.kenmuse.com/blog/rootless-docker-and-its-hidden-security-trade-offs/",
+    "discussion_link": "https://lobste.rs/s/lssato/rootless_docker_its_hidden_security",
+    "title": "Rootless Docker and Its Hidden Security Trade-Offs"
+  },
+  "@lobstersgram:475": {
+    "telegraph_link": "https://telegra.ph/Technical-note-transfer-files-over-an-ethernet-patch-cable-Maurycys-blog-08-31-2",
+    "article_link": "https://maurycyz.com/misc/etherfiles/",
+    "discussion_link": "https://lobste.rs/s/mgwfjc/transfer_files_over_ethernet_patch_cable",
+    "title": "Transfer files over an ethernet patch cable"
+  },
+  "@lobstersgram:476": {
+    "telegraph_link": "https://telegra.ph/What-is-the-real-maximum-length-of-a-DNS-name---The-Old-New-Thing-08-31",
+    "article_link": "https://devblogs.microsoft.com/oldnewthing/20120412-00/?p=7873",
+    "discussion_link": "https://lobste.rs/s/51zi5s/what_is_real_maximum_length_dns_name_2012",
+    "title": "What is the real maximum length of a DNS name? (2012)"
+  },
+  "@lobstersgram:477": {
+    "telegraph_link": "https://telegra.ph/Any-user-process-can-escalate-to-root--vesto-09-01",
+    "article_link": "https://www.vesto.me/2026/08/31/any-process-escalate-root.html",
+    "discussion_link": "https://lobste.rs/s/q2zziq/any_user_process_can_escalate_root",
+    "title": "Any user process can escalate to root"
+  },
+  "@lobstersgram:478": {
+    "telegraph_link": "https://telegra.ph/But-where-does-taste-come-from----Dustycloud-Brainstorms-09-01",
+    "article_link": "https://dustycloud.org/blog/but-where-does-taste-come-from/",
+    "discussion_link": "https://lobste.rs/s/9naffr/where_does_taste_come_from",
+    "title": "But where does taste come from?"
+  },
+  "@lobstersgram:479": {
+    "telegraph_link": "https://telegra.ph/What-are-you-doing-this-week--Lobsters-09-01",
+    "article_link": "https://lobste.rs/s/vb1jgu/what_are_you_doing_this_week",
+    "discussion_link": "https://lobste.rs/s/vb1jgu/what_are_you_doing_this_week",
+    "title": "What are you doing this week?"
+  },
+  "@lobstersgram:480": {
+    "telegraph_link": "https://telegra.ph/Adas-Blog-09-01",
+    "article_link": "https://spirali.github.io/blog/cargo-scheduler/",
+    "discussion_link": "https://lobste.rs/s/by7xg6/could_cargo_s_scheduler_be_better",
+    "title": "Could Cargo's scheduler be better?"
+  },
+  "@lobstersgram:481": {
+    "telegraph_link": "https://telegra.ph/Kale-A-Transformation-Safe-Spreadsheet-System-09-01-3",
+    "article_link": "https://arxiv.org/abs/2608.26345",
+    "discussion_link": "https://lobste.rs/s/tkrcrg/kale_transformation_safe_spreadsheet",
+    "title": "Kale: A Transformation-Safe Spreadsheet System"
+  },
+  "@lobstersgram:482": {
+    "telegraph_link": "https://telegra.ph/Cancelation-Terminology-09-01",
+    "article_link": "https://matklad.github.io/2026/08/31/cancelation-terminology.html",
+    "discussion_link": "https://lobste.rs/s/49hbhi/cancelation_terminology",
+    "title": "Cancelation Terminology"
+  },
+  "@lobstersgram:483": {
+    "telegraph_link": "https://telegra.ph/Writing-Your-First-Code--ROBOT-FRAMEWORK-09-01",
+    "article_link": "https://docs.robotframework.org/docs/getting_started/how_to_write_rf",
+    "discussion_link": "https://lobste.rs/s/e1pwba/robot_framework_language",
+    "title": "The Robot Framework language"
+  },
+  "@lobstersgram:484": {
+    "telegraph_link": "https://telegra.ph/A-bicycle-for-the-mind-09-01",
+    "article_link": "https://pulkomandy.tk/_/_Life/_A%20bicycle%20for%20the%20mind",
+    "discussion_link": "https://lobste.rs/s/y58e86/bicycle_for_mind",
+    "title": "A bicycle for the mind"
+  },
+  "@lobstersgram:485": {
+    "telegraph_link": "https://telegra.ph/Omarchy-Any-User-Process-Can-Escalate-to-Root-09-01",
+    "article_link": "https://0xcc.io/posts/omarchy-root-creds/",
+    "discussion_link": "https://lobste.rs/s/bxihn3/omarchy_any_user_process_can_escalate",
+    "title": "Omarchy: Any User Process Can Escalate to Root"
+  },
+  "@lobstersgram:486": {
+    "telegraph_link": "https://telegra.ph/osa1---Coherence-and-orphan-instance-rules-09-01",
+    "article_link": "https://osa1.net/posts/2026-08-29-coherence-and-orphans.html",
+    "discussion_link": "https://lobste.rs/s/vbu5ay/coherence_orphan_instance_rules",
+    "title": "Coherence and orphan instance rules"
+  },
+  "@lobstersgram:487": {
+    "telegraph_link": "https://telegra.ph/trevmexs-tumblings---The-US-is-more-than-just-the-US-according-to-the-ISO-09-01",
+    "article_link": "https://trevmex.com/post/826439929093636096/the-us-is-more-than-just-the-us-according-to",
+    "discussion_link": "https://lobste.rs/s/ngqpa1/u_s_is_more_than_just_us_according_iso",
+    "title": "The U.S. is more than just the US (according to the ISO)"
+  },
+  "@lobstersgram:488": {
+    "telegraph_link": "https://telegra.ph/Lets-Use-the-Emergent-CSS-random-Function-in-all-the-Browsers--CSS-Tricks-09-01-2",
+    "article_link": "https://css-tricks.com/css-random-function-polyfill/",
+    "discussion_link": "https://lobste.rs/s/edj52m/let_s_use_emergent_css_random_function_all",
+    "title": "Let’s Use the Emergent CSS random() Function in all the Browsers"
+  },
+  "@lobstersgram:489": {
+    "telegraph_link": "https://telegra.ph/Are-We-Legacy-Computing-Yet-09-01",
+    "article_link": "https://arewelegacycomputingyet.com/",
+    "discussion_link": "https://lobste.rs/s/x1b4va/are_we_legacy_computing_yet",
+    "title": "Are We Legacy Computing Yet?"
+  },
+  "@lobstersgram:490": {
+    "telegraph_link": "https://telegra.ph/44-on-ARC-AGI-1-in-67-cents---Mithil-Vakdes-Homepage-09-01-2",
+    "article_link": "https://mvakde.github.io/blog/44-on-arc-1/",
+    "discussion_link": "https://lobste.rs/s/2rrgyh/44_on_arc_agi_1_67_cents",
+    "title": "44% on ARC-AGI-1 in 67 cents"
+  },
+  "@lobstersgram:491": {
+    "telegraph_link": "https://telegra.ph/On-not-becoming-a-cyborg--Read-the-Tea-Leaves-09-01",
+    "article_link": "https://nolanlawson.com/2026/08/31/on-not-becoming-a-cyborg/",
+    "discussion_link": "https://lobste.rs/s/uxqdfr/on_not_becoming_cyborg",
+    "title": "On not becoming a cyborg"
+  },
+  "@lobstersgram:492": {
+    "telegraph_link": "https://telegra.ph/I-attended-a-conference-recently-and-AI-use-by-academics-was-absurd--Lobsters-09-01",
+    "article_link": "https://lobste.rs/s/qn7jtv/i_attended_conference_recently_ai_use_by",
+    "discussion_link": "https://lobste.rs/s/qn7jtv/i_attended_conference_recently_ai_use_by",
+    "title": "I attended a conference recently and AI use by academics was absurd"
+  },
+  "@lobstersgram:493": {
+    "telegraph_link": "https://telegra.ph/Agent-Grit-Is-a-Double-Edged-Sword---exedev-blog-09-01",
+    "article_link": "https://blog.exe.dev/sol-cheats",
+    "discussion_link": "https://lobste.rs/s/z4uu9y/agent_grit_is_double_edged_sword",
+    "title": "Agent Grit Is a Double-Edged Sword"
+  },
+  "@lobstersgram:494": {
+    "telegraph_link": "https://telegra.ph/A-community-that-works-together-builds-together--AerynOS-09-01",
+    "article_link": "https://aerynos.com/blog/2026/08/31/a-community-that-works-together-builds-together/",
+    "discussion_link": "https://lobste.rs/s/hiry5f/community_works_together_builds",
+    "title": "A community that works together, builds together"
+  },
+  "@lobstersgram:495": {
+    "telegraph_link": "https://telegra.ph/RangeFrom-Part-2-What-I-think-is-wrong-about-the-design-09-01",
+    "article_link": "https://erk.dev/2026/08/30/rangefrom-part-2",
+    "discussion_link": "https://lobste.rs/s/hyn2bt/rangefrom_part_2_what_i_think_is_wrong",
+    "title": "RangeFrom, Part 2..: What I think is wrong about the design"
+  },
+  "@lobstersgram:496": {
+    "telegraph_link": "https://telegra.ph/Agent-memory-as-a-file-format-09-02",
+    "article_link": "https://calpaterson.com/memoryfields.html",
+    "discussion_link": "https://lobste.rs/s/nmhtnw/agent_memory_as_file_format",
+    "title": "Agent memory as a file format"
+  },
+  "@lobstersgram:497": {
+    "telegraph_link": "https://telegra.ph/RISC-V-interpreter-from-the-future--Project-Abundance-09-02",
+    "article_link": "https://abundance.build/blog/2026-08-31-risc-v-interpreter-from-the-future/",
+    "discussion_link": "https://lobste.rs/s/potdi9/risc_v_interpreter_from_future",
+    "title": "RISC-V interpreter from the future"
+  },
+  "@lobstersgram:498": {
+    "telegraph_link": "https://telegra.ph/Researchers-use-AI-to-democratize-3D-printing-of-crucial-metal-alloy--WSU-Insider--Washington-State-University-09-02",
+    "article_link": "https://news.wsu.edu/news/2026/08/24/researchers-use-ai-to-democratize-3d-printing-of-crucial-metal-alloy/",
+    "discussion_link": "https://lobste.rs/s/em1whz/researchers_use_ai_democratize_3d",
+    "title": "Researchers use AI to ‘democratize’ 3D printing of crucial metal alloy"
+  },
+  "@lobstersgram:499": {
+    "telegraph_link": "https://telegra.ph/a-CVE-dispute--danielhaxxse-09-02",
+    "article_link": "https://daniel.haxx.se/blog/2026/06/24/a-cve-dispute/",
+    "discussion_link": "https://lobste.rs/s/1pdfex/curl_cve_dispute",
+    "title": "curl: a CVE dispute"
+  },
+  "@lobstersgram:500": {
+    "telegraph_link": "https://telegra.ph/Rambles-around-computer-science-09-02",
+    "article_link": "https://www.humprog.org/~stephen/blog/2026/08/25/#flat-vs-segmented",
+    "discussion_link": "https://lobste.rs/s/tvoo4x/flat_vs_segmented_memory_it_s_recursive",
+    "title": "Flat vs segmented memory -- it's recursive"
+  },
+  "@lobstersgram:501": {
+    "telegraph_link": "https://telegra.ph/humanity-has-built-the-records-of-FATE-by-accident--Ariadnes-Space-09-02",
+    "article_link": "https://ariadne.space/2026/09/01/humanity-has-built-the-records.html",
+    "discussion_link": "https://lobste.rs/s/wyyzab/humanity_has_built_records_fate_by",
+    "title": "humanity has built the records of FATE by accident"
+  },
+  "@lobstersgram:502": {
+    "telegraph_link": "https://telegra.ph/Bluefin-is-a-capability-system-09-02",
+    "article_link": "https://h2.jaguarpaw.co.uk/posts/bluefin-capability-system/",
+    "discussion_link": "https://lobste.rs/s/v1wxh0/bluefin_is_capability_system",
+    "title": "Bluefin is a capability system"
+  },
+  "@lobstersgram:503": {
+    "telegraph_link": "https://telegra.ph/osa1---Why-Im-excited-about-effect-systems-09-02",
+    "article_link": "https://osa1.net/posts/2025-06-28-why-effects.html",
+    "discussion_link": "https://lobste.rs/s/abkikp/why_i_m_excited_about_effect_systems_2025",
+    "title": "Why I'm excited about effect systems (2025)"
+  },
+  "@lobstersgram:504": {
+    "telegraph_link": "https://telegra.ph/This-Month-in-KDE-Linux-August-2026---KDE-Blogs-09-02",
+    "article_link": "https://blogs.kde.org/2026/08/31/this-month-in-kde-linux-august-2026/",
+    "discussion_link": "https://lobste.rs/s/zx92fc/this_month_kde_linux_august_2026",
+    "title": "This Month in KDE Linux: August 2026"
+  },
+  "@lobstersgram:505": {
+    "telegraph_link": "https://telegra.ph/Texttile-a-multiplayer-blog-engine-for-people-who-write-together---Klaus-Breyer-09-02",
+    "article_link": "https://www.v01.io/posts/2026/08/texttile/",
+    "discussion_link": "https://lobste.rs/s/logpfy/texttile_multiplayer_blog_engine_for",
+    "title": "Texttile, a multiplayer blog engine for people who write together"
+  },
+  "@lobstersgram:506": {
+    "telegraph_link": "https://telegra.ph/Bye-Bye-Perspective-API-Lessons-for-Building-and-Governing-Measurement-Infrastructure-09-02",
+    "article_link": "https://arxiv.org/abs/2604.25580",
+    "discussion_link": "https://lobste.rs/s/us078z/bye_bye_perspective_api_lessons_for",
+    "title": "Bye Bye Perspective API: Lessons for Measurement Infrastructure in NLP, CSS and LLM Evaluation"
+  },
+  "@lobstersgram:507": {
+    "telegraph_link": "https://telegra.ph/Release-Janet-1420--janet-langjanet--GitHub-09-02",
+    "article_link": "https://github.com/janet-lang/janet/releases/tag/v1.42.0",
+    "discussion_link": "https://lobste.rs/s/jbgnwk/janet_1_42_0",
+    "title": "Janet 1.42.0"
+  },
+  "@lobstersgram:508": {
+    "telegraph_link": "https://telegra.ph/Solving-the-Flat-Cube-09-02-2",
+    "article_link": "https://mathenchant.wordpress.com/2026/08/19/solving-the-flat-cube/",
+    "discussion_link": "https://lobste.rs/s/dtllfk/solving_flat_cube",
+    "title": "Solving the Flat Cube"
+  },
+  "@lobstersgram:509": {
+    "telegraph_link": "https://telegra.ph/New-things-for-regular-expressions-in-PostgreSQL-pg-tre-and-pg-re2---select--from-depesz-09-02",
+    "article_link": "https://www.depesz.com/2026/08/25/new-things-for-regular-expressions-in-postgresql-pg_tre-and-pg_re2/",
+    "discussion_link": "https://lobste.rs/s/b53fwj/new_things_for_regular_expressions",
+    "title": "New things for regular expressions in PostgreSQL (pg_tre and pg_re2)"
+  },
+  "@lobstersgram:510": {
+    "telegraph_link": "https://telegra.ph/Wasmi-20---Engineering-of-the-Fastest-Wasm-Interpreters--Wasmi-Labs-09-02",
+    "article_link": "https://wasmi-labs.github.io/blog/posts/wasmi-v2.0/",
+    "discussion_link": "https://lobste.rs/s/sccfuu/wasmi_2_0_engineering_fastest_wasm",
+    "title": "Wasmi 2.0 - Engineering of the Fastest Wasm Interpreters"
+  },
+  "@lobstersgram:511": {
+    "telegraph_link": "https://telegra.ph/iT-woRKs-BeTter-in-THe-aPp---Terence-Edens-Blog-09-02",
+    "article_link": "https://shkspr.mobi/blog/2026/08/it-works-better-in-the-app/",
+    "discussion_link": "https://lobste.rs/s/fjpexo/it_works_better_app",
+    "title": "\"iT woRKs BeTter in THe aPp!!\""
+  },
+  "@lobstersgram:512": {
+    "telegraph_link": "https://telegra.ph/Zuzai-a-new-word-indicates-the-absence-of-AI-09-02-2",
+    "article_link": "https://zuzai.org/",
+    "discussion_link": "https://lobste.rs/s/6ejigt/zuzai_new_word_indicates_absence_ai",
+    "title": "Zuzai, a new word, indicates the absence of AI"
+  },
+  "@lobstersgram:513": {
+    "telegraph_link": "https://telegra.ph/Firefoxs-AI-Switch-Is-Off-Telemetry-Isnt-09-02-4",
+    "article_link": "https://marius.blog/firefox-155-ai-kill-switch-retest/",
+    "discussion_link": "https://lobste.rs/s/7s8fuv/firefox_s_ai_switch_is_off_telemetry_isn_t",
+    "title": "Firefox’s AI Switch Is Off. Telemetry Isn’t"
+  },
+  "@lobstersgram:514": {
+    "telegraph_link": "https://telegra.ph/Implementing-FMA-and-finding-bugs-in-C-and-Rust-standard-libraries--Sergey-Shnatsel-Davidoff-09-02",
+    "article_link": "https://shnatsel.github.io/implementing-fma-finding-bugs-in-std/",
+    "discussion_link": "https://lobste.rs/s/qq9jpo/implementing_fma_finding_bugs_c_rust",
+    "title": "Implementing FMA and finding bugs in C and Rust standard libraries"
+  },
+  "@lobstersgram:515": {
+    "telegraph_link": "https://telegra.ph/Revisiting-Joels-Test---exedev-blog-09-02",
+    "article_link": "https://blog.exe.dev/revisiting-joel",
+    "discussion_link": "https://lobste.rs/s/jyrcwk/revisiting_joel_s_test_exe_dev_blog",
+    "title": "Revisiting Joel's Test - exe.dev blog"
+  },
+  "@lobstersgram:516": {
+    "telegraph_link": "https://telegra.ph/Check-if-files-were-made-with-Claude--Claude-09-02",
+    "article_link": "https://claude.com/check-files",
+    "discussion_link": "https://lobste.rs/s/ayatfy/check_if_file_was_made_with_claude",
+    "title": "Check if a file was made with Claude"
+  },
+  "@lobstersgram:517": {
+    "telegraph_link": "https://telegra.ph/CTTI-is-Exponential-RTTI-is-Linear---gingerBill-09-02",
+    "article_link": "https://www.gingerbill.org/article/2026/09/02/ctti-is-exponential-rtti-is-linear/",
+    "discussion_link": "https://lobste.rs/s/mj9qti/ctti_is_exponential_rtti_is_linear",
+    "title": "CTTI is Exponential, RTTI is Linear"
+  },
+  "@lobstersgram:518": {
+    "telegraph_link": "https://telegra.ph/Read-your-own-writes-off-the-primary--boringSQL-09-02",
+    "article_link": "https://boringsql.com/posts/read-your-own-writes/",
+    "discussion_link": "https://lobste.rs/s/vq68cd/read_your_own_writes_off_primary",
+    "title": "Read your own writes, off the primary"
+  },
+  "@lobstersgram:519": {
+    "telegraph_link": "https://telegra.ph/Goroutine-Leak-Profiles---The-Go-Programming-Language-09-02",
+    "article_link": "https://go.dev/blog/goroutine-leak-profiles",
+    "discussion_link": "https://lobste.rs/s/dpfpr3/goroutine_leak_profiles",
+    "title": "Goroutine Leak Profiles"
+  },
+  "@lobstersgram:520": {
+    "telegraph_link": "https://telegra.ph/What-Happened-to-Borland-09-03",
+    "article_link": "https://www.youtube.com/watch?v=HwkoaPl31Dw",
+    "discussion_link": "https://lobste.rs/s/zzt49w/what_happened_borland",
+    "title": "What Happened to Borland?"
+  },
+  "@lobstersgram:521": {
+    "telegraph_link": "https://telegra.ph/Security-Incident---BGP-Hijacking---Virtualizor-09-03",
+    "article_link": "https://www.virtualizor.com/blog/security-incident-bgp-hijacking/",
+    "discussion_link": "https://lobste.rs/s/6e1y6s/security_incident_bgp_hijacking",
+    "title": "Security Incident – BGP Hijacking – Virtualizor"
+  },
+  "@lobstersgram:522": {
+    "telegraph_link": "https://telegra.ph/Fine-Ill-build-my-own-text-editor---David-Bushell---Web-Dev-UK-09-03",
+    "article_link": "https://dbushell.com/2026/09/01/text-editor/",
+    "discussion_link": "https://lobste.rs/s/1malyo/fine_i_ll_build_my_own_text_editor",
+    "title": "Fine, I’ll build my own text editor"
+  },
+  "@lobstersgram:523": {
+    "telegraph_link": "https://telegra.ph/DEF-CON-34---ESP32-as-counter-surveillance-platform---Cybertiger-Colonel-Panic-The-Wrew-09-03",
+    "article_link": "https://www.youtube.com/watch?v=PcK-TDmzshc",
+    "discussion_link": "https://lobste.rs/s/k86iql/esp32_as_counter_surveillance_platform",
+    "title": "ESP32 as counter-surveillance platform"
+  },
+  "@lobstersgram:524": {
+    "telegraph_link": "https://telegra.ph/What-will-you-do-after-tech--Lobsters-09-03",
+    "article_link": "https://lobste.rs/s/oieyk7/what_will_you_do_after_tech",
+    "discussion_link": "https://lobste.rs/s/oieyk7/what_will_you_do_after_tech",
+    "title": "What will you do after tech?"
+  },
+  "@lobstersgram:525": {
+    "telegraph_link": "https://telegra.ph/Is-Minifying-CSS-Necessary--A-Place-For-My-Head-09-03",
+    "article_link": "https://shivjm.blog/is-minifying-css-necessary/",
+    "discussion_link": "https://lobste.rs/s/gbucyj/is_minifying_css_necessary_2023",
+    "title": "Is Minifying CSS Necessary? (2023)"
+  },
+  "@lobstersgram:526": {
+    "telegraph_link": "https://telegra.ph/A-Crash-Course-in-Predicate-Logic-09-03",
+    "article_link": "https://www.hillelwayne.com/post/predicate-logic/",
+    "discussion_link": "https://lobste.rs/s/rwqtzs/crash_course_predicate_logic",
+    "title": "A Crash Course in Predicate Logic"
+  },
+  "@lobstersgram:527": {
+    "telegraph_link": "https://telegra.ph/The-load-bearing-vocabulary-of-Claude-09-03",
+    "article_link": "https://louisabraham.github.io/load-bearing/",
+    "discussion_link": "https://lobste.rs/s/4gzijx/load_bearing_vocabulary_claude",
+    "title": "The load-bearing vocabulary of Claude"
+  },
+  "@lobstersgram:528": {
+    "telegraph_link": "https://telegra.ph/iczeliabalrogg--demonically-compacting-up-to-15-lossless-VorbisOpus-recompressor-09-03",
+    "article_link": "https://github.com/iczelia/balrogg",
+    "discussion_link": "https://lobste.rs/s/gebudu/balrogg_demonically_compacting_up_15",
+    "title": "balrogg: demonically compacting (up to 15%) lossless Vorbis/Opus recompressor"
+  },
+  "@lobstersgram:529": {
+    "telegraph_link": "https://telegra.ph/TinyGo-042---Recover-Is-Real--TinyGo-09-03",
+    "article_link": "https://tinygo.org/blog/2026/tinygo-0.42-recover-is-real/",
+    "discussion_link": "https://lobste.rs/s/qi1bxu/tinygo_0_42_recover_is_real",
+    "title": "TinyGo 0.42 - Recover Is Real"
+  },
+  "@lobstersgram:530": {
+    "telegraph_link": "https://telegra.ph/revo-09-03",
+    "article_link": "https://revo.lung.fyi/",
+    "discussion_link": "https://lobste.rs/s/towfrz/revo_programming_language",
+    "title": "Révo Programming language"
+  },
+  "@lobstersgram:531": {
+    "telegraph_link": "https://telegra.ph/Souping-up-my-blog--tea-09-03",
+    "article_link": "https://qtea.me/posts/souping-up-my-blog/",
+    "discussion_link": "https://lobste.rs/s/bgswli/souping_up_my_blog",
+    "title": "Souping up my blog"
+  },
+  "@lobstersgram:532": {
+    "telegraph_link": "https://telegra.ph/How-to-Guarantee-You-Never-Ship-09-03-2",
+    "article_link": "https://kore-nordmann.de/blog/how_to_guarantee_you_never_ship.html",
+    "discussion_link": "https://lobste.rs/s/izlxli/how_guarantee_you_never_ship",
+    "title": "How to Guarantee You Never Ship"
+  },
+  "@lobstersgram:533": {
+    "telegraph_link": "https://telegra.ph/Lets-build-a-compressor-from-scratch--Adolfo-Ochagavía-09-03",
+    "article_link": "https://ochagavia.nl/blog/lets-build-a-compressor-from-scratch/",
+    "discussion_link": "https://lobste.rs/s/3y9lbw/let_s_build_compressor_from_scratch",
+    "title": "Let's build a compressor from scratch"
+  },
+  "@lobstersgram:534": {
+    "telegraph_link": "https://telegra.ph/The-holy-grail-of-nixpkgs-version-ranges--Farid-Zakarias-Blog-09-03",
+    "article_link": "https://fzakaria.com/2026/09/01/the-holy-grail-of-nixpkgs-version-ranges",
+    "discussion_link": "https://lobste.rs/s/echox4/holy_grail_nixpkgs_version_ranges",
+    "title": "The holy grail of nixpkgs: version ranges"
+  },
+  "@lobstersgram:535": {
+    "telegraph_link": "https://telegra.ph/I-Dont-Have-a-Smartphone-09-03-5",
+    "article_link": "https://ploum.net/2026-09-02-i_dont_have_a_smartphone.html",
+    "discussion_link": "https://lobste.rs/s/nh1uij/i_don_t_have_smartphone",
+    "title": "I Don’t Have a Smartphone…"
+  },
+  "@lobstersgram:536": {
+    "telegraph_link": "https://telegra.ph/Haskell-for-all-Dependent-if-expressions-without-dependent-types-09-03",
+    "article_link": "https://haskellforall.com/2026/09/dependent-if-expressions",
+    "discussion_link": "https://lobste.rs/s/yomxcl/dependent_if_expressions_without",
+    "title": "Dependent if expressions without dependent types"
+  },
+  "@lobstersgram:537": {
+    "telegraph_link": "https://telegra.ph/Can-We-Stop-With-the-Uptime-Percentages---Jim-Nielsens-Blog-09-03-2",
+    "article_link": "https://blog.jim-nielsen.com/2026/stop-with-the-uptime-percentage/",
+    "discussion_link": "https://lobste.rs/s/uyc8ai/can_we_stop_with_uptime_percentages",
+    "title": "Can We Stop With the Uptime Percentages?"
+  },
+  "@lobstersgram:538": {
+    "telegraph_link": "https://telegra.ph/Normalized-Fascism-in-Open-Source-12-Million-Given-to-DHH--brennanday-09-03",
+    "article_link": "https://brennan.day/normalized-fascism-in-open-source-12-million-given-to-dhh/",
+    "discussion_link": "https://lobste.rs/s/ipy9xw/normalized_fascism_open_source_12",
+    "title": "Normalized Fascism in Open Source: $12 Million Given to DHH"
+  },
+  "@lobstersgram:539": {
+    "telegraph_link": "https://telegra.ph/simple-is-not-small-09-03-3",
+    "article_link": "https://jyn.dev/simple-is-not-the-same-as-small/",
+    "discussion_link": "https://lobste.rs/s/entcaa/simple_is_not_small",
+    "title": "simple is not small"
+  },
+  "@lobstersgram:540": {
+    "telegraph_link": "https://telegra.ph/Static-Allocation-Constant-Work-09-03-4",
+    "article_link": "https://matklad.github.io/2026/09/02/static-allocation-constant-work.html",
+    "discussion_link": "https://lobste.rs/s/m4iwq4/static_allocation_constant_work",
+    "title": "Static Allocation, Constant Work"
+  },
+  "@lobstersgram:541": {
+    "telegraph_link": "https://telegra.ph/WebDev-intro-course-what-small-changes-towards-progressive-enhancement--Lobsters-09-04",
+    "article_link": "https://lobste.rs/s/nr3ucr/webdev_intro_course_what_small_changes",
+    "discussion_link": "https://lobste.rs/s/nr3ucr/webdev_intro_course_what_small_changes",
+    "title": "WebDev intro course: what small changes towards progressive enhancement?"
+  },
+  "@lobstersgram:542": {
+    "telegraph_link": "https://telegra.ph/veqqdeforester-Logging-for-Janet---Codebergorg-09-04",
+    "article_link": "https://codeberg.org/veqq/deforester",
+    "discussion_link": "https://lobste.rs/s/klhs7o/deforester_logging_for_janet",
+    "title": "deforester - Logging for Janet"
+  },
+  "@lobstersgram:543": {
+    "telegraph_link": "https://telegra.ph/How-Swiss-Tables-Work-in-Gos-Built-in-Map-09-04",
+    "article_link": "https://victoriametrics.com/blog/go-swiss-table-map/",
+    "discussion_link": "https://lobste.rs/s/2avct0/how_swiss_tables_work_go_s_built_map",
+    "title": "How Swiss Tables Work in Go’s Built-in Map"
+  },
+  "@lobstersgram:544": {
+    "telegraph_link": "https://telegra.ph/A-note-on-subscription-prices-from-LWN-LWNnet-09-04",
+    "article_link": "https://lwn.net/Articles/1090585/",
+    "discussion_link": "https://lobste.rs/s/krcehd/note_on_subscription_prices_from_lwn",
+    "title": "A note on subscription prices from LWN"
+  }
+}

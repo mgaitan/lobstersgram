@@ -350,3 +350,16 @@ def test_fetch_html_decodes_curly_apostrophe_via_meta_charset() -> None:
     assert result is not None
     assert "\u2019" in result, "curly apostrophe should be preserved, not mangled"
     assert "Weâ" not in (result or ""), "mojibake must not appear in the output"
+
+
+def test_fetch_html_keeps_utf8_html_when_isolated_bytes_are_invalid() -> None:
+    """Mostly UTF-8 HTML must not be reinterpreted as a single-byte encoding."""
+    html = b"<html><head><title>La Pol\xc3\xadtica Online</title></head><body>\xff</body></html>"
+    fake_response = _FakeResponse(content=html)
+
+    with unittest.mock.patch("markdown_this.fetchers.requests.get", return_value=fake_response):
+        result = fetch_html("https://example.com/article")
+
+    assert result is not None
+    assert "La Pol\u00edtica Online" in result
+    assert "Pol\u221a\u2260tica" not in result

@@ -14,8 +14,30 @@ from md_to_telegraph import create_page
 
 from lobstersgram import config
 from lobstersgram.content import Item, collect_new_items
-from lobstersgram.state import load_state, load_subscribers, save_state, update_message_map
-from lobstersgram.telegram import read_new_subscribers, resolve_recipient_chat_ids, send_to_recipients
+from lobstersgram.state import load_state, save_state, update_message_map
+from lobstersgram.telegram import (
+    read_new_subscribers,
+    resolve_channel_chat_id,
+    send_to_legacy_subscribers,
+    send_to_recipients,
+    sync_telegram_updates,
+)
+
+MIGRATION_MESSAGE = """👋 Hey there, Martin here, the creator of Lobstersgram.
+
+I've refactored the bot so it now sends Lobste.rs news to a Telegram channel
+instead of delivering each post individually. This makes it easier to scale
+while keeping the same reading format.
+
+Join the channel at <a href="https://t.me/lobstersgram">@lobstersgram</a> to keep receiving the content.
+
+I also built a small web service, powered by the same code behind Lobstersgram, for publishing arbitrary links:
+<a href="https://markdown.fastapicloud.dev/">markdown.fastapicloud.dev</a>
+
+Also, remember that Lobstersgram is open source. Report bugs and request features!
+<a href="https://github.com/mgaitan/lobstersgram">github.com/mgaitan/lobstersgram</a>
+
+Hope to see you in the channel soon!"""
 
 
 class URLPublishError(RuntimeError):
@@ -51,12 +73,7 @@ def format_message(
 
 
 def build_recipients() -> list[str | int]:
-    subscribers_state = load_subscribers()
-    subscribers = subscribers_state.get("subscribers") or []
-    recipients = resolve_recipient_chat_ids(subscribers)
-    if not recipients:
-        config.log("warn", "no subscribers configured")
-    return recipients
+    return [resolve_channel_chat_id()]
 
 
 def build_item_message(item: Item) -> tuple[str, dict[str, str]]:
@@ -116,6 +133,12 @@ def publish_to_telegraph(urls: list[str]) -> int:
         except Exception as exc:
             raise URLPublishError(url) from exc
         print(article_links["telegraph_link"])
+    return 0
+
+
+def send_migration_message() -> int:
+    sent = send_to_legacy_subscribers(MIGRATION_MESSAGE)
+    print(f"Sent migration message to {len(sent)} legacy subscribers.")
     return 0
 
 
@@ -183,7 +206,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--read-messages",
         action="store_true",
-        help="Read Telegram updates and register /start subscribers",
+        help="Legacy mode: read Telegram updates and register /start subscribers",
+    )
+    parser.add_argument(
+        "--sync-updates",
+        action="store_true",
+        help="Read Telegram reactions for bookmarks without processing subscriber commands",
     )
     parser.add_argument("--rss-url", default=config.RSS_URL)
     parser.add_argument("--state-path", default=str(config.STATE_PATH))
@@ -196,7 +224,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--telegram-retry-attempts", type=int, default=config.TELEGRAM_RETRY_ATTEMPTS)
     parser.add_argument("--telegraph-retry-attempts", type=int, default=config.TELEGRAPH_RETRY_ATTEMPTS)
     parser.add_argument("--inter-message-delay", type=float, default=config.INTER_MESSAGE_DELAY)
-    parser.add_argument("command", nargs="?", choices=["publish-to-telegraph"])
+    parser.add_argument("command", nargs="?", choices=["publish-to-telegraph", "send-migration-message"])
     parser.add_argument("urls", nargs="*")
     return parser.parse_args()
 
@@ -231,8 +259,16 @@ def main() -> int:
         print("Read messages.")
         return 0
 
+    if args.sync_updates:
+        sync_telegram_updates()
+        print("Synchronized Telegram updates.")
+        return 0
+
     if args.command == "publish-to-telegraph":
         return publish_to_telegraph(args.urls)
+
+    if args.command == "send-migration-message":
+        return send_migration_message()
 
     if args.url:
         try:

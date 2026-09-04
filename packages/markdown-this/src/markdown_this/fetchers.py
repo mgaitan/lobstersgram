@@ -3,12 +3,15 @@
 from __future__ import annotations
 
 import base64
+import contextlib
 import re
 import urllib.parse
 from logging import getLogger
 
 import requests
 from bs4 import BeautifulSoup, UnicodeDammit
+from youtube_transcript_api import YouTubeTranscriptApi
+from youtube_transcript_api._errors import CouldNotRetrieveTranscript
 
 from markdown_this.markdown import (
     _extract_leading_heading,
@@ -26,6 +29,11 @@ _GITHUB_BLOB_RE = re.compile(
     re.IGNORECASE,
 )
 _ARXIV_ABS_RE = re.compile(r"^https?://arxiv\.org/abs/(?P<arxiv_id>[^?#]+)(?:[?#].*)?$", re.IGNORECASE)
+_YOUTUBE_RE = re.compile(
+    r"^https?://(?:(?:www\.|m\.)?youtube\.com/(?:watch\?(?:.*&)?v=|embed/|shorts/)|youtu\.be/)"
+    r"(?P<video_id>[A-Za-z0-9_-]{11})(?:[?&#].*)?$",
+    re.IGNORECASE,
+)
 
 
 def fetch_url(url: str, timeout: int = DEFAULT_REQUEST_TIMEOUT) -> str:
@@ -46,6 +54,11 @@ def fetch_html(url: str, timeout: int = DEFAULT_REQUEST_TIMEOUT) -> str | None:
     """Fetch HTML and decode UTF-8, falling back to BeautifulSoup detection."""
     response = requests.get(url, timeout=timeout, headers={"User-Agent": "lobsters-telegraph-bot"})
     response.raise_for_status()
+    decoded_utf8 = response.content.decode("utf-8", errors="replace")
+    # Some pages contain isolated invalid bytes alongside otherwise valid UTF-8.
+    # Prefer preserving the document's real text over a wrong single-byte guess.
+    if "<html" in decoded_utf8.lower() or "<title" in decoded_utf8.lower():
+        return decoded_utf8
     try:
         return response.content.decode("utf-8")
     except UnicodeDecodeError:
@@ -182,5 +195,90 @@ def fetch_arxiv_abstract(url: str, timeout: int = DEFAULT_REQUEST_TIMEOUT) -> tu
     title, parts = _parse_arxiv_html(html, arxiv_id)
     if not parts:
         logger.warning("arXiv content extraction returned no content url=%s", abs_url)
+        return None
+    return title, "\n\n".join(parts)
+
+
+def _fetch_youtube_oembed(video_id: str, timeout: int = DEFAULT_REQUEST_TIMEOUT) -> tuple[str, str] | None:
+    """Fetch the title and channel name for a YouTube video."""
+    oembed_url = f"https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v={video_id}&format=json"
+    try:
+        response = requests.get(oembed_url, timeout=timeout, headers={"User-Agent": "lobsters-telegraph-bot"})
+        response.raise_for_status()
+        data = response.json()
+        return data.get("title") or video_id, data.get("author_name", "")
+    except (requests.RequestException, ValueError) as exc:
+        logger.warning("YouTube oEmbed fetch failed video_id=%s error=%s", video_id, exc)
+        return None
+
+
+def _fetch_youtube_description(video_id: str, timeout: int = DEFAULT_REQUEST_TIMEOUT) -> str:
+    """Fetch the description meta tag from a YouTube video page."""
+    watch_url = f"https://www.youtube.com/watch?v={video_id}"
+    try:
+        html = fetch_html(watch_url, timeout)
+        if html:
+            soup = BeautifulSoup(html, "html.parser")
+            description = soup.find("meta", attrs={"name": "description"})
+            if description:
+                return (description.get("content") or "").strip()
+    except requests.RequestException as exc:
+        logger.warning("YouTube description fetch failed video_id=%s error=%s", video_id, exc)
+    return ""
+
+
+def _fetch_youtube_transcript(video_id: str) -> tuple[str, bool] | None:
+    """Fetch an English transcript, preferring manual over auto-generated text."""
+    try:
+        transcript_list = YouTubeTranscriptApi().list(video_id)
+    except CouldNotRetrieveTranscript as exc:
+        logger.debug("YouTube transcript unavailable video_id=%s error=%s", video_id, exc)
+        return None
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("YouTube transcript fetch failed video_id=%s error=%s", video_id, exc)
+        return None
+
+    with contextlib.suppress(Exception):
+        transcript = transcript_list.find_manually_created_transcript(["en"]).fetch()
+        text = " ".join(snippet.text for snippet in transcript).strip()
+        if text:
+            return text, False
+
+    with contextlib.suppress(Exception):
+        transcript = transcript_list.find_generated_transcript(["en"]).fetch()
+        text = " ".join(snippet.text for snippet in transcript).strip()
+        if text:
+            return text, True
+
+    return None
+
+
+def fetch_youtube_video(url: str, timeout: int = DEFAULT_REQUEST_TIMEOUT) -> tuple[str, str] | None:
+    """Return ``(title, markdown)`` for a supported YouTube video URL."""
+    match = _YOUTUBE_RE.match(url)
+    if match is None:
+        return None
+
+    video_id = match.group("video_id")
+    oembed = _fetch_youtube_oembed(video_id, timeout)
+    if oembed is None:
+        return None
+    title, author = oembed
+
+    parts: list[str] = []
+    if author:
+        parts.append(f"**Channel:** {author}")
+
+    description = _fetch_youtube_description(video_id, timeout)
+    if description:
+        parts.append(f"**Description:** {description}")
+
+    if transcript_result := _fetch_youtube_transcript(video_id):
+        transcript_text, is_generated = transcript_result
+        label = "Transcript (auto-generated)" if is_generated else "Transcript"
+        parts.append(f"**{label}:**\n\n> {transcript_text}")
+
+    if not parts:
+        logger.warning("YouTube content extraction returned no content video_id=%s", video_id)
         return None
     return title, "\n\n".join(parts)

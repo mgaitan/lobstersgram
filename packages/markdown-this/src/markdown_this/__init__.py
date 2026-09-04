@@ -8,6 +8,7 @@ from markdown_this.fetchers import (
     fetch_github_readme,
     fetch_html,
     fetch_url,
+    fetch_youtube_video,
 )
 from markdown_this.html import make_images_absolute, preprocess_figures
 from markdown_this.markdown import (
@@ -40,6 +41,7 @@ __all__ = [
     "fetch_github_readme",
     "fetch_html",
     "fetch_url",
+    "fetch_youtube_video",
     "make_images_absolute",
     "markdown_to_text",
     "preprocess_figures",

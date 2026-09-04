@@ -1,6 +1,6 @@
 [project]
 name = "markdown-this"
-version = "0.1.6"
+version = "0.1.8"
 description = "Extract web pages and supported special URLs as Markdown"
 readme = "README.md"
 authors = [{ name = "Martín Gaitán", email = "gaitan@gmail.com" }]
@@ -13,6 +13,7 @@ dependencies = [
     "pyyaml>=6.0.3",
     "readability-lxml>=0.8.4.1",
     "requests>=2.32.5",
+    "youtube-transcript-api>=1.2.4",
 ]
 
 [project.urls]

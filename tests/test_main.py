@@ -12,7 +12,7 @@ os.environ.setdefault("TELEGRAM_BOT_TOKEN", "test-token")
 os.environ.setdefault("TELEGRAPH_ACCESS_TOKEN", "test-token")
 
 from lobstersgram import config
-from lobstersgram.main import apply_runtime_config, publish_to_telegraph
+from lobstersgram.main import apply_runtime_config, build_recipients, publish_to_telegraph
 
 
 def test_apply_runtime_config_updates_new_state_paths(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -50,6 +50,13 @@ def test_apply_runtime_config_updates_new_state_paths(monkeypatch: pytest.Monkey
     )
     assert str(config.MESSAGE_MAP_PATH) == "custom-message-map.json"
     assert str(config.BOOKMARKS_PATH) == "custom-bookmarks.csv"
+
+
+def test_build_recipients_uses_channel(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(config, "TELEGRAM_DEV_CHAT_ID", None)
+    monkeypatch.setattr(config, "TELEGRAM_CHANNEL_ID", "@lobstersgram")
+
+    assert build_recipients() == ["@lobstersgram"]
 
 
 def test_publish_to_telegraph_prints_links(monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]) -> None:

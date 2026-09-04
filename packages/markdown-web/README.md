@@ -11,7 +11,8 @@ uv run --package markdown-web markdown-web
 
 Open <http://127.0.0.1:8000/>. Set `TELEGRAPH_API_TOKEN` to use an existing
 Telegraph account. When it is absent, the service creates one lazily and keeps
-the token in memory for the lifetime of the process.
+the token in memory for the lifetime of the process. Set `REDIS_URL` to enable
+durable publishing jobs; without it, synchronous publishing continues to work.
 
 ## HTTP API
 
@@ -58,6 +59,55 @@ Documents can be posted as multipart form data using the `file` field:
 curl -X POST http://127.0.0.1:8000/md \
   -F 'file=@report.epub'
 ```
+
+Markdown front matter can also set `notify_telegram` to a comma-separated list
+of Telegram user or channel IDs. After the Telegraph URL is created, the web
+bot sends only that URL to each recipient. Notifications are best effort and
+use the `TELEGRAM_WEB_BOT_TOKEN` environment variable. A private user must
+start a conversation with [@MarkdownTelegraphBot](https://t.me/MarkdownTelegraphBot)
+first; in a group the bot must be added with permission to send messages, and
+in a channel it must be an administrator allowed to post messages.
+
+To publish a brief with linked article pages, place exact lowercase card markers
+in the Markdown:
+
+```markdown
+# Weekend brief
+
+Editorial context.
+
+![card](https://example.com/article)
+```
+
+`POST /t` publishes each marked source to Telegraph, replaces the marker with a
+linked image, title, introduction, and Telegraph link, and adds navigation back
+to the brief plus the previous and next curated articles. Marker order controls
+navigation, and a repeated URL is published once within the brief.
+
+### Optional jobs
+
+For a long brief, `POST /t/jobs` accepts the same Markdown JSON body and returns
+HTTP `202` with a job `id`, `status_url`, and `run_url`. Call `POST <run_url>`
+until it returns HTTP `200` with `status: completed` and the final Telegraph
+`url`. Each call advances one bounded publishing stage. `GET <status_url>` reads
+progress without changing it.
+
+Job state and locks are stored in Redis for 48 hours. Sending the same Markdown
+and metadata during that period returns the same job. A failed stage returns
+HTTP `422` with its error and source URL and can be retried by posting to the
+same `run_url`. Jobs use the service's configured Telegraph account and reject
+client access tokens. When `REDIS_URL` is absent, only the job endpoints return
+HTTP `503`; `POST /t` continues to work synchronously.
+
+```bash
+curl -X POST http://127.0.0.1:8000/t/jobs \
+  -H 'content-type: application/json' \
+  -d '{"markdown":"# Weekend brief\n\n![card](https://example.com/article)"}'
+```
+
+Agents can read `/llms.txt` for the endpoint contract, accepted YAML front
+matter, and examples. The machine-readable contract is FastAPI's existing
+OpenAPI document at `/openapi.json`; there is no separate `openschema.json`.
 
 ## Bookmarklets
 

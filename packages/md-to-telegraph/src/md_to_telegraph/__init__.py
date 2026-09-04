@@ -8,6 +8,7 @@ from md_to_telegraph.telegraph import (
     TelegraphTokenError,
     create_account,
     create_page,
+    edit_page,
     warm_telegraph_cache,
 )
 
@@ -19,6 +20,7 @@ __all__ = [
     "content_to_telegraph",
     "create_account",
     "create_page",
+    "edit_page",
     "extract_leading_title",
     "md_to_telegraph",
     "split_front_matter",

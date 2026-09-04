@@ -18,8 +18,14 @@
         <li><a href="/md/https://example.com">/md/&lt;url&gt;</a> returns raw Markdown.</li>
         <li><a href="/t/https://example.com">/t/&lt;url&gt;</a> extracts and publishes a page to Telegraph.</li>
         <li><a href="/t/published/">/t/published/</a> lists the pages published on <a href="https://telegra.ph">Telegraph</a> by this service.</li>
+        <li><a href="/t/jobs">/t/jobs</a> publishes a long Markdown brief in stages; poll its <code>run_url</code> until the job is complete.</li>
         <li><a href="/bookmarklets/">Bookmarklets</a> send the current page's HTML from your browser, so they can process pages the server cannot reach on its own.</li>
+        <li>Markdown front matter may include <code>notify_telegram</code> with comma-separated Telegram user or channel IDs; after publication, <a href="https://t.me/MarkdownTelegraphBot">@MarkdownTelegraphBot</a> sends only the Telegraph link to those recipients.</li>
       </ul>
+
+      <p class="note">To receive a private notification, first open <a href="https://t.me/MarkdownTelegraphBot">@MarkdownTelegraphBot</a> and send <code>/start</code>. In a group, add the bot and allow it to send messages. In a channel, add it as an administrator with permission to post messages.</p>
+
+      <p class="note">See also <a href="/llms.txt">llms.txt</a> for the machine-readable agent contract and the <a href="/docs">API documentation</a>.</p>
 
       <p>You can also use the command line:</p>
       <pre><code>uvx markdown-this &lt;url&gt; | uvx md-to-telegraph</code></pre>

@@ -1,0 +1,115 @@
+# Markdown Web
+
+> Extract web pages to Markdown and publish Markdown, HTML, or URLs to Telegraph.
+
+Base URL: {{ site_url }}
+
+## Agent guidance
+
+- Use `POST /md` when you need Markdown back.
+- Use `POST /t` when you want a public Telegraph URL.
+- For a long Markdown brief, optionally use `POST /t/jobs` and advance the returned job with `POST <run_url>`.
+- Use `GET /md/<url>` or `GET /t/<url>` for a URL, with the complete source URL URL-encoded as one path segment.
+- Prefer JSON for agents. The server accepts one of `url`, `html`, or `markdown` in the request body.
+- `POST /t` returns JSON in the form `{"url":"https://telegra.ph/..."}`.
+- `GET /t/<url>` returns a `303` redirect to the Telegraph page and caches that URL during the running process.
+- A source that blocks server-side fetches should be sent as browser HTML to `POST /t/bookmarklet`; see `/bookmarklet/`.
+- Do not send the service's Telegraph token. It uses its configured account unless an explicit bearer token is provided for `POST /t`.
+- Telegram notifications use [@MarkdownTelegraphBot](https://t.me/MarkdownTelegraphBot). A private user must open the bot and send `/start` first. In a group, add the bot and allow it to send messages; in a channel, add it as an administrator with permission to post messages.
+
+## Markdown input
+
+`markdown` may begin with YAML front matter. It must start with `---` on the first line and close with another `---` line. Accepted scalar keys are:
+
+```yaml
+---
+title: Article title
+author: Author name
+url: https://example.com/article
+date: 2026-08-10
+image: https://example.com/cover.jpg
+type: article
+notify_telegram: 123456789, -1001234567890
+---
+
+Article body in Markdown.
+```
+
+`title`, `author`, `url`, `date`, `image`, `type`, and `notify_telegram` are recognized keys; nested values and unknown keys are ignored. `notify_telegram` accepts one or more comma-separated Telegram user or channel IDs. After publication, the configured `TELEGRAM_WEB_BOT_TOKEN` bot sends only the Telegraph URL to those recipients. A `title` or first Markdown heading is required to publish. Non-document types such as `website`, `home`, `collection`, `search`, and `landingpage` are rejected.
+
+## Briefs with article cards
+
+Use an exact lowercase `card` image marker wherever a curated article should appear:
+
+```markdown
+# Weekend brief
+
+Editorial context.
+
+![card](https://example.com/article)
+```
+
+When this Markdown is sent to `POST /t`, the service extracts and publishes each
+marked source as its own Telegraph page. It replaces every marker with a linked
+image, title, introduction, and Telegraph link, then adds previous, brief, and
+next navigation to the published articles. Marker order determines navigation.
+Repeated source URLs reuse one article page within that brief.
+
+## Optional durable jobs
+
+`POST /t` remains synchronous. When a brief may take too long for one request,
+send the same Markdown JSON body to `POST /t/jobs`. Jobs require Markdown input,
+use the service's configured Telegraph account, and never accept an access token.
+They are available only when the server has `REDIS_URL` configured.
+
+The initial response is HTTP `202`:
+
+```json
+{
+  "id": "...",
+  "status": "queued",
+  "completed": 0,
+  "total": 17,
+  "status_url": "{{ site_url }}/t/jobs/...",
+  "run_url": "{{ site_url }}/t/jobs/.../run",
+  "url": null,
+  "error": null,
+  "source_url": null
+}
+```
+
+Call `POST <run_url>` repeatedly. Each request advances one article, brief, or
+navigation stage. HTTP `202` means more stages remain. HTTP `200` with
+`status: completed` includes the final Telegraph `url`. `GET <status_url>` reads
+progress without advancing it. HTTP `409` means another caller holds the job
+lock. HTTP `422` with `status: failed` includes `error` and, when applicable,
+`source_url`; calling `POST <run_url>` retries that failed stage.
+
+Submitting the same Markdown and metadata returns the same job for 48 hours, so
+a client can recover after losing a response without starting duplicate work.
+Do not fall back to synchronous `POST /t` after a job has started. If jobs return
+HTTP `404` or `503` before creation, the client may use `POST /t` instead.
+
+## Examples
+
+```bash
+curl -X POST {{ site_url }}/t \
+  -H 'content-type: application/json' \
+  -d '{"markdown":"---\ntitle: Hello\n---\n\n# Hello\n\nBody"}'
+
+curl -X POST {{ site_url }}/t \
+  -H 'content-type: application/json' \
+  -d '{"markdown":"# Weekend brief\n\n![card](https://example.com/article)"}'
+
+curl -X POST {{ site_url }}/t/jobs \
+  -H 'content-type: application/json' \
+  -d '{"markdown":"# Weekend brief\n\n![card](https://example.com/article)"}'
+
+curl -X POST {{ site_url }}/md \
+  -H 'content-type: application/json' \
+  -d '{"url":"https://example.com/article"}'
+```
+
+## Machine-readable contract
+
+The service publishes its OpenAPI 3.1 document at `{{ site_url }}/openapi.json` and interactive documentation at `{{ site_url }}/docs`. There is no separate `openschema.json`; use the OpenAPI document as the source of truth.

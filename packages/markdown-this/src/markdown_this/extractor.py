@@ -17,6 +17,7 @@ from markdown_this.fetchers import (
     fetch_github_blob_markdown,
     fetch_github_readme,
     fetch_html,
+    fetch_youtube_video,
 )
 from markdown_this.html import make_images_absolute, preprocess_figures
 from markdown_this.markdown import (
@@ -120,6 +121,10 @@ def _extract_url_content(
 
     if arxiv_result := fetch_arxiv_abstract(url, request_timeout):
         title, markdown = arxiv_result
+        return _finalize_content(title, markdown, None, intro_min_length, {"url": url})
+
+    if youtube_result := fetch_youtube_video(url, request_timeout):
+        title, markdown = youtube_result
         return _finalize_content(title, markdown, None, intro_min_length, {"url": url})
 
     downloaded = fetch_html(url, request_timeout)

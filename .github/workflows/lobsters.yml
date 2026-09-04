@@ -21,21 +21,26 @@ jobs:
       - name: Run pipeline
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
           TELEGRAPH_ACCESS_TOKEN: ${{ secrets.TELEGRAPH_ACCESS_TOKEN }}
           MAX_ITEMS_PER_RUN: "5"
         run: |
-          uv run lobstergram --read-messages
-          uv run lobstergram
+          uv run lobstersgram --sync-updates
+          uv run lobstersgram
 
       - name: Commit state.json if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add state.json subscribers.json
-          git add message_map.json bookmark.csv 2>/dev/null || true
+          for path in message_map.json bookmark.csv; do
+            if [ -f "$path" ]; then
+              git add "$path"
+            fi
+          done
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
           fi
-          git commit -m "Update state, subscribers, message map and bookmarks"
+          git commit -m "Update state, Telegram updates, message map and bookmarks"
           git push
