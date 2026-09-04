@@ -14,12 +14,15 @@
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Markdown and Telegraph">
     <meta name="twitter:description" content="Turn any page into Markdown or publish it to Telegraph.">
-    <link rel="stylesheet" href="/static/styles.css?v=8">
+    <link rel="stylesheet" href="/static/styles.css?v=9">
   </head>
   <body>
     <main class="page">
       <section class="workspace" aria-labelledby="page-title">
-        <h1 id="page-title">Write, convert, and publish Markdown</h1>
+        <div class="workspace-header">
+          <h1 id="page-title">Write, convert, and publish Markdown</h1>
+          <button id="new-button" class="button button-secondary" type="button">New</button>
+        </div>
         <form id="process-form" class="source-form">
           <div id="source-entry" class="source-entry">
             <div id="drop-zone" class="source-dropzone">
@@ -47,6 +50,17 @@
       </section>
     </main>
 
+    <dialog id="new-dialog" aria-labelledby="new-dialog-title">
+      <form method="dialog">
+        <h2 id="new-dialog-title">Start a new document?</h2>
+        <p>This will discard the current content.</p>
+        <div class="dialog-actions">
+          <button class="button button-secondary" value="cancel">Cancel</button>
+          <button id="confirm-new" class="button button-primary" value="confirm">New</button>
+        </div>
+      </form>
+    </dialog>
+
     <footer class="footer">
       <a href="/">Home</a>
       <a href="/about">About</a>
@@ -67,14 +81,62 @@
       const fileButton = document.querySelector("#file-button");
       const sourceLabel = document.querySelector("#result-source");
       const status = document.querySelector("#status");
+      const newButton = document.querySelector("#new-button");
+      const newDialog = document.querySelector("#new-dialog");
+      const confirmNew = document.querySelector("#confirm-new");
       let currentUrl = "";
       let mode = "process";
+      const DRAFT_KEY = "markdown-web-draft";
       const SOURCE_PLACEHOLDER = "Paste a URL, drop a file or insert markdown content";
       const MARKDOWN_START_RE = /(^\s*(?:#{1,6}\s|>\s|[-*+]\s|\d+\.\s|```|~~~|!\[|\[|\*\*|__))/;
 
       function setStatus(message, error = false) {
         status.textContent = message;
         status.classList.toggle("error", error);
+      }
+
+      function saveDraft() {
+        const draft = mode === "publish"
+          ? {mode, markdown: output.value, url: currentUrl, label: sourceLabel.textContent}
+          : {mode, value: sourceInput.value};
+        try {
+          localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+        } catch {
+          // Draft persistence is best effort when storage is unavailable.
+        }
+      }
+
+      function clearDraft() {
+        try {
+          localStorage.removeItem(DRAFT_KEY);
+        } catch {
+          // Draft persistence is best effort when storage is unavailable.
+        }
+      }
+
+      function restoreDraft() {
+        let draft;
+        try {
+          draft = JSON.parse(localStorage.getItem(DRAFT_KEY) || "null");
+        } catch {
+          return;
+        }
+        if (!draft || typeof draft !== "object") return;
+        if (draft.mode === "publish" && typeof draft.markdown === "string" && draft.markdown) {
+          currentUrl = typeof draft.url === "string" ? draft.url : "";
+          output.value = draft.markdown;
+          sourceLabel.textContent = typeof draft.label === "string" && draft.label
+            ? draft.label
+            : currentUrl || "Markdown";
+          sourceEntry.hidden = true;
+          result.hidden = false;
+          mode = "publish";
+          return;
+        }
+        if (draft.mode === "process" && typeof draft.value === "string" && draft.value) {
+          sourceInput.value = draft.value;
+          sourceInput.focus();
+        }
       }
 
       async function responseError(response, fallback) {
@@ -93,6 +155,7 @@
         currentUrl = "";
         sourceInput.placeholder = file.name;
         dropZone.classList.add("has-file");
+        saveDraft();
       }
 
       function clearSelectedFile() {
@@ -123,6 +186,7 @@
         result.hidden = false;
         mode = "publish";
         setStatus("");
+        saveDraft();
         output.focus();
       }
 
@@ -154,6 +218,7 @@
           result.hidden = false;
           mode = "publish";
           setStatus("");
+          saveDraft();
         } catch (error) {
           setStatus(error.message, true);
         }
@@ -169,14 +234,20 @@
       });
       sourceInput.addEventListener("input", () => {
         const value = sourceInput.value;
-        if (!value) return;
+        if (!value) {
+          clearSelectedFile();
+          saveDraft();
+          return;
+        }
         clearSelectedFile();
         if (
           !isHttpUrl(value.trim()) &&
           (MARKDOWN_START_RE.test(value) || (value.trim().length > 1 && !isUrlPrefix(value.trim())))
         ) {
           showMarkdownEditor(value);
+          return;
         }
+        saveDraft();
       });
       dropZone.addEventListener("dragover", (event) => {
         event.preventDefault();
@@ -209,6 +280,7 @@
               ? await response.json()
               : {detail: await response.text()};
             if (!response.ok) throw new Error(data.detail || await responseError(response, "Publish failed"));
+            clearDraft();
             window.location.href = data.url;
           } catch (error) {
             setStatus(error.message, true);
@@ -225,6 +297,24 @@
         await navigator.clipboard.writeText(output.value);
         setStatus("Copied");
       });
+
+      output.addEventListener("input", saveDraft);
+      newButton.addEventListener("click", () => newDialog.showModal());
+      confirmNew.addEventListener("click", () => {
+        clearDraft();
+        currentUrl = "";
+        mode = "process";
+        sourceInput.value = "";
+        output.value = "";
+        sourceLabel.textContent = "";
+        clearSelectedFile();
+        result.hidden = true;
+        sourceEntry.hidden = false;
+        setStatus("");
+        sourceInput.focus();
+      });
+
+      restoreDraft();
 
     </script>
   </body>

@@ -20,6 +20,9 @@ a { color: inherit; }
   padding: 24px 28px 64px;
 }
 
+.workspace-header { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; }
+.workspace-header h1 { flex: 1; }
+
 .narrow { max-width: 680px; }
 
 .masthead {
@@ -134,6 +137,12 @@ textarea:focus { border-color: #999; box-shadow: 0 2px 8px rgb(0 0 0 / 6%); }
 .footer a { margin: 0 4px; }
 .result .text-button { margin-top: 12px; }
 
+dialog { width: min(400px, calc(100% - 40px)); border: 1px solid #ddd; border-radius: 6px; padding: 24px; color: #333; background: #fff; font: 16px/1.5 Georgia, "Times New Roman", serif; }
+dialog::backdrop { background: rgb(0 0 0 / 18%); }
+dialog h2 { margin: 0 0 8px; font-size: 21px; font-weight: 400; }
+dialog p { margin: 0 0 22px; color: #666; }
+.dialog-actions { display: flex; justify-content: flex-end; gap: 12px; }
+
 .lede { color: #666; font-size: 18px; }
 .bookmarklet-form { display: grid; gap: 14px; max-width: 460px; margin-top: 36px; }
 .bookmarklet-form .button { justify-self: start; margin-top: 12px; }
@@ -160,6 +169,7 @@ pre { overflow-x: auto; margin: 24px 0; border: 1px solid #eee; padding: 16px; f
   .page { padding: 20px 20px 48px; }
   .masthead { margin-bottom: 64px; }
   h1 { font-size: 26px; }
+  .workspace-header { align-items: flex-start; }
   .source-entry { display: block; }
   .source-dropzone { width: 100%; }
   .source-entry .button { margin-top: 22px; }

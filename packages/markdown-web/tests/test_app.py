@@ -45,6 +45,9 @@ def test_home_and_static_assets() -> None:
     assert 'href="/t/published/">Published</a>' in response.text
     assert 'href="/docs">API</a>' in response.text
     assert "Edit source" not in response.text
+    assert 'id="new-button"' in response.text
+    assert 'id="new-dialog"' in response.text
+    assert "localStorage" in response.text
     assert 'placeholder="Paste a URL, drop a file or insert markdown content"' in response.text
     assert 'processSource("", file)' in response.text
     assert "showMarkdownEditor(value)" in response.text
