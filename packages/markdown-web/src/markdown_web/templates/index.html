@@ -19,10 +19,7 @@
   <body>
     <main class="page">
       <section class="workspace" aria-labelledby="page-title">
-        <div class="workspace-header">
-          <h1 id="page-title">Write, convert, and publish Markdown</h1>
-          <button id="new-button" class="button button-secondary" type="button">New</button>
-        </div>
+        <h1 id="page-title">Write, convert, and publish Markdown</h1>
         <form id="process-form" class="source-form">
           <div id="source-entry" class="source-entry">
             <div id="drop-zone" class="source-dropzone">
@@ -38,6 +35,7 @@
             <div class="result-toolbar">
               <span id="result-source" class="source-label"></span>
               <div class="result-actions">
+                <button id="new-button" class="button button-secondary" type="button" hidden>New</button>
                 <button id="copy-button" class="button button-secondary" type="button">Copy</button>
                 <button id="submit-publish" class="button button-primary" type="submit">Publish</button>
               </div>
@@ -130,6 +128,7 @@
             : currentUrl || "Markdown";
           sourceEntry.hidden = true;
           result.hidden = false;
+          newButton.hidden = false;
           mode = "publish";
           return;
         }
@@ -184,6 +183,7 @@
         sourceLabel.textContent = "Markdown";
         sourceEntry.hidden = true;
         result.hidden = false;
+        newButton.hidden = false;
         mode = "publish";
         setStatus("");
         saveDraft();
@@ -216,6 +216,7 @@
           sourceLabel.textContent = url || file.name;
           sourceEntry.hidden = true;
           result.hidden = false;
+          newButton.hidden = false;
           mode = "publish";
           setStatus("");
           saveDraft();
@@ -310,6 +311,7 @@
         clearSelectedFile();
         result.hidden = true;
         sourceEntry.hidden = false;
+        newButton.hidden = true;
         setStatus("");
         sourceInput.focus();
       });

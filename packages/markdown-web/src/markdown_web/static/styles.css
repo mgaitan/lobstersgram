@@ -20,9 +20,6 @@ a { color: inherit; }
   padding: 24px 28px 64px;
 }
 
-.workspace-header { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; }
-.workspace-header h1 { flex: 1; }
-
 .narrow { max-width: 680px; }
 
 .masthead {
@@ -169,7 +166,6 @@ pre { overflow-x: auto; margin: 24px 0; border: 1px solid #eee; padding: 16px; f
   .page { padding: 20px 20px 48px; }
   .masthead { margin-bottom: 64px; }
   h1 { font-size: 26px; }
-  .workspace-header { align-items: flex-start; }
   .source-entry { display: block; }
   .source-dropzone { width: 100%; }
   .source-entry .button { margin-top: 22px; }
