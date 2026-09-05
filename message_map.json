@@ -3508,5 +3508,11 @@
     "article_link": "https://lobste.rs/s/7tpc5q/surviving_code_reviews_era_ai",
     "discussion_link": "https://lobste.rs/s/7tpc5q/surviving_code_reviews_era_ai",
     "title": "Surviving Code Reviews in the era of AI"
+  },
+  "@lobstersgram:593": {
+    "telegraph_link": "https://telegra.ph/hgrsdzopt-Low-ceremony-schemaless-command-line-argument-parser-for-the-Zig-ecosystem---Codebergorg-09-05",
+    "article_link": "https://codeberg.org/hgrsd/zopt",
+    "discussion_link": "https://lobste.rs/s/64n3wp/zopt_low_ceremony_command_line_parsing",
+    "title": "zopt: low-ceremony command line parsing for Zig"
   }
 }
