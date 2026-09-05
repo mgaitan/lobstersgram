@@ -147,15 +147,8 @@ def test_youtube_transcript_handles_missing_and_failed_transcripts() -> None:
 
 
 def test_extract_main_content_uses_youtube_special_handler() -> None:
-    with (
-        unittest.mock.patch("markdown_this.extractor.fetch_github_blob_markdown", return_value=None),
-        unittest.mock.patch("markdown_this.extractor.fetch_github_readme", return_value=None),
-        unittest.mock.patch("markdown_this.extractor.fetch_arxiv_abstract", return_value=None),
-        unittest.mock.patch(
-            "markdown_this.extractor.fetch_youtube_video",
-            return_value=("Video title", "**Description:** Video body"),
-        ),
-    ):
+    special_extractor = unittest.mock.Mock(return_value=("Video title", "**Description:** Video body"))
+    with unittest.mock.patch.object(extractor_module, "SPECIAL_URL_EXTRACTORS", (special_extractor,)):
         title, markdown, fallback, intro = extractor_module.extract_main_content(VIDEO_URL)
 
     assert title == "Video title"

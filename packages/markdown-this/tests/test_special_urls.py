@@ -307,14 +307,20 @@ def test_markdown_helpers_cover_invalid_links_and_intro_fallback() -> None:
 
 
 def test_extract_main_content_handles_special_and_generic_paths() -> None:
-    with unittest.mock.patch(
-        "markdown_this.extractor.fetch_github_blob_markdown", return_value=("Blob", "# body\n\nBlob content")
+    with unittest.mock.patch.object(
+        extractor_module,
+        "SPECIAL_URL_EXTRACTORS",
+        (unittest.mock.Mock(return_value=("Blob", "# body\n\nBlob content")),),
     ):
         assert extractor_module.extract_main_content("https://github.com/owner/repo/blob/main/a.md")[0] == "Blob"
 
-    with (
-        unittest.mock.patch("markdown_this.extractor.fetch_github_blob_markdown", return_value=None),
-        unittest.mock.patch("markdown_this.extractor.fetch_github_readme", return_value=("Repo", "Repo content")),
+    with unittest.mock.patch.object(
+        extractor_module,
+        "SPECIAL_URL_EXTRACTORS",
+        (
+            unittest.mock.Mock(return_value=None),
+            unittest.mock.Mock(return_value=("Repo", "Repo content")),
+        ),
     ):
         result = extractor_module.extract_main_content("https://github.com/owner/repo")
         assert result[0] == "Repo"
@@ -322,10 +328,12 @@ def test_extract_main_content_handles_special_and_generic_paths() -> None:
         assert metadata == {"title": "Repo", "url": "https://github.com/owner/repo"}
         assert body == "Repo content"
 
-    with (
-        unittest.mock.patch("markdown_this.extractor.fetch_github_blob_markdown", return_value=None),
-        unittest.mock.patch(
-            "markdown_this.extractor.fetch_github_readme", return_value=("Repo", "# Repo\n\nRepo content")
+    with unittest.mock.patch.object(
+        extractor_module,
+        "SPECIAL_URL_EXTRACTORS",
+        (
+            unittest.mock.Mock(return_value=None),
+            unittest.mock.Mock(return_value=("Repo", "# Repo\n\nRepo content")),
         ),
     ):
         result = extractor_module.extract_main_content("https://github.com/owner/repo")
@@ -334,10 +342,13 @@ def test_extract_main_content_handles_special_and_generic_paths() -> None:
         assert body == "# Repo\n\nRepo content"
         assert result[2] == "Repo\n\nRepo content"
 
-    with (
-        unittest.mock.patch(
-            "markdown_this.extractor.fetch_github_blob_markdown",
-            return_value=("owner/repo/README.md", "---\ntitle: Declared title\n---\n\nREADME content"),
+    with unittest.mock.patch.object(
+        extractor_module,
+        "SPECIAL_URL_EXTRACTORS",
+        (
+            unittest.mock.Mock(
+                return_value=("owner/repo/README.md", "---\ntitle: Declared title\n---\n\nREADME content")
+            ),
         ),
     ):
         result = extractor_module.extract_main_content("https://github.com/owner/repo/blob/main/README.md")
@@ -346,30 +357,35 @@ def test_extract_main_content_handles_special_and_generic_paths() -> None:
         assert metadata["title"] == "Declared title"
         assert body == "README content"
 
-    with (
-        unittest.mock.patch("markdown_this.extractor.fetch_github_blob_markdown", return_value=None),
-        unittest.mock.patch(
-            "markdown_this.extractor.fetch_github_readme",
-            return_value=("owner/repo", "---\ntitle: Declared README title\n---\n\nREADME content"),
+    with unittest.mock.patch.object(
+        extractor_module,
+        "SPECIAL_URL_EXTRACTORS",
+        (
+            unittest.mock.Mock(return_value=None),
+            unittest.mock.Mock(return_value=("owner/repo", "---\ntitle: Declared README title\n---\n\nREADME content")),
         ),
     ):
         result = extractor_module.extract_main_content("https://github.com/owner/repo")
         assert result[0] == "Declared README title"
         assert result[2] == "README content"
 
-    with (
-        unittest.mock.patch("markdown_this.extractor.fetch_github_blob_markdown", return_value=None),
-        unittest.mock.patch("markdown_this.extractor.fetch_github_readme", return_value=None),
-        unittest.mock.patch("markdown_this.extractor.fetch_arxiv_abstract", return_value=("Paper", "Paper content")),
+    with unittest.mock.patch.object(
+        extractor_module,
+        "SPECIAL_URL_EXTRACTORS",
+        (
+            unittest.mock.Mock(return_value=None),
+            unittest.mock.Mock(return_value=None),
+            unittest.mock.Mock(return_value=("Paper", "Paper content")),
+        ),
     ):
         assert extractor_module.extract_main_content("https://arxiv.org/abs/1234")[0] == "Paper"
 
 
 def test_extract_main_content_generic_fallback_and_download_error() -> None:
     with (
-        unittest.mock.patch("markdown_this.extractor.fetch_github_blob_markdown", return_value=None),
-        unittest.mock.patch("markdown_this.extractor.fetch_github_readme", return_value=None),
-        unittest.mock.patch("markdown_this.extractor.fetch_arxiv_abstract", return_value=None),
+        unittest.mock.patch.object(
+            extractor_module, "SPECIAL_URL_EXTRACTORS", (unittest.mock.Mock(return_value=None),)
+        ),
         unittest.mock.patch(
             "markdown_this.extractor.fetch_html", return_value="<html><p>Generic article body.</p></html>"
         ),
@@ -385,9 +401,9 @@ def test_extract_main_content_generic_fallback_and_download_error() -> None:
         title=unittest.mock.Mock(return_value="Extracted title"),
     )
     with (
-        unittest.mock.patch("markdown_this.extractor.fetch_github_blob_markdown", return_value=None),
-        unittest.mock.patch("markdown_this.extractor.fetch_github_readme", return_value=None),
-        unittest.mock.patch("markdown_this.extractor.fetch_arxiv_abstract", return_value=None),
+        unittest.mock.patch.object(
+            extractor_module, "SPECIAL_URL_EXTRACTORS", (unittest.mock.Mock(return_value=None),)
+        ),
         unittest.mock.patch("markdown_this.extractor.fetch_html", return_value="<html>source</html>"),
         unittest.mock.patch.object(extractor_module, "Document", return_value=document),
     ):
@@ -395,9 +411,9 @@ def test_extract_main_content_generic_fallback_and_download_error() -> None:
     assert result[0] == "Extracted title"
 
     with (
-        unittest.mock.patch("markdown_this.extractor.fetch_github_blob_markdown", return_value=None),
-        unittest.mock.patch("markdown_this.extractor.fetch_github_readme", return_value=None),
-        unittest.mock.patch("markdown_this.extractor.fetch_arxiv_abstract", return_value=None),
+        unittest.mock.patch.object(
+            extractor_module, "SPECIAL_URL_EXTRACTORS", (unittest.mock.Mock(return_value=None),)
+        ),
         unittest.mock.patch("markdown_this.extractor.fetch_html", return_value=None),
     ):
         try:

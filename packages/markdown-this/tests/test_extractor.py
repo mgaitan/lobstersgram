@@ -70,6 +70,26 @@ def test_extract_main_content_emits_html_metadata() -> None:
     }
 
 
+def test_extract_main_content_falls_back_when_special_url_extractor_fails() -> None:
+    broken_extractor = unittest.mock.Mock(side_effect=RuntimeError("broken"))
+    ignored_extractor = unittest.mock.Mock(return_value=None)
+    html = "<html><body><article><p>Fallback body.</p></article></body></html>"
+
+    with (
+        unittest.mock.patch.object(extractor_module, "SPECIAL_URL_EXTRACTORS", (broken_extractor, ignored_extractor)),
+        unittest.mock.patch.object(extractor_module, "fetch_html", return_value=html),
+        unittest.mock.patch.object(extractor_module, "Document", return_value=_document()),
+    ):
+        title, markdown, fallback_text, intro = extract_main_content(
+            "https://example.com/article", min_content_length=0
+        )
+
+    assert title == "Readable title"
+    assert "Readable body." in markdown
+    assert fallback_text == "Readable body."
+    assert intro == "Readable body."
+
+
 def test_extract_main_content_excludes_structural_ad_slots() -> None:
     html = """
     <html><head><title>Story</title></head><body><article>
