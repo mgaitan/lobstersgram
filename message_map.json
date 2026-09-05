@@ -3484,5 +3484,29 @@
     "article_link": "https://lobste.rs/s/wk38d2/what_filesystem_are_you_running_on_your",
     "discussion_link": "https://lobste.rs/s/wk38d2/what_filesystem_are_you_running_on_your",
     "title": "What filesystem are you running on your NAS/Backups, and why?"
+  },
+  "@lobstersgram:589": {
+    "telegraph_link": "https://telegra.ph/C26-stdhive--Sandor-Dargos-Blog-09-05",
+    "article_link": "https://www.sandordargo.com/blog/2026/09/02/cpp26-hive",
+    "discussion_link": "https://lobste.rs/s/f2ele4/c_26_std_hive",
+    "title": "C++26: std::hive"
+  },
+  "@lobstersgram:590": {
+    "telegraph_link": "https://telegra.ph/Anatomy-of-a-Test--Jonathans-Blog-09-05",
+    "article_link": "https://jonathan-frere.com/posts/anatomy-of-a-test/",
+    "discussion_link": "https://lobste.rs/s/kcklzg/anatomy_test",
+    "title": "Anatomy of a Test"
+  },
+  "@lobstersgram:591": {
+    "telegraph_link": "https://telegra.ph/Is-AI-ruining-my-brain-09-05-2",
+    "article_link": "https://thoughtbot.com/blog/is-ai-ruining-my-brain",
+    "discussion_link": "https://lobste.rs/s/utloro/is_ai_ruining_my_brain",
+    "title": "Is AI ruining my brain?"
+  },
+  "@lobstersgram:592": {
+    "telegraph_link": "https://telegra.ph/Surviving-Code-Reviews-in-the-era-of-AI--Lobsters-09-05",
+    "article_link": "https://lobste.rs/s/7tpc5q/surviving_code_reviews_era_ai",
+    "discussion_link": "https://lobste.rs/s/7tpc5q/surviving_code_reviews_era_ai",
+    "title": "Surviving Code Reviews in the era of AI"
   }
 }
