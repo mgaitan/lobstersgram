@@ -3412,5 +3412,29 @@
     "article_link": "https://jank-lang.org/blog/2026-09-04-better-and-better/",
     "discussion_link": "https://lobste.rs/s/rhjedr/jank_reimagines_c_errors_gets_official",
     "title": "jank reimagines C++ errors and gets an official native package repo"
+  },
+  "@lobstersgram:577": {
+    "telegraph_link": "https://telegra.ph/AI-handles-incidents-engineers-lose-touch-with-their-systems---Sylvain-Kalache-09-05-2",
+    "article_link": "https://www.sylvainkalache.com/blog/ai-handles-incidents-engineers-lose-touch-with-their-systems",
+    "discussion_link": "https://lobste.rs/s/gbv3vr/ai_handles_incidents_engineers_lose",
+    "title": "AI handles incidents, engineers lose touch with their systems"
+  },
+  "@lobstersgram:578": {
+    "telegraph_link": "https://telegra.ph/Knowing-Where-to-Type-Zero--Random-ASCII---tech-blog-of-Bruce-Dawson-09-05",
+    "article_link": "https://randomascii.wordpress.com/2015/01/19/knowing-where-to-type-zero/",
+    "discussion_link": "https://lobste.rs/s/grm0m9/knowing_where_type_zero_2015",
+    "title": "Knowing Where to Type ‘Zero’ (2015)"
+  },
+  "@lobstersgram:579": {
+    "telegraph_link": "https://telegra.ph/Trusting-Trust-Attack-against-an-Entire-Linux-Distribution-through-Binary-Manipulation-09-05",
+    "article_link": "https://arxiv.org/abs/2607.24888",
+    "discussion_link": "https://lobste.rs/s/p5w5j6/trusting_trust_attack_against_entire",
+    "title": "Trusting-Trust Attack against an Entire Linux Distribution (via the strip utility)"
+  },
+  "@lobstersgram:580": {
+    "telegraph_link": "https://telegra.ph/Neil-Fraser-News-name-Termination-09-05",
+    "article_link": "https://neil.fraser.name/news/2026/09/03/",
+    "discussion_link": "https://lobste.rs/s/6tsncg/name_termination",
+    "title": ".name Termination"
   }
 }
