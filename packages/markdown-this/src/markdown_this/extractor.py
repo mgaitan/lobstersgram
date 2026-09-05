@@ -5,6 +5,7 @@ from __future__ import annotations
 import re
 import urllib.parse
 from collections.abc import Callable
+from html import escape as html_escape
 from logging import getLogger
 from pathlib import Path
 
@@ -28,73 +29,11 @@ from markdown_this.markdown import (
     extract_intro,
     markdown_to_text,
 )
-from markdown_this.metadata import add_front_matter, extract_html_metadata, split_front_matter
-from markdown_this.structured import extract_fusion_article
-
-logger = getLogger(__name__)
-SpecialUrlExtractor = Callable[[str, int], tuple[str, str] | None]
-
-AD_NEGATIVE_KEYWORDS = re.compile(
-    r"(?:^|[-_ ])(?:ad|ads|advert|advertising|advertisement|sponsor|sponsored|promo|infobox)(?:$|[-_ ])",
-    re.IGNORECASE,
-)
-SPECIAL_URL_EXTRACTORS: tuple[SpecialUrlExtractor, ...] = (
-    fetch_github_blob_markdown,
-    fetch_github_readme,
-    fetch_arxiv_abstract,
-    fetch_media_oembed,
-    fetch_youtube_video,
-)
-
-
-class ContentDownloadError(RuntimeError):
-    """Raised when a content source cannot provide HTML content."""
-
-    def __init__(self) -> None:
-        super().__init__("Failed to download content")
-
-
-def _finalize_content(
-    title: str,
-    markdown: str,
-    fallback_text: str | None,
-    intro_min_length: int,
-    metadata: dict[str, str] | None = None,
-) -> tuple[str, str, str, str]:
-    """Normalize extracted Markdown and derive its fallback text and intro."""
-    front_matter, content_markdown = split_front_matter(markdown.strip())
-    resolved_title = front_matter.get("title") or title
-    content_metadata = {**front_matter, **(metadata or {}), "title": resolved_title}
-    content_fallback = fallback_text if fallback_text is not None else markdown_to_text(content_markdown)
-    intro = extract_intro(content_markdown, content_fallback, intro_min_length)
-    return resolved_title, add_front_matter(content_markdown, content_metadata), content_fallback, intro
-
-
-def _is_http_url(source: str) -> bool:
-    parsed = urllib.parse.urlparse(source)
-    return parsed.scheme in {"http", "https"} and bool(parsed.netloc)
-
-
-def _existing_path(source: str) -> Path | None:
-    if source.lstrip().startswith("<"):
-        return None
-    path = Path(source)
-    return path if path.is_file() else None
-
-
-def _extract_html_content(  # noqa: PLR0913
-    content_html: str,
-    source_label: str,
-    base_url: str,
-    source_url: str,
-    min_content_length: int,
-    intro_min_length: int,
-) -> tuple[str, str, str, str]:
-    if not content_html:
-        raise ContentDownloadError
-
-    metadata = extract_html_metadata(content_html, base_url)
     base_url = source_url or metadata.get("url") or base_url
+    structured_article = extract_structured_article(content_html, base_url)
+    if structured_article:
+        _structured_text, structured_metadata = structured_article
+        metadata = {**structured_metadata, **metadata}
     article = extract_fusion_article(content_html)
     content_html_for_markdown = ""
     title = source_label
@@ -105,12 +44,17 @@ def _extract_html_content(  # noqa: PLR0913
         else:
             document = Document(content_html, negative_keywords=AD_NEGATIVE_KEYWORDS)
             content_html_for_markdown = document.summary() or ""
-            title = document.title() or source_label
+            title = document.title() or metadata.get("title") or source_label
     except Exception as exc:  # noqa: BLE001
         logger.warning("readability failed error=%s", exc)
 
     if not article and (not content_html_for_markdown or len(content_html_for_markdown.strip()) < min_content_length):
-        content_html_for_markdown = content_html
+        if structured_article:
+            structured_text, structured_metadata = structured_article
+            content_html_for_markdown = _html_for_structured_text(content_html, structured_text)
+            title = structured_metadata.get("title") or title
+        else:
+            content_html_for_markdown = content_html
 
     content_html_for_markdown = preprocess_figures(make_images_absolute(content_html_for_markdown, base_url))
     extracted_markdown = html_to_md(content_html_for_markdown)
@@ -120,6 +64,27 @@ def _extract_html_content(  # noqa: PLR0913
     if source_url:
         metadata["url"] = source_url
     return _finalize_content(title, extracted_markdown, fallback_text, intro_min_length, metadata)
+
+
+def _html_for_structured_text(content_html: str, structured_text: str) -> str:
+    soup = BeautifulSoup(content_html, "html.parser")
+    needle = _compact_text(structured_text)
+    candidates = []
+    for tag in soup.find_all(["article", "main", "section", "div", "p"]):
+        text = _compact_text(tag.get_text(" ", strip=True))
+        if needle and needle in text:
+            candidates.append((len(text), tag))
+    if candidates:
+        return str(min(candidates, key=lambda item: item[0])[1])
+
+    paragraphs = [
+        f"<p>{html_escape(part.strip())}</p>" for part in re.split(r"\n{2,}", structured_text) if part.strip()
+    ]
+    return "\n".join(paragraphs)
+
+
+def _compact_text(text: str) -> str:
+    return re.sub(r"\s+([.,;:!?])", r"\1", " ".join(text.split()))
 
 
 def _extract_url_content(
