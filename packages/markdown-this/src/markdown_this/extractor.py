@@ -18,6 +18,7 @@ from markdown_this.fetchers import (
     fetch_github_blob_markdown,
     fetch_github_readme,
     fetch_html,
+    fetch_pagina12_article,
     fetch_youtube_video,
 )
 from markdown_this.html import make_images_absolute, preprocess_figures
@@ -40,6 +41,7 @@ SPECIAL_URL_EXTRACTORS: tuple[SpecialUrlExtractor, ...] = (
     fetch_github_blob_markdown,
     fetch_github_readme,
     fetch_arxiv_abstract,
+    fetch_pagina12_article,
     fetch_youtube_video,
 )
 

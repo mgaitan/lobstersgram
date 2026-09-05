@@ -4,12 +4,15 @@ from __future__ import annotations
 
 import base64
 import contextlib
+import json
 import re
 import urllib.parse
 from logging import getLogger
+from typing import Any
 
 import requests
 from bs4 import BeautifulSoup, UnicodeDammit
+from markdownify import markdownify as html_to_md
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api._errors import CouldNotRetrieveTranscript
 
@@ -18,6 +21,7 @@ from markdown_this.markdown import (
     _make_markdown_images_absolute,
     _strip_badge_paragraphs,
 )
+from markdown_this.metadata import add_front_matter, extract_html_metadata
 
 DEFAULT_REQUEST_TIMEOUT = 20
 GITHUB_REPO_PATH_PARTS = 2
@@ -29,11 +33,13 @@ _GITHUB_BLOB_RE = re.compile(
     re.IGNORECASE,
 )
 _ARXIV_ABS_RE = re.compile(r"^https?://arxiv\.org/abs/(?P<arxiv_id>[^?#]+)(?:[?#].*)?$", re.IGNORECASE)
+_PAGINA12_RE = re.compile(r"^https?://(?:www\.)?pagina12\.com\.ar/", re.IGNORECASE)
 _YOUTUBE_RE = re.compile(
     r"^https?://(?:(?:www\.|m\.)?youtube\.com/(?:watch\?(?:.*&)?v=|embed/|shorts/)|youtu\.be/)"
     r"(?P<video_id>[A-Za-z0-9_-]{11})(?:[?&#].*)?$",
     re.IGNORECASE,
 )
+_FUSION_GLOBAL_CONTENT = "Fusion.globalContent"
 
 
 def fetch_url(url: str, timeout: int = DEFAULT_REQUEST_TIMEOUT) -> str:
@@ -197,6 +203,105 @@ def fetch_arxiv_abstract(url: str, timeout: int = DEFAULT_REQUEST_TIMEOUT) -> tu
         logger.warning("arXiv content extraction returned no content url=%s", abs_url)
         return None
     return title, "\n\n".join(parts)
+
+
+def _extract_balanced_js_object(html: str, marker: str) -> dict[str, Any] | None:  # noqa: C901
+    start = html.find(marker)
+    if start == -1:
+        return None
+    start = html.find("{", start)
+    if start == -1:
+        return None
+
+    depth = 0
+    in_string = False
+    quote = ""
+    escaped = False
+    for index, char in enumerate(html[start:], start=start):
+        if in_string:
+            if escaped:
+                escaped = False
+            elif char == "\\":
+                escaped = True
+            elif char == quote:
+                in_string = False
+            continue
+        if char in {"'", '"'}:
+            in_string = True
+            quote = char
+        elif char == "{":
+            depth += 1
+        elif char == "}":
+            depth -= 1
+            if depth == 0:
+                try:
+                    loaded = json.loads(html[start : index + 1])
+                except json.JSONDecodeError:
+                    return None
+                return loaded if isinstance(loaded, dict) else None
+    return None
+
+
+def _plain_or_markdown(html_fragment: str) -> str:
+    return html_to_md(html_fragment).strip()
+
+
+def _fusion_element_markdown(element: dict[str, Any], base_url: str) -> str:
+    element_type = element.get("type")
+    if element_type == "text":
+        return _plain_or_markdown(str(element.get("content") or ""))
+    if element_type == "header":
+        level = min(max(int(element.get("level") or 2), 2), 6)
+        text = _plain_or_markdown(str(element.get("content") or ""))
+        return f"{'#' * level} {text}" if text else ""
+    if element_type == "image":
+        image_url = str(element.get("url") or element.get("additional_properties", {}).get("originalUrl") or "")
+        image_url = urllib.parse.urljoin(base_url, image_url)
+        parsed = urllib.parse.urlparse(image_url)
+        if parsed.scheme not in {"http", "https"} or not parsed.netloc:
+            return ""
+        alt = BeautifulSoup(str(element.get("alt_text") or ""), "html.parser").get_text(" ", strip=True)
+        caption = _plain_or_markdown(str(element.get("caption") or ""))
+        return f"![{alt}]({image_url})" + (f"\n\n{caption}" if caption else "")
+    return ""
+
+
+def _parse_pagina12_html(html: str, source_url: str) -> tuple[str, str] | None:
+    data = _extract_balanced_js_object(html, _FUSION_GLOBAL_CONTENT)
+    elements = data.get("content_elements") if data else None
+    if not isinstance(elements, list):
+        return None
+
+    parts = [
+        markdown
+        for element in elements
+        if isinstance(element, dict) and (markdown := _fusion_element_markdown(element, source_url))
+    ]
+    if not parts:
+        return None
+
+    soup = BeautifulSoup(html, "html.parser")
+    title = (
+        data.get("headlines", {}).get("basic")
+        or (soup.title.get_text(" ", strip=True) if soup.title else "")
+        or source_url
+    )
+    metadata = extract_html_metadata(html, source_url)
+    return title, add_front_matter("\n\n".join(parts), metadata)
+
+
+def fetch_pagina12_article(url: str, timeout: int = DEFAULT_REQUEST_TIMEOUT) -> tuple[str, str] | None:
+    """Return ``(title, markdown)`` for a Pagina/12 article backed by Fusion JSON."""
+    if _PAGINA12_RE.match(url) is None:
+        return None
+    try:
+        html = fetch_html(url, timeout)
+    except requests.RequestException as exc:
+        logger.warning("Pagina/12 fetch failed url=%s error=%s", url, exc)
+        return None
+    if not html:
+        return None
+    return _parse_pagina12_html(html, url)
 
 
 def _fetch_youtube_oembed(video_id: str, timeout: int = DEFAULT_REQUEST_TIMEOUT) -> tuple[str, str] | None:

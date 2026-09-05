@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import contextlib
 from pathlib import Path
 from typing import Any
+from unittest import mock
 
 import pytest
 import yaml
@@ -27,7 +29,15 @@ def _load_cases() -> list[pytest.ParameterSet]:
 
 @pytest.mark.parametrize("case", _load_cases())
 def test_extraction_quality_case(case: dict[str, Any]) -> None:
-    _title, markdown, _fallback, _intro = extract_main_content(FIXTURES / case["fixture"], min_content_length=0)
+    fixture = FIXTURES / case["fixture"]
+    source: str | Path = case.get("url") or fixture
+    fetch_html = (
+        mock.patch("markdown_this.fetchers.fetch_html", return_value=fixture.read_text(encoding="utf-8"))
+        if case.get("url")
+        else contextlib.nullcontext()
+    )
+    with fetch_html:
+        _title, markdown, _fallback, _intro = extract_main_content(source, min_content_length=0)
     metadata, body = split_front_matter(markdown)
     plain_text = markdown_to_text(body)
 
