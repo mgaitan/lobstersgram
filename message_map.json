@@ -3436,5 +3436,35 @@
     "article_link": "https://neil.fraser.name/news/2026/09/03/",
     "discussion_link": "https://lobste.rs/s/6tsncg/name_termination",
     "title": ".name Termination"
+  },
+  "@lobstersgram:581": {
+    "telegraph_link": "https://telegra.ph/Seeking-Designer-for-a-Small-Company--Lobsters-09-05",
+    "article_link": "https://lobste.rs/s/trzpsg/seeking_designer_for_small_company",
+    "discussion_link": "https://lobste.rs/s/trzpsg/seeking_designer_for_small_company",
+    "title": "Seeking Designer for a Small Company"
+  },
+  "@lobstersgram:582": {
+    "telegraph_link": "https://telegra.ph/Gleam-and-BEAM--Looking-beyond-the-JVM---John-Mikael-Lindbakk-09-05",
+    "article_link": "https://vimeo.com/1223666800",
+    "discussion_link": "https://lobste.rs/s/5wzkwm/gleam_beam_looking_beyond_jvm",
+    "title": "Gleam and BEAM- Looking beyond the JVM"
+  },
+  "@lobstersgram:583": {
+    "telegraph_link": "https://telegra.ph/Visualizing-Rusts-Vtables-How-dyn-Trait-Works-In-Memory-09-05-2",
+    "article_link": "https://sofiabelen.github.io/projects/visualizing-rusts-vtables-how-dyn-trait-works-in-memory/",
+    "discussion_link": "https://lobste.rs/s/6du6h3/visualizing_rust_s_vtables_how_dyn_trait",
+    "title": "Visualizing Rust's Vtables: How dyn Trait Works In Memory"
+  },
+  "@lobstersgram:584": {
+    "telegraph_link": "https://telegra.ph/Discovery-of-a-new-OpenAI-agent-message-board-09-05",
+    "article_link": "https://collusion.wiki/",
+    "discussion_link": "https://lobste.rs/s/baiwkq/discovery_new_openai_agent_message_board",
+    "title": "Discovery of a new OpenAI agent message board"
+  },
+  "@lobstersgram:585": {
+    "telegraph_link": "https://telegra.ph/FLT-Anthropic-has-beaten-me-to-it--Xena-09-05",
+    "article_link": "https://xenaproject.wordpress.com/2026/09/04/flt-anthropic-has-beaten-me-to-it/",
+    "discussion_link": "https://lobste.rs/s/5iacaa/flt_anthropic_has_beaten_me_it",
+    "title": "FLT: Anthropic has beaten me to it"
   }
 }
