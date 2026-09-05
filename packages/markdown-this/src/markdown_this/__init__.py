@@ -7,6 +7,7 @@ from markdown_this.fetchers import (
     fetch_github_blob_markdown,
     fetch_github_readme,
     fetch_html,
+    fetch_media_oembed,
     fetch_url,
     fetch_youtube_video,
 )
@@ -40,6 +41,7 @@ __all__ = [
     "fetch_github_blob_markdown",
     "fetch_github_readme",
     "fetch_html",
+    "fetch_media_oembed",
     "fetch_url",
     "fetch_youtube_video",
     "make_images_absolute",

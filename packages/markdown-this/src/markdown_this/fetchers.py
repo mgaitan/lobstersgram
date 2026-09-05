@@ -7,9 +7,11 @@ import contextlib
 import re
 import urllib.parse
 from logging import getLogger
+from typing import Any
 
 import requests
 from bs4 import BeautifulSoup, UnicodeDammit
+from markdownify import markdownify as html_to_md
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api._errors import CouldNotRetrieveTranscript
 
@@ -18,6 +20,8 @@ from markdown_this.markdown import (
     _make_markdown_images_absolute,
     _strip_badge_paragraphs,
 )
+
+from markdown_this.metadata import add_front_matter
 
 DEFAULT_REQUEST_TIMEOUT = 20
 GITHUB_REPO_PATH_PARTS = 2
@@ -29,6 +33,12 @@ _GITHUB_BLOB_RE = re.compile(
     re.IGNORECASE,
 )
 _ARXIV_ABS_RE = re.compile(r"^https?://arxiv\.org/abs/(?P<arxiv_id>[^?#]+)(?:[?#].*)?$", re.IGNORECASE)
+_MEDIA_OEMBED_ENDPOINTS = {
+    "dai.ly": "https://www.dailymotion.com/services/oembed",
+    "dailymotion.com": "https://www.dailymotion.com/services/oembed",
+    "player.vimeo.com": "https://vimeo.com/api/oembed.json",
+    "vimeo.com": "https://vimeo.com/api/oembed.json",
+}
 _YOUTUBE_RE = re.compile(
     r"^https?://(?:(?:www\.|m\.)?youtube\.com/(?:watch\?(?:.*&)?v=|embed/|shorts/)|youtu\.be/)"
     r"(?P<video_id>[A-Za-z0-9_-]{11})(?:[?&#].*)?$",
@@ -197,6 +207,69 @@ def fetch_arxiv_abstract(url: str, timeout: int = DEFAULT_REQUEST_TIMEOUT) -> tu
         logger.warning("arXiv content extraction returned no content url=%s", abs_url)
         return None
     return title, "\n\n".join(parts)
+
+
+def _media_oembed_endpoint(url: str) -> str:
+    host = urllib.parse.urlparse(url).netloc.lower().removeprefix("www.")
+    return _MEDIA_OEMBED_ENDPOINTS.get(host, "")
+
+
+def _extract_oembed_iframe_src(html: str) -> str:
+    iframe = BeautifulSoup(html, "html.parser").find("iframe", src=True)
+    return str(iframe["src"]).strip() if iframe else ""
+
+
+def _media_oembed_markdown(url: str, data: dict[str, Any]) -> tuple[str, str] | None:
+    title = str(data.get("title") or "").strip()
+    if not title:
+        return None
+
+    author = str(data.get("author_name") or "").strip()
+    provider = str(data.get("provider_name") or "").strip()
+    description = html_to_md(str(data.get("description") or "")).strip()
+    embed_url = _extract_oembed_iframe_src(str(data.get("html") or ""))
+
+    parts = []
+    if provider:
+        parts.append(f"**Provider:** {provider}")
+    if author:
+        parts.append(f"**Author:** {author}")
+    if description:
+        parts.append(f"**Description:** {description}")
+    parts.append(f"**Source:** {url}")
+    if embed_url:
+        parts.append(f"**Embed:** {embed_url}")
+
+    metadata = {
+        field: value
+        for field, value in (
+            ("author", author or provider),
+            ("image", str(data.get("thumbnail_url") or "").strip()),
+            ("type", str(data.get("type") or "").strip()),
+        )
+        if value
+    }
+    return title, add_front_matter("\n\n".join(parts), metadata)
+
+
+def fetch_media_oembed(url: str, timeout: int = DEFAULT_REQUEST_TIMEOUT) -> tuple[str, str] | None:
+    """Return ``(title, markdown)`` for supported media providers with oEmbed."""
+    endpoint = _media_oembed_endpoint(url)
+    if not endpoint:
+        return None
+    try:
+        response = requests.get(
+            endpoint,
+            params={"url": url, "format": "json"},
+            timeout=timeout,
+            headers={"User-Agent": "lobsters-telegraph-bot"},
+        )
+        response.raise_for_status()
+        data = response.json()
+    except (requests.RequestException, ValueError) as exc:
+        logger.warning("media oEmbed fetch failed url=%s error=%s", url, exc)
+        return None
+    return _media_oembed_markdown(url, data) if isinstance(data, dict) else None
 
 
 def _fetch_youtube_oembed(video_id: str, timeout: int = DEFAULT_REQUEST_TIMEOUT) -> tuple[str, str] | None:

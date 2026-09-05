@@ -9,8 +9,10 @@ For HTTP URLs, the current order is:
 1. GitHub Markdown blob.
 2. GitHub repository README.
 3. arXiv abstract.
-4. YouTube video.
-5. Generic HTML fetch plus Readability extraction.
+4. Pagina/12 Fusion article data.
+5. Vimeo/Dailymotion oEmbed media.
+6. YouTube video.
+7. Generic HTML fetch plus Readability extraction.
 
 For local paths and raw HTML, only the generic HTML path runs.
 

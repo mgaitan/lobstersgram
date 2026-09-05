@@ -19,4 +19,5 @@ metadata extraction, HTML cleanup, and Markdown normalization.
 - GitHub repository README and Markdown blob extraction through the GitHub API.
 - arXiv abstract extraction.
 - YouTube metadata, description, and optional transcript extraction.
+- Vimeo and Dailymotion media-page extraction through oEmbed.
 - Image and figure normalization before Markdown conversion.
