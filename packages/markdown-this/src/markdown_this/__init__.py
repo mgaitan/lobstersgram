@@ -11,7 +11,7 @@ from markdown_this.fetchers import (
     fetch_url,
     fetch_youtube_video,
 )
-from markdown_this.html import make_images_absolute, preprocess_figures
+from markdown_this.html import make_images_absolute, preprocess_figures, strip_chrome
 from markdown_this.markdown import (
     _extract_leading_heading,
     _is_html_badge_block,
@@ -54,4 +54,5 @@ __all__ = [
     "markdown_to_text",
     "preprocess_figures",
     "split_front_matter",
+    "strip_chrome",
 ]

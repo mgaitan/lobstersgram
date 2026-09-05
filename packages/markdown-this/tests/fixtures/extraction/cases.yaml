@@ -31,7 +31,6 @@ cases:
 
   - id: generic_article_noise_guard
     fixture: generic_article.html
-    xfail: "Quality benchmark placeholder: generic extraction still keeps some chrome/noise."
     contains:
       - This paragraph is the useful article body.
     not_contains:
