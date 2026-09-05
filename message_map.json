@@ -3466,5 +3466,23 @@
     "article_link": "https://xenaproject.wordpress.com/2026/09/04/flt-anthropic-has-beaten-me-to-it/",
     "discussion_link": "https://lobste.rs/s/5iacaa/flt_anthropic_has_beaten_me_it",
     "title": "FLT: Anthropic has beaten me to it"
+  },
+  "@lobstersgram:586": {
+    "telegraph_link": "https://telegra.ph/Pointing-at-the-error-compiler-style-diagnostics-in-uutils-coreutils--uutils-09-05",
+    "article_link": "https://uutils.org/blog/2026-08-error-diagnostics/",
+    "discussion_link": "https://lobste.rs/s/job3jy/pointing_at_error_compiler_style",
+    "title": "Pointing at the error: compiler-style diagnostics in uutils coreutils"
+  },
+  "@lobstersgram:587": {
+    "telegraph_link": "https://telegra.ph/Rust-SIMD-on-the-GPU---VectorWare-09-05",
+    "article_link": "https://www.vectorware.com/blog/simd-on-gpu/",
+    "discussion_link": "https://lobste.rs/s/omhoxh/rust_simd_on_gpu",
+    "title": "Rust SIMD on the GPU"
+  },
+  "@lobstersgram:588": {
+    "telegraph_link": "https://telegra.ph/What-filesystem-are-you-running-on-your-NASBackups-and-why--Lobsters-09-05",
+    "article_link": "https://lobste.rs/s/wk38d2/what_filesystem_are_you_running_on_your",
+    "discussion_link": "https://lobste.rs/s/wk38d2/what_filesystem_are_you_running_on_your",
+    "title": "What filesystem are you running on your NAS/Backups, and why?"
   }
 }
