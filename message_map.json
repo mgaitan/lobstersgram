@@ -3352,5 +3352,35 @@
     "article_link": "https://lemire.me/blog/2026/08/29/the-new-go-json-api-twice-as-fast-or-1-5x-slower/",
     "discussion_link": "https://lobste.rs/s/67ygvv/new_go_json_api_twice_as_fast_1_5x_slower",
     "title": "The new Go JSON API: twice as fast, or 1.5x slower?"
+  },
+  "@lobstersgram:567": {
+    "telegraph_link": "https://telegra.ph/MISRust-Mapping-MISRA-C-Coding-Guidelines-to-the-Rust-Programming-Language-09-05",
+    "article_link": "https://arxiv.org/abs/2605.23490",
+    "discussion_link": "https://lobste.rs/s/naoawd/misrust_mapping_misra_c_coding",
+    "title": "MISRust: Mapping MISRA-C++ Coding Guidelines to the Rust Programming Language"
+  },
+  "@lobstersgram:568": {
+    "telegraph_link": "https://telegra.ph/What-are-you-doing-this-weekend--Lobsters-09-05",
+    "article_link": "https://lobste.rs/s/ku30xf/what_are_you_doing_this_weekend",
+    "discussion_link": "https://lobste.rs/s/ku30xf/what_are_you_doing_this_weekend",
+    "title": "What are you doing this weekend?"
+  },
+  "@lobstersgram:569": {
+    "telegraph_link": "https://telegra.ph/A-preview-of-the-future-IA-documentation--Intel-64-and-IA-32-Architectures-Software-Developers-Manual-09-05",
+    "article_link": "https://intel.github.io/SDM/announcement/2026/08/20/announce-preview.html",
+    "discussion_link": "https://lobste.rs/s/cywxla/preview_future_intel_architecture",
+    "title": "A preview of the future Intel Architecture documentation"
+  },
+  "@lobstersgram:570": {
+    "telegraph_link": "https://telegra.ph/smolts-a-pedagogical-IDE-for-a-teaching-language-eighty-twenty-news-09-05",
+    "article_link": "https://eighty-twenty.org/2026/09/04/smolts",
+    "discussion_link": "https://lobste.rs/s/hr2txa/smolts_pedagogical_ide_for_teaching",
+    "title": "smolts: a pedagogical IDE for a teaching language"
+  },
+  "@lobstersgram:571": {
+    "telegraph_link": "https://telegra.ph/The-asteroid-currently-hitting-frontend-web-development--Read-the-Tea-Leaves-09-05",
+    "article_link": "https://nolanlawson.com/2026/08/23/the-asteroid-currently-hitting-frontend-web-development/",
+    "discussion_link": "https://lobste.rs/s/rntyvm/asteroid_currently_hitting_frontend_web",
+    "title": "The asteroid currently hitting frontend web development"
   }
 }
