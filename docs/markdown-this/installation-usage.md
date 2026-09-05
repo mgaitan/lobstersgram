@@ -21,9 +21,9 @@ The source can be a URL, `Path`, path string, or raw HTML string.
 ## CLI
 
 ```bash
-markdown-this https://example.com/article
-markdown-this article.html
-cat article.html | markdown-this -
+uvx markdown-this https://example.com/article
+uvx markdown-this article.html
+cat article.html | uvx markdown-this -
 ```
 
 The command writes Markdown to stdout.

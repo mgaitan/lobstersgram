@@ -29,6 +29,6 @@ url = create_page(
 ## CLI
 
 ```bash
-md-to-telegraph article.md --access-token "$TELEGRAPH_API_TOKEN"
-cat article.md | md-to-telegraph --title "An article"
+uvx md-to-telegraph article.md --access-token "$TELEGRAPH_API_TOKEN"
+cat article.md | uvx md-to-telegraph --title "An article"
 ```

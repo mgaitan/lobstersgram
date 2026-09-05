@@ -11,14 +11,14 @@ now first-class packages.
 
 ## Projects
 
-- [`markdown-this`](packages/markdown-this/README.md): extracts web pages and
+- [`markdown-this`](https://github.com/mgaitan/lobstersgram/tree/master/packages/markdown-this): extracts web pages and
   supported special URLs as Markdown.
-- [`md-to-telegraph`](packages/md-to-telegraph/README.md): converts Markdown
+- [`md-to-telegraph`](https://github.com/mgaitan/lobstersgram/tree/master/packages/md-to-telegraph): converts Markdown
   into Telegraph DOM nodes and publishes Telegraph pages.
-- [`markdown-web`](packages/markdown-web/README.md): FastAPI service with web
+- [`markdown-web`](https://github.com/mgaitan/lobstersgram/tree/master/packages/markdown-web): FastAPI service with web
   UI, URL endpoints, document upload, image upload, bookmarklets, and Telegraph
   publishing.
-- [`lobstersgram`](src/lobstersgram/): Telegram application that posts Lobsters
+- [`lobstersgram`](https://github.com/mgaitan/lobstersgram/tree/master/src/lobstersgram): Telegram application that posts Lobsters
   links with clean Telegraph reading views.
 
 ```mermaid
@@ -46,7 +46,10 @@ flowchart TD
 
 ## Documentation
 
-Central docs live in [`docs/`](docs/). The Sphinx index includes this README
+Read the [central documentation](https://mgaitan.github.io/lobstersgram/).
+Its source lives in [`docs/`](https://github.com/mgaitan/lobstersgram/tree/master/docs).
+GitHub Pages rebuilds it when documentation changes reach `master`.
+The Sphinx index includes this README
 and then splits each project into overview, installation/usage, and technical
 reference pages.
 
@@ -89,11 +92,14 @@ Packages are versioned and released independently. For example:
 uv version --package markdown-this --bump patch
 uv lock
 git commit -am "Release markdown-this $(uv version --package markdown-this --short)"
-git tag "markdown-this-v$(uv version --package markdown-this --short)"
-git push origin master --tags
+tag="markdown-this-v$(uv version --package markdown-this --short)"
+git tag "$tag"
+git push origin "$tag"
+gh release create "$tag" --verify-tag --generate-notes
 ```
 
-The publishing workflows are package-specific:
+Publishing a GitHub release triggers the package-specific workflow; pushing
+a tag alone does not publish to PyPI:
 
 - `publish-markdown-this.yml` publishes `markdown-this`.
 - `publish-md-to-telegraph.yml` publishes `md-to-telegraph`.
