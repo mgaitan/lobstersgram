@@ -1,5 +1,21 @@
 version: 1
 cases:
+  - id: technical_article
+    fixture: technical_article.html
+    contains:
+      - preserve this code
+      - Standard decoder
+      - Reliable output
+    min_text_chars: 200
+
+  - id: linked_article
+    fixture: linked_article.html
+    contains:
+      - "[the primary source](https://example.org/source)"
+      - "https://example.org/chart.png"
+      - Measurements collected during the experiment.
+    min_text_chars: 200
+
   - id: generic_article
     fixture: generic_article.html
     metadata:

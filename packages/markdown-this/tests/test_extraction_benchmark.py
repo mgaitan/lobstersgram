@@ -28,17 +28,17 @@ def _load_cases() -> list[pytest.ParameterSet]:
 @pytest.mark.parametrize("case", _load_cases())
 def test_extraction_quality_case(case: dict[str, Any]) -> None:
     title, markdown, fallback_text, intro = extract_main_content(FIXTURES / case["fixture"], min_content_length=0)
-    metadata, _body = split_front_matter(markdown)
-    plain_text = markdown_to_text(markdown)
-    haystack = "\n".join((title, markdown, fallback_text, intro, plain_text))
+    metadata, body = split_front_matter(markdown)
+    plain_text = markdown_to_text(body)
 
     for field, expected in case.get("metadata", {}).items():
         assert metadata.get(field) == expected
 
     for phrase in case.get("contains", []):
-        assert phrase in haystack
+        assert phrase in body or phrase in plain_text
 
     for phrase in case.get("not_contains", []):
-        assert phrase not in haystack
+        assert phrase not in body
+        assert phrase not in plain_text
 
     assert len(plain_text) >= case.get("min_text_chars", 0)
