@@ -142,20 +142,11 @@ def extract_main_content(
     source_url: str = "",
 ) -> tuple[str, str, str, str]:
     """Extract a URL, path or HTML; ``source_url`` resolves supplied HTML links."""
-    if isinstance(source, Path):
-        return _extract_html_content(
-            source.read_text(encoding="utf-8"),
-            source.stem,
-            source_url or source.resolve().as_uri(),
-            source_url,
-            min_content_length,
-            intro_min_length,
-        )
-
-    if _is_http_url(source):
+    if isinstance(source, str) and _is_http_url(source):
         return _extract_url_content(source, request_timeout, min_content_length, intro_min_length)
 
-    if path := _existing_path(source):
+    path = source if isinstance(source, Path) else _existing_path(source)
+    if path is not None:
         return _extract_html_content(
             path.read_text(encoding="utf-8"),
             path.stem,
