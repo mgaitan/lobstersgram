@@ -1,0 +1,57 @@
+version: 1
+cases:
+  - id: technical_article
+    fixture: technical_article.html
+    contains:
+      - preserve this code
+      - Standard decoder
+      - Reliable output
+    min_text_chars: 200
+
+  - id: linked_article
+    fixture: linked_article.html
+    contains:
+      - "[the primary source](https://example.org/source)"
+      - "https://example.org/chart.png"
+      - Measurements collected during the experiment.
+    min_text_chars: 200
+
+  - id: generic_article
+    fixture: generic_article.html
+    metadata:
+      title: A Useful Article
+      author: Example Reporter
+      url: https://example.com/articles/useful
+      date: "2026-08-06"
+      image: https://example.com/images/hero.jpg
+    contains:
+      - This paragraph is the useful article body.
+      - A second paragraph keeps the extraction above a realistic smoke-test size
+    min_text_chars: 120
+
+  - id: generic_article_noise_guard
+    fixture: generic_article.html
+    xfail: "Quality benchmark placeholder: generic extraction still keeps some chrome/noise."
+    contains:
+      - This paragraph is the useful article body.
+    not_contains:
+      - Advertisement
+      - Site navigation
+
+  - id: pagina12_fusion_article
+    fixture: pagina12_fusion_article.html
+    xfail: "Known issue #88/#97: Pagina/12 body lives in Fusion.globalContent."
+    metadata:
+      title: El oficialismo continua con su desprecio a los necesitados
+      author: Pagina/12
+      url: https://www.pagina12.com.ar/2026/09/03/el-oficialismo-continua-con-su-desprecio-a-los-necesitados/
+      date: "2026-09-03T12:00:00Z"
+      image: https://images.pagina12.com.ar/styles/focal_3_2_960x640/public/2026-09/hero.jpg
+    contains:
+      - El proyecto oficial volvio a quedar lejos de las demandas sociales.
+      - La oposicion cuestiono el recorte durante la sesion.
+    not_contains:
+      - Copiar enlace
+      - Compartir en X
+      - Ultimas noticias
+    min_text_chars: 140
