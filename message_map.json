@@ -3544,5 +3544,29 @@
     "article_link": "https://asahilinux.org/2026/09/m2-episode-1/",
     "discussion_link": "https://lobste.rs/s/ben6a4/m2_episode_1_asahi_linux_on_m3",
     "title": "M2: Episode 1 (or, Asahi Linux on M3)"
+  },
+  "@lobstersgram:599": {
+    "telegraph_link": "https://telegra.ph/Any-Nix-package-live-in-your-browser--Farid-Zakarias-Blog-09-06",
+    "article_link": "https://fzakaria.com/2026/09/04/any-nix-package-live-in-your-browser",
+    "discussion_link": "https://lobste.rs/s/i9zp2x/any_nix_package_live_your_browser",
+    "title": "Any Nix package, live in your browser"
+  },
+  "@lobstersgram:600": {
+    "telegraph_link": "https://telegra.ph/Terence-Tao-Fundamentally-problems-in-pure-mathematics-such---Mathstodon-09-06",
+    "article_link": "https://mathstodon.xyz/@tao/117207856734787448",
+    "discussion_link": "https://lobste.rs/s/nohdoj/terence_tao_on_prematurely_solving_maths",
+    "title": "Terence Tao on “prematurely solving [a maths] problem by purely AI-powered methods”"
+  },
+  "@lobstersgram:601": {
+    "telegraph_link": "https://telegra.ph/Theres-No-Limit-to-How-Bad-Code-Can-Get-09-06-3",
+    "article_link": "https://zachkehs.com/blog/theres_no_limit_to_how_bad_code_can_get/",
+    "discussion_link": "https://lobste.rs/s/rfn2mn/there_s_no_limit_how_bad_code_can_get",
+    "title": "There's No Limit to How Bad Code Can Get"
+  },
+  "@lobstersgram:602": {
+    "telegraph_link": "https://telegra.ph/Beyond-ORMs---Noteflakes-09-06-2",
+    "article_link": "https://noteflakes.com/articles/2026-09-05-beyond-orms",
+    "discussion_link": "https://lobste.rs/s/rcddma/beyond_orms",
+    "title": "Beyond ORMs"
   }
 }
