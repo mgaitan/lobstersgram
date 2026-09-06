@@ -17,6 +17,8 @@ def test_prepare_captured_thread_keeps_scope_and_media() -> None:
     assert result.metadata.extraction_scope == "captured-posts"
     assert "Third observation" in result.markdown
     assert "https://video.twimg.com/demo.mp4" in result.markdown
+
+
 VISIBLE_PAGE_COUNT = 2
 
 
