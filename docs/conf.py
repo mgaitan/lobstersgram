@@ -22,7 +22,7 @@ myst_url_schemes = {
     "http": None,
     "https": None,
     "gh": {
-        "url": "https://github.com/mgaitan/lobstersgram/blob/master/{path}#{fragment}",
+        "url": "https://github.com/mgaitan/markdown-tools/blob/master/{path}#{fragment}",
         "title": "",
         "classes": ["github"],
     },

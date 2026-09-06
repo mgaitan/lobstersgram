@@ -35,7 +35,7 @@ I also built a small web service, powered by the same code behind Lobstersgram, 
 <a href="https://markdown.fastapicloud.dev/">markdown.fastapicloud.dev</a>
 
 Also, remember that Lobstersgram is open source. Report bugs and request features!
-<a href="https://github.com/mgaitan/lobstersgram">github.com/mgaitan/lobstersgram</a>
+<a href="https://github.com/mgaitan/markdown-tools">github.com/mgaitan/markdown-tools</a>
 
 Hope to see you in the channel soon!"""
 
