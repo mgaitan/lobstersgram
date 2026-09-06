@@ -10,7 +10,6 @@ from logging import getLogger
 from pathlib import Path
 
 from bs4 import BeautifulSoup
-from markdownify import markdownify as html_to_md
 from readability import Document
 
 from markdown_this.fetchers import (
@@ -22,10 +21,8 @@ from markdown_this.fetchers import (
     fetch_media_oembed,
     fetch_youtube_video,
 )
-from markdown_this.html import make_images_absolute, preprocess_figures, preprocess_media, strip_chrome
+from markdown_this.html import convert_html
 from markdown_this.markdown import (
-    _make_markdown_links_absolute,
-    _normalize_markdown_links,
     extract_intro,
     markdown_to_text,
 )
@@ -141,13 +138,7 @@ def _extract_html_content(  # noqa: PLR0913
             content_html_for_markdown = content_html
 
     content_html_for_markdown = content_html_for_markdown or content_html
-    content_html_for_markdown = preprocess_figures(
-        make_images_absolute(preprocess_media(strip_chrome(content_html_for_markdown), base_url), base_url)
-    )
-    extracted_markdown = html_to_md(content_html_for_markdown)
-    extracted_markdown = _normalize_markdown_links(extracted_markdown)
-    extracted_markdown = _make_markdown_links_absolute(extracted_markdown, base_url)
-    fallback_text = BeautifulSoup(content_html_for_markdown, "html.parser").get_text(separator="\n").strip()
+    extracted_markdown, fallback_text = convert_html(content_html_for_markdown, base_url)
     if source_url:
         metadata["url"] = source_url
     return _finalize_content(title, extracted_markdown, fallback_text, intro_min_length, metadata)

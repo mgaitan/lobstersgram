@@ -2,6 +2,10 @@
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
+import pytest
 import requests
 from markdown_this import extract_main_content, fetch_media_oembed, split_front_matter
 from markdown_this import fetchers as fetchers_module
@@ -9,6 +13,40 @@ from pytest_mock import MockerFixture
 
 VIMEO_URL = "https://vimeo.com/35941909"
 DAILYMOTION_URL = "https://www.dailymotion.com/video/x84sh87"
+
+
+@pytest.mark.parametrize("host", ["x.com", "twitter.com", "m.twitter.com"])
+def test_rich_oembed_extracts_public_post_without_html_download(host: str, mocker: MockerFixture) -> None:
+    timeout = 7
+    fixture = Path(__file__).parent / "fixtures/extraction/x_oembed.json"
+    get = mocker.patch(
+        "markdown_this.fetchers.requests.get", return_value=_OEmbedResponse(json.loads(fixture.read_text()))
+    )
+    download = mocker.patch("markdown_this.extractor.fetch_html", side_effect=AssertionError("No page download"))
+    title, markdown, fallback, _intro = extract_main_content(
+        f"https://{host}/alice/status/1001", request_timeout=timeout
+    )
+    metadata, body = split_front_matter(markdown)
+    assert title == "Alice"
+    assert metadata["extraction_scope"] == "oembed"
+    assert "A public observation" in body and "A public observation" in fallback
+    assert "[a reference](https://example.org/paper)" in body
+    assert "widget noise" not in body
+    get.assert_called_once()
+    assert get.call_args.kwargs["timeout"] == timeout
+    download.assert_not_called()
+
+
+def test_rich_oembed_uses_shared_image_and_media_conversion() -> None:
+    result = fetchers_module._media_oembed_markdown(
+        "https://example.com/post",
+        {"type": "rich", "html": '<p>Content.</p><img src="/photo.jpg"><video src="/video.mp4"></video>'},
+    )
+    assert result is not None
+    assert result[0] == "https://example.com/post"
+    assert "https://example.com/photo.jpg" in result[1]
+    assert "https://example.com/video.mp4" in result[1]
+    assert fetchers_module._media_oembed_markdown("https://example.com/post", {"type": "rich", "html": ""}) is None
 
 
 class _OEmbedResponse:

@@ -15,6 +15,7 @@ from markdownify import markdownify as html_to_md
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api._errors import CouldNotRetrieveTranscript
 
+from markdown_this.html import convert_html
 from markdown_this.markdown import (
     _extract_leading_heading,
     _make_markdown_images_absolute,
@@ -33,6 +34,8 @@ _GITHUB_BLOB_RE = re.compile(
 )
 _ARXIV_ABS_RE = re.compile(r"^https?://arxiv\.org/abs/(?P<arxiv_id>[^?#]+)(?:[?#].*)?$", re.IGNORECASE)
 _MEDIA_OEMBED_ENDPOINTS = {
+    "x.com": "https://publish.twitter.com/oembed",
+    "twitter.com": "https://publish.twitter.com/oembed",
     "dai.ly": "https://www.dailymotion.com/services/oembed",
     "dailymotion.com": "https://www.dailymotion.com/services/oembed",
     "player.vimeo.com": "https://vimeo.com/api/oembed.json",
@@ -209,7 +212,7 @@ def fetch_arxiv_abstract(url: str, timeout: int = DEFAULT_REQUEST_TIMEOUT) -> tu
 
 
 def _media_oembed_endpoint(url: str) -> str:
-    host = (urllib.parse.urlparse(url).hostname or "").lower().removeprefix("www.")
+    host = (urllib.parse.urlparse(url).hostname or "").lower().removeprefix("www.").removeprefix("m.")
     return _MEDIA_OEMBED_ENDPOINTS.get(host, "")
 
 
@@ -219,7 +222,13 @@ def _extract_oembed_iframe_src(html: str) -> str:
 
 
 def _media_oembed_markdown(url: str, data: dict[str, Any]) -> tuple[str, str] | None:
+    rich_markdown = ""
+    if data.get("type") == "rich":
+        rich_markdown, _text = convert_html(str(data.get("html") or ""), url)
+        rich_markdown = rich_markdown.strip()
     title = str(data.get("title") or "").strip()
+    if rich_markdown:
+        title = title or str(data.get("author_name") or data.get("provider_name") or url)
     if not title:
         return None
 
@@ -228,7 +237,7 @@ def _media_oembed_markdown(url: str, data: dict[str, Any]) -> tuple[str, str] | 
     description = html_to_md(str(data.get("description") or "")).strip()
     embed_url = _extract_oembed_iframe_src(str(data.get("html") or ""))
 
-    parts = []
+    parts = [rich_markdown] if rich_markdown else []
     if provider:
         parts.append(f"**Provider:** {provider}")
     if author:
@@ -245,6 +254,7 @@ def _media_oembed_markdown(url: str, data: dict[str, Any]) -> tuple[str, str] | 
             ("author", author or provider),
             ("image", str(data.get("thumbnail_url") or "").strip()),
             ("type", str(data.get("type") or "").strip()),
+            ("extraction_scope", "oembed" if rich_markdown else ""),
         )
         if value
     }

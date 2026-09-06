@@ -3,6 +3,7 @@
 from pathlib import Path
 
 import pytest
+import requests
 from markdown_this import DomainRule, apply_domain_rule, extract_main_content, split_front_matter
 from markdown_this.html import preprocess_media
 from pytest_mock import MockerFixture
@@ -16,6 +17,7 @@ def test_captured_thread_and_media(host: str, download: bool, mocker: MockerFixt
     url = f"https://{host}/alice/status/1002"
     html = FIXTURE.read_text()
     fetch = mocker.patch("markdown_this.extractor.fetch_html", return_value=html)
+    mocker.patch("markdown_this.fetchers.requests.get", side_effect=requests.RequestException("No oEmbed"))
     title, markdown, _fallback, _intro = (
         extract_main_content(url) if download else extract_main_content(html, source_url=url)
     )

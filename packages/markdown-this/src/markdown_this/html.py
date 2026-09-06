@@ -7,8 +7,21 @@ import urllib.parse
 
 from bs4 import BeautifulSoup
 from bs4.element import Tag
+from markdownify import markdownify as html_to_md
+
+from markdown_this.markdown import _make_markdown_links_absolute, _normalize_markdown_links
 
 CHROME_TAGS = ("button", "form", "nav", "noscript", "script", "style", "template")
+
+
+def convert_html(content_html: str, base_url: str) -> tuple[str, str]:
+    """Normalize selected HTML once for both document and protocol extraction."""
+    content_html = preprocess_figures(
+        make_images_absolute(preprocess_media(strip_chrome(content_html), base_url), base_url)
+    )
+    markdown = _make_markdown_links_absolute(_normalize_markdown_links(html_to_md(content_html)), base_url)
+    text = BeautifulSoup(content_html, "html.parser").get_text(separator="\n").strip()
+    return markdown, text
 
 
 def _best_src_for_img(img: Tag) -> str:

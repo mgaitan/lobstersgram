@@ -24,5 +24,7 @@ metadata extraction, HTML cleanup, and Markdown normalization.
 - arXiv abstract extraction.
 - YouTube metadata, description, and optional transcript extraction.
 - Vimeo and Dailymotion media-page extraction through oEmbed.
+- Public X/Twitter posts through rich oEmbed, and captured post collections
+  through declarative selectors. Both expose their limited extraction scope.
 - Substack body selection through a declarative rule.
 - Image and figure normalization before Markdown conversion.
