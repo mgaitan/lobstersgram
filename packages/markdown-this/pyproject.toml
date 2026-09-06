@@ -17,9 +17,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/mgaitan/lobstersgram/tree/master/packages/markdown-this"
-Repository = "https://github.com/mgaitan/lobstersgram"
-Issues = "https://github.com/mgaitan/lobstersgram/issues"
+Homepage = "https://github.com/mgaitan/markdown-tools/tree/master/packages/markdown-this"
+Repository = "https://github.com/mgaitan/markdown-tools"
+Issues = "https://github.com/mgaitan/markdown-tools/issues"
 
 [project.scripts]
 markdown-this = "markdown_this.cli:main"

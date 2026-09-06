@@ -1,24 +1,22 @@
 # Markdown Tools
 
-[![CI](https://github.com/mgaitan/lobstersgram/actions/workflows/ci.yml/badge.svg)](https://github.com/mgaitan/lobstersgram/actions/workflows/ci.yml)
+Markdown Tools is a Python monorepo (uv workspace) with several packages for extracting web content as Markdown, converting Markdown into Telegraph pages, and connecting those tools to web and Telegram services.
 
-Markdown Tools is a Python monorepo for extracting web content as Markdown,
-publishing Markdown to Telegraph, and running the small services that connect
-those pieces to Telegram and the web.
+[![CI](https://github.com/mgaitan/markdown-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/mgaitan/markdown-tools/actions/workflows/ci.yml)
 
 The repository started as Lobstersgram, but the reusable Markdown projects are
 now first-class packages.
 
 ## Projects
 
-- [`markdown-this`](https://github.com/mgaitan/lobstersgram/tree/master/packages/markdown-this): extracts web pages and
+- [`markdown-this`](https://github.com/mgaitan/markdown-tools/tree/master/packages/markdown-this): extracts web pages and
   supported special URLs as Markdown.
-- [`md-to-telegraph`](https://github.com/mgaitan/lobstersgram/tree/master/packages/md-to-telegraph): converts Markdown
+- [`md-to-telegraph`](https://github.com/mgaitan/markdown-tools/tree/master/packages/md-to-telegraph): converts Markdown
   into Telegraph DOM nodes and publishes Telegraph pages.
-- [`markdown-web`](https://github.com/mgaitan/lobstersgram/tree/master/packages/markdown-web): FastAPI service with web
+- [`markdown-web`](https://github.com/mgaitan/markdown-tools/tree/master/packages/markdown-web): FastAPI service with web
   UI, URL endpoints, document upload, image upload, bookmarklets, and Telegraph
-  publishing.
-- [`lobstersgram`](https://github.com/mgaitan/lobstersgram/tree/master/src/lobstersgram): Telegram application that posts Lobsters
+  publishing and Telegram notifications.
+- [`lobstersgram`](https://github.com/mgaitan/markdown-tools/tree/master/src/lobstersgram): Telegram application that posts Lobsters
   links with clean Telegraph reading views.
 
 ```mermaid
@@ -39,15 +37,18 @@ flowchart TD
     WEB --> MDT
     LOB --> MTHIS
     LOB --> MDT
-    WEB --> TPH
-    LOB --> TPH
-    LOB --> TG
+    WEB -.-> TPH
+    WEB -.-> TG
+    LOB -.-> TPH
+    LOB -.-> TG
+    classDef external stroke-dasharray: 5 5
+    class TG,TPH external
 ```
 
 ## Documentation
 
-Read the [central documentation](https://mgaitan.github.io/lobstersgram/).
-Its source lives in [`docs/`](https://github.com/mgaitan/lobstersgram/tree/master/docs).
+Read the [central documentation](https://mgaitan.github.io/markdown-tools/).
+Its source lives in [`docs/`](https://github.com/mgaitan/markdown-tools/tree/master/docs).
 GitHub Pages rebuilds it when documentation changes reach `master`.
 The Sphinx index includes this README
 and then splits each project into overview, installation/usage, and technical

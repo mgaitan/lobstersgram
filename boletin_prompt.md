@@ -43,7 +43,7 @@ Entregá un único documento Markdown, sin texto introductorio ni explicaciones 
 ```yaml
 ---
 author: ChatGPT
-url: https://github.com/mgaitan/lobstersgram/blob/master/boletin_prompt.md
+url: https://github.com/mgaitan/markdown-tools/blob/master/boletin_prompt.md
 notify_telegram: 390225349
 ---
 ```

@@ -38,10 +38,13 @@
               <button id="file-button" class="file-button" type="button" aria-label="Choose a file" title="Choose a file">&#8593;</button>
               <input id="source-file" class="file-input" type="file" accept=".pdf,.doc,.docx,.epub,.ppt,.pptx,.xls,.xlsx,.odt,.ods,.odp,.rtf,.csv,image/png,image/jpeg,image/webp">
             </div>
-            <div id="source-actions" class="source-actions" role="group" aria-label="Source action">
-              <button id="submit-button" class="button button-primary" type="submit" name="action" value="process" aria-pressed="true">Process</button>
-              <button id="direct-publish-button" class="button button-secondary" type="submit" name="action" value="publish" aria-pressed="false">Publish</button>
-            </div>
+            <label class="source-action-field">
+              <span class="sr-only">Source action</span>
+              <select id="source-action" name="action" aria-label="Source action">
+                <option value="process">Process</option>
+                <option value="publish">Publish</option>
+              </select>
+            </label>
           </div>
 
           <section id="result" class="result" hidden>
@@ -85,7 +88,7 @@
             </div>
             <input id="editor-image-file" class="file-input" type="file" accept="image/png,image/jpeg,image/webp">
             <div id="preview-pane" class="preview-pane" hidden>
-              <iframe id="preview-frame" class="preview-frame" title="Telegraph preview" loading="eager"></iframe>
+              <iframe id="preview-frame" class="preview-frame" title="Telegraph preview" loading="eager" sandbox></iframe>
             </div>
           </section>
           <p id="status" class="status" role="status"></p>
@@ -137,7 +140,7 @@
       <a href="/bookmarklets/">Bookmarklets</a>
       <a href="/t/published/">Published</a>
       <a href="/docs">API</a>
-      <a href="https://github.com/mgaitan/lobstersgram/tree/master/packages/markdown-web">GitHub</a>
+      <a href="https://github.com/mgaitan/markdown-tools/tree/master/packages/markdown-web">GitHub</a>
     </footer>
 
     <script>
@@ -151,7 +154,7 @@
       const dropZone = document.querySelector("#drop-zone");
       const sourceInput = document.querySelector("#source-url");
       const sourceFile = document.querySelector("#source-file");
-      const sourceActionButtons = [...document.querySelectorAll("#source-actions button")];
+      const sourceActionSelect = document.querySelector("#source-action");
       const editorImageFile = document.querySelector("#editor-image-file");
       const fileButton = document.querySelector("#file-button");
       const sourceLabel = document.querySelector("#result-source");
@@ -171,6 +174,7 @@
       let previewId = "";
       let previewing = false;
       let imageUploading = false;
+      let sourceSubmitting = false;
       let mode = "process";
       let sourceAction = "process";
       const DRAFT_KEY = "markdown-web-draft";
@@ -191,12 +195,7 @@
       function setSourceAction(action) {
         const selected = action === "publish" ? "publish" : "process";
         sourceAction = selected;
-        sourceActionButtons.forEach((button) => {
-          const isSelected = button.value === selected;
-          button.classList.toggle("button-primary", isSelected);
-          button.classList.toggle("button-secondary", !isSelected);
-          button.setAttribute("aria-pressed", String(isSelected));
-        });
+        sourceActionSelect.value = selected;
         try {
           localStorage.setItem(SOURCE_ACTION_KEY, selected);
         } catch {
@@ -593,6 +592,7 @@
       }
 
       async function publishSource(url, file) {
+        if (sourceSubmitting) return;
         if (!url && !file) {
           setStatus("Paste a URL or choose a document", true);
           sourceInput.focus();
@@ -602,6 +602,8 @@
           setStatus("Choose a URL or a document, not both", true);
           return;
         }
+        sourceSubmitting = true;
+        sourceActionSelect.disabled = true;
         setStatus("Publishing…");
         try {
           if (file && isImageFile(file)) {
@@ -628,6 +630,9 @@
           window.location.href = data.url;
         } catch (error) {
           setStatus(error.message, true);
+        } finally {
+          sourceSubmitting = false;
+          sourceActionSelect.disabled = false;
         }
       }
 
@@ -717,9 +722,7 @@
         uploadImage(file, true);
       });
 
-      sourceActionButtons.forEach((button) => {
-        button.addEventListener("click", () => setSourceAction(button.value));
-      });
+      sourceActionSelect.addEventListener("change", () => setSourceAction(sourceActionSelect.value));
 
       form.addEventListener("submit", async (event) => {
         event.preventDefault();

@@ -1,4 +1,4 @@
-# Page to Telegraph
+# Markdown-web
 
 Minimal FastAPI service around [`markdown-this`](../markdown-this/) and
 [`md-to-telegraph`](../md-to-telegraph/).

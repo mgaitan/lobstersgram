@@ -105,17 +105,30 @@ def test_home_and_static_assets() -> None:
     assert client.get("/static/styles.css").status_code == HTTP_200_OK
 
 
-def test_home_has_source_action_group() -> None:
+def test_home_has_source_action_dropdown() -> None:
     response = client.get("/")
 
     assert all(
         value in response.text
         for value in (
-            'id="source-actions" class="source-actions"',
-            'id="submit-button" class="button button-primary" type="submit" name="action" value="process"',
-            'id="direct-publish-button" class="button button-secondary" type="submit" name="action" value="publish"',
+            'id="source-action" name="action" aria-label="Source action"',
+            '<option value="process">Process</option>',
+            '<option value="publish">Publish</option>',
         )
     )
+
+
+def test_home_guards_direct_publication() -> None:
+    response = client.get("/")
+
+    assert "if (sourceSubmitting) return;" in response.text
+    assert "sourceActionSelect.disabled = true" in response.text
+
+
+def test_home_sandboxes_preview_frame() -> None:
+    response = client.get("/")
+
+    assert 'id="preview-frame" class="preview-frame" title="Telegraph preview" loading="eager" sandbox' in response.text
 
 
 def test_health_returns_application_version() -> None:
