@@ -34,7 +34,6 @@ cases:
     contains:
       - This paragraph is the useful article body.
     not_contains:
-      - Advertisement
       - Site navigation
 
   - id: pagina12_fusion_article

@@ -8,7 +8,7 @@ import urllib.parse
 from bs4 import BeautifulSoup
 from bs4.element import Tag
 
-CHROME_TAGS = ("aside", "button", "form", "nav", "noscript", "script", "style", "template")
+CHROME_TAGS = ("button", "form", "nav", "noscript", "script", "style", "template")
 
 
 def _best_src_for_img(img: Tag) -> str:

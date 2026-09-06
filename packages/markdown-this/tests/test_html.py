@@ -282,7 +282,7 @@ def test_strip_chrome_removes_structural_non_content_elements() -> None:
     <article>
       <nav>Navigation</nav>
       <p>Article body.</p>
-      <aside>Advertisement</aside>
+      <aside>Correction: the original figure was inaccurate.</aside>
       <form><button>Submit</button></form>
       <noscript>Fallback chrome</noscript>
       <script>alert("x")</script>
@@ -295,7 +295,7 @@ def test_strip_chrome_removes_structural_non_content_elements() -> None:
 
     assert "Article body." in result
     assert "Navigation" not in result
-    assert "Advertisement" not in result
+    assert "Correction: the original figure was inaccurate." in result
     assert "Submit" not in result
     assert "Fallback chrome" not in result
     assert "alert" not in result
