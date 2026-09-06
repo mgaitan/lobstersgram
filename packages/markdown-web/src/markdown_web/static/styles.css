@@ -105,14 +105,26 @@ input:focus, textarea:focus { border-bottom-color: #333; }
 .button:hover, .bookmarklet:hover { opacity: .7; }
 .button:disabled { cursor: wait; opacity: .55; }
 
-.source-action-field { flex: 0 0 auto; }
+.source-action-field { position: relative; flex: 0 0 auto; }
+.source-action-field::after {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  color: #fff;
+  content: "⌄";
+  font: 16px/1 system-ui, sans-serif;
+  pointer-events: none;
+  transform: translateY(-55%);
+}
 .source-action-field select {
-  min-width: 116px;
+  width: 102px;
+  appearance: none;
+  -webkit-appearance: none;
   border: 1px solid #333;
   border-radius: 18px;
-  padding: 7px 32px 7px 18px;
-  color: #333;
-  background: #fff;
+  padding: 7px 30px 7px 18px;
+  color: #fff;
+  background: #333;
   font: 600 14px system-ui, sans-serif;
   cursor: pointer;
 }
