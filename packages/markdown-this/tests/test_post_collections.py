@@ -54,8 +54,14 @@ def test_same_collection_algorithm_accepts_another_markup() -> None:
     )
     html = '<main><h3>Thread</h3><div class="post"><a class="permalink" href="/alice/1">One</a></div>'
     html += '<div class="post"><a class="permalink" href="/alice/2">Two</a></div></main>'
-    result = apply_domain_rule(html, "https://forum.example/alice/1", (rule,))
+    result = apply_domain_rule(html, "https://tenant.forum.example/alice/1", (rule,))
     assert result and "One" in result and "Two" in result
+
+
+def test_collection_target_ignores_x_media_suffix() -> None:
+    html = FIXTURE.read_text()
+    result = apply_domain_rule(html, "https://x.com/alice/status/1002/photo/1")
+    assert result and "Second observation" in result and "Discover more" not in result
 
 
 def test_collection_requires_requested_post_and_skips_unusable_cells() -> None:

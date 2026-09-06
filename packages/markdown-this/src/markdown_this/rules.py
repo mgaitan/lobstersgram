@@ -40,6 +40,17 @@ DOMAIN_RULES: tuple[DomainRule, ...] = (
 )
 
 
+def _host_matches(host: str, candidates: tuple[str, ...]) -> bool:
+    return any(host == candidate or host.endswith(f".{candidate}") for candidate in candidates)
+
+
+def _target_from_url(url: str) -> str:
+    parts = [part for part in urllib.parse.urlparse(url).path.split("/") if part]
+    if "status" in parts and parts.index("status") + 1 < len(parts):
+        return parts[parts.index("status") + 1]
+    return parts[-1] if parts else ""
+
+
 def apply_domain_rule(
     content_html: str,
     url: str,
@@ -51,11 +62,7 @@ def apply_domain_rule(
         return None
 
     rule = next(
-        (
-            rule
-            for rule in rules
-            if any(host == candidate or host.endswith(f".{candidate}") for candidate in rule.hosts)
-        ),
+        (rule for rule in rules if _host_matches(host, rule.hosts)),
         None,
     )
     if rule is None:
@@ -93,14 +100,14 @@ def _collect_posts(body: Tag, rule: DomainRule, url: str) -> str | None:
         permalink = urllib.parse.urljoin(url, str(link.get("href") or ""))
         parsed = urllib.parse.urlparse(permalink)
         host = (parsed.hostname or "").removeprefix("www.").removeprefix("m.")
-        if parsed.scheme not in {"http", "https"} or host not in rule.hosts:
+        if parsed.scheme not in {"http", "https"} or not _host_matches(host, rule.hosts):
             continue
         path = parsed.path.rstrip("/")
         author, _, post_id = path.rpartition("/")
         if post_id and post_id not in posts:
             posts[post_id] = (author, node)
 
-    target = urllib.parse.urlparse(url).path.rstrip("/").rsplit("/", 1)[-1]
+    target = _target_from_url(url)
     for _author, group in groupby(posts.items(), key=lambda item: item[1][0]):
         captured = dict(group)
         if target in captured:
