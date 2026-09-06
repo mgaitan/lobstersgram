@@ -2,21 +2,21 @@ name: CI
 
 on:
   pull_request:
-    branches:
-      - main
     paths:
       - "**.py"
       - "**/pyproject.toml"
+      - "uv.lock"
       - "packages/**"
       - "src/**"
       - "README.md"
       - ".github/workflows/**"
   push:
     branches:
-      - main
+      - master
     paths:
       - "**.py"
       - "**/pyproject.toml"
+      - "uv.lock"
       - "packages/**"
       - "src/**"
       - "README.md"
