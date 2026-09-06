@@ -10,12 +10,10 @@ extensions = [
     "sphinxcontrib.mermaid",
 ]
 
-templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 suppress_warnings = ["myst.xref_missing"]
 
 html_theme = "sphinx_book_theme"
-html_static_path = ["_static"]
 
 richterm_prompt = "[bold]$"
 richterm_hide_command = False
