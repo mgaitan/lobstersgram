@@ -69,8 +69,9 @@ def test_home_and_static_assets() -> None:
     assert 'id="new-dialog"' in response.text
     assert "localStorage" in response.text
     assert 'placeholder="Paste a URL, drop a file or insert markdown content"' in response.text
-    assert 'processSource("", file)' in response.text
+    assert 'submitSource("", file)' in response.text
     assert "showMarkdownEditor(value)" in response.text
+    assert "SOURCE_ACTION_KEY" in response.text
     assert all(
         value in response.text
         for value in (
@@ -102,6 +103,19 @@ def test_home_and_static_assets() -> None:
     assert client.get("/static/logo.png").status_code == HTTP_200_OK
     assert client.get("/static/social-card.png").status_code == HTTP_200_OK
     assert client.get("/static/styles.css").status_code == HTTP_200_OK
+
+
+def test_home_has_source_action_group() -> None:
+    response = client.get("/")
+
+    assert all(
+        value in response.text
+        for value in (
+            'id="source-actions" class="source-actions"',
+            'id="submit-button" class="button button-primary" type="submit" name="action" value="process"',
+            'id="direct-publish-button" class="button button-secondary" type="submit" name="action" value="publish"',
+        )
+    )
 
 
 def test_health_returns_application_version() -> None:
@@ -324,6 +338,24 @@ def test_post_preview_returns_json_and_accepts_preview_id(monkeypatch: pytest.Mo
     }
     assert seen["source"].preview_id == "old-preview-id"
     assert seen["source"].access_token == "request-token"
+
+
+def test_preview_frame_proxies_telegraph_html(monkeypatch: pytest.MonkeyPatch) -> None:
+    seen: list[str] = []
+
+    def fake_fetch(url: str) -> str:
+        seen.append(url)
+        return "<html><head><title>Preview</title></head><body>Draft</body></html>"
+
+    monkeypatch.setattr(app_module, "fetch_telegraph_preview", fake_fetch)
+
+    response = client.get("/t/preview-frame", params={"url": "https://telegra.ph/preview"})
+
+    assert response.status_code == HTTP_200_OK
+    assert response.text.startswith("<html>")
+    assert "Draft" in response.text
+    assert seen == ["https://telegra.ph/preview"]
+    assert response.headers["cache-control"] == "no-store"
 
 
 def test_create_telegraph_job_returns_polling_urls(monkeypatch: pytest.MonkeyPatch) -> None:

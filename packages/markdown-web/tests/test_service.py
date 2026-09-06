@@ -22,6 +22,34 @@ def test_prepare_captured_thread_keeps_scope_and_media() -> None:
 VISIBLE_PAGE_COUNT = 2
 
 
+def test_fetch_telegraph_preview_adds_base_for_relative_assets(monkeypatch: pytest.MonkeyPatch) -> None:
+    class FakeResponse:
+        text = "<html><head><title>Preview</title></head><body>Draft</body></html>"
+
+        def raise_for_status(self) -> None:
+            return None
+
+    seen: dict[str, object] = {}
+
+    def fake_get(url: str, **kwargs: object) -> FakeResponse:
+        seen["url"] = url
+        seen["kwargs"] = kwargs
+        return FakeResponse()
+
+    monkeypatch.setattr(service.requests, "get", fake_get)
+
+    result = service.fetch_telegraph_preview("https://telegra.ph/preview")
+
+    assert '<base href="https://telegra.ph/">' in result
+    assert seen["url"] == "https://telegra.ph/preview"
+    assert seen["kwargs"] == {"timeout": service.TELEGRAPH_REQUEST_TIMEOUT, "headers": {"User-Agent": "markdown-web"}}
+
+
+def test_fetch_telegraph_preview_rejects_other_hosts() -> None:
+    with pytest.raises(service.InvalidPreviewURLError):
+        service.fetch_telegraph_preview("https://example.com/page")
+
+
 def test_prepare_content_extracts_url_and_merges_metadata(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(
         service,

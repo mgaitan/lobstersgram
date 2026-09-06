@@ -38,7 +38,10 @@
               <button id="file-button" class="file-button" type="button" aria-label="Choose a file" title="Choose a file">&#8593;</button>
               <input id="source-file" class="file-input" type="file" accept=".pdf,.doc,.docx,.epub,.ppt,.pptx,.xls,.xlsx,.odt,.ods,.odp,.rtf,.csv,image/png,image/jpeg,image/webp">
             </div>
-            <button id="submit-button" class="button button-primary" type="submit">Process</button>
+            <div id="source-actions" class="source-actions" role="group" aria-label="Source action">
+              <button id="submit-button" class="button button-primary" type="submit" name="action" value="process" aria-pressed="true">Process</button>
+              <button id="direct-publish-button" class="button button-secondary" type="submit" name="action" value="publish" aria-pressed="false">Publish</button>
+            </div>
           </div>
 
           <section id="result" class="result" hidden>
@@ -148,6 +151,7 @@
       const dropZone = document.querySelector("#drop-zone");
       const sourceInput = document.querySelector("#source-url");
       const sourceFile = document.querySelector("#source-file");
+      const sourceActionButtons = [...document.querySelectorAll("#source-actions button")];
       const editorImageFile = document.querySelector("#editor-image-file");
       const fileButton = document.querySelector("#file-button");
       const sourceLabel = document.querySelector("#result-source");
@@ -168,7 +172,9 @@
       let previewing = false;
       let imageUploading = false;
       let mode = "process";
+      let sourceAction = "process";
       const DRAFT_KEY = "markdown-web-draft";
+      const SOURCE_ACTION_KEY = "markdown-web-source-action";
       const SOURCE_PLACEHOLDER = "Paste a URL, drop a file or insert markdown content";
       const MARKDOWN_START_RE = /(^\s*(?:#{1,6}\s|>\s|[-*+]\s|\d+\.\s|```|~~~|!\[|\[|\*\*|__))/;
 
@@ -182,13 +188,44 @@
         publishStatus.classList.toggle("error", error);
       }
 
+      function setSourceAction(action) {
+        const selected = action === "publish" ? "publish" : "process";
+        sourceAction = selected;
+        sourceActionButtons.forEach((button) => {
+          const isSelected = button.value === selected;
+          button.classList.toggle("button-primary", isSelected);
+          button.classList.toggle("button-secondary", !isSelected);
+          button.setAttribute("aria-pressed", String(isSelected));
+        });
+        try {
+          localStorage.setItem(SOURCE_ACTION_KEY, selected);
+        } catch {
+          // Preference persistence is best effort when storage is unavailable.
+        }
+        return selected;
+      }
+
+      function restoreSourceAction() {
+        let saved = "process";
+        try {
+          saved = localStorage.getItem(SOURCE_ACTION_KEY) || saved;
+        } catch {
+          // Use the default when storage is unavailable.
+        }
+        setSourceAction(saved);
+      }
+
       function setPreviewMode(enabled, url = "") {
         previewing = enabled;
         markdownEditor.hidden = enabled;
         previewPane.hidden = !enabled;
         previewButton.textContent = enabled ? "Back to edit" : "Preview";
         previewButton.setAttribute("aria-pressed", String(enabled));
-        if (url) previewFrame.src = url;
+        if (url) {
+          const frameUrl = new URL("/t/preview-frame", window.location.origin);
+          frameUrl.searchParams.set("url", url);
+          previewFrame.src = frameUrl;
+        }
       }
 
       function updateMarkdown(value, start, end) {
@@ -327,7 +364,7 @@
         );
       }
 
-      async function uploadImage(file, insertAtCursor = false) {
+      async function uploadImage(file, insertAtCursor = false, publishAfterUpload = false) {
         if (imageUploading) return;
         imageUploading = true;
         previewButton.disabled = true;
@@ -339,7 +376,22 @@
           const response = await fetch("/images", {method: "POST", body: data});
           if (!response.ok) throw new Error(await responseError(response, "Image upload failed"));
           const result = await response.json();
-          if (insertAtCursor) {
+          if (publishAfterUpload) {
+            const response = await fetch("/t", {
+              method: "POST",
+              headers: {"Content-Type": "application/json"},
+              body: JSON.stringify({
+                markdown: `![](${result.url})`,
+                metadata: {title: file.name || "Image"}
+              })
+            });
+            const data = response.headers.get("content-type")?.includes("application/json")
+              ? await response.json()
+              : {detail: await response.text()};
+            if (!response.ok) throw new Error(data.detail || "Publish failed");
+            clearDraft();
+            window.location.href = data.url;
+          } else if (insertAtCursor) {
             if (previewing) setPreviewMode(false);
             insertImage(result.url);
           } else {
@@ -540,12 +592,56 @@
         }
       }
 
+      async function publishSource(url, file) {
+        if (!url && !file) {
+          setStatus("Paste a URL or choose a document", true);
+          sourceInput.focus();
+          return;
+        }
+        if (url && file) {
+          setStatus("Choose a URL or a document, not both", true);
+          return;
+        }
+        setStatus("Publishing…");
+        try {
+          if (file && isImageFile(file)) {
+            await uploadImage(file, false, true);
+            return;
+          }
+          let response;
+          if (file) {
+            const data = new FormData();
+            data.append("file", file);
+            response = await fetch("/t", {method: "POST", body: data});
+          } else {
+            response = await fetch("/t", {
+              method: "POST",
+              headers: {"Content-Type": "application/json"},
+              body: JSON.stringify({url})
+            });
+          }
+          const data = response.headers.get("content-type")?.includes("application/json")
+            ? await response.json()
+            : {detail: await response.text()};
+          if (!response.ok) throw new Error(data.detail || "Publish failed");
+          clearDraft();
+          window.location.href = data.url;
+        } catch (error) {
+          setStatus(error.message, true);
+        }
+      }
+
+      async function submitSource(url, file) {
+        if (sourceAction === "publish") await publishSource(url, file);
+        else await processSource(url, file);
+      }
+
       fileButton.addEventListener("click", () => sourceFile.click());
       sourceFile.addEventListener("change", () => {
         const file = sourceFile.files[0];
         if (file) {
           setSelectedFile(file);
-          processSource("", file);
+          submitSource("", file);
         }
       });
       editorImageFile.addEventListener("change", () => {
@@ -579,10 +675,10 @@
         if (file) {
           event.preventDefault();
           if (isImageFile(file)) {
-            uploadImage(file, mode === "publish");
+            uploadImage(file, mode === "publish", mode !== "publish" && sourceAction === "publish");
           } else {
             setSelectedFile(file);
-            processSource("", file);
+            submitSource("", file);
           }
           return;
         }
@@ -603,7 +699,7 @@
         const file = event.dataTransfer.files[0];
         if (file) {
           setSelectedFile(file);
-          processSource("", file);
+          submitSource("", file);
         }
       });
       markdownEditor.addEventListener("dragover", (event) => {
@@ -619,6 +715,10 @@
         event.preventDefault();
         event.stopPropagation();
         uploadImage(file, true);
+      });
+
+      sourceActionButtons.forEach((button) => {
+        button.addEventListener("click", () => setSourceAction(button.value));
       });
 
       form.addEventListener("submit", async (event) => {
@@ -652,9 +752,11 @@
           return;
         }
 
+        const action = setSourceAction(event.submitter?.value || sourceAction);
         currentUrl = sourceInput.value.trim();
         const file = sourceFile.files[0];
-        await processSource(currentUrl, file);
+        if (action === "publish") await publishSource(currentUrl, file);
+        else await processSource(currentUrl, file);
       });
 
       document.querySelector("#copy-button").addEventListener("click", async () => {
@@ -719,6 +821,7 @@
         sourceInput.focus();
       });
 
+      restoreSourceAction();
       restoreDraft();
 
     </script>

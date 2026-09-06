@@ -29,6 +29,7 @@ from markdown_web.schemas import (
 )
 from markdown_web.service import (
     SourceError,
+    fetch_telegraph_preview,
     list_published_pages,
     prepare_content,
     preview_content,
@@ -351,6 +352,28 @@ def run_telegraph_job(job_id: str) -> JSONResponse:
     return _job_response(state)
 
 
+@app.post("/t/preview", response_model=TelegraphPreviewResponse, openapi_extra=_source_request_openapi())
+async def telegraph_preview(request: Request) -> JSONResponse:
+    source = await _request_data(request)
+    if not source.access_token:
+        source = source.model_copy(update={"access_token": _authorization_token(request) or None})
+    try:
+        preview_id, target = preview_content(source)
+    except Exception as exc:
+        raise _handle_source_error(exc) from exc
+    return JSONResponse({"preview_id": preview_id, "url": target})
+
+
+@app.get("/t/preview-frame", response_class=HTMLResponse, include_in_schema=False)
+def telegraph_preview_frame(url: str) -> HTMLResponse:
+    """Proxy Telegraph HTML because Telegraph disallows cross-origin iframe embedding."""
+    try:
+        page = fetch_telegraph_preview(url)
+    except Exception as exc:
+        raise _handle_source_error(exc) from exc
+    return HTMLResponse(page, headers={"Cache-Control": "no-store"})
+
+
 @app.get("/t/{url:path}")
 def telegraph_from_url(url: str, request: Request) -> RedirectResponse:
     try:
@@ -363,18 +386,6 @@ def telegraph_from_url(url: str, request: Request) -> RedirectResponse:
         status_code=303,
         headers={"Cache-Control": "public, max-age=86400"},
     )
-
-
-@app.post("/t/preview", response_model=TelegraphPreviewResponse, openapi_extra=_source_request_openapi())
-async def telegraph_preview(request: Request) -> JSONResponse:
-    source = await _request_data(request)
-    if not source.access_token:
-        source = source.model_copy(update={"access_token": _authorization_token(request) or None})
-    try:
-        preview_id, target = preview_content(source)
-    except Exception as exc:
-        raise _handle_source_error(exc) from exc
-    return JSONResponse({"preview_id": preview_id, "url": target})
 
 
 @app.post("/t", response_model=TelegraphResponse, openapi_extra=_source_request_openapi())

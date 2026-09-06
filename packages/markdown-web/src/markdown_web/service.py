@@ -43,6 +43,7 @@ DEFAULT_AUTHOR_NAME = "page-to-telegraph"
 TELEGRAPH_API_URL = "https://api.telegra.ph"
 TELEGRAPH_PAGE_LIST_LIMIT = 200
 TELEGRAPH_REQUEST_TIMEOUT = 20
+TELEGRAPH_PAGE_HOST = "telegra.ph"
 PREVIEW_TITLE_PREFIX = "[Preview] "
 PREVIEW_TTL_SECONDS = 7 * 24 * 60 * 60
 MAX_DOCUMENT_BYTES = 50 * 1024 * 1024
@@ -117,6 +118,13 @@ class InvalidPreviewError(SourceError):
         super().__init__("Preview expired or invalid")
 
 
+class InvalidPreviewURLError(SourceError):
+    """Raised when an inline preview target is not a Telegraph page."""
+
+    def __init__(self) -> None:
+        super().__init__("Preview URL must be a Telegraph page")
+
+
 class PreviewIdRequiredError(SourceError):
     """Raised when final publication is requested without a preview identifier."""
 
@@ -176,6 +184,13 @@ class TelegraphAPIError(RuntimeError):
 
     def __init__(self) -> None:
         super().__init__("Could not read the Telegraph page list")
+
+
+class TelegraphPreviewError(RuntimeError):
+    """Raised when the server cannot load a Telegraph page for an inline preview."""
+
+    def __init__(self) -> None:
+        super().__init__("Could not load the Telegraph preview")
 
 
 @dataclass(frozen=True)
@@ -378,6 +393,23 @@ def _download_document(url: str) -> tuple[bytes, str]:
         raise DocumentDownloadError from exc
     filename = Path(urlparse(url).path).name or "document"
     return response.content, filename
+
+
+def fetch_telegraph_preview(url: str) -> str:
+    """Fetch a Telegraph page so browsers can display it same-origin in an iframe."""
+    parsed = urlparse(url)
+    if parsed.scheme != "https" or parsed.netloc != TELEGRAPH_PAGE_HOST or not parsed.path:
+        raise InvalidPreviewURLError
+    try:
+        response = requests.get(url, timeout=TELEGRAPH_REQUEST_TIMEOUT, headers={"User-Agent": "markdown-web"})
+        response.raise_for_status()
+    except requests.RequestException as exc:
+        raise TelegraphPreviewError from exc
+    page = response.text
+    base_tag = '<base href="https://telegra.ph/">'
+    if re.search(r"<base\b", page, re.IGNORECASE):
+        return page
+    return re.sub(r"(<head\b[^>]*>)", rf"\1{base_tag}", page, count=1, flags=re.IGNORECASE) or f"{base_tag}{page}"
 
 
 def _merge_metadata(markdown: str, supplied: SourceMetadata) -> tuple[str, SourceMetadata]:
