@@ -1,4 +1,4 @@
-# Lobstersgram Technical Reference
+# Technical Reference
 
 ## Main Modules
 

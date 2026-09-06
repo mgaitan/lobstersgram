@@ -1,4 +1,4 @@
-# markdown-this Overview
+# Overview
 
 `markdown-this` extracts readable web content and supported special URLs as
 Markdown. It is the workspace package that should own content fetching,

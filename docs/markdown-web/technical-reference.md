@@ -1,4 +1,4 @@
-# markdown-web Technical Reference
+# Technical Reference
 
 ## Main Modules
 

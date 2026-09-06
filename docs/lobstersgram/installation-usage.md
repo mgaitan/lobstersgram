@@ -1,4 +1,4 @@
-# Lobstersgram Installation And Usage
+# Installation And Usage
 
 ## Requirements
 

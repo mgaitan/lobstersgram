@@ -1,4 +1,4 @@
-# Lobstersgram Overview
+# Overview
 
 `lobstersgram` is the Telegram application in the workspace. It fetches
 Lobsters links, extracts article content, publishes a Telegraph reading view,
