@@ -28,11 +28,11 @@ def test_prepare_content_extracts_url_and_merges_metadata(monkeypatch: pytest.Mo
     assert result.fallback_text == "Fallback"
 
 
-def test_prepare_content_accepts_raw_html(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr(
+def test_prepare_content_accepts_raw_html(mocker: MockerFixture) -> None:
+    extract = mocker.patch.object(
         service,
         "extract_main_content",
-        lambda source: ("HTML title", "HTML body", "Fallback", "Intro"),
+        return_value=("HTML title", "HTML body", "Fallback", "Intro"),
     )
 
     result = service.prepare_content(
@@ -40,6 +40,7 @@ def test_prepare_content_accepts_raw_html(monkeypatch: pytest.MonkeyPatch) -> No
     )
 
     assert result.title == "HTML title"
+    extract.assert_called_once_with("<h1>HTML title</h1>", source_url="https://example.com")
     assert "url: https://example.com" in result.markdown
 
 

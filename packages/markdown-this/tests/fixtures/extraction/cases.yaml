@@ -54,4 +54,4 @@ cases:
       - Copiar enlace
       - Compartir en X
       - Ultimas noticias
-    min_text_chars: 140
+    min_text_chars: 110

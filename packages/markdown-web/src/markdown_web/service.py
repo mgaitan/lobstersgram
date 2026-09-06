@@ -416,7 +416,9 @@ def prepare_content(request: SourceRequest) -> PreparedContent:
             raise SourceHTTPError(status) from exc
         metadata = request.metadata
     elif request.html is not None:
-        title, markdown, fallback_text, intro = extract_main_content(request.html)
+        title, markdown, fallback_text, intro = extract_main_content(
+            request.html, source_url=request.metadata.url or ""
+        )
         metadata = request.metadata
     else:
         source = _require_source(request)
