@@ -108,8 +108,8 @@ def _extract_html_content(  # noqa: PLR0913
         metadata = {**structured_metadata, **metadata}
     article = extract_fusion_article(content_html)
     rule_html = apply_domain_rule(content_html, base_url)
-    if rule_html and 'data-extraction-scope="captured-posts"' in rule_html:
-        metadata["extraction_scope"] = "captured-posts"
+    if rule_html:
+        metadata["extraction_scope"] = extract_html_metadata(rule_html).get("extraction_scope", "")
     content_html_for_markdown = ""
     title = source_label
     try:

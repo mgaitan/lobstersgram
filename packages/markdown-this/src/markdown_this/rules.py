@@ -5,7 +5,6 @@ from __future__ import annotations
 import urllib.parse
 from collections.abc import Iterable
 from dataclasses import dataclass
-from html import escape
 from itertools import groupby
 from logging import getLogger
 
@@ -99,16 +98,13 @@ def _collect_posts(body: Tag, rule: DomainRule, url: str) -> str | None:
         path = parsed.path.rstrip("/")
         author, _, post_id = path.rpartition("/")
         if post_id and post_id not in posts:
-            posts[post_id] = (author, permalink, node)
+            posts[post_id] = (author, node)
 
     target = urllib.parse.urlparse(url).path.rstrip("/").rsplit("/", 1)[-1]
     for _author, group in groupby(posts.items(), key=lambda item: item[1][0]):
         captured = dict(group)
         if target in captured:
-            parts = [
-                f'<section><p><a href="{escape(permalink)}">{escape(permalink)}</a></p>{node}</section>'
-                for _author, permalink, node in captured.values()
-            ]
+            parts = [str(node) for _author, node in captured.values()]
             # ponytail: a DOM snapshot cannot prove that unseen replies do not exist.
-            return '<article data-extraction-scope="captured-posts">' + "<hr>".join(parts) + "</article>"
+            return '<meta name="extraction_scope" content="captured-posts">' + "<hr>".join(parts)
     return None

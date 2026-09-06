@@ -197,6 +197,7 @@ def extract_html_metadata(content_html: str, base_url: str = "") -> dict[str, st
             ("date", date),
             ("image", image),
             ("type", page_type),
+            ("extraction_scope", first_meta({"name": "extraction_scope"})),
         )
         if value
     }

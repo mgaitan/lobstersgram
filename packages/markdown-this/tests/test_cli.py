@@ -18,7 +18,9 @@ def test_main_reads_source_and_prints_markdown(capsys: pytest.CaptureFixture[str
     assert cli.main(["article.html", "--request-timeout", "7"]) == 0
 
     assert capsys.readouterr().out == "# Title\n\nBody\n"
-    extract.assert_called_once_with("article.html", request_timeout=7, min_content_length=200, intro_min_length=40)
+    extract.assert_called_once_with(
+        "article.html", request_timeout=7, min_content_length=200, intro_min_length=40, source_url=""
+    )
 
 
 def test_main_reads_html_from_stdin(
@@ -30,11 +32,20 @@ def test_main_reads_html_from_stdin(
         "extract_main_content",
         return_value=("Title", "Body", "Body", "Body"),
     )
-    assert cli.main(["-", "--min-content-length", "0", "--intro-min-length", "5"]) == 0
+    assert (
+        cli.main(
+            ["-", "--min-content-length", "0", "--intro-min-length", "5", "--source-url", "https://example.com/post"]
+        )
+        == 0
+    )
 
     assert capsys.readouterr().out == "Body\n"
     extract.assert_called_once_with(
-        "<html><p>Body</p></html>", request_timeout=20, min_content_length=0, intro_min_length=5
+        "<html><p>Body</p></html>",
+        request_timeout=20,
+        min_content_length=0,
+        intro_min_length=5,
+        source_url="https://example.com/post",
     )
 
 
