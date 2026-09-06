@@ -12,6 +12,8 @@ metadata extraction, HTML cleanup, and Markdown normalization.
   date, image, and page type.
 - Recover article text from schema.org JSON-LD when the generic extractor
   selects too little content.
+- Apply small declarative domain rules for high-value sites with verified
+  fixtures.
 - Keep extraction deterministic and testable with offline fixtures.
 - Prefer small, verified provider/rule support over a large unowned rule dump.
 
@@ -22,4 +24,5 @@ metadata extraction, HTML cleanup, and Markdown normalization.
 - arXiv abstract extraction.
 - YouTube metadata, description, and optional transcript extraction.
 - Vimeo and Dailymotion media-page extraction through oEmbed.
+- Substack body selection through a declarative rule.
 - Image and figure normalization before Markdown conversion.

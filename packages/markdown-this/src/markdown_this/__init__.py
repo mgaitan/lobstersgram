@@ -28,9 +28,11 @@ from markdown_this.metadata import (
     extract_structured_article,
     split_front_matter,
 )
+from markdown_this.rules import DomainRule, apply_domain_rule
 
 __all__ = [
     "ContentDownloadError",
+    "DomainRule",
     "_extract_leading_heading",
     "_github_repo_match",
     "_is_html_badge_block",
@@ -39,6 +41,7 @@ __all__ = [
     "_normalize_markdown_links",
     "_strip_badge_paragraphs",
     "add_front_matter",
+    "apply_domain_rule",
     "extract_html_metadata",
     "extract_intro",
     "extract_main_content",

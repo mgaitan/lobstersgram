@@ -53,3 +53,16 @@ cases:
       - Compartir en X
       - Ultimas noticias
     min_text_chars: 110
+
+  - id: substack_domain_rule
+    fixture: substack_article.html
+    url: https://example.substack.com/p/notes
+    metadata:
+      title: Notes from a newsletter
+      url: https://example.substack.com/p/notes
+    contains:
+      - The public essay body is available in this Substack container.
+    not_contains:
+      - Subscribe to keep reading
+      - Expand image
+    min_text_chars: 60
