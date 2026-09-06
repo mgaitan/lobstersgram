@@ -13,6 +13,8 @@ now first-class packages.
   supported special URLs as Markdown.
 - [`md-to-telegraph`](https://github.com/mgaitan/markdown-tools/tree/master/packages/md-to-telegraph): converts Markdown
   into Telegraph DOM nodes and publishes Telegraph pages.
+- [`md-to-epub`](https://github.com/mgaitan/markdown-tools/tree/master/packages/md-to-epub): builds EPUB 3 books from
+  Markdown chapters with Sphinx and MyST.
 - [`markdown-web`](https://github.com/mgaitan/markdown-tools/tree/master/packages/markdown-web): FastAPI service with web
   UI, URL endpoints, document upload, image upload, bookmarklets, and Telegraph
   publishing and Telegram notifications.
@@ -24,6 +26,7 @@ flowchart TD
     MT[Markdown Tools workspace]
     MTHIS[markdown-this]
     MDT[md-to-telegraph]
+    MDE[md-to-epub]
     WEB[markdown-web]
     LOB[lobstersgram]
     TG[Telegram]
@@ -31,10 +34,12 @@ flowchart TD
 
     MT --> MTHIS
     MT --> MDT
+    MT --> MDE
     MT --> WEB
     MT --> LOB
     WEB --> MTHIS
     WEB --> MDT
+    WEB --> MDE
     LOB --> MTHIS
     LOB --> MDT
     WEB -.-> TPH
@@ -76,7 +81,8 @@ Run the web service locally with:
 uv run --package markdown-web markdown-web
 ```
 
-It exposes `/md/{url}` for Markdown and `/t/{url}` for Telegraph publishing.
+It exposes `/md/{url}` for Markdown, `/t/{url}` for Telegraph publishing, and
+`POST /epub` for EPUB 3 downloads.
 The public web app is available at <https://markdown.fastapicloud.dev/>.
 
 Run the Lobstersgram app manually with:
@@ -113,6 +119,7 @@ not published to PyPI.
 - Keep reusable extraction in `packages/markdown-this`.
 - Keep Telegraph Markdown conversion and API publishing in
   `packages/md-to-telegraph`.
+- Keep EPUB rendering in `packages/md-to-epub`.
 - Keep web-service orchestration in `packages/markdown-web`.
 - Keep Telegram/Lobsters scheduling, persistence, and channel behavior in
   `src/lobstersgram`.

@@ -44,6 +44,7 @@
               <div id="source-action-menu" class="source-action-menu" role="menu" hidden>
                 <button type="button" role="menuitem" data-source-action="process">Process</button>
                 <button type="button" role="menuitem" data-source-action="publish">Publish</button>
+                <button type="button" role="menuitem" data-source-action="epub">Export EPUB</button>
               </div>
             </div>
           </div>
@@ -56,6 +57,7 @@
                 <button id="new-button" class="button button-secondary" type="button" hidden>New</button>
                 <button id="copy-button" class="button button-secondary" type="button">Copy</button>
                 <button id="preview-button" class="button button-secondary" type="button">Preview</button>
+                <button id="epub-button" class="button button-secondary" type="button">Download EPUB</button>
                 <button id="submit-publish" class="button button-primary" type="submit">Publish</button>
               </div>
             </div>
@@ -165,6 +167,7 @@
       const publishStatus = document.querySelector("#publish-status");
       const publishButton = document.querySelector("#submit-publish");
       const previewButton = document.querySelector("#preview-button");
+      const epubButton = document.querySelector("#epub-button");
       const newButton = document.querySelector("#new-button");
       const newDialog = document.querySelector("#new-dialog");
       const confirmNew = document.querySelector("#confirm-new");
@@ -196,10 +199,10 @@
       }
 
       function setSourceAction(action) {
-        const selected = action === "publish" ? "publish" : "process";
+        const selected = ["publish", "epub"].includes(action) ? action : "process";
         sourceAction = selected;
         sourceActionButton.value = selected;
-        sourceActionButton.textContent = selected === "publish" ? "Publish" : "Process";
+        sourceActionButton.textContent = selected === "publish" ? "Publish" : selected === "epub" ? "Export EPUB" : "Process";
         try {
           localStorage.setItem(SOURCE_ACTION_KEY, selected);
         } catch {
@@ -568,15 +571,15 @@
         if (!url && !file) {
           setStatus("Paste a URL, choose a document, or insert Markdown", true);
           sourceInput.focus();
-          return;
+          return false;
         }
         if (url && file) {
           setStatus("Choose a URL or a document, not both", true);
-          return;
+          return false;
         }
         if (file && isImageFile(file)) {
           await uploadImage(file);
-          return;
+          return false;
         }
         if (file) currentUrl = "";
         setPreviewMode(false);
@@ -601,8 +604,40 @@
           mode = "publish";
           setStatus("");
           saveDraft();
+          return true;
         } catch (error) {
           setStatus(error.message, true);
+          return false;
+        }
+      }
+
+      async function downloadEpub() {
+        if (epubButton.disabled) return false;
+        epubButton.disabled = true;
+        setPublishStatus("Building EPUB…");
+        try {
+          const payload = {markdown: output.value};
+          if (currentUrl) payload.metadata = {url: currentUrl};
+          const response = await fetch("/epub", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(payload)
+          });
+          if (!response.ok) throw new Error(await responseError(response, "EPUB export failed"));
+          const blob = await response.blob();
+          const target = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = target;
+          link.download = response.headers.get("content-disposition")?.match(/filename="?([^";]+)"?/)?.[1] || "book.epub";
+          link.click();
+          URL.revokeObjectURL(target);
+          setPublishStatus("EPUB ready");
+          return true;
+        } catch (error) {
+          setPublishStatus(error.message, true);
+          return false;
+        } finally {
+          epubButton.disabled = false;
         }
       }
 
@@ -655,7 +690,9 @@
 
       async function submitSource(url, file) {
         if (sourceAction === "publish") await publishSource(url, file);
-        else await processSource(url, file);
+        else if (sourceAction === "epub") {
+          if (await processSource(url, file)) await downloadEpub();
+        } else await processSource(url, file);
       }
 
       fileButton.addEventListener("click", () => sourceFile.click());
@@ -834,6 +871,10 @@
           previewButton.disabled = false;
           publishButton.disabled = false;
         }
+      });
+
+      epubButton.addEventListener("click", async () => {
+        await downloadEpub();
       });
 
       output.addEventListener("input", saveDraft);

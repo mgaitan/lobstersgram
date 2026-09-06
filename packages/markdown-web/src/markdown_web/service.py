@@ -22,6 +22,7 @@ import anydoc
 import requests
 import yaml
 from markdown_this import add_front_matter, extract_main_content, markdown_to_text, split_front_matter
+from md_to_epub import Book, Chapter, build_epub
 from md_to_telegraph import (
     TELEGRAPH_PAGE_MAX_CHARS,
     TelegraphPages,
@@ -693,6 +694,42 @@ def _navigation_markdown(
 def card_source_urls(markdown: str) -> list[str]:
     """Return unique card source URLs in their first-seen order."""
     return list(dict.fromkeys(CARD_DIRECTIVE_RE.findall(markdown)))
+
+
+def build_epub_content(request: SourceRequest) -> tuple[bytes, str]:
+    """Build an EPUB from one source or a brief with article cards."""
+    prepared = prepare_content(request)
+    source_urls = card_source_urls(prepared.markdown)
+    articles = {url: prepare_content(SourceRequest(url=url)) for url in source_urls}
+
+    def replace_card(match: re.Match[str]) -> str:
+        article = articles[match.group(1)]
+        title = _escape_markdown_text(article.title or match.group(1))
+        return f"[{title}]({match.group(1)})"
+
+    brief_markdown = CARD_DIRECTIVE_RE.sub(replace_card, prepared.markdown)
+    chapters = [
+        Chapter(
+            title=prepared.title or "Document",
+            markdown=brief_markdown,
+            source_url=prepared.metadata.url,
+        )
+    ]
+    chapters.extend(
+        Chapter(
+            title=article.title or source_url,
+            markdown=article.markdown,
+            source_url=article.metadata.url or source_url,
+        )
+        for source_url, article in articles.items()
+    )
+    book = Book(
+        title=prepared.title or "Document",
+        author=prepared.metadata.author,
+        chapters=tuple(chapters),
+    )
+    filename = re.sub(r"[^A-Za-z0-9]+", "-", book.title).strip("-").lower() or "book"
+    return build_epub(book), f"{filename}.epub"
 
 
 def publish_brief_article(source_url: str, token: str, *, warm_cache: bool = True) -> PublishedBriefArticle:

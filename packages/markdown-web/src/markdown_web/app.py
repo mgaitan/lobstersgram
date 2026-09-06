@@ -14,7 +14,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from md_to_epub import EpubBuildError
 from md_to_telegraph import TelegraphContentError
+from starlette.concurrency import run_in_threadpool
 from starlette.datastructures import UploadFile
 
 from markdown_web import assets, jobs
@@ -29,6 +31,7 @@ from markdown_web.schemas import (
 )
 from markdown_web.service import (
     SourceError,
+    build_epub_content,
     fetch_telegraph_preview,
     list_published_pages,
     prepare_content,
@@ -166,7 +169,7 @@ def _source_request_from_path(url: str, request: Request) -> SourceRequest:
 
 
 def _handle_source_error(exc: Exception) -> HTTPException:
-    if isinstance(exc, (SourceError, TelegraphContentError)):
+    if isinstance(exc, (SourceError, TelegraphContentError, EpubBuildError)):
         return HTTPException(status_code=422, detail=str(exc))
     return HTTPException(status_code=502, detail=str(exc))
 
@@ -249,6 +252,20 @@ async def markdown_from_post(request: Request) -> PlainTextResponse:
     except Exception as exc:
         raise _handle_source_error(exc) from exc
     return PlainTextResponse(prepared.markdown, media_type="text/markdown")
+
+
+@app.post("/epub", openapi_extra=_source_request_openapi())
+async def epub_from_post(request: Request) -> Response:
+    source = await _request_data(request)
+    try:
+        data, filename = await run_in_threadpool(build_epub_content, source)
+    except Exception as exc:
+        raise _handle_source_error(exc) from exc
+    return Response(
+        content=data,
+        media_type="application/epub+zip",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"', "Cache-Control": "no-store"},
+    )
 
 
 @app.post("/images", response_model=ImageUploadResponse, openapi_extra=_image_upload_openapi())

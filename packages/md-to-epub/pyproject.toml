@@ -1,0 +1,26 @@
+[project]
+name = "md-to-epub"
+version = "0.1.0"
+description = "Build EPUB 3 books from Markdown chapters"
+readme = "README.md"
+authors = [{ name = "Martín Gaitán", email = "gaitan@gmail.com" }]
+license = { text = "MIT" }
+requires-python = ">=3.12"
+keywords = ["markdown", "epub", "ebook", "sphinx"]
+dependencies = [
+    "myst-parser>=4.0.1",
+    "pillow>=12.3.0",
+    "sphinx>=8.1.3",
+]
+
+[project.urls]
+Homepage = "https://github.com/mgaitan/markdown-tools/tree/master/packages/md-to-epub"
+Repository = "https://github.com/mgaitan/markdown-tools"
+Issues = "https://github.com/mgaitan/markdown-tools/issues"
+
+[project.scripts]
+md-to-epub = "md_to_epub.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.7,<0.12"]
+build-backend = "uv_build"

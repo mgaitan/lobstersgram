@@ -4,6 +4,7 @@ import pytest
 import requests
 from markdown_web import service
 from markdown_web.schemas import SourceMetadata, SourceRequest
+from md_to_epub import Chapter
 from pytest_mock import MockerFixture
 
 TEST_PAGE_LIMIT = 80
@@ -17,6 +18,67 @@ def test_prepare_captured_thread_keeps_scope_and_media() -> None:
     assert result.metadata.extraction_scope == "captured-posts"
     assert "Third observation" in result.markdown
     assert "https://video.twimg.com/demo.mp4" in result.markdown
+
+
+def test_build_epub_content_builds_single_chapter(monkeypatch: pytest.MonkeyPatch) -> None:
+    prepared = service.PreparedContent(
+        "My Book",
+        "---\ntitle: My Book\n---\n\n# My Book\n\nBody",
+        "Body",
+        SourceMetadata(author="Author", url="https://example.com/book"),
+    )
+    seen: dict[str, object] = {}
+    monkeypatch.setattr(service, "prepare_content", lambda _source: prepared)
+
+    def fake_build(book: object) -> bytes:
+        seen["book"] = book
+        return b"epub"
+
+    monkeypatch.setattr(service, "build_epub", fake_build)
+
+    result = service.build_epub_content(SourceRequest(markdown=prepared.markdown))
+
+    assert result == (b"epub", "my-book.epub")
+    book = seen["book"]
+    assert book.title == "My Book"
+    assert book.author == "Author"
+    assert book.chapters == (Chapter("My Book", prepared.markdown, "https://example.com/book"),)
+
+
+def test_build_epub_content_expands_brief_cards_into_chapters(monkeypatch: pytest.MonkeyPatch) -> None:
+    brief = service.PreparedContent(
+        "Weekend brief",
+        "# Weekend brief\n\nContext.\n\n![card](https://example.com/article)",
+        "Context",
+        SourceMetadata(),
+    )
+    article = service.PreparedContent(
+        "Article title",
+        "# Article title\n\nArticle body",
+        "Article body",
+        SourceMetadata(url="https://example.com/article"),
+    )
+    monkeypatch.setattr(
+        service,
+        "prepare_content",
+        lambda source: article if source.url else brief,
+    )
+    seen: dict[str, object] = {}
+
+    def fake_build(book: object) -> bytes:
+        seen["book"] = book
+        return b"epub"
+
+    monkeypatch.setattr(service, "build_epub", fake_build)
+
+    data, filename = service.build_epub_content(SourceRequest(markdown=brief.markdown))
+
+    assert data == b"epub"
+    assert filename == "weekend-brief.epub"
+    book = seen["book"]
+    assert len(book.chapters) == len((brief, article))
+    assert "[Article title](https://example.com/article)" in book.chapters[0].markdown
+    assert book.chapters[1].title == "Article title"
 
 
 VISIBLE_PAGE_COUNT = 2
