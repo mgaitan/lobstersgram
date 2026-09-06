@@ -4,7 +4,8 @@
 
 Extract the readable content of a URL and convert it to Markdown. The package
 also handles GitHub repositories and Markdown files through the GitHub API,
-and arXiv abstract pages through their HTML representation.
+arXiv abstract pages through their HTML representation, YouTube videos, and
+oEmbed-backed Vimeo/Dailymotion media pages.
 
 ## Installation
 
