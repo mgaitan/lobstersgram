@@ -57,8 +57,13 @@
                 <button id="new-button" class="button button-secondary" type="button" hidden>New</button>
                 <button id="copy-button" class="button button-secondary" type="button">Copy</button>
                 <button id="preview-button" class="button button-secondary" type="button">Preview</button>
-                <button id="epub-button" class="button button-secondary" type="button">Download EPUB</button>
-                <button id="submit-publish" class="button button-primary" type="submit">Publish</button>
+                <div class="source-action-field result-action-field">
+                  <button id="submit-publish" class="source-action-button button button-primary" type="submit">Publish</button>
+                  <button id="result-action-menu-button" class="source-action-menu-button" type="button" aria-label="Choose editor action" aria-haspopup="menu" aria-expanded="false">⌄</button>
+                  <div id="result-action-menu" class="source-action-menu" role="menu" hidden>
+                    <button type="button" role="menuitem" data-result-action="epub">Download EPUB</button>
+                  </div>
+                </div>
               </div>
             </div>
             <label class="sr-only" for="markdown-output">Markdown</label>
@@ -167,7 +172,8 @@
       const publishStatus = document.querySelector("#publish-status");
       const publishButton = document.querySelector("#submit-publish");
       const previewButton = document.querySelector("#preview-button");
-      const epubButton = document.querySelector("#epub-button");
+      const resultActionMenuButton = document.querySelector("#result-action-menu-button");
+      const resultActionMenu = document.querySelector("#result-action-menu");
       const newButton = document.querySelector("#new-button");
       const newDialog = document.querySelector("#new-dialog");
       const confirmNew = document.querySelector("#confirm-new");
@@ -181,6 +187,7 @@
       let previewing = false;
       let imageUploading = false;
       let sourceSubmitting = false;
+      let epubSubmitting = false;
       let mode = "process";
       let sourceAction = "process";
       const DRAFT_KEY = "markdown-web-draft";
@@ -230,6 +237,17 @@
         const open = sourceActionMenu.hidden;
         sourceActionMenu.hidden = !open;
         sourceActionMenuButton.setAttribute("aria-expanded", String(open));
+      }
+
+      function closeResultActionMenu() {
+        resultActionMenu.hidden = true;
+        resultActionMenuButton.setAttribute("aria-expanded", "false");
+      }
+
+      function toggleResultActionMenu() {
+        const open = resultActionMenu.hidden;
+        resultActionMenu.hidden = !open;
+        resultActionMenuButton.setAttribute("aria-expanded", String(open));
       }
 
       function setPreviewMode(enabled, url = "") {
@@ -612,8 +630,11 @@
       }
 
       async function downloadEpub() {
-        if (epubButton.disabled) return false;
-        epubButton.disabled = true;
+        if (epubSubmitting) return false;
+        epubSubmitting = true;
+        publishButton.disabled = true;
+        previewButton.disabled = true;
+        resultActionMenuButton.disabled = true;
         setPublishStatus("Building EPUB…");
         try {
           const payload = {markdown: output.value};
@@ -637,7 +658,10 @@
           setPublishStatus(error.message, true);
           return false;
         } finally {
-          epubButton.disabled = false;
+          epubSubmitting = false;
+          publishButton.disabled = false;
+          previewButton.disabled = false;
+          resultActionMenuButton.disabled = false;
         }
       }
 
@@ -787,11 +811,25 @@
           sourceActionButton.focus();
         });
       });
+      resultActionMenuButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        toggleResultActionMenu();
+      });
+      resultActionMenu.querySelectorAll("[data-result-action]").forEach((button) => {
+        button.addEventListener("click", async () => {
+          closeResultActionMenu();
+          if (button.dataset.resultAction === "epub") await downloadEpub();
+        });
+      });
       document.addEventListener("click", (event) => {
         if (!event.target.closest(".source-action-field")) closeSourceActionMenu();
+        if (!event.target.closest(".result-action-field")) closeResultActionMenu();
       });
       document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") closeSourceActionMenu();
+        if (event.key === "Escape") {
+          closeSourceActionMenu();
+          closeResultActionMenu();
+        }
       });
 
       form.addEventListener("submit", async (event) => {
@@ -871,10 +909,6 @@
           previewButton.disabled = false;
           publishButton.disabled = false;
         }
-      });
-
-      epubButton.addEventListener("click", async () => {
-        await downloadEpub();
       });
 
       output.addEventListener("input", saveDraft);
