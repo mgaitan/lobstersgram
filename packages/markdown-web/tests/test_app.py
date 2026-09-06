@@ -111,9 +111,11 @@ def test_home_has_source_action_dropdown() -> None:
     assert all(
         value in response.text
         for value in (
-            'id="source-action" name="action" aria-label="Source action"',
-            '<option value="process">Process</option>',
-            '<option value="publish">Publish</option>',
+            'id="source-action-button" class="source-action-button button button-primary" '
+            'type="submit" name="action" value="process">Process</button>',
+            'id="source-action-menu-button" class="source-action-menu-button" type="button"',
+            'data-source-action="process">Process</button>',
+            'data-source-action="publish">Publish</button>',
         )
     )
 
@@ -122,7 +124,8 @@ def test_home_guards_direct_publication() -> None:
     response = client.get("/")
 
     assert "if (sourceSubmitting) return;" in response.text
-    assert "sourceActionSelect.disabled = true" in response.text
+    assert "sourceActionButton.disabled = true" in response.text
+    assert "sourceActionMenuButton.disabled = true" in response.text
 
 
 def test_home_sandboxes_preview_frame() -> None:

@@ -24,7 +24,7 @@
     <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
     <link rel="alternate icon" href="/static/logo.png" type="image/png">
     <link rel="apple-touch-icon" href="/static/logo.png">
-    <link rel="stylesheet" href="/static/styles.css?v=14">
+    <link rel="stylesheet" href="/static/styles.css?v=15">
   </head>
   <body>
     <main class="page">
@@ -38,13 +38,14 @@
               <button id="file-button" class="file-button" type="button" aria-label="Choose a file" title="Choose a file">&#8593;</button>
               <input id="source-file" class="file-input" type="file" accept=".pdf,.doc,.docx,.epub,.ppt,.pptx,.xls,.xlsx,.odt,.ods,.odp,.rtf,.csv,image/png,image/jpeg,image/webp">
             </div>
-            <label class="source-action-field">
-              <span class="sr-only">Source action</span>
-              <select id="source-action" name="action" aria-label="Source action">
-                <option value="process">Process</option>
-                <option value="publish">Publish</option>
-              </select>
-            </label>
+            <div class="source-action-field">
+              <button id="source-action-button" class="source-action-button button button-primary" type="submit" name="action" value="process">Process</button>
+              <button id="source-action-menu-button" class="source-action-menu-button" type="button" aria-label="Choose source action" aria-haspopup="menu" aria-expanded="false">⌄</button>
+              <div id="source-action-menu" class="source-action-menu" role="menu" hidden>
+                <button type="button" role="menuitem" data-source-action="process">Process</button>
+                <button type="button" role="menuitem" data-source-action="publish">Publish</button>
+              </div>
+            </div>
           </div>
 
           <section id="result" class="result" hidden>
@@ -154,7 +155,9 @@
       const dropZone = document.querySelector("#drop-zone");
       const sourceInput = document.querySelector("#source-url");
       const sourceFile = document.querySelector("#source-file");
-      const sourceActionSelect = document.querySelector("#source-action");
+      const sourceActionButton = document.querySelector("#source-action-button");
+      const sourceActionMenuButton = document.querySelector("#source-action-menu-button");
+      const sourceActionMenu = document.querySelector("#source-action-menu");
       const editorImageFile = document.querySelector("#editor-image-file");
       const fileButton = document.querySelector("#file-button");
       const sourceLabel = document.querySelector("#result-source");
@@ -195,7 +198,8 @@
       function setSourceAction(action) {
         const selected = action === "publish" ? "publish" : "process";
         sourceAction = selected;
-        sourceActionSelect.value = selected;
+        sourceActionButton.value = selected;
+        sourceActionButton.textContent = selected === "publish" ? "Publish" : "Process";
         try {
           localStorage.setItem(SOURCE_ACTION_KEY, selected);
         } catch {
@@ -212,6 +216,17 @@
           // Use the default when storage is unavailable.
         }
         setSourceAction(saved);
+      }
+
+      function closeSourceActionMenu() {
+        sourceActionMenu.hidden = true;
+        sourceActionMenuButton.setAttribute("aria-expanded", "false");
+      }
+
+      function toggleSourceActionMenu() {
+        const open = sourceActionMenu.hidden;
+        sourceActionMenu.hidden = !open;
+        sourceActionMenuButton.setAttribute("aria-expanded", String(open));
       }
 
       function setPreviewMode(enabled, url = "") {
@@ -603,7 +618,8 @@
           return;
         }
         sourceSubmitting = true;
-        sourceActionSelect.disabled = true;
+        sourceActionButton.disabled = true;
+        sourceActionMenuButton.disabled = true;
         setStatus("Publishing…");
         try {
           if (file && isImageFile(file)) {
@@ -632,7 +648,8 @@
           setStatus(error.message, true);
         } finally {
           sourceSubmitting = false;
-          sourceActionSelect.disabled = false;
+          sourceActionButton.disabled = false;
+          sourceActionMenuButton.disabled = false;
         }
       }
 
@@ -722,7 +739,23 @@
         uploadImage(file, true);
       });
 
-      sourceActionSelect.addEventListener("change", () => setSourceAction(sourceActionSelect.value));
+      sourceActionMenuButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        toggleSourceActionMenu();
+      });
+      sourceActionMenu.querySelectorAll("[data-source-action]").forEach((button) => {
+        button.addEventListener("click", () => {
+          setSourceAction(button.dataset.sourceAction);
+          closeSourceActionMenu();
+          sourceActionButton.focus();
+        });
+      });
+      document.addEventListener("click", (event) => {
+        if (!event.target.closest(".source-action-field")) closeSourceActionMenu();
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closeSourceActionMenu();
+      });
 
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
