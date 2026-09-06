@@ -24,7 +24,7 @@ DOMAIN_RULES: tuple[DomainRule, ...] = (
     DomainRule(
         hosts=("substack.com",),
         body_selectors=(".available-content",),
-        strip_selectors=(".image-link-expand",),
+        strip_selectors=(".image-link-expand:not(:has(img))",),
     ),
 )
 

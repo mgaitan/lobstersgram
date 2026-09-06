@@ -62,6 +62,7 @@ cases:
       url: https://example.substack.com/p/notes
     contains:
       - The public essay body is available in this Substack container.
+      - "![Article photo](https://example.substack.com/photo.jpg)"
     not_contains:
       - Subscribe to keep reading
       - Expand image
