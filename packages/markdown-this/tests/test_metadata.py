@@ -2,7 +2,17 @@
 
 from __future__ import annotations
 
+import json
+
+import pytest
 from markdown_this import add_front_matter, extract_html_metadata, extract_structured_article, split_front_matter
+
+
+@pytest.mark.parametrize("types", [["Thing", "NewsArticle"], ["NewsArticle", "Thing"]])
+def test_nested_multityped_article(types: list[str]) -> None:
+    data = {"@type": "WebPage", "mainEntity": [{"@type": types, "articleBody": "Nested article body."}]}
+    html = f'<script type="application/ld+json">{json.dumps(data)}</script>'
+    assert extract_structured_article(html) == ("Nested article body.", {"type": "NewsArticle"})
 
 
 def test_front_matter_round_trip() -> None:

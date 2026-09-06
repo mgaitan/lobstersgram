@@ -29,6 +29,77 @@ from markdown_this.markdown import (
     extract_intro,
     markdown_to_text,
 )
+from markdown_this.metadata import (
+    add_front_matter,
+    extract_html_metadata,
+    extract_structured_article,
+    split_front_matter,
+)
+from markdown_this.structured import extract_fusion_article
+
+logger = getLogger(__name__)
+SpecialUrlExtractor = Callable[[str, int], tuple[str, str] | None]
+
+AD_NEGATIVE_KEYWORDS = re.compile(
+    r"(?:^|[-_ ])(?:ad|ads|advert|advertising|advertisement|sponsor|sponsored|promo|infobox)(?:$|[-_ ])",
+    re.IGNORECASE,
+)
+SPECIAL_URL_EXTRACTORS: tuple[SpecialUrlExtractor, ...] = (
+    fetch_github_blob_markdown,
+    fetch_github_readme,
+    fetch_arxiv_abstract,
+    fetch_media_oembed,
+    fetch_youtube_video,
+)
+
+
+class ContentDownloadError(RuntimeError):
+    """Raised when a content source cannot provide HTML content."""
+
+    def __init__(self) -> None:
+        super().__init__("Failed to download content")
+
+
+def _finalize_content(
+    title: str,
+    markdown: str,
+    fallback_text: str | None,
+    intro_min_length: int,
+    metadata: dict[str, str] | None = None,
+) -> tuple[str, str, str, str]:
+    """Normalize extracted Markdown and derive its fallback text and intro."""
+    front_matter, content_markdown = split_front_matter(markdown.strip())
+    resolved_title = front_matter.get("title") or title
+    content_metadata = {**front_matter, **(metadata or {}), "title": resolved_title}
+    content_fallback = fallback_text if fallback_text is not None else markdown_to_text(content_markdown)
+    intro = extract_intro(content_markdown, content_fallback, intro_min_length)
+    return resolved_title, add_front_matter(content_markdown, content_metadata), content_fallback, intro
+
+
+def _is_http_url(source: str) -> bool:
+    parsed = urllib.parse.urlparse(source)
+    return parsed.scheme in {"http", "https"} and bool(parsed.netloc)
+
+
+def _existing_path(source: str) -> Path | None:
+    if source.lstrip().startswith("<"):
+        return None
+    path = Path(source)
+    return path if path.is_file() else None
+
+
+def _extract_html_content(  # noqa: PLR0913
+    content_html: str,
+    source_label: str,
+    base_url: str,
+    source_url: str,
+    min_content_length: int,
+    intro_min_length: int,
+) -> tuple[str, str, str, str]:
+    if not content_html:
+        raise ContentDownloadError
+
+    metadata = extract_html_metadata(content_html, base_url)
     base_url = source_url or metadata.get("url") or base_url
     structured_article = extract_structured_article(content_html, base_url)
     if structured_article:
@@ -56,6 +127,7 @@ from markdown_this.markdown import (
         else:
             content_html_for_markdown = content_html
 
+    content_html_for_markdown = content_html_for_markdown or content_html
     content_html_for_markdown = preprocess_figures(make_images_absolute(content_html_for_markdown, base_url))
     extracted_markdown = html_to_md(content_html_for_markdown)
     extracted_markdown = _normalize_markdown_links(extracted_markdown)

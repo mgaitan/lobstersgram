@@ -20,7 +20,8 @@ def _json_ld_objects(soup: BeautifulSoup) -> list[Mapping[str, Any]]:
     def collect(value: object) -> None:
         if isinstance(value, Mapping):
             objects.append(value)
-            collect(value.get("@graph"))
+            for child in value.values():
+                collect(child)
         elif isinstance(value, list):
             for item in value:
                 collect(item)
@@ -37,7 +38,8 @@ def _schema_type(value: object) -> str:
     if isinstance(value, str):
         return value.strip()
     if isinstance(value, list):
-        return next((item.strip() for item in value if isinstance(item, str) and item.strip()), "")
+        types = [item.strip() for item in value if isinstance(item, str) and item.strip()]
+        return next((item for item in types if item.lower() in ARTICLE_SCHEMA_TYPES), next(iter(types), ""))
     return ""
 
 
