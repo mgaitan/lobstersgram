@@ -1,9 +1,8 @@
-import unittest.mock
-
 import pytest
 import requests
 from markdown_web import service
 from markdown_web.schemas import SourceMetadata, SourceRequest
+from pytest_mock import MockerFixture
 
 TEST_PAGE_LIMIT = 80
 VISIBLE_PAGE_COUNT = 2
@@ -322,7 +321,9 @@ def test_publish_content_expands_cards_and_adds_article_navigation(monkeypatch: 
     assert "Artículo siguiente" not in second_navigation
 
 
-def test_publish_content_reuses_a_repeated_card_within_brief(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_publish_content_reuses_a_repeated_card_within_brief(
+    monkeypatch: pytest.MonkeyPatch, *, mocker: MockerFixture
+) -> None:
     source_url = "https://example.com/repeated"
     brief_markdown = f"# Brief\n\n![card]({source_url})\n\n![card]({source_url})"
     brief = service.PreparedContent("Brief", brief_markdown, "", SourceMetadata())
@@ -334,9 +335,9 @@ def test_publish_content_reuses_a_repeated_card_within_brief(monkeypatch: pytest
         "prepare_content",
         lambda request: article if request.url else brief,
     )
-    create = unittest.mock.Mock(side_effect=["https://telegra.ph/Article-08-30", "https://telegra.ph/Brief-08-30"])
+    create = mocker.Mock(side_effect=["https://telegra.ph/Article-08-30", "https://telegra.ph/Brief-08-30"])
     monkeypatch.setattr(service, "create_page", create)
-    monkeypatch.setattr(service, "edit_page", unittest.mock.Mock(return_value="https://telegra.ph/Article-08-30"))
+    monkeypatch.setattr(service, "edit_page", mocker.Mock(return_value="https://telegra.ph/Article-08-30"))
 
     assert service.publish_content(SourceRequest(markdown=brief_markdown)) == "https://telegra.ph/Brief-08-30"
     assert create.call_count == len({source_url}) + 1

@@ -31,6 +31,7 @@ from markdown_this import (
 from markdown_this import extractor as extractor_module
 from markdown_this import html as html_module
 from markdown_this import markdown as markdown_module
+from pytest_mock import MockerFixture
 
 BASE = "https://example.com/articles/my-post/"
 
@@ -154,7 +155,7 @@ def test_make_markdown_links_absolute_keeps_absolute_and_images() -> None:
 # ---------------------------------------------------------------------------
 
 
-def _make_fake_requests_get(repo_data: dict, readme_data: dict | None = None) -> object:
+def _make_fake_requests_get(repo_data: dict, readme_data: dict | None = None, *, mocker: MockerFixture) -> object:
     """Return a mock for ``requests.get`` that returns canned API responses."""
 
     class _FakeResp:
@@ -172,10 +173,10 @@ def _make_fake_requests_get(repo_data: dict, readme_data: dict | None = None) ->
             return _FakeResp(readme_data or {})
         return _FakeResp(repo_data)
 
-    return unittest.mock.patch("markdown_this.fetchers.requests.get", side_effect=_side_effect)
+    return mocker.patch("markdown_this.fetchers.requests.get", side_effect=_side_effect)
 
 
-def test_fetch_github_readme_returns_title_and_markdown() -> None:
+def test_fetch_github_readme_returns_title_and_markdown(*, mocker: MockerFixture) -> None:
     """fetch_github_readme returns (title, markdown) for a repo root URL."""
     readme_md = "# Installation\n\n```\npip install mylib\n```\n"
     repo_data = {
@@ -187,8 +188,8 @@ def test_fetch_github_readme_returns_title_and_markdown() -> None:
         "content": base64.b64encode(readme_md.encode()).decode() + "\n",
         "download_url": "https://raw.githubusercontent.com/owner/repo/main/README.md",
     }
-    with _make_fake_requests_get(repo_data, readme_data):
-        result = fetch_github_readme("https://github.com/owner/repo")
+    _make_fake_requests_get(repo_data, readme_data, mocker=mocker)
+    result = fetch_github_readme("https://github.com/owner/repo")
 
     assert result is not None
     title, markdown = result
@@ -198,7 +199,7 @@ def test_fetch_github_readme_returns_title_and_markdown() -> None:
     assert "pip install mylib" in markdown
 
 
-def test_fetch_github_readme_resolves_relative_images() -> None:
+def test_fetch_github_readme_resolves_relative_images(*, mocker: MockerFixture) -> None:
     """Relative image URLs in the README are resolved to absolute raw.githubusercontent.com URLs."""
     readme_md = "![screenshot](./docs/screenshot.png)\n"
     repo_data = {"full_name": "owner/repo", "description": ""}
@@ -207,15 +208,15 @@ def test_fetch_github_readme_resolves_relative_images() -> None:
         "content": base64.b64encode(readme_md.encode()).decode(),
         "download_url": "https://raw.githubusercontent.com/owner/repo/main/README.md",
     }
-    with _make_fake_requests_get(repo_data, readme_data):
-        result = fetch_github_readme("https://github.com/owner/repo")
+    _make_fake_requests_get(repo_data, readme_data, mocker=mocker)
+    result = fetch_github_readme("https://github.com/owner/repo")
 
     assert result is not None
     _, markdown = result
     assert "https://raw.githubusercontent.com/owner/repo/main/docs/screenshot.png" in markdown
 
 
-def test_fetch_github_readme_non_markdown_readme_returns_none() -> None:
+def test_fetch_github_readme_non_markdown_readme_returns_none(*, mocker: MockerFixture) -> None:
     """fetch_github_readme returns None when the README is not a Markdown file."""
     repo_data = {"full_name": "owner/repo", "description": ""}
     readme_data = {
@@ -223,8 +224,8 @@ def test_fetch_github_readme_non_markdown_readme_returns_none() -> None:
         "content": base64.b64encode(b"RST content").decode(),
         "download_url": "https://raw.githubusercontent.com/owner/repo/main/README.rst",
     }
-    with _make_fake_requests_get(repo_data, readme_data):
-        result = fetch_github_readme("https://github.com/owner/repo")
+    _make_fake_requests_get(repo_data, readme_data, mocker=mocker)
+    result = fetch_github_readme("https://github.com/owner/repo")
 
     assert result is None
 
@@ -241,7 +242,7 @@ def test_fetch_github_readme_subpath_url_returns_none() -> None:
     assert result is None
 
 
-def test_fetch_github_readme_api_failure_returns_none() -> None:
+def test_fetch_github_readme_api_failure_returns_none(*, mocker: MockerFixture) -> None:
     """fetch_github_readme returns None when the README API request fails."""
     repo_data = {"full_name": "owner/repo", "description": ""}
 
@@ -260,8 +261,8 @@ def test_fetch_github_readme_api_failure_returns_none() -> None:
             raise requests.RequestException
         return _FakeResp(repo_data)
 
-    with unittest.mock.patch("markdown_this.fetchers.requests.get", side_effect=_side_effect):
-        result = fetch_github_readme("https://github.com/owner/repo")
+    mocker.patch("markdown_this.fetchers.requests.get", side_effect=_side_effect)
+    result = fetch_github_readme("https://github.com/owner/repo")
 
     assert result is None
 
@@ -271,7 +272,7 @@ def test_fetch_github_readme_api_failure_returns_none() -> None:
 # ---------------------------------------------------------------------------
 
 
-def test_fetch_github_readme_strips_badge_paragraphs() -> None:
+def test_fetch_github_readme_strips_badge_paragraphs(*, mocker: MockerFixture) -> None:
     """fetch_github_readme strips badge-only paragraphs from the README."""
     readme_md = (
         "# mylib\n\n"
@@ -285,8 +286,8 @@ def test_fetch_github_readme_strips_badge_paragraphs() -> None:
         "content": base64.b64encode(readme_md.encode()).decode(),
         "download_url": "https://raw.githubusercontent.com/owner/mylib/main/README.md",
     }
-    with _make_fake_requests_get(repo_data, readme_data):
-        result = fetch_github_readme("https://github.com/owner/mylib")
+    _make_fake_requests_get(repo_data, readme_data, mocker=mocker)
+    result = fetch_github_readme("https://github.com/owner/mylib")
 
     assert result is not None
     _, markdown = result

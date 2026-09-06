@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import re
 import urllib.parse
+from collections.abc import Callable
 from logging import getLogger
 from pathlib import Path
 
@@ -29,10 +30,17 @@ from markdown_this.markdown import (
 from markdown_this.metadata import add_front_matter, extract_html_metadata, split_front_matter
 
 logger = getLogger(__name__)
+SpecialUrlExtractor = Callable[[str, int], tuple[str, str] | None]
 
 AD_NEGATIVE_KEYWORDS = re.compile(
     r"(?:^|[-_ ])(?:ad|ads|advert|advertising|advertisement|sponsor|sponsored|promo|infobox)(?:$|[-_ ])",
     re.IGNORECASE,
+)
+SPECIAL_URL_EXTRACTORS: tuple[SpecialUrlExtractor, ...] = (
+    fetch_github_blob_markdown,
+    fetch_github_readme,
+    fetch_arxiv_abstract,
+    fetch_youtube_video,
 )
 
 
@@ -111,21 +119,15 @@ def _extract_url_content(
     min_content_length: int,
     intro_min_length: int,
 ) -> tuple[str, str, str, str]:
-    if github_blob_result := fetch_github_blob_markdown(url, request_timeout):
-        title, markdown = github_blob_result
-        return _finalize_content(title, markdown, None, intro_min_length, {"url": url})
-
-    if github_result := fetch_github_readme(url, request_timeout):
-        title, markdown = github_result
-        return _finalize_content(title, markdown, None, intro_min_length, {"url": url})
-
-    if arxiv_result := fetch_arxiv_abstract(url, request_timeout):
-        title, markdown = arxiv_result
-        return _finalize_content(title, markdown, None, intro_min_length, {"url": url})
-
-    if youtube_result := fetch_youtube_video(url, request_timeout):
-        title, markdown = youtube_result
-        return _finalize_content(title, markdown, None, intro_min_length, {"url": url})
+    for special_extractor in SPECIAL_URL_EXTRACTORS:
+        try:
+            special_result = special_extractor(url, request_timeout)
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("special URL extractor failed url=%s error=%s", url, exc)
+            continue
+        if special_result:
+            title, markdown = special_result
+            return _finalize_content(title, markdown, None, intro_min_length, {"url": url})
 
     downloaded = fetch_html(url, request_timeout)
     return _extract_html_content(downloaded or "", url, url, url, min_content_length, intro_min_length)
@@ -136,29 +138,22 @@ def extract_main_content(
     request_timeout: int = DEFAULT_REQUEST_TIMEOUT,
     min_content_length: int = 200,
     intro_min_length: int = 40,
+    *,
+    source_url: str = "",
 ) -> tuple[str, str, str, str]:
-    """Return ``(title, markdown, fallback_text, intro)`` for a URL, path, or HTML."""
-    if isinstance(source, Path):
-        return _extract_html_content(
-            source.read_text(encoding="utf-8"),
-            source.stem,
-            source.as_uri(),
-            "",
-            min_content_length,
-            intro_min_length,
-        )
-
-    if _is_http_url(source):
+    """Extract a URL, path or HTML; ``source_url`` resolves supplied HTML links."""
+    if isinstance(source, str) and _is_http_url(source):
         return _extract_url_content(source, request_timeout, min_content_length, intro_min_length)
 
-    if path := _existing_path(source):
+    path = source if isinstance(source, Path) else _existing_path(source)
+    if path is not None:
         return _extract_html_content(
             path.read_text(encoding="utf-8"),
             path.stem,
-            path.as_uri(),
-            "",
+            source_url or path.resolve().as_uri(),
+            source_url,
             min_content_length,
             intro_min_length,
         )
 
-    return _extract_html_content(source, "HTML content", "", "", min_content_length, intro_min_length)
+    return _extract_html_content(source, "HTML content", source_url, source_url, min_content_length, intro_min_length)
