@@ -3628,5 +3628,23 @@
     "article_link": "https://github.com/zedeus/nitter/commit/1428b4c2b4246f92a7e5b2673438e5fb39fcc4a3",
     "discussion_link": "https://lobste.rs/s/jsxzwl/following_legal_advice_nitter_project",
     "title": "Following legal advice, the Nitter project will continue"
+  },
+  "@lobstersgram:613": {
+    "telegraph_link": "https://telegra.ph/Have-the-frontier-labs-mixed-up-AI-safety-and-security---Martin-Alderson-09-06-2",
+    "article_link": "https://martinalderson.com/posts/ai-safety-vs-security/",
+    "discussion_link": "https://lobste.rs/s/uu3hhz/have_frontier_labs_mixed_up_ai_safety",
+    "title": "Have the frontier labs mixed up AI safety and security?"
+  },
+  "@lobstersgram:614": {
+    "telegraph_link": "https://telegra.ph/BrettHallenRadix-FW60--Information-about-the-ruggedised-handheld-CPM-computer-09-06",
+    "article_link": "https://github.com/BrettHallen/Radix_FW60",
+    "discussion_link": "https://lobste.rs/s/xyvhrx/radix_fw60_handheld_cp_m_2_2_computer",
+    "title": "Radix_FW60: handheld CP/M 2.2 computer"
+  },
+  "@lobstersgram:615": {
+    "telegraph_link": "https://telegra.ph/Making-sure-youre-not-a-bot-09-06-2",
+    "article_link": "https://anubis.techaro.lol/blog/2026/anubis-wasm/",
+    "discussion_link": "https://lobste.rs/s/aokzbg/it_took_year_ship_webassembly_anubis",
+    "title": "It took a year to ship WebAssembly in Anubis"
   }
 }
