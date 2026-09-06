@@ -1,5 +1,22 @@
 version: 1
 cases:
+  - id: x_captured_thread
+    fixture: x_thread.html
+    url: https://x.com/alice/status/1002
+    metadata:
+      title: Alice's research thread
+      extraction_scope: captured-posts
+    contains:
+      - First observation
+      - Second observation
+      - Third observation
+      - https://video.twimg.com/demo.mp4
+    not_contains:
+      - A recommended unrelated post.
+      - An unrelated reader response.
+      - Duplicate virtualized cell
+    min_text_chars: 150
+
   - id: technical_article
     fixture: technical_article.html
     contains:

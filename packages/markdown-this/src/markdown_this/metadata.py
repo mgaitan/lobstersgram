@@ -10,7 +10,7 @@ from urllib.parse import urljoin, urlparse
 import yaml
 from bs4 import BeautifulSoup
 
-METADATA_FIELDS = ("title", "author", "url", "date", "image", "type")
+METADATA_FIELDS = ("title", "author", "url", "date", "image", "type", "extraction_scope")
 ARTICLE_SCHEMA_TYPES = {"article", "blogposting", "newsarticle", "socialmediaposting"}
 
 
@@ -197,6 +197,7 @@ def extract_html_metadata(content_html: str, base_url: str = "") -> dict[str, st
             ("date", date),
             ("image", image),
             ("type", page_type),
+            ("extraction_scope", first_meta({"name": "extraction_scope"})),
         )
         if value
     }
