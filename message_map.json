@@ -3598,5 +3598,23 @@
     "article_link": "https://domaindrivenarchitecture.org/blog/2024-06-05-howto-federated-stars/",
     "discussion_link": "https://lobste.rs/s/1kdrx2/how_federated_stars_2024",
     "title": "How To: Federated Stars (2024)"
+  },
+  "@lobstersgram:608": {
+    "telegraph_link": "https://telegra.ph/NetBSD-Blog-09-06-2",
+    "article_link": "https://blog.netbsd.org/tnf/entry/netbsd_9_5_released_and",
+    "discussion_link": "https://lobste.rs/s/7ymd5q/netbsd_9_5_released_eol_for_netbsd_9",
+    "title": "NetBSD 9.5 released and EOL for netbsd-9"
+  },
+  "@lobstersgram:609": {
+    "telegraph_link": "https://telegra.ph/Simple-Made-Easy---Rich-Hickey-2011-09-06",
+    "article_link": "https://www.youtube.com/watch?v=SxdOUGdseq4",
+    "discussion_link": "https://lobste.rs/s/xccvnw/simple_made_easy_2011",
+    "title": "\"Simple Made Easy\" (2011)"
+  },
+  "@lobstersgram:610": {
+    "telegraph_link": "https://telegra.ph/NetBSD-11-from-scratch--MeanMicio-09-06",
+    "article_link": "https://meanmicio.org/2026/09/06/netbsd-11-from-scratch/",
+    "discussion_link": "https://lobste.rs/s/be5lrk/netbsd_11_from_scratch",
+    "title": "NetBSD 11 from scratch"
   }
 }
