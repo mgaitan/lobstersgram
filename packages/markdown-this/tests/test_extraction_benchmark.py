@@ -27,7 +27,7 @@ def _load_cases() -> list[pytest.ParameterSet]:
 
 @pytest.mark.parametrize("case", _load_cases())
 def test_extraction_quality_case(case: dict[str, Any]) -> None:
-    title, markdown, fallback_text, intro = extract_main_content(FIXTURES / case["fixture"], min_content_length=0)
+    _title, markdown, _fallback, _intro = extract_main_content(FIXTURES / case["fixture"], min_content_length=0)
     metadata, body = split_front_matter(markdown)
     plain_text = markdown_to_text(body)
 
