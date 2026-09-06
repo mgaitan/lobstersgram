@@ -105,6 +105,16 @@ def test_home_and_static_assets() -> None:
     assert client.get("/static/styles.css").status_code == HTTP_200_OK
 
 
+def test_home_places_editor_control_in_toolbar() -> None:
+    response = client.get("/")
+
+    assert (
+        'id="metadata-button" type="button" aria-label="Publication metadata" '
+        'title="Publication metadata">Meta</button>\n'
+        '                <button id="expand-editor"' in response.text
+    )
+
+
 def test_home_has_source_action_dropdown() -> None:
     response = client.get("/")
 
