@@ -138,14 +138,16 @@ def extract_main_content(
     request_timeout: int = DEFAULT_REQUEST_TIMEOUT,
     min_content_length: int = 200,
     intro_min_length: int = 40,
+    *,
+    source_url: str = "",
 ) -> tuple[str, str, str, str]:
-    """Return ``(title, markdown, fallback_text, intro)`` for a URL, path, or HTML."""
+    """Extract a URL, path or HTML; ``source_url`` resolves supplied HTML links."""
     if isinstance(source, Path):
         return _extract_html_content(
             source.read_text(encoding="utf-8"),
             source.stem,
-            source.as_uri(),
-            "",
+            source_url or source.resolve().as_uri(),
+            source_url,
             min_content_length,
             intro_min_length,
         )
@@ -157,10 +159,10 @@ def extract_main_content(
         return _extract_html_content(
             path.read_text(encoding="utf-8"),
             path.stem,
-            path.as_uri(),
-            "",
+            source_url or path.resolve().as_uri(),
+            source_url,
             min_content_length,
             intro_min_length,
         )
 
-    return _extract_html_content(source, "HTML content", "", "", min_content_length, intro_min_length)
+    return _extract_html_content(source, "HTML content", source_url, source_url, min_content_length, intro_min_length)

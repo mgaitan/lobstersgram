@@ -31,6 +31,7 @@ from markdown_this import (
 from markdown_this import extractor as extractor_module
 from markdown_this import html as html_module
 from markdown_this import markdown as markdown_module
+from pytest_mock import MockerFixture
 
 BASE = "https://example.com/articles/my-post/"
 
@@ -302,7 +303,7 @@ class _FakeResponse:
         return self.content.decode(self.encoding or "utf-8", errors="replace")
 
 
-def test_fetch_html_uses_apparent_encoding_for_utf8_content() -> None:
+def test_fetch_html_uses_apparent_encoding_for_utf8_content(*, mocker: MockerFixture) -> None:
     """fetch_html must decode UTF-8 content correctly even when the server does not
     declare a charset in the Content-Type header.
 
@@ -315,16 +316,15 @@ def test_fetch_html_uses_apparent_encoding_for_utf8_content() -> None:
     utf8_bytes = em_dash_html.encode("utf-8")
 
     fake_response = _FakeResponse(content=utf8_bytes)
-
-    with unittest.mock.patch("markdown_this.fetchers.requests.get", return_value=fake_response):
-        result = fetch_html("https://example.com/article")
+    mocker.patch("markdown_this.fetchers.requests.get", return_value=fake_response)
+    result = fetch_html("https://example.com/article")
 
     assert result is not None
     assert "\u2014" in result, "em-dash should be preserved, not mangled"
     assert "â€" not in (result or ""), "mojibake should not appear in the output"
 
 
-def test_fetch_html_decodes_curly_apostrophe_via_meta_charset() -> None:
+def test_fetch_html_decodes_curly_apostrophe_via_meta_charset(*, mocker: MockerFixture) -> None:
     """fetch_html must correctly decode curly apostrophes (U+2019) in pages that
     declare <meta charset="utf-8"> even when charset_normalizer would incorrectly
     identify the encoding as ISO-8859-1.
@@ -343,22 +343,20 @@ def test_fetch_html_decodes_curly_apostrophe_via_meta_charset() -> None:
     # Note: apparent_encoding is no longer consulted by fetch_html; it is kept
     # here only as documentation of the failure mode this test addresses.
     fake_response = _FakeResponse(content=utf8_bytes)
-
-    with unittest.mock.patch("markdown_this.fetchers.requests.get", return_value=fake_response):
-        result = fetch_html("https://example.com/article")
+    mocker.patch("markdown_this.fetchers.requests.get", return_value=fake_response)
+    result = fetch_html("https://example.com/article")
 
     assert result is not None
     assert "\u2019" in result, "curly apostrophe should be preserved, not mangled"
     assert "Weâ" not in (result or ""), "mojibake must not appear in the output"
 
 
-def test_fetch_html_keeps_utf8_html_when_isolated_bytes_are_invalid() -> None:
+def test_fetch_html_keeps_utf8_html_when_isolated_bytes_are_invalid(*, mocker: MockerFixture) -> None:
     """Mostly UTF-8 HTML must not be reinterpreted as a single-byte encoding."""
     html = b"<html><head><title>La Pol\xc3\xadtica Online</title></head><body>\xff</body></html>"
     fake_response = _FakeResponse(content=html)
-
-    with unittest.mock.patch("markdown_this.fetchers.requests.get", return_value=fake_response):
-        result = fetch_html("https://example.com/article")
+    mocker.patch("markdown_this.fetchers.requests.get", return_value=fake_response)
+    result = fetch_html("https://example.com/article")
 
     assert result is not None
     assert "La Pol\u00edtica Online" in result

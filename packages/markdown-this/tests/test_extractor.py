@@ -7,20 +7,21 @@ from pathlib import Path
 
 from markdown_this import extract_main_content, split_front_matter
 from markdown_this import extractor as extractor_module
+from pytest_mock import MockerFixture
 
 
-def _document() -> unittest.mock.Mock:
-    return unittest.mock.Mock(
-        summary=unittest.mock.Mock(return_value="<article><p>Readable body.</p></article>"),
-        title=unittest.mock.Mock(return_value="Readable title"),
+def _document(*, mocker: MockerFixture) -> unittest.mock.Mock:
+    return mocker.Mock(
+        summary=mocker.Mock(return_value="<article><p>Readable body.</p></article>"),
+        title=mocker.Mock(return_value="Readable title"),
     )
 
 
-def test_extract_main_content_accepts_path_object(tmp_path: Path) -> None:
+def test_extract_main_content_accepts_path_object(tmp_path: Path, *, mocker: MockerFixture) -> None:
     html_path = tmp_path / "article.html"
     html_path.write_text("<html><body>Source</body></html>", encoding="utf-8")
-    with unittest.mock.patch.object(extractor_module, "Document", return_value=_document()):
-        title, markdown, fallback_text, intro = extract_main_content(html_path, min_content_length=0)
+    mocker.patch.object(extractor_module, "Document", return_value=_document(mocker=mocker))
+    title, markdown, fallback_text, intro = extract_main_content(html_path, min_content_length=0)
 
     assert title == "Readable title"
     metadata, body = split_front_matter(markdown)
@@ -30,18 +31,18 @@ def test_extract_main_content_accepts_path_object(tmp_path: Path) -> None:
     assert intro == "Readable body."
 
 
-def test_extract_main_content_accepts_path_string(tmp_path: Path) -> None:
+def test_extract_main_content_accepts_path_string(tmp_path: Path, *, mocker: MockerFixture) -> None:
     html_path = tmp_path / "article.html"
     html_path.write_text("<html><body>Source</body></html>", encoding="utf-8")
-    with unittest.mock.patch.object(extractor_module, "Document", return_value=_document()):
-        result = extract_main_content(str(html_path), min_content_length=0)
+    mocker.patch.object(extractor_module, "Document", return_value=_document(mocker=mocker))
+    result = extract_main_content(str(html_path), min_content_length=0)
 
     assert result[0] == "Readable title"
 
 
-def test_extract_main_content_accepts_raw_html() -> None:
-    with unittest.mock.patch.object(extractor_module, "Document", return_value=_document()):
-        result = extract_main_content("<html><body>Raw HTML</body></html>", min_content_length=0)
+def test_extract_main_content_accepts_raw_html(*, mocker: MockerFixture) -> None:
+    mocker.patch.object(extractor_module, "Document", return_value=_document(mocker=mocker))
+    result = extract_main_content("<html><body>Raw HTML</body></html>", min_content_length=0)
 
     metadata, body = split_front_matter(result[1])
     assert result[0] == "Readable title"
@@ -49,7 +50,7 @@ def test_extract_main_content_accepts_raw_html() -> None:
     assert body == "Readable body."
 
 
-def test_extract_main_content_emits_html_metadata() -> None:
+def test_extract_main_content_emits_html_metadata(*, mocker: MockerFixture) -> None:
     html = (
         '<meta name="author" content="Author">'
         '<link rel="canonical" href="https://example.com/article">'
@@ -57,8 +58,8 @@ def test_extract_main_content_emits_html_metadata() -> None:
         '<meta property="og:image" content="https://cdn.example.com/hero.jpg">'
         "<p>Raw HTML</p>"
     )
-    with unittest.mock.patch.object(extractor_module, "Document", return_value=_document()):
-        result = extract_main_content(html, min_content_length=0)
+    mocker.patch.object(extractor_module, "Document", return_value=_document(mocker=mocker))
+    result = extract_main_content(html, min_content_length=0)
 
     metadata, _body = split_front_matter(result[1])
     assert metadata == {
@@ -70,19 +71,14 @@ def test_extract_main_content_emits_html_metadata() -> None:
     }
 
 
-def test_extract_main_content_falls_back_when_special_url_extractor_fails() -> None:
-    broken_extractor = unittest.mock.Mock(side_effect=RuntimeError("broken"))
-    ignored_extractor = unittest.mock.Mock(return_value=None)
+def test_extract_main_content_falls_back_when_special_url_extractor_fails(*, mocker: MockerFixture) -> None:
+    broken_extractor = mocker.Mock(side_effect=RuntimeError("broken"))
+    ignored_extractor = mocker.Mock(return_value=None)
     html = "<html><body><article><p>Fallback body.</p></article></body></html>"
-
-    with (
-        unittest.mock.patch.object(extractor_module, "SPECIAL_URL_EXTRACTORS", (broken_extractor, ignored_extractor)),
-        unittest.mock.patch.object(extractor_module, "fetch_html", return_value=html),
-        unittest.mock.patch.object(extractor_module, "Document", return_value=_document()),
-    ):
-        title, markdown, fallback_text, intro = extract_main_content(
-            "https://example.com/article", min_content_length=0
-        )
+    mocker.patch.object(extractor_module, "SPECIAL_URL_EXTRACTORS", (broken_extractor, ignored_extractor))
+    mocker.patch.object(extractor_module, "fetch_html", return_value=html)
+    mocker.patch.object(extractor_module, "Document", return_value=_document(mocker=mocker))
+    title, markdown, fallback_text, intro = extract_main_content("https://example.com/article", min_content_length=0)
 
     assert title == "Readable title"
     assert "Readable body." in markdown
@@ -107,6 +103,16 @@ def test_extract_main_content_excludes_structural_ad_slots() -> None:
     assert "Story text" in markdown
     assert "More story text" in markdown
     assert "PUBLICIDAD" not in markdown
+
+
+def test_supplied_html_resolves_links_from_source_url() -> None:
+    html = '<article><p>A reference to <a href="/other">another article</a>.</p></article>'
+    _title, markdown, _fallback, _intro = extract_main_content(
+        html, source_url="https://example.com/story", min_content_length=0
+    )
+    metadata, body = split_front_matter(markdown)
+    assert metadata["url"] == "https://example.com/story"
+    assert "[another article](https://example.com/other)" in body
 
 
 def test_extract_main_content_excludes_wikipedia_infoboxes() -> None:
