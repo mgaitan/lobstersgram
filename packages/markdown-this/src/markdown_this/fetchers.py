@@ -20,7 +20,6 @@ from markdown_this.markdown import (
     _make_markdown_images_absolute,
     _strip_badge_paragraphs,
 )
-
 from markdown_this.metadata import add_front_matter
 
 DEFAULT_REQUEST_TIMEOUT = 20
@@ -210,7 +209,7 @@ def fetch_arxiv_abstract(url: str, timeout: int = DEFAULT_REQUEST_TIMEOUT) -> tu
 
 
 def _media_oembed_endpoint(url: str) -> str:
-    host = urllib.parse.urlparse(url).netloc.lower().removeprefix("www.")
+    host = (urllib.parse.urlparse(url).hostname or "").lower().removeprefix("www.")
     return _MEDIA_OEMBED_ENDPOINTS.get(host, "")
 
 
@@ -257,6 +256,12 @@ def fetch_media_oembed(url: str, timeout: int = DEFAULT_REQUEST_TIMEOUT) -> tupl
     endpoint = _media_oembed_endpoint(url)
     if not endpoint:
         return None
+    data = _fetch_oembed(url, endpoint, timeout)
+    return _media_oembed_markdown(url, data) if data is not None else None
+
+
+def _fetch_oembed(url: str, endpoint: str, timeout: int) -> dict[str, Any] | None:
+    """Fetch the shared oEmbed protocol for any configured provider."""
     try:
         response = requests.get(
             endpoint,
@@ -269,20 +274,13 @@ def fetch_media_oembed(url: str, timeout: int = DEFAULT_REQUEST_TIMEOUT) -> tupl
     except (requests.RequestException, ValueError) as exc:
         logger.warning("media oEmbed fetch failed url=%s error=%s", url, exc)
         return None
-    return _media_oembed_markdown(url, data) if isinstance(data, dict) else None
+    return data if isinstance(data, dict) else None
 
 
 def _fetch_youtube_oembed(video_id: str, timeout: int = DEFAULT_REQUEST_TIMEOUT) -> tuple[str, str] | None:
     """Fetch the title and channel name for a YouTube video."""
-    oembed_url = f"https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v={video_id}&format=json"
-    try:
-        response = requests.get(oembed_url, timeout=timeout, headers={"User-Agent": "lobsters-telegraph-bot"})
-        response.raise_for_status()
-        data = response.json()
-        return data.get("title") or video_id, data.get("author_name", "")
-    except (requests.RequestException, ValueError) as exc:
-        logger.warning("YouTube oEmbed fetch failed video_id=%s error=%s", video_id, exc)
-        return None
+    data = _fetch_oembed(f"https://www.youtube.com/watch?v={video_id}", "https://www.youtube.com/oembed", timeout)
+    return (data.get("title") or video_id, data.get("author_name", "")) if data is not None else None
 
 
 def _fetch_youtube_description(video_id: str, timeout: int = DEFAULT_REQUEST_TIMEOUT) -> str:

@@ -2,11 +2,10 @@
 
 from __future__ import annotations
 
-import unittest.mock
-
 import requests
 from markdown_this import extract_main_content, fetch_media_oembed, split_front_matter
 from markdown_this import fetchers as fetchers_module
+from pytest_mock import MockerFixture
 
 VIMEO_URL = "https://vimeo.com/35941909"
 DAILYMOTION_URL = "https://www.dailymotion.com/video/x84sh87"
@@ -23,7 +22,7 @@ class _OEmbedResponse:
         return self._data
 
 
-def test_fetch_media_oembed_extracts_vimeo_metadata_and_markdown() -> None:
+def test_fetch_media_oembed_extracts_vimeo_metadata_and_markdown(*, mocker: MockerFixture) -> None:
     response = _OEmbedResponse(
         {
             "title": "A Vimeo video",
@@ -35,8 +34,8 @@ def test_fetch_media_oembed_extracts_vimeo_metadata_and_markdown() -> None:
             "html": '<iframe src="https://player.vimeo.com/video/35941909"></iframe>',
         }
     )
-    with unittest.mock.patch("markdown_this.fetchers.requests.get", return_value=response) as get:
-        result = fetch_media_oembed(VIMEO_URL, timeout=7)
+    get = mocker.patch("markdown_this.fetchers.requests.get", return_value=response)
+    result = fetch_media_oembed(VIMEO_URL, timeout=7)
 
     assert result is not None
     title, markdown = result
@@ -60,10 +59,10 @@ def test_fetch_media_oembed_extracts_vimeo_metadata_and_markdown() -> None:
     )
 
 
-def test_fetch_media_oembed_extracts_dailymotion_without_optional_fields() -> None:
+def test_fetch_media_oembed_extracts_dailymotion_without_optional_fields(*, mocker: MockerFixture) -> None:
     response = _OEmbedResponse({"title": "A Dailymotion video", "provider_name": "Dailymotion"})
-    with unittest.mock.patch("markdown_this.fetchers.requests.get", return_value=response) as get:
-        result = fetch_media_oembed(DAILYMOTION_URL)
+    get = mocker.patch("markdown_this.fetchers.requests.get", return_value=response)
+    result = fetch_media_oembed(DAILYMOTION_URL)
 
     assert result is not None
     title, markdown = result
@@ -76,26 +75,23 @@ def test_fetch_media_oembed_extracts_dailymotion_without_optional_fields() -> No
     assert get.call_args.kwargs["params"] == {"url": DAILYMOTION_URL, "format": "json"}
 
 
-def test_fetch_media_oembed_rejects_non_media_and_unusable_oembed() -> None:
+def test_fetch_media_oembed_rejects_non_media_and_unusable_oembed(*, mocker: MockerFixture) -> None:
     assert fetch_media_oembed("https://example.com/video") is None
-
-    with unittest.mock.patch(
+    mocker.patch(
         "markdown_this.fetchers.requests.get",
         side_effect=requests.RequestException("network error"),
-    ):
-        assert fetch_media_oembed(VIMEO_URL) is None
+    )
+    assert fetch_media_oembed(VIMEO_URL) is None
 
-    bad_response = unittest.mock.Mock()
+    bad_response = mocker.Mock()
     bad_response.raise_for_status.return_value = None
     bad_response.json.side_effect = ValueError("bad json")
-    with unittest.mock.patch("markdown_this.fetchers.requests.get", return_value=bad_response):
-        assert fetch_media_oembed(VIMEO_URL) is None
-
-    with unittest.mock.patch("markdown_this.fetchers.requests.get", return_value=_OEmbedResponse([])):
-        assert fetch_media_oembed(VIMEO_URL) is None
-
-    with unittest.mock.patch("markdown_this.fetchers.requests.get", return_value=_OEmbedResponse({"title": ""})):
-        assert fetch_media_oembed(VIMEO_URL) is None
+    mocker.patch("markdown_this.fetchers.requests.get", return_value=bad_response)
+    assert fetch_media_oembed(VIMEO_URL) is None
+    mocker.patch("markdown_this.fetchers.requests.get", return_value=_OEmbedResponse([]))
+    assert fetch_media_oembed(VIMEO_URL) is None
+    mocker.patch("markdown_this.fetchers.requests.get", return_value=_OEmbedResponse({"title": ""}))
+    assert fetch_media_oembed(VIMEO_URL) is None
 
 
 def test_media_oembed_helpers_cover_supported_hosts_and_empty_html() -> None:
@@ -111,7 +107,7 @@ def test_media_oembed_helpers_cover_supported_hosts_and_empty_html() -> None:
     assert fetchers_module._extract_oembed_iframe_src("<div>No iframe</div>") == ""
 
 
-def test_extract_main_content_uses_media_oembed_handler() -> None:
+def test_extract_main_content_uses_media_oembed_handler(*, mocker: MockerFixture) -> None:
     response = _OEmbedResponse(
         {
             "title": "A Vimeo video",
@@ -121,8 +117,8 @@ def test_extract_main_content_uses_media_oembed_handler() -> None:
             "type": "video",
         }
     )
-    with unittest.mock.patch("markdown_this.fetchers.requests.get", return_value=response):
-        title, markdown, fallback, intro = extract_main_content(VIMEO_URL)
+    mocker.patch("markdown_this.fetchers.requests.get", return_value=response)
+    title, markdown, fallback, intro = extract_main_content(VIMEO_URL)
 
     metadata, body = split_front_matter(markdown)
     assert title == "A Vimeo video"
