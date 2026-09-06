@@ -27,6 +27,7 @@ from markdown_this import (
     make_images_absolute,
     markdown_to_text,
     preprocess_figures,
+    strip_chrome,
 )
 from markdown_this import extractor as extractor_module
 from markdown_this import html as html_module
@@ -274,6 +275,31 @@ def test_preprocess_figures_preserves_quote_text_content() -> None:
     assert "Second sentence." in result
     soup = BeautifulSoup(result, "html.parser")
     assert soup.find("blockquote") is not None
+
+
+def test_strip_chrome_removes_structural_non_content_elements() -> None:
+    html = """
+    <article>
+      <nav>Navigation</nav>
+      <p>Article body.</p>
+      <aside>Correction: the original figure was inaccurate.</aside>
+      <form><button>Submit</button></form>
+      <noscript>Fallback chrome</noscript>
+      <script>alert("x")</script>
+      <style>body { color: red; }</style>
+      <template>Hidden template</template>
+    </article>
+    """
+
+    result = strip_chrome(html)
+
+    assert "Article body." in result
+    assert "Navigation" not in result
+    assert "Correction: the original figure was inaccurate." in result
+    assert "Submit" not in result
+    assert "Fallback chrome" not in result
+    assert "alert" not in result
+    assert "Hidden template" not in result
 
 
 # ---------------------------------------------------------------------------

@@ -8,6 +8,8 @@ import urllib.parse
 from bs4 import BeautifulSoup
 from bs4.element import Tag
 
+CHROME_TAGS = ("button", "form", "nav", "noscript", "script", "style", "template")
+
 
 def _best_src_for_img(img: Tag) -> str:
     """Return the best candidate URL for an ``<img>`` element."""
@@ -51,6 +53,14 @@ def make_images_absolute(content_html: str, base_url: str) -> str:
             img["src"] = absolute
         else:
             img.decompose()
+    return str(soup)
+
+
+def strip_chrome(content_html: str) -> str:
+    """Remove structural page chrome before Markdown conversion."""
+    soup = BeautifulSoup(content_html, "html.parser")
+    for tag in soup.find_all(CHROME_TAGS):
+        tag.decompose()
     return str(soup)
 
 
