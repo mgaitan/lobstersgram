@@ -44,6 +44,22 @@ collector does not scroll the browser, fetch missing replies or infer reply
 relationships from author identity alone. Consecutive author posts are a
 presentation heuristic, not proof of a conversation graph.
 
+## Public Rich oEmbed
+
+Public X/Twitter URLs use the shared oEmbed client without API credentials.
+Rich responses pass through the same HTML cleanup and media conversion as
+documents; widget scripts are removed. Failed requests fall back to HTML
+acquisition through the existing extractor registry.
+
+The result declares `extraction_scope: oembed`: it contains the post content
+returned by the provider, not a complete thread. Supplied HTML bypasses URL
+acquisition, so an oEmbed response cannot replace a captured collection.
+For a saved capture, retain the original post URL:
+
+```bash
+uvx markdown-this thread.html --source-url https://x.com/alice/status/1002
+```
+
 ## Main Modules
 
 - `markdown_this.extractor`: public pipeline orchestration.
