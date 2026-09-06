@@ -193,7 +193,7 @@ textarea:focus { border-color: #999; box-shadow: 0 2px 8px rgb(0 0 0 / 6%); }
 .markdown-editor textarea:focus { border: 0; box-shadow: none; }
 .preview-pane { overflow: hidden; min-height: 680px; border: 1px solid #d0d7de; border-radius: 6px; background: #fff; }
 .preview-frame { display: block; width: 100%; min-height: 680px; border: 0; background: #fff; }
-.editor-expand-button { position: absolute; right: 22px; bottom: 8px; z-index: 1; display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid #d0d7de; border-radius: 5px; color: #24292f; background: #fff; font: 18px/1 system-ui, sans-serif; cursor: pointer; }
+.editor-expand-button { display: grid; flex: 0 0 30px; width: 30px; height: 30px; margin-left: auto; place-items: center; border: 1px solid #d0d7de; border-radius: 5px; color: #24292f; background: #fff; font: 18px/1 system-ui, sans-serif; cursor: pointer; }
 .editor-expand-button:hover { border-color: #afb8c1; background: #f6f8fa; }
 
 body.editor-fullscreen { overflow: hidden; }
