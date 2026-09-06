@@ -22,6 +22,15 @@ md-to-telegraph/technical-reference
 
 ```{toctree}
 :hidden:
+:caption: md-to-epub
+
+md-to-epub/overview
+md-to-epub/installation-usage
+md-to-epub/technical-reference
+```
+
+```{toctree}
+:hidden:
 :caption: markdown-web
 
 markdown-web/overview

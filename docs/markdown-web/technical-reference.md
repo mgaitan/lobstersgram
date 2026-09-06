@@ -12,4 +12,5 @@
 ## Boundaries
 
 The web app may orchestrate extraction, publishing, uploads, and notifications.
-Reusable conversion logic belongs in `markdown-this` or `md-to-telegraph`.
+Reusable extraction and conversion logic belongs in `markdown-this`,
+`md-to-telegraph`, or `md-to-epub`.

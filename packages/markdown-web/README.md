@@ -1,7 +1,8 @@
 # Markdown-web
 
 Minimal FastAPI service around [`markdown-this`](../markdown-this/) and
-[`md-to-telegraph`](../md-to-telegraph/).
+[`md-to-telegraph`](../md-to-telegraph/), with EPUB export through
+[`md-to-epub`](../md-to-epub/).
 
 ## Run
 
@@ -51,7 +52,16 @@ curl -X POST http://127.0.0.1:8000/md \
 curl -X POST http://127.0.0.1:8000/t \
   -H 'content-type: application/json' \
   -d '{"markdown":"# Hello\n\nBody"}'
+
+curl -X POST http://127.0.0.1:8000/epub \
+  -H 'content-type: application/json' \
+  -d '{"markdown":"# Hello\n\nBody"}' \
+  -o hello.epub
 ```
+
+`POST /epub` returns an EPUB 3 download. A Markdown brief using
+`![card](https://example.com/article)` markers becomes a book with the brief
+as its first chapter and one chapter per linked article.
 
 Raw HTML can also be posted as `text/html`. Optional metadata is supplied with
 `X-Source-URL`, `X-Title`, `X-Author-Name`, `X-Published-Date`, and `X-Image-URL`.

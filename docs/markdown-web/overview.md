@@ -1,9 +1,9 @@
 # Overview
 
 `markdown-web` is the browser-facing service in Markdown Tools. It combines
-`markdown-this` for extraction with `md-to-telegraph` for conversion and
-publication, and exposes the same workflow through an HTTP API, a small web
-interface, and bookmarklets.
+`markdown-this` for extraction with `md-to-telegraph` for Telegraph conversion
+and `md-to-epub` for ebook export, and exposes the workflows through an HTTP
+API, a small web interface, and bookmarklets.
 
 ## What It Does
 
@@ -17,6 +17,7 @@ The service can:
   linked pages.
 - Show a Telegraph preview before publication and let the user return to edit.
 - Publish Markdown directly to Telegraph from the web editor.
+- Export one Markdown document or a bulletin with article cards as an EPUB 3.
 - Upload PNG, JPEG, and WebP images, optimize them to WebP, and return public
   URLs suitable for Markdown.
 - Send an optional Telegraph link notification to Telegram users or channels.
@@ -95,6 +96,19 @@ POST /t/preview
 The response includes a preview identifier and page URL. Send that identifier
 back when publishing so the service can update the preview pages instead of
 creating a second set of pages.
+
+### EPUB
+
+Export a URL, Markdown document, raw HTML, or uploaded document as an EPUB 3:
+
+```text
+POST /epub
+```
+
+The endpoint accepts the same source request as `POST /md`. A Markdown brief
+with `![card](https://example.com/article)` markers becomes a book with the
+brief and its extracted child articles as navigable chapters. Remote images are
+embedded in the EPUB, and source URLs remain visible in each chapter.
 
 For a rendered browser capture, use:
 

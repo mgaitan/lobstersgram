@@ -36,7 +36,7 @@ def _job_state(status: app_module.jobs.JobStatus = "queued") -> app_module.jobs.
     return state
 
 
-def test_home_and_static_assets() -> None:
+def test_home_and_static_assets() -> None:  # noqa: PLR0915
     response = client.get("/")
     assert response.status_code == HTTP_200_OK
     assert "Write, convert, and publish Markdown" in response.text
@@ -50,6 +50,7 @@ def test_home_and_static_assets() -> None:
     assert 'id="publish-status" class="status publish-status"' in response.text
     assert "publishButton.disabled = true" in response.text
     assert 'id="preview-button"' in response.text
+    assert 'id="epub-button"' in response.text
     assert 'id="preview-pane" class="preview-pane" hidden' in response.text
     assert 'id="preview-frame" class="preview-frame"' in response.text
     assert "Back to edit" in response.text
@@ -126,6 +127,7 @@ def test_home_has_source_action_dropdown() -> None:
             'id="source-action-menu-button" class="source-action-menu-button" type="button"',
             'data-source-action="process">Process</button>',
             'data-source-action="publish">Publish</button>',
+            'data-source-action="epub">Export EPUB</button>',
         )
     )
 
@@ -221,6 +223,7 @@ def test_openapi_describes_post_bodies_and_publish_response() -> None:
         schema["paths"]["/t/jobs"]["post"]["responses"]["202"]["content"]["application/json"]["schema"]["$ref"]
         == "#/components/schemas/TelegraphJobResponse"
     )
+    assert schema["paths"]["/epub"]["post"]["requestBody"]["content"]["application/json"]
 
 
 def test_search_engine_discovery_metadata() -> None:
@@ -261,6 +264,25 @@ def test_post_markdown_accepts_json(monkeypatch: pytest.MonkeyPatch) -> None:
     assert response.status_code == HTTP_200_OK
     assert response.text == "# From JSON"
     assert response.headers["content-type"].startswith("text/markdown")
+
+
+def test_post_epub_returns_download(monkeypatch: pytest.MonkeyPatch) -> None:
+    seen: dict[str, SourceRequest] = {}
+
+    def fake_build(source: SourceRequest) -> tuple[bytes, str]:
+        seen["source"] = source
+        return b"epub-bytes", "my-book.epub"
+
+    monkeypatch.setattr(app_module, "build_epub_content", fake_build)
+
+    response = client.post("/epub", json={"markdown": "# Title"})
+
+    assert response.status_code == HTTP_200_OK
+    assert response.content == b"epub-bytes"
+    assert response.headers["content-type"] == "application/epub+zip"
+    assert response.headers["content-disposition"] == 'attachment; filename="my-book.epub"'
+    assert response.headers["cache-control"] == "no-store"
+    assert seen["source"].markdown == "# Title"
 
 
 def test_post_markdown_accepts_raw_html_metadata(monkeypatch: pytest.MonkeyPatch) -> None:

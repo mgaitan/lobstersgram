@@ -9,11 +9,13 @@ Base URL: {{ site_url }}
 - Use `POST /md` when you need Markdown back.
 - Use `POST /images` to upload a PNG, JPEG, or WebP; it returns an optimized public WebP URL for an image Markdown block.
 - Use `POST /t` when you want a public Telegraph URL.
+- Use `POST /epub` when you want an EPUB 3 download. It accepts the same JSON source body as `POST /md`.
 - Use `POST /t/preview` to create or update a public preview without adding it to `/t/published/`; send the returned `preview_id` with later previews or final `POST /t`.
 - For a long Markdown brief, optionally use `POST /t/jobs` and advance the returned job with `POST <run_url>`.
 - Use `GET /md/<url>` or `GET /t/<url>` for a URL, with the complete source URL URL-encoded as one path segment.
 - Prefer JSON for agents. The server accepts one of `url`, `html`, or `markdown` in the request body.
 - `POST /t` returns JSON in the form `{"url":"https://telegra.ph/..."}`.
+- `POST /epub` returns `application/epub+zip` with a `Content-Disposition` filename. A brief with `![card](url)` markers becomes a book with one chapter per linked article.
 - `POST /images` accepts multipart form data with a `file` field, limits input files to 20 MB, and returns `{"url":"https://.../images/...webp"}`. Image uploads require the configured Redis quota and R2 storage.
 - `POST /t/preview` returns `{"preview_id":"...","url":"https://telegra.ph/..."}`. A preview is public on Telegraph, expires after seven days of inactivity, and is identified by a `[Preview]` title until final publication.
 - `GET /t/<url>` returns a `303` redirect to the Telegraph page and caches that URL during the running process.
@@ -100,6 +102,11 @@ HTTP `404` or `503` before creation, the client may use `POST /t` instead.
 curl -X POST {{ site_url }}/t \
   -H 'content-type: application/json' \
   -d '{"markdown":"---\ntitle: Hello\n---\n\n# Hello\n\nBody"}'
+
+curl -X POST {{ site_url }}/epub \
+  -H 'content-type: application/json' \
+  -d '{"markdown":"# Hello\n\nBody"}' \
+  -o hello.epub
 
 curl -X POST {{ site_url }}/t/preview \
   -H 'content-type: application/json' \

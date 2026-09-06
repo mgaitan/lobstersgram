@@ -28,18 +28,20 @@ Issues = "https://github.com/mgaitan/markdown-tools/issues"
 lobstersgram = "lobstersgram.main:main"
 
 [tool.uv.workspace]
-members = ["packages/md-to-telegraph", "packages/markdown-this", "packages/markdown-web"]
+members = ["packages/md-to-telegraph", "packages/markdown-this", "packages/markdown-web", "packages/md-to-epub"]
 
 [tool.uv.sources]
 md-to-telegraph = { workspace = true }
 markdown-this = { workspace = true }
 markdown-web = { workspace = true }
+md-to-epub = { workspace = true }
 
 [dependency-groups]
 dev = [
     "httpx>=0.28.1",
     "ipython>=9.8.0",
     "markdown-web",
+    "md-to-epub",
     "pytest>=8.3.5",
     "pytest-cov>=6.0.0",
     "pytest-mock>=3.15.1",
