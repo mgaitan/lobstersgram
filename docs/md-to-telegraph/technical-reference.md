@@ -1,4 +1,4 @@
-# md-to-telegraph Technical Reference
+# Technical Reference
 
 ## Main Modules
 

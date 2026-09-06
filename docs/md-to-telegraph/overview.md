@@ -1,4 +1,4 @@
-# md-to-telegraph Overview
+# Overview
 
 `md-to-telegraph` converts Markdown into Telegraph-compatible DOM nodes and can
 publish those nodes through the Telegraph API.

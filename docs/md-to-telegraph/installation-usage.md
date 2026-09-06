@@ -1,4 +1,4 @@
-# md-to-telegraph Installation And Usage
+# Installation And Usage
 
 ## Installation
 
