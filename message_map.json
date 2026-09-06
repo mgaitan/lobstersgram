@@ -3568,5 +3568,35 @@
     "article_link": "https://noteflakes.com/articles/2026-09-05-beyond-orms",
     "discussion_link": "https://lobste.rs/s/rcddma/beyond_orms",
     "title": "Beyond ORMs"
+  },
+  "@lobstersgram:603": {
+    "telegraph_link": "https://telegra.ph/Building-a-Brainfuck-DSL-in-Forth-using-code-generation-09-06",
+    "article_link": "https://venko.blog/articles/forth-brainfuck",
+    "discussion_link": "https://lobste.rs/s/fgxkle/building_brainfuck_dsl_forth_using_code",
+    "title": "Building a Brainfuck DSL in Forth using code generation"
+  },
+  "@lobstersgram:604": {
+    "telegraph_link": "https://telegra.ph/See-Windows-CE-Running-On-The-N64-09-06",
+    "article_link": "https://retrododo.com/see-windows-ce-running-on-the-n64/",
+    "discussion_link": "https://lobste.rs/s/dckubt/see_windows_ce_running_on_n64",
+    "title": "See Windows CE Running On The N64"
+  },
+  "@lobstersgram:605": {
+    "telegraph_link": "https://telegra.ph/Who-said-a-tech-addict-cant-be-comfortable-far-from-home--Alexander-Fortin-09-06",
+    "article_link": "https://a.l3x.in/blog/my-travel-setup/",
+    "discussion_link": "https://lobste.rs/s/89i4c0/who_said_tech_addict_can_t_be_comfortable",
+    "title": "Who said a tech addict can't be comfortable far from home?"
+  },
+  "@lobstersgram:606": {
+    "telegraph_link": "https://telegra.ph/Maybe-We-Shouldnt-Be-Reviewing-All-This-Code-09-06",
+    "article_link": "https://martinfowler.com/rachels-ramblings/code-review.html",
+    "discussion_link": "https://lobste.rs/s/lfaddj/maybe_we_shouldn_t_be_reviewing_all_this",
+    "title": "Maybe We Shouldn't Be Reviewing All This Code"
+  },
+  "@lobstersgram:607": {
+    "telegraph_link": "https://telegra.ph/How-To-Federated-Stars--Blog--Domain-Driven-Architecture-09-06",
+    "article_link": "https://domaindrivenarchitecture.org/blog/2024-06-05-howto-federated-stars/",
+    "discussion_link": "https://lobste.rs/s/1kdrx2/how_federated_stars_2024",
+    "title": "How To: Federated Stars (2024)"
   }
 }
