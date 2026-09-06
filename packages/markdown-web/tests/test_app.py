@@ -50,7 +50,8 @@ def test_home_and_static_assets() -> None:  # noqa: PLR0915
     assert 'id="publish-status" class="status publish-status"' in response.text
     assert "publishButton.disabled = true" in response.text
     assert 'id="preview-button"' in response.text
-    assert 'id="epub-button"' in response.text
+    assert 'id="result-action-menu-button" class="source-action-menu-button" type="button"' in response.text
+    assert 'data-result-action="epub">Download EPUB</button>' in response.text
     assert 'id="preview-pane" class="preview-pane" hidden' in response.text
     assert 'id="preview-frame" class="preview-frame"' in response.text
     assert "Back to edit" in response.text
@@ -128,6 +129,9 @@ def test_home_has_source_action_dropdown() -> None:
             'data-source-action="process">Process</button>',
             'data-source-action="publish">Publish</button>',
             'data-source-action="epub">Export EPUB</button>',
+            'id="submit-publish" class="source-action-button button button-primary" type="submit">Publish</button>',
+            'id="result-action-menu-button" class="source-action-menu-button" type="button"',
+            'data-result-action="epub">Download EPUB</button>',
         )
     )
 
