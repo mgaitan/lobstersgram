@@ -3526,5 +3526,23 @@
     "article_link": "https://bcantrill.dtrace.org/2026/09/05/the-revolt-of-the-reader/",
     "discussion_link": "https://lobste.rs/s/xnqxqe/revolt_reader",
     "title": "The revolt of the reader"
+  },
+  "@lobstersgram:596": {
+    "telegraph_link": "https://telegra.ph/Compression-in-Full-Quiet-09-06",
+    "article_link": "https://pineight.com/retrotainment/fq-compression.html",
+    "discussion_link": "https://lobste.rs/s/ywxrua/compression_full_quiet",
+    "title": "Compression in Full Quiet"
+  },
+  "@lobstersgram:597": {
+    "telegraph_link": "https://telegra.ph/Controlling-when-CSS-custom-property-values-are-computed---JakeArchibaldcom-09-06",
+    "article_link": "https://jakearchibald.com/2026/css-custom-property-compute-time/",
+    "discussion_link": "https://lobste.rs/s/eqc1s5/controlling_when_css_custom_property",
+    "title": "Controlling when CSS custom property values are computed"
+  },
+  "@lobstersgram:598": {
+    "telegraph_link": "https://telegra.ph/M2-Episode-1-or-Asahi-Linux-on-M3---Asahi-Linux-09-06",
+    "article_link": "https://asahilinux.org/2026/09/m2-episode-1/",
+    "discussion_link": "https://lobste.rs/s/ben6a4/m2_episode_1_asahi_linux_on_m3",
+    "title": "M2: Episode 1 (or, Asahi Linux on M3)"
   }
 }
