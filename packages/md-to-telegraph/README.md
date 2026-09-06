@@ -91,8 +91,8 @@ as the default title; stdin uses its first Markdown heading, or accepts an
 explicit `--title`:
 
 ```bash
-md-to-telegraph article.md --access-token "$TELEGRAPH_API_TOKEN"
-cat article.md | md-to-telegraph --title "An article"
+uvx md-to-telegraph article.md --access-token "$TELEGRAPH_API_TOKEN"
+cat article.md | uvx md-to-telegraph --title "An article"
 ```
 
 The token can be passed with `--access-token` or read from
@@ -104,7 +104,7 @@ To create only a token, use the `create-account` subcommand. It prints a shell
 assignment and does not publish a page:
 
 ```bash
-md-to-telegraph create-account --short-name lobstersgram
+uvx md-to-telegraph create-account --short-name lobstersgram
 export $(md-to-telegraph create-account --short-name lobstersgram)
 ```
 
