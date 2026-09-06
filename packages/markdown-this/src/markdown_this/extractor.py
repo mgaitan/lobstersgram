@@ -22,7 +22,7 @@ from markdown_this.fetchers import (
     fetch_media_oembed,
     fetch_youtube_video,
 )
-from markdown_this.html import make_images_absolute, preprocess_figures, strip_chrome
+from markdown_this.html import make_images_absolute, preprocess_figures, preprocess_media, strip_chrome
 from markdown_this.markdown import (
     _make_markdown_links_absolute,
     _normalize_markdown_links,
@@ -108,6 +108,8 @@ def _extract_html_content(  # noqa: PLR0913
         metadata = {**structured_metadata, **metadata}
     article = extract_fusion_article(content_html)
     rule_html = apply_domain_rule(content_html, base_url)
+    if rule_html and 'data-extraction-scope="captured-posts"' in rule_html:
+        metadata["extraction_scope"] = "captured-posts"
     content_html_for_markdown = ""
     title = source_label
     try:
@@ -140,7 +142,7 @@ def _extract_html_content(  # noqa: PLR0913
 
     content_html_for_markdown = content_html_for_markdown or content_html
     content_html_for_markdown = preprocess_figures(
-        make_images_absolute(strip_chrome(content_html_for_markdown), base_url)
+        make_images_absolute(preprocess_media(strip_chrome(content_html_for_markdown), base_url), base_url)
     )
     extracted_markdown = html_to_md(content_html_for_markdown)
     extracted_markdown = _normalize_markdown_links(extracted_markdown)

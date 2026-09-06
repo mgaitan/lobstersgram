@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 import requests
 from markdown_web import service
@@ -5,6 +7,16 @@ from markdown_web.schemas import SourceMetadata, SourceRequest
 from pytest_mock import MockerFixture
 
 TEST_PAGE_LIMIT = 80
+
+
+def test_prepare_captured_thread_keeps_scope_and_media() -> None:
+    fixture = Path(__file__).parents[2] / "markdown-this/tests/fixtures/extraction/x_thread.html"
+    result = service.prepare_content(
+        SourceRequest(html=fixture.read_text(), metadata=SourceMetadata(url="https://x.com/alice/status/1002"))
+    )
+    assert result.metadata.extraction_scope == "captured-posts"
+    assert "Third observation" in result.markdown
+    assert "https://video.twimg.com/demo.mp4" in result.markdown
 VISIBLE_PAGE_COUNT = 2
 
 

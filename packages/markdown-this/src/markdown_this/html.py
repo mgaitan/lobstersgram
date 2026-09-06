@@ -85,3 +85,27 @@ def preprocess_figures(content_html: str) -> str:
         if figcaption:
             blockquote.insert_after(figcaption)
     return str(soup)
+
+
+def preprocess_media(content_html: str, base_url: str) -> str:
+    """Preserve playable media links and posters in Markdown-bound HTML."""
+    soup = BeautifulSoup(content_html, "html.parser")
+    for media in soup.find_all(["video", "audio"]):
+        replacement = soup.new_tag("div")
+        if poster := media.get("poster"):
+            replacement.append(soup.new_tag("img", src=poster, alt="Video preview"))
+        sources = [media.get("src"), *(source.get("src") for source in media.find_all("source"))]
+        for src in dict.fromkeys(sources):
+            if not src:
+                continue
+            absolute = urllib.parse.urljoin(base_url, str(src))
+            parsed = urllib.parse.urlparse(absolute)
+            if parsed.scheme not in {"http", "https"} or not parsed.netloc:
+                continue
+            link = soup.new_tag("a", href=absolute)
+            link.string = media.name.capitalize()
+            paragraph = soup.new_tag("p")
+            paragraph.append(link)
+            replacement.append(paragraph)
+        media.replace_with(replacement)
+    return str(soup)

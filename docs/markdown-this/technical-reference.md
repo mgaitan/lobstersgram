@@ -25,6 +25,25 @@ selectors to strip inside the body. The first nonempty body wins; nested
 selectors do not duplicate content. Each default rule needs an offline fixture.
 Unmarked `aside` elements are preserved because they may contain article notes.
 
+## Captured Post Collections
+
+A rule can also declare an `item_selector`, `permalink_selector` and
+`boundary_selector`. The shared collector deduplicates post IDs and selects
+the contiguous author sequence containing the requested post. A boundary
+outside the posts stops collection before recommendations. X and Twitter
+use this rule mechanism; no X-specific fetcher or DOM parser is registered.
+
+Supply rendered HTML with `source_url=` (the bookmarklet does this already).
+Images, video/audio URLs and video posters pass through common normalization.
+Browser-local `blob:` URLs are not portable; their posters and post permalinks
+remain available instead.
+
+The output declares `extraction_scope: captured-posts`. It contains only the
+posts available in that HTML snapshot, not a verified complete thread. The
+collector does not scroll the browser, fetch missing replies or infer reply
+relationships from author identity alone. Consecutive author posts are a
+presentation heuristic, not proof of a conversation graph.
+
 ## Main Modules
 
 - `markdown_this.extractor`: public pipeline orchestration.

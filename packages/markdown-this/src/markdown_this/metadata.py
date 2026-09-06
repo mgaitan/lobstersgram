@@ -10,7 +10,7 @@ from urllib.parse import urljoin, urlparse
 import yaml
 from bs4 import BeautifulSoup
 
-METADATA_FIELDS = ("title", "author", "url", "date", "image", "type")
+METADATA_FIELDS = ("title", "author", "url", "date", "image", "type", "extraction_scope")
 ARTICLE_SCHEMA_TYPES = {"article", "blogposting", "newsarticle", "socialmediaposting"}
 
 

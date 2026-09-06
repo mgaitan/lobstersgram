@@ -16,6 +16,7 @@ class SourceMetadata(BaseModel):
     date: str = ""
     image: str = ""
     type: str = ""
+    extraction_scope: str = ""
     notify_telegram: str = ""
 
     def values(self) -> dict[str, str]:
