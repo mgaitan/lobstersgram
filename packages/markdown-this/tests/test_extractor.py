@@ -108,7 +108,7 @@ def test_extract_main_content_excludes_structural_ad_slots() -> None:
 def test_supplied_html_resolves_links_from_source_url() -> None:
     html = '<article><p>A reference to <a href="/other">another article</a>.</p></article>'
     _title, markdown, _fallback, _intro = extract_main_content(
-        html, source_url="https://example.com/story", min_content_length=0
+        html, source_url="https://example.com/story"
     )
     metadata, body = split_front_matter(markdown)
     assert metadata["url"] == "https://example.com/story"
