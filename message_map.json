@@ -3646,5 +3646,17 @@
     "article_link": "https://anubis.techaro.lol/blog/2026/anubis-wasm/",
     "discussion_link": "https://lobste.rs/s/aokzbg/it_took_year_ship_webassembly_anubis",
     "title": "It took a year to ship WebAssembly in Anubis"
+  },
+  "@lobstersgram:616": {
+    "telegraph_link": "https://telegra.ph/Making-a-Python-interpreter-in-1024-bytes---Austin-Z-Henley-09-06",
+    "article_link": "https://austinhenley.com/blog/python1024.html",
+    "discussion_link": "https://lobste.rs/s/n0zgj1/making_python_interpreter_1024_bytes",
+    "title": "Making a Python interpreter in 1024 bytes"
+  },
+  "@lobstersgram:617": {
+    "telegraph_link": "https://telegra.ph/Data-races-and-the-limits-of-ThreadSanitizer-in-C-and-Go---The-Consensus-09-06",
+    "article_link": "https://theconsensus.dev/p/2026/09/06/data-races-and-the-limits-of-threadsanitizer-in-c-and-go.html",
+    "discussion_link": "https://lobste.rs/s/mcnj6l/data_races_limits_threadsanitizer_c_go",
+    "title": "Data races and the limits of ThreadSanitizer in C and Go"
   }
 }
