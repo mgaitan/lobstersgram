@@ -28,6 +28,7 @@ from markdown_this.markdown import (
     markdown_to_text,
 )
 from markdown_this.metadata import add_front_matter, extract_html_metadata, split_front_matter
+from markdown_this.structured import extract_fusion_article
 
 logger = getLogger(__name__)
 SpecialUrlExtractor = Callable[[str, int], tuple[str, str] | None]
@@ -91,16 +92,22 @@ def _extract_html_content(  # noqa: PLR0913
         raise ContentDownloadError
 
     metadata = extract_html_metadata(content_html, base_url)
+    base_url = source_url or metadata.get("url") or base_url
+    article = extract_fusion_article(content_html)
     content_html_for_markdown = ""
     title = source_label
     try:
-        document = Document(content_html, negative_keywords=AD_NEGATIVE_KEYWORDS)
-        content_html_for_markdown = document.summary() or ""
-        title = document.title() or source_label
+        if article:
+            title, content_html_for_markdown = article
+            title = title or metadata.get("title") or source_label
+        else:
+            document = Document(content_html, negative_keywords=AD_NEGATIVE_KEYWORDS)
+            content_html_for_markdown = document.summary() or ""
+            title = document.title() or source_label
     except Exception as exc:  # noqa: BLE001
         logger.warning("readability failed error=%s", exc)
 
-    if not content_html_for_markdown or len(content_html_for_markdown.strip()) < min_content_length:
+    if not article and (not content_html_for_markdown or len(content_html_for_markdown.strip()) < min_content_length):
         content_html_for_markdown = content_html
 
     content_html_for_markdown = preprocess_figures(make_images_absolute(content_html_for_markdown, base_url))

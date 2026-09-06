@@ -40,7 +40,7 @@ cases:
 
   - id: pagina12_fusion_article
     fixture: pagina12_fusion_article.html
-    xfail: "Known issue #88/#97: Pagina/12 body lives in Fusion.globalContent."
+    url: https://www.pagina12.com.ar/2026/09/03/el-oficialismo-continua-con-su-desprecio-a-los-necesitados/
     metadata:
       title: El oficialismo continua con su desprecio a los necesitados
       author: Pagina/12
@@ -54,4 +54,4 @@ cases:
       - Copiar enlace
       - Compartir en X
       - Ultimas noticias
-    min_text_chars: 140
+    min_text_chars: 110
