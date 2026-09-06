@@ -10,6 +10,8 @@ metadata extraction, HTML cleanup, and Markdown normalization.
   local HTML.
 - Preserve source metadata such as title, author, canonical URL, publication
   date, image, and page type.
+- Recover article text from schema.org JSON-LD when the generic extractor
+  selects too little content.
 - Keep extraction deterministic and testable with offline fixtures.
 - Prefer small, verified provider/rule support over a large unowned rule dump.
 

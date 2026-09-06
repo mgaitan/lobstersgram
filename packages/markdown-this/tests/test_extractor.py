@@ -86,6 +86,102 @@ def test_extract_main_content_falls_back_when_special_url_extractor_fails(*, moc
     assert intro == "Readable body."
 
 
+def test_extract_main_content_uses_structured_article_when_readability_is_short(*, mocker: MockerFixture) -> None:
+    html = """
+    <html><head>
+      <script type="application/ld+json">
+        {
+          "@type": "NewsArticle",
+          "headline": "Schema title",
+          "articleBody": "Schema body with linked source."
+        }
+      </script>
+    </head><body>
+      <article><p>Schema body with <a href="/source">linked source</a>.</p></article>
+    </body></html>
+    """
+    document = mocker.Mock(
+        summary=mocker.Mock(return_value="<p>Too short.</p>"),
+        title=mocker.Mock(return_value=""),
+    )
+    mocker.patch.object(extractor_module, "Document", return_value=document)
+    title, markdown, fallback_text, _intro = extract_main_content(
+        html,
+        min_content_length=50,
+    )
+
+    assert title == "Schema title"
+    assert "[linked source](/source)" in markdown
+    assert "Schema body with" in fallback_text
+    assert "linked source" in fallback_text
+
+
+def test_extract_main_content_uses_structured_text_when_no_dom_match_exists(*, mocker: MockerFixture) -> None:
+    html = """
+    <html><head>
+      <script type="application/ld+json">
+        {"@type": "Article", "headline": "Schema only", "articleBody": "First <line>\\n\\nSecond & line"}
+      </script>
+    </head><body><p>Chrome only.</p></body></html>
+    """
+    document = mocker.Mock(
+        summary=mocker.Mock(return_value=""),
+        title=mocker.Mock(return_value=""),
+    )
+    mocker.patch.object(extractor_module, "Document", return_value=document)
+    title, markdown, fallback_text, _intro = extract_main_content(html)
+
+    assert title == "Schema only"
+    assert "First <line>" in markdown
+    assert "Second & line" in markdown
+    assert fallback_text == "First <line>\n\n\nSecond & line"
+
+
+def test_extract_main_content_falls_back_to_original_html_when_structured_html_is_empty(
+    *, mocker: MockerFixture
+) -> None:
+    html = """
+    <html><head>
+      <script type="application/ld+json">
+        {"@type": "Article", "headline": "Schema only", "articleBody": "Structured body."}
+      </script>
+    </head><body><p>Original fallback body.</p></body></html>
+    """
+    document = mocker.Mock(
+        summary=mocker.Mock(return_value=""),
+        title=mocker.Mock(return_value=""),
+    )
+    mocker.patch.object(extractor_module, "Document", return_value=document)
+    mocker.patch.object(extractor_module, "_html_for_structured_text", return_value="")
+    title, markdown, fallback_text, _intro = extract_main_content(html)
+
+    assert title == "Schema only"
+    assert "Original fallback body." in markdown
+    assert "Original fallback body." in fallback_text
+
+
+def test_extract_main_content_does_not_replace_good_readability_with_schema(*, mocker: MockerFixture) -> None:
+    html = """
+    <html><head>
+      <script type="application/ld+json">
+        {"@type": "Article", "headline": "Schema title", "articleBody": "Schema body."}
+      </script>
+    </head><body><article><p>DOM body.</p></article></body></html>
+    """
+    document = mocker.Mock(
+        summary=mocker.Mock(
+            return_value="<article><p>Readable body long enough to keep as the selected content.</p></article>"
+        ),
+        title=mocker.Mock(return_value="Readable title"),
+    )
+    mocker.patch.object(extractor_module, "Document", return_value=document)
+    title, markdown, _fallback_text, _intro = extract_main_content(html, min_content_length=20)
+
+    assert title == "Readable title"
+    assert "Readable body long enough" in markdown
+    assert "Schema body" not in markdown
+
+
 def test_extract_main_content_excludes_structural_ad_slots() -> None:
     html = """
     <html><head><title>Story</title></head><body><article>

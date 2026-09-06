@@ -15,6 +15,9 @@ For HTTP URLs, the current order is:
 7. Generic HTML fetch plus Readability extraction.
 
 For local paths and raw HTML, only the generic HTML path runs.
+That path reads schema.org JSON-LD before Readability and uses
+`Article.articleBody`, `NewsArticle.articleBody`, or `SocialMediaPosting.text`
+as a fallback when the selected HTML is empty or too short.
 
 ## Main Modules
 

@@ -2,7 +2,17 @@
 
 from __future__ import annotations
 
-from markdown_this import add_front_matter, extract_html_metadata, split_front_matter
+import json
+
+import pytest
+from markdown_this import add_front_matter, extract_html_metadata, extract_structured_article, split_front_matter
+
+
+@pytest.mark.parametrize("types", [["Thing", "NewsArticle"], ["NewsArticle", "Thing"]])
+def test_nested_multityped_article(types: list[str]) -> None:
+    data = {"@type": "WebPage", "mainEntity": [{"@type": types, "articleBody": "Nested article body."}]}
+    html = f'<script type="application/ld+json">{json.dumps(data)}</script>'
+    assert extract_structured_article(html) == ("Nested article body.", {"type": "NewsArticle"})
 
 
 def test_front_matter_round_trip() -> None:
@@ -95,3 +105,83 @@ def test_extract_html_metadata_uses_site_name_when_author_is_missing() -> None:
 
 def test_extract_html_metadata_returns_empty_for_missing_values() -> None:
     assert extract_html_metadata("<html></html>") == {}
+
+
+def test_extract_structured_article_reads_article_body_and_metadata() -> None:
+    html = """
+    <script type="application/ld+json">
+    {
+      "@type": ["NewsArticle", "Thing"],
+      "headline": "Schema title",
+      "articleBody": "Schema body.",
+      "author": [{"name": "One"}, {"name": "Two"}],
+      "datePublished": "2026-08-06",
+      "image": {"url": "/hero.jpg"}
+    }
+    </script>
+    """
+
+    assert extract_structured_article(html, "https://example.com/article") == (
+        "Schema body.",
+        {
+            "title": "Schema title",
+            "author": "One, Two",
+            "date": "2026-08-06",
+            "image": "https://example.com/hero.jpg",
+            "type": "NewsArticle",
+        },
+    )
+
+
+def test_extract_structured_article_reads_string_author() -> None:
+    html = """
+    <script type="application/ld+json">
+      {"@type": "Article", "headline": "Title", "articleBody": "Body.", "author": "Plain Author"}
+    </script>
+    """
+
+    assert extract_structured_article(html) == (
+        "Body.",
+        {"title": "Title", "author": "Plain Author", "type": "Article"},
+    )
+
+
+def test_extract_structured_article_reads_graph_and_social_text() -> None:
+    html = """
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {"@type": "WebPage", "name": "Ignored"},
+        {
+          "@type": "SocialMediaPosting",
+          "name": "Thread title",
+          "text": ["First post.", "Second post."],
+          "publisher": {"name": "Example social"},
+          "image": ["ftp://invalid/image.jpg", "https://example.com/thread.jpg"]
+        }
+      ]
+    }
+    </script>
+    """
+
+    assert extract_structured_article(html) == (
+        "First post.\n\nSecond post.",
+        {
+            "title": "Thread title",
+            "author": "Example social",
+            "image": "https://example.com/thread.jpg",
+            "type": "SocialMediaPosting",
+        },
+    )
+
+
+def test_extract_structured_article_ignores_invalid_or_unusable_json_ld() -> None:
+    assert extract_structured_article('<script type="application/ld+json">not json</script>') is None
+    assert extract_structured_article('<script type="application/ld+json">{"@type":"NewsArticle"}</script>') is None
+    assert (
+        extract_structured_article(
+            '<script type="application/ld+json">{"@type":"ImageObject","text":"Ignored"}</script>'
+        )
+        is None
+    )
