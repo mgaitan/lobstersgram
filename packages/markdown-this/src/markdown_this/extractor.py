@@ -35,6 +35,7 @@ from markdown_this.metadata import (
     extract_structured_article,
     split_front_matter,
 )
+from markdown_this.rules import apply_domain_rule
 from markdown_this.structured import extract_fusion_article
 
 logger = getLogger(__name__)
@@ -106,6 +107,7 @@ def _extract_html_content(  # noqa: PLR0913
         _structured_text, structured_metadata = structured_article
         metadata = {**structured_metadata, **metadata}
     article = extract_fusion_article(content_html)
+    rule_html = apply_domain_rule(content_html, base_url)
     content_html_for_markdown = ""
     title = source_label
     try:
@@ -114,12 +116,21 @@ def _extract_html_content(  # noqa: PLR0913
             title = title or metadata.get("title") or source_label
         else:
             document = Document(content_html, negative_keywords=AD_NEGATIVE_KEYWORDS)
-            content_html_for_markdown = document.summary() or ""
-            title = document.title() or metadata.get("title") or source_label
+            content_html_for_markdown = rule_html or document.summary() or ""
+            document_title = document.title()
+            title = (
+                document_title
+                if document_title and document_title != "[no-title]"
+                else metadata.get("title") or source_label
+            )
     except Exception as exc:  # noqa: BLE001
         logger.warning("readability failed error=%s", exc)
 
-    if not article and (not content_html_for_markdown or len(content_html_for_markdown.strip()) < min_content_length):
+    if (
+        not article
+        and not rule_html
+        and (not content_html_for_markdown or len(content_html_for_markdown.strip()) < min_content_length)
+    ):
         if structured_article:
             structured_text, structured_metadata = structured_article
             content_html_for_markdown = _html_for_structured_text(content_html, structured_text)

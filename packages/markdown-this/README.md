@@ -6,8 +6,12 @@ Extract the readable content of a URL and convert it to Markdown. The package
 also handles GitHub repositories and Markdown files through the GitHub API,
 arXiv abstract pages through their HTML representation, YouTube videos, and
 oEmbed-backed Vimeo/Dailymotion media pages.
+Embedded Arc Fusion article data (including Pagina/12) is extracted by format
+from downloaded HTML, local files and browser-supplied HTML alike.
 When generic extraction selects too little content, schema.org JSON-LD article
 text can be used as a fallback.
+Small declarative domain rules can preselect article containers for known
+high-value sites such as Substack.
 
 ## Installation
 
@@ -32,7 +36,9 @@ from pathlib import Path
 from markdown_this import extract_main_content
 
 title, markdown, fallback_text, intro = extract_main_content(Path("article.html"))
-title, markdown, fallback_text, intro = extract_main_content("<html><p>...</p></html>")
+title, markdown, fallback_text, intro = extract_main_content(
+    "<html><p>...</p></html>", source_url="https://example.com/article"
+)
 ```
 
 `extract_main_content` returns the title, extracted Markdown, plain-text
@@ -57,9 +63,9 @@ Article content.
 The package also installs a `markdown-this` command:
 
 ```bash
-markdown-this https://example.com/article
-markdown-this article.html
-cat article.html | markdown-this -
+uvx markdown-this https://example.com/article
+uvx markdown-this article.html
+cat article.html | uvx markdown-this -
 ```
 
 The command writes the extracted Markdown to stdout. Its input may be a URL,
