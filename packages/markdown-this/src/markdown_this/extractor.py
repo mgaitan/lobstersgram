@@ -136,7 +136,7 @@ def _extract_html_content(  # noqa: PLR0913
             content_html_for_markdown = _html_for_structured_text(content_html, structured_text)
             title = structured_metadata.get("title") or title
         else:
-            content_html_for_markdown = rule_html or content_html
+            content_html_for_markdown = content_html
 
     content_html_for_markdown = content_html_for_markdown or content_html
     content_html_for_markdown = preprocess_figures(
